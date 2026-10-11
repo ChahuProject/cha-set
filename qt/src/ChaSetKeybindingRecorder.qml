@@ -137,39 +137,79 @@ Item {
             }
         }
 
+        function keyToString(key, text) {
+            if (key >= Qt.Key_A && key <= Qt.Key_Z)
+                return String.fromCharCode(key)
+            if (key >= Qt.Key_0 && key <= Qt.Key_9)
+                return String.fromCharCode(key)
+            if (key >= Qt.Key_F1 && key <= Qt.Key_F35)
+                return "F" + (key - Qt.Key_F1 + 1)
+            switch (key) {
+            case Qt.Key_Space: return "Space"
+            case Qt.Key_Return:
+            case Qt.Key_Enter: return "Return"
+            case Qt.Key_Tab:
+            case Qt.Key_Backtab: return "Tab"
+            case Qt.Key_Backspace: return "Backspace"
+            case Qt.Key_Delete: return "Del"
+            case Qt.Key_Insert: return "Ins"
+            case Qt.Key_Home: return "Home"
+            case Qt.Key_End: return "End"
+            case Qt.Key_PageUp: return "PgUp"
+            case Qt.Key_PageDown: return "PgDown"
+            case Qt.Key_Left: return "Left"
+            case Qt.Key_Right: return "Right"
+            case Qt.Key_Up: return "Up"
+            case Qt.Key_Down: return "Down"
+            case Qt.Key_Equal: return "="
+            case Qt.Key_Minus: return "-"
+            case Qt.Key_Plus: return "+"
+            case Qt.Key_Slash: return "/"
+            case Qt.Key_Asterisk: return "*"
+            case Qt.Key_Semicolon: return ";"
+            case Qt.Key_Apostrophe: return "'"
+            case Qt.Key_Comma: return ","
+            case Qt.Key_Period: return "."
+            case Qt.Key_BracketLeft: return "["
+            case Qt.Key_BracketRight: return "]"
+            case Qt.Key_Backslash: return "\\"
+            case Qt.Key_QuoteLeft: return "`"
+            default:
+                if (text && text.trim().length > 0 && text.charCodeAt(0) >= 32)
+                    return text.trim().toUpperCase()
+                return ""
+            }
+        }
+
         Keys.onPressed: function(event) {
             if (!root.recording || root.disabled) return
             event.accepted = true
+
+            if (event.key === Qt.Key_Escape) {
+                root.recording = false
+                return
+            }
+
+            if (event.key === Qt.Key_Control || event.key === Qt.Key_Shift ||
+                event.key === Qt.Key_Alt || event.key === Qt.Key_Meta || event.key === Qt.Key_AltGr) {
+                return
+            }
+
+            const mainKey = keyToString(event.key, event.text)
+            if (!mainKey || mainKey.length === 0)
+                return
 
             let parts = []
             if (event.modifiers & Qt.ControlModifier) parts.push("Ctrl")
             if (event.modifiers & Qt.AltModifier) parts.push("Alt")
             if (event.modifiers & Qt.ShiftModifier) parts.push("Shift")
-            if (event.modifiers & Qt.MetaModifier) parts.push("Win")
+            if (event.modifiers & Qt.MetaModifier) parts.push("Meta")
 
-            let keyText = event.text.toUpperCase()
-            if (event.key >= Qt.Key_F1 && event.key <= Qt.Key_F12) {
-                keyText = "F" + (event.key - Qt.Key_F1 + 1)
-            } else if (event.key === Qt.Key_Escape) {
-                root.recording = false
-                return
-            } else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
-                // React captures Enter as the binding key itself.
-                parts.push("Enter")
-                root.keybinding = parts.join("+")
-                root.value = root.keybinding
-                root.recording = false
-                root.keybindingRecorded(root.keybinding)
-                return
-            }
-
-            if (keyText.length > 0) {
-                parts.push(keyText)
-                root.keybinding = parts.join("+")
-                root.value = root.keybinding
-                root.recording = false
-                root.keybindingRecorded(root.keybinding)
-            }
+            parts.push(mainKey)
+            root.keybinding = parts.join("+")
+            root.value = root.keybinding
+            root.recording = false
+            root.keybindingRecorded(root.keybinding)
         }
     }
 
