@@ -4,8 +4,10 @@ import { z } from 'zod';
  * Neutral API contract for the FloatingNotice component.
  *
  * A compact, floating notice pill anchored to the top or bottom edge of the viewport.
- * Features a multi-card queue sorted by priority and insertion time, card-stack
- * cycling with indicator dots, hover suspension, smooth hover zoom, and
+ * Features a multi-card queue sorted by priority and insertion time, in-place
+ * raising of the hovered card (top z-order at its own position, never reordered
+ * to the front), a fixed-position distance fan (raised card always largest),
+ * hover suspension, smooth hover zoom, copy-to-clipboard affordance, and
  * extensible shell content slots.
  */
 export const floatingNoticeLevelSchema = z.enum(['default', 'info', 'warning', 'error']);
