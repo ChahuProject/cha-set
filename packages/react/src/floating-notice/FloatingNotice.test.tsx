@@ -182,8 +182,39 @@ describe('FloatingNotice', () => {
     expect(p2).toBeLessThan(p1);
   });
 
-  it('renders an unlimited stack without slicing behind layers', () => {
-    const notices: FloatingNoticeItem[] = Array.from({ length: 5 }, (_, i) => ({
+  it('never slides sideways: centering stays out of the animated transform', () => {
+    const notices: FloatingNoticeItem[] = [
+      { id: 'a', title: 'Notice A' },
+      { id: 'b', title: 'Notice B' },
+      { id: 'c', title: 'Notice C' },
+    ];
+
+    const { container } = render(<FloatingNotice notices={notices} />);
+    const transforms = () =>
+      Array.from(container.querySelectorAll('[data-active]')).map(
+        (el) => (el as HTMLElement).style.transform
+      );
+
+    // At rest every layer shares the same transform list (translateY scale).
+    expect(transforms()).toHaveLength(3);
+    for (const t of transforms()) {
+      expect(t).not.toContain('translateX');
+    }
+
+    // Switching the raised card must not introduce a sideways slide either:
+    // activation only changes Y offset and scale, never the X channel.
+    fireEvent.mouseEnter(screen.getByTestId('floating-notice-container'));
+    fireEvent.mouseEnter(screen.getByTestId('queue-dot-2'));
+    for (const t of transforms()) {
+      expect(t).not.toContain('translateX');
+    }
+    fireEvent.mouseEnter(screen.getByTestId('queue-dot-0'));
+    for (const t of transforms()) {
+      expect(t).not.toContain('translateX');
+    }
+  });
+
+  it('renders an unlimited stack without slicing behind layers', () => {    const notices: FloatingNoticeItem[] = Array.from({ length: 5 }, (_, i) => ({
       id: `n-${i}`,
       title: `Notice ${i}`,
     }));

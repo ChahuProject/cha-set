@@ -263,7 +263,11 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
             largest); gaps widen while hovered so peeking strips stay reachable.
             The raised card itself stays in-flow as the sizing anchor, so no
             card gets special treatment — depth 0 shrinks like any other card
-            as soon as it is no longer raised. Deeper layers overlay. */}
+            as soon as it is no longer raised. Deeper layers overlay.
+            Centering never lives inside `transform`: inactive layers center via
+            `left-0 right-0 mx-auto`, so both states share the exact same
+            transform list (`translateY scale`) and activation only glides
+            vertically instead of sliding sideways mid-transition. */}
         {stackEntries.map((entry) => {
           const isActive = entry.sortedIdx === activeIndex;
           const dist = Math.abs(entry.sortedIdx - activeIndex);
@@ -287,13 +291,11 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
               className={cn(
                 'flex items-center gap-2.5 px-3.5 py-2 rounded-full border backdrop-blur-md',
                 'min-w-[12rem] max-w-[28rem] cursor-pointer transition-all duration-short ease-standard',
-                isActive ? 'relative' : 'absolute top-0 left-1/2',
+                isActive ? 'relative' : 'absolute top-0 left-0 right-0 mx-auto',
                 layerStyle.container
               )}
               style={{
-                transform: isActive
-                  ? `translateY(${depthOffset}rem) scale(${scale})`
-                  : `translateX(-50%) translateY(${depthOffset}rem) scale(${scale})`,
+                transform: `translateY(${depthOffset}rem) scale(${scale})`,
                 width: isActive ? undefined : inset === 0 ? '100%' : `calc(100% - ${inset}rem)`,
                 height: isActive ? undefined : '100%',
                 opacity: opacityForDistance(dist, isActive),
