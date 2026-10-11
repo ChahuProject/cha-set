@@ -272,9 +272,9 @@ Item {
                             Text {
                                 id: badgeLabel
                                 anchors.centerIn: parent
-                                text: (parent.parent.parent.modelData && parent.parent.parent.modelData.intermediateBadge) ? parent.parent.parent.modelData.intermediateBadge : ChaSetI18n.tr("common.open", "已打开")
+                                text: (parent.parent.parent.modelData && parent.parent.parent.modelData.intermediateBadge) ? parent.parent.parent.modelData.intermediateBadge : ChaSetI18n.tr("common.opened", "已打开")
                                 color: ThemeTokens.accent
-                                font.pixelSize: ThemeTokens.sp(10)
+                                font.pixelSize: Typography.sizeMicro
                             }
                         }
 

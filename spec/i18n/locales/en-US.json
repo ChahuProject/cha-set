@@ -60,7 +60,9 @@
     "right": "Right",
     "test": "Test",
     "keyUp": "↑",
-    "keyDown": "↓"
+    "keyDown": "↓",
+    "opened": "Opened",
+    "settings": "Settings"
   },
   "theme": {
     "settings": {

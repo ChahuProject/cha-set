@@ -60,7 +60,9 @@
     "right": "居右",
     "test": "测试",
     "keyUp": "↑",
-    "keyDown": "↓"
+    "keyDown": "↓",
+    "opened": "已打开",
+    "settings": "设置"
   },
   "theme": {
     "settings": {
