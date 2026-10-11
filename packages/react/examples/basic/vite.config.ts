@@ -12,9 +12,16 @@ import tailwindcss from '@tailwindcss/vite';
 // for spec-derived files. Dev-only (apply: 'serve').
 function chaSpecWatch(): Plugin {
   const repoRoot = path.resolve(import.meta.dirname, '../../../..');
-  const genAll = path.resolve(repoRoot, 'spec/generators/generate-all.mjs');
+  const specRoot = path.resolve(repoRoot, 'spec');
+  const genAll = path.resolve(specRoot, 'generators/generate-all.mjs');
   const watchDirs = ['tokens', 'i18n', 'icons', 'showcase', 'components'].map((d) =>
-    path.resolve(repoRoot, 'spec', d)
+    path.resolve(specRoot, d)
+  );
+  // spec/ root-level inputs (capabilities, qt-mapping, top-level scripts).
+  // spec/tokens.json is EXCLUDED: it is rewritten by the generators
+  // themselves and watching it would self-trigger an infinite regen loop.
+  const watchFiles = ['capabilities.json', 'qt-mapping.json', 'build-tokens.mjs'].map((f) =>
+    path.resolve(specRoot, f)
   );
   let timer: ReturnType<typeof setTimeout> | null = null;
   let running = false;
@@ -47,9 +54,15 @@ function chaSpecWatch(): Plugin {
       for (const dir of watchDirs) {
         server.watcher.add(dir);
       }
-      console.log('[cha-spec-watch] watching spec/{tokens,i18n,icons,showcase,components}');
+      for (const file of watchFiles) {
+        server.watcher.add(file);
+      }
+      console.log('[cha-spec-watch] watching spec/{tokens,i18n,icons,showcase,components} + root inputs (tokens.json excluded)');
       const schedule = (file: string) => {
-        if (!file.startsWith(path.resolve(repoRoot, 'spec'))) return;
+        if (!file.startsWith(specRoot)) return;
+        // Never react to our own output: spec/tokens.json is rewritten by
+        // build-tokens.mjs on every regen.
+        if (file === path.resolve(specRoot, 'tokens.json')) return;
         if (timer) clearTimeout(timer);
         timer = setTimeout(() => run(server), 300);
       };

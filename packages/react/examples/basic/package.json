@@ -6,7 +6,9 @@
   "description": "React example: renders a @chahu/cha-set Button.",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node ../../../../spec/generators/generate-all.mjs",
     "build": "vite build",
+    "prepreview": "pnpm build",
     "preview": "vite preview"
   },
   "dependencies": {

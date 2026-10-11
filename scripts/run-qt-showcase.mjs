@@ -10,12 +10,12 @@ import { fileURLToPath } from 'node:url';
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const qtDir = resolve(repoRoot, 'qt');
-const buildDir = resolve(qtDir, 'build');
 
 // 1. Locate Qt 6 root
 const candidateQtPaths = [
   process.env.QTDIR,
   process.env.CMAKE_PREFIX_PATH,
+  'D:\\pengj\\qt\\current\\msvc2022_64',
   'D:\\pengj\\qt\\6.10.1\\msvc2022_64',
   'C:\\pengj\\qt\\6.10.1\\msvc2022_64',
   'C:\\Qt\\6.10.1\\msvc2022_64',
@@ -90,7 +90,14 @@ if (process.platform === 'win32') {
 // 2. Determine command line flags
 const rawArgs = process.argv.slice(2);
 const buildOnly = rawArgs.includes('--build-only');
-const forwardArgs = rawArgs.filter((arg) => arg !== '--build-only');
+// --hot / --hot-reload: separate Debug build with QML debugging infra,
+// launched under the official qmlpreview tool so QML edits apply live
+// without restarting the app (C++ edits still need a rebuild).
+const hotReload = rawArgs.includes('--hot') || rawArgs.includes('--hot-reload');
+const forwardArgs = rawArgs.filter((arg) => arg !== '--build-only' && arg !== '--hot' && arg !== '--hot-reload');
+
+const buildDir = hotReload ? resolve(qtDir, 'build-hot') : resolve(qtDir, 'build');
+const buildType = hotReload ? 'Debug' : 'Release';
 
 // 0. Regenerate all spec-derived artifacts first, so `pnpm showcase:qt`
 // always launches with the latest tokens / i18n / showcase data / icons.
@@ -110,7 +117,10 @@ if (genRes.status !== 0) {
 
 // 3. Configure with CMake
 console.log('\n[qt-showcase] 1. Configuring CMake...');
-const cmakeArgs = ['-S', qtDir, '-B', buildDir, '-G', 'Ninja', '-DCMAKE_BUILD_TYPE=Release'];
+const cmakeArgs = ['-S', qtDir, '-B', buildDir, '-G', 'Ninja', `-DCMAKE_BUILD_TYPE=${buildType}`];
+if (hotReload) {
+  cmakeArgs.push('-DCHASET_QML_HOT_RELOAD=ON');
+}
 if (qtPrefix) {
   cmakeArgs.push(`-DCMAKE_PREFIX_PATH=${qtPrefix}`);
 }
@@ -168,7 +178,26 @@ if (forwardArgs.length > 0) {
   console.log(`[qt-showcase] Arguments: ${forwardArgs.join(' ')}`);
 }
 
-const appProcess = spawn(exePath, forwardArgs, {
+// Hot mode: run under the official qmlpreview tool so QML edits in qt/src
+// apply live without restarting the app. qmlpreview usage:
+// `qmlpreview [options] executable [parameters...]`.
+let launchPath = exePath;
+let launchArgs = forwardArgs;
+if (hotReload) {
+  const qmlPreviewCandidates = qtPrefix
+    ? [resolve(qtPrefix, 'bin', process.platform === 'win32' ? 'qmlpreview.exe' : 'qmlpreview')]
+    : [];
+  const qmlPreview = qmlPreviewCandidates.find((p) => existsSync(p));
+  if (qmlPreview) {
+    console.log('[qt-showcase] Hot reload active: QML edits apply live (C++ edits still need a rebuild).');
+    launchPath = qmlPreview;
+    launchArgs = [exePath, ...forwardArgs];
+  } else {
+    console.warn('[qt-showcase] Warning: qmlpreview tool not found; running without live reload.');
+  }
+}
+
+const appProcess = spawn(launchPath, launchArgs, {
   cwd: qtDir,
   stdio: 'inherit',
   env: process.env,

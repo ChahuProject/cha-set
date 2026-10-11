@@ -250,6 +250,12 @@ target_include_directories(ChaSet PUBLIC
 # -------------------------------------------------------------
 # 2. Standalone Demo & Test Harness (only built if top-level)
 # -------------------------------------------------------------
+# CHASET_QML_HOT_RELOAD=ON injects QT_QML_DEBUG into the demo executable so the
+# official qmlpreview live-reload tooling can attach (see `pnpm showcase:qt
+# --hot`). Dev-only: never enable for release/CI builds (prints a QML
+# debugging warning banner and disables QML caching optimizations).
+option(CHASET_QML_HOT_RELOAD "Enable QML debugging infrastructure for qmlpreview live reload (dev only)" OFF)
+
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
     find_package(Qt6 6.5 REQUIRED COMPONENTS Test)
 
@@ -349,4 +355,9 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
         ChaSet
         Qt6::Test
     )
+
+    if(CHASET_QML_HOT_RELOAD)
+        target_compile_definitions(QtChaSetDemo PRIVATE QT_QML_DEBUG)
+        message(STATUS "ChaSet: QML hot reload enabled (QT_QML_DEBUG on QtChaSetDemo)")
+    endif()
 endif()
