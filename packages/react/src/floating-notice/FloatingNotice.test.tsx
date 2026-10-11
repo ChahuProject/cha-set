@@ -134,6 +134,13 @@ describe('FloatingNotice', () => {
     expect(translateYOf('queue-dot-1')).toBeCloseTo(restAbove * 1.75, 5);
     expect(translateYOf('queue-dot-3')).toBeCloseTo(restBelow * 1.75, 5);
 
+    // Above mirrors below: the gap from the raised card to its upper neighbour
+    // equals the gap to its lower neighbour (uniform body steps both ways).
+    const gapAbove = translateYOf('notice-card-2') - translateYOf('queue-dot-1');
+    const gapBelow = translateYOf('queue-dot-3') - translateYOf('notice-card-2');
+    expect(gapAbove).toBeCloseTo(gapBelow, 5);
+    expect(gapAbove).toBeGreaterThan(0);
+
     // Nearer cards stack above farther ones, raised stays on top.
     const zRaised = Number(raised.style.zIndex);
     const zNear = Number(screen.getByTestId('queue-dot-1').style.zIndex);
@@ -184,13 +191,11 @@ describe('FloatingNotice', () => {
       return Number(match?.[1]);
     });
     const [o0 = 0, o1 = 0, o2 = 0] = offsets;
-    // Offsets spread out (more dispersed than the old 6px/12px stack)
-    expect(o0).toBeGreaterThan(0.75);
-    expect(o1).toBeGreaterThan(o0 + 0.5);
-    expect(o2).toBeGreaterThan(o1 + 0.25);
-    // Gaps diminish toward the back
-    expect(o1 - o0).toBeLessThan(o0);
-    expect(o2 - o1).toBeLessThan(o1 - o0);
+    // Top reveal gap then uniform body steps, so the fan reads identically
+    // above and below any raised card (no near-dense/far-sparse surprise).
+    expect(o0).toBeCloseTo(0.875, 5);
+    expect(o1 - o0).toBeCloseTo(0.4375, 5);
+    expect(o2 - o1).toBeCloseTo(0.4375, 5);
 
     const scales = [1, 2, 3].map((depth) => {
       const el = screen.getByTestId(`queue-dot-${depth}`);

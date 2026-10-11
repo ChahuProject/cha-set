@@ -182,9 +182,11 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
   // by DISTANCE from the raised card — the raised card is always the largest
   // (full size) and cards shrink the farther they sit from it. While the stack
   // is hovered, gaps expand so peeking strips stay reachable behind the front.
-  const BASE_GAP_REM = 0.875; // 14px — visibly more dispersed than the old 6px
-  const GAP_DECAY = 0.85;
-  const MIN_GAP_REM = 0.25; // 4px floor
+  const BASE_GAP_REM = 0.875; // 14px reveal gap between depth 0 and 1
+  const BODY_GAP_REM = 0.4375; // 7px uniform body gap — reads identically above
+  // and below any raised card (no near-dense/far-sparse surprise), while the
+  // reveal gap keeps the default view airy. Gaps never depend on which card is
+  // raised, so raising causes no motion and no hover chase.
   const HOVER_EXPAND = 1.75; // gap multiplier while the stack is hovered
   const BASE_INSET_REM = 1; // 16px narrower per distance step (decaying)
   const INSET_DECAY = 0.8;
@@ -194,7 +196,8 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
 
   const gapForDepth = (depth: number): number => {
     if (depth <= 0) return 0;
-    return Math.max(MIN_GAP_REM, BASE_GAP_REM * Math.pow(GAP_DECAY, depth - 1));
+    if (depth === 1) return BASE_GAP_REM;
+    return BODY_GAP_REM;
   };
 
   const offsetForDepth = (sortedIdx: number): number => {
