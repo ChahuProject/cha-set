@@ -361,17 +361,29 @@ Item {
 
     // Standard local branch: shared presentational bubble fed by the wrapper
     // props. The leaf visibility contract lives inside ChaSetTooltipBubble
-    // (initial-state fallback bindings only); wrapper-level show gating stays
-    // here, unchanged.
+    // (bindings plus, in host apps, the C++ TooltipWindow driver).
     ChaSetTooltipBubble {
         id: bubble
         parent: root.overlayLayer ? root.overlayLayer : root
         z: 999
-        visible: !root.useGlobalService && root.shouldShow && root.customContent === null
+        // Hidden by opacity, never by `visible: false`.
+        //
+        // Qt Quick defers binding evaluation for items inside an invisible
+        // subtree, so a `visible: false` bubble freezes its content bindings
+        // at their initial (empty-text) result: leaf `visible: root.text !== ""`
+        // gating never recovers and the bubble renders as blank 24x24 chrome
+        // once it opens. Keeping the subtree visible keeps those bindings
+        // live. An opacity-0 item paints nothing and — being a plain Item
+        // whose acceptedMouseButtons defaults to Qt::NoButton — stays
+        // transparent to mouse input while hidden. Same idiom as the
+        // ChaSetDialog overlay. (A host global-tooltip service still wins:
+        // opacity stays 0 when useGlobalService is true.)
+        readonly property bool effectivelyVisible: !root.useGlobalService && root.shouldShow && root.customContent === null
+        visible: true
         x: Math.round(root.clampedX)
         y: Math.round(root.clampedY)
-        opacity: visible ? 1.0 : 0.0
-        scale: visible ? 1.0 : 0.95
+        opacity: effectivelyVisible ? 1.0 : 0.0
+        scale: effectivelyVisible ? 1.0 : 0.95
 
         Behavior on opacity {
             enabled: ThemeTokens.animationsEnabled && !root.forceHover && (typeof harnessMode === "undefined" || harnessMode === "")
@@ -393,16 +405,21 @@ Item {
     // Custom-content local branch (e.g. SegmentedControl tooltipDelegate):
     // same chrome + arrow geometry as the shared bubble, with a Loader in
     // place of the standard content row. Only one of bubble / customBubble is
-    // ever visible (see activeBubble); positioning is shared.
+    // ever shown (see activeBubble); positioning is shared.
     ChaSetSquircle {
         id: customBubble
         parent: root.overlayLayer ? root.overlayLayer : root
         z: 999
-        visible: !root.useGlobalService && root.shouldShow && root.customContent !== null
+        // Hidden by opacity, never by `visible: false` — see the rationale on
+        // the standard branch above: invisible subtrees freeze content
+        // bindings (the Loader's sourceComponent/visible included), which
+        // would render custom-content tooltips blank.
+        readonly property bool effectivelyVisible: !root.useGlobalService && root.shouldShow && root.customContent !== null
+        visible: true
         x: Math.round(root.clampedX)
         y: Math.round(root.clampedY)
-        opacity: visible ? 1.0 : 0.0
-        scale: visible ? 1.0 : 0.95
+        opacity: effectivelyVisible ? 1.0 : 0.0
+        scale: effectivelyVisible ? 1.0 : 0.95
 
         Behavior on opacity {
             enabled: ThemeTokens.animationsEnabled && !root.forceHover && (typeof harnessMode === "undefined" || harnessMode === "")
