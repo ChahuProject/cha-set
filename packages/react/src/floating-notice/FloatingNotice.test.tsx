@@ -44,15 +44,18 @@ describe('FloatingNotice', () => {
     // Pin the hover-spread state first so the offset comparison is deterministic
     // whether or not the card hover also flips the container hover flag.
     fireEvent.mouseEnter(screen.getByTestId('floating-notice-container'));
-    const offsetBefore = screen.getByTestId('queue-dot-1').style.transform;
+    const beforeMatch = screen
+      .getByTestId('queue-dot-1')
+      .style.transform.match(/translateY\(([-\d.]+)rem\)/);
     fireEvent.mouseEnter(screen.getByTestId('queue-dot-1'));
 
     expect(onActiveChange).toHaveBeenCalledWith('2', 1);
-    // Raised card keeps its stacked position (same offset) but gains top z-order + full size
+    // Raised card keeps its stacked position (same Y offset) but gains top z-order + full size
     const raised = screen.getByTestId('notice-card-1');
-    expect(raised.style.transform).toBe(offsetBefore.replace(/scale\([^)]*\)/, 'scale(1)'));
+    const raisedMatch = raised.style.transform.match(/translateY\(([-\d.]+)rem\)/);
+    expect(raisedMatch).not.toBeNull();
+    expect(Number(raisedMatch?.[1])).toBeCloseTo(Number(beforeMatch?.[1]), 5);
     expect(raised.style.zIndex).toBe('30');
-    expect(raised.style.width).toBe('100%');
     // Previous front card stays at its own position instead of being displaced
     expect(screen.getByTestId('queue-dot-0')).toBeInTheDocument();
   });
@@ -94,6 +97,9 @@ describe('FloatingNotice', () => {
     expect(scaleOf('queue-dot-0')).toBeCloseTo(0.9, 5);
     expect(scaleOf('queue-dot-1')).toBeCloseTo(0.95, 5);
     expect(scaleOf('queue-dot-3')).toBeCloseTo(0.95, 5);
+    // No special treatment: inactive depth 0 narrows exactly like any other
+    // card at the same distance instead of keeping full width.
+    expect(screen.getByTestId('queue-dot-0').style.width).toBe('calc(100% - 1.8rem)');
 
     // Positions never move when raising: offsets only follow the hover spread.
     expect(translateYOf('queue-dot-1')).toBeCloseTo(restAbove * 1.75, 5);

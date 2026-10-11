@@ -261,10 +261,11 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
             that position to the top (z-index + full size) without reordering.
             Sizes follow distance from the raised card (raised is always the
             largest); gaps widen while hovered so peeking strips stay reachable.
-            Depth 0 stays in-flow as the sizing anchor; deeper layers overlay. */}
+            The raised card itself stays in-flow as the sizing anchor, so no
+            card gets special treatment — depth 0 shrinks like any other card
+            as soon as it is no longer raised. Deeper layers overlay. */}
         {stackEntries.map((entry) => {
           const isActive = entry.sortedIdx === activeIndex;
-          const isAnchor = entry.sortedIdx === 0;
           const dist = Math.abs(entry.sortedIdx - activeIndex);
           const layerLevel = entry.item.level ?? 'default';
           const layerStyle = LEVEL_STYLES[layerLevel] ?? LEVEL_STYLES.default;
@@ -286,15 +287,15 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
               className={cn(
                 'flex items-center gap-2.5 px-3.5 py-2 rounded-full border backdrop-blur-md',
                 'min-w-[12rem] max-w-[28rem] cursor-pointer transition-all duration-short ease-standard',
-                isAnchor ? 'relative' : 'absolute top-0 left-1/2',
+                isActive ? 'relative' : 'absolute top-0 left-1/2',
                 layerStyle.container
               )}
               style={{
-                transform: isAnchor
-                  ? `scale(${scale})`
+                transform: isActive
+                  ? `translateY(${depthOffset}rem) scale(${scale})`
                   : `translateX(-50%) translateY(${depthOffset}rem) scale(${scale})`,
-                width: isAnchor ? undefined : inset === 0 ? '100%' : `calc(100% - ${inset}rem)`,
-                height: isAnchor ? undefined : '100%',
+                width: isActive ? undefined : inset === 0 ? '100%' : `calc(100% - ${inset}rem)`,
+                height: isActive ? undefined : '100%',
                 opacity: opacityForDistance(dist, isActive),
                 zIndex: isActive ? 30 : (stackEntries.length - dist) * 2 + (entry.sortedIdx < activeIndex ? 1 : 0),
               }}
