@@ -5,6 +5,7 @@ import ChaSet
 
 Rectangle {
     id: root
+    parent: (typeof Overlay !== "undefined" && Overlay.overlay) ? Overlay.overlay : ((Window.window && Window.window.contentItem) ? Window.window.contentItem : undefined)
     anchors.fill: parent
     z: 250
     color: Qt.rgba(0, 0, 0, 0.6)

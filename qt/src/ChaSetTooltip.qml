@@ -365,7 +365,7 @@ Item {
     ChaSetTooltipBubble {
         id: bubble
         parent: root.overlayLayer ? root.overlayLayer : root
-        z: 999
+        z: 9999
         // Hidden by opacity, never by `visible: false`.
         //
         // Qt Quick defers binding evaluation for items inside an invisible
@@ -409,7 +409,7 @@ Item {
     ChaSetSquircle {
         id: customBubble
         parent: root.overlayLayer ? root.overlayLayer : root
-        z: 999
+        z: 9999
         // Hidden by opacity, never by `visible: false` — see the rationale on
         // the standard branch above: invisible subtrees freeze content
         // bindings (the Loader's sourceComponent/visible included), which
