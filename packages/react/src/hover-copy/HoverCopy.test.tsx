@@ -92,6 +92,33 @@ describe('HoverCopy', () => {
     expect(icon).toHaveClass('animate-in');
   });
 
+  it('button is centered in the overlay', () => {
+    render(<HoverCopy text="abc">content</HoverCopy>);
+    const button = screen.getByRole('button', { name: 'Copy to clipboard' });
+    expect(button).toHaveClass('left-1/2');
+    expect(button).toHaveClass('top-1/2');
+  });
+
+  it('clicking anywhere on the revealed overlay copies (whole-overlay trigger)', async () => {
+    const onCopy = vi.fn();
+    render(
+      <HoverCopy text="overlay copy" onCopy={onCopy}>
+        content
+      </HoverCopy>,
+    );
+    const wrapper = wrapperOf('content');
+    fireEvent.pointerEnter(wrapper);
+    expect(wrapper).toHaveAttribute('data-state', 'hovered');
+    // Click on the wrapper itself (scrim/content area), not the button.
+    fireEvent.click(wrapper);
+
+    await waitFor(() => {
+      expect(writeText).toHaveBeenCalledWith('overlay copy');
+      expect(onCopy).toHaveBeenCalledWith('overlay copy');
+    });
+    expect(wrapper).toHaveAttribute('data-state', 'copied');
+  });
+
   it('restore timer returns to hovered while the pointer stays inside', async () => {
     vi.useFakeTimers();
     render(

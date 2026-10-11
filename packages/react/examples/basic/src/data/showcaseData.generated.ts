@@ -1153,8 +1153,8 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "hover-copy",
         "title": "Hover Copy",
         "href": "#/components/hover-copy",
-        "desc": "Hover-dim overlay with floating copy button for arbitrary content.",
-        "description": "Hover-dim overlay with floating copy button for arbitrary content."
+        "desc": "Hover-dim overlay with centered copy button; clicking anywhere copies.",
+        "description": "Hover-dim overlay with centered copy button; clicking anywhere copies."
       },
       {
         "id": "split-button",
@@ -1999,7 +1999,7 @@ export const KEYBOARD_SHORTCUTS_DATA: Record<string, KeyboardShortcutItem[]> = {
   "hover-copy": [
     {
       "key": "Tab",
-      "action": "Move focus to the floating copy button (reveals the overlay)"
+      "action": "Move focus to the centered copy button (reveals the overlay)"
     },
     {
       "key": "Space / Enter",

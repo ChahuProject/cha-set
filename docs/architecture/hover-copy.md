@@ -12,7 +12,7 @@
 | Layer | Responsibility | React | Qt |
 | :--- | :--- | :--- | :--- |
 | Copy capability | Platform clipboard write + success/failure result | `navigator.clipboard` (inline idiom of `CopyButton.tsx`) | `ChaSetClipboard` singleton (`ChaSetClipboard.setText`) |
-| **HoverCopy** (capability layer) | Hover-dim overlay + floating button + state machine + timing. **Zero assumptions about wrapped content.** | `packages/react/src/hover-copy/HoverCopy.tsx` | `qt/src/ChaSetHoverCopy.qml` |
+| **HoverCopy** (capability layer) | Hover-dim overlay + centered copy button + whole-overlay click-to-copy state machine + timing. **Zero assumptions about wrapped content.** | `packages/react/src/hover-copy/HoverCopy.tsx` | `qt/src/ChaSetHoverCopy.qml` |
 | **CopyableBadge** (preset layer) | Thin parameter colimation: fixes Badge-bound params (pill radius, secondary variant), forwards everything else to HoverCopy. **No logic, no new state, no new timing.** | `packages/react/src/hover-copy/CopyableBadge.tsx` | `qt/src/ChaSetCopyableBadge.qml` |
 
 The copy capability is intentionally NOT owned by HoverCopy: HoverCopy owns
@@ -73,7 +73,7 @@ States: `idle`, `hovered`, `copied`.
 | 2 | `idle` | focus-in (keyboard) | `!disabled` | `hovered` | focus-within counts as hover modality |
 | 3 | `idle` | touch tap (touch modality, no hover) | `!disabled` | `hovered` (pinned) | overlay pinned open until copy or mouse takeover |
 | 4 | `hovered` | pointer-leave (mouse) / focus-out | not `copied` | `idle` | overlay fades out |
-| 5 | `hovered` | copy activation (click / Enter / Space) | `!disabled`, `text` non-empty | `copied` | clipboard write; icon -> check (`short`); restart `resetTime` timer; `onCopy(text)` on success |
+| 5 | `hovered` | copy activation (click anywhere on the overlay / Enter / Space) | `!disabled`, `text` non-empty | `copied` | clipboard write; icon -> check (`short`); restart `resetTime` timer; `onCopy(text)` on success |
 | 6 | `hovered` | copy activation | `text` empty | `hovered` | **no-op**: no clipboard call, no callbacks, no error |
 | 7 | `copied` | restore timer fires | still hovering / focus-within | `hovered` | icon back to resting; **overlay stays** (scrim remains, icon reverts) |
 | 8 | `copied` | restore timer fires | not hovering / focus-within | `idle` | overlay fades out |
@@ -101,14 +101,23 @@ drift between stacks; the parity test asserts both implementations restore to
 - Root wrapper hugs its content (no stretching). On Qt the root `Item` binds
   `width: implicitWidth; height: implicitHeight` (0x0-collapse red line).
 - Dim scrim: full-bleed overlay, black at alpha `dim`, inherits `radius`.
-  Never intercepts pointer events while `idle` (React: `pointer-events-none`
-  until revealed; Qt: button `enabled: false` until revealed).
-- Floating button: circle, size 24 logical units, inset 4 from top-right,
-  border 1 (`border-border` / `ThemeTokens.border`), surface
-  `bg-popover text-popover-foreground` (React) / `ThemeTokens.panel` +
-  `ThemeTokens.text` (Qt), icon size 14 logical units. Cursor:
-  `cursor-pointer` / `Qt.PointingHandCursor`; disabled -> `cursor-not-allowed` /
-  `Qt.ForbiddenCursor` (never bare `pointer-events-none` dropping the cursor).
+  The scrim itself is visual-only (React: `pointer-events-none` so clicks
+  reach the wrapper; Qt: scrim `TapHandler` active only while revealed).
+- Whole-overlay click-to-copy: hovering reveals the overlay, and clicking
+  ANYWHERE on it copies. React: the wrapper `span` owns `onClick=copy`
+  (the centered button stops propagation so it never double-fires). Qt:
+  the scrim `TapHandler` (`enabled: revealed && !disabled`) and the button
+  `TapHandler` both call `copy()`.
+- Centered button: circle, size 24 logical units, centered in the overlay
+  (React: `absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2`;
+  Qt: `anchors.centerIn: parent`), border 1 (`border-border` /
+  `ThemeTokens.border`), surface `bg-popover text-popover-foreground`
+  (React) / `ThemeTokens.panel` + `ThemeTokens.text` (Qt), icon size 14
+  logical units. Cursor: the whole revealed overlay claims
+  `cursor-pointer` / `Qt.PointingHandCursor` (React: wrapper + button;
+  Qt: reveal `HoverHandler` switches to `PointingHandCursor` while
+  revealed); disabled -> `cursor-not-allowed` / `Qt.ForbiddenCursor`
+  (never bare `pointer-events-none` dropping the cursor).
 - Button z-order above scrim; scrim never above content text by interaction.
 - HoverCopy itself stays content-agnostic: any children are accepted and no
   child tag is assumed.
@@ -118,11 +127,13 @@ drift between stacks; the parity test asserts both implementations restore to
 ## 5. Keyboard, touch, and a11y
 
 - The overlay button is always present in the tree but unrevealed until
-  hover/focus (focus-within reveals it). `Tab` focuses it, `Shift+Tab` leaves,
-  `Enter`/`Space` act as copy activation (transition #5).
+  hover/focus (focus-within reveals it). `Tab` focuses the centered button,
+  `Shift+Tab` leaves, `Enter`/`Space` act as copy activation (transition #5).
+  Clicking anywhere on the revealed overlay is equivalent to activating the
+  centered button.
 - Touch (no hover): first tap on the content reveals the overlay (pinned
-  `hovered`), second tap on the button copies. A mouse pointer entering the
-  component takes over (unpins).
+  `hovered`), second tap anywhere on the overlay (scrim or centered button)
+  copies. A mouse pointer entering the component takes over (unpins).
 - a11y: button carries an accessible label (i18n `common.copyToClipboard`);
   wrapper exposes `aria-disabled` when disabled. No built-in tooltip
   (phase-1 exclusion).

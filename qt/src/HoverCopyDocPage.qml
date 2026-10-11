@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Base Primitives"
     pageTitle: "Hover Copy"
-    description: ChaSetI18n.tr("components.hover-copy.description", "Hover-dim overlay with floating copy button for arbitrary content.")
+    description: ChaSetI18n.tr("components.hover-copy.description", "Hover-dim overlay with centered copy button; clicking anywhere on the overlay copies.")
 
     tocItems: [
         { id: "overview", title: ChaSetI18n.tr("showcase.interactiveOverview", "Interactive Overview") },
@@ -19,7 +19,7 @@ DocLayout {
         { id: "props", title: ChaSetI18n.tr("showcase.propsReference", "Props Reference") }
     ]
 
-    property string copyStatus: ChaSetI18n.tr("components.hover-copy.hoverHint", "Hover the card, then click the floating button to copy.")
+    property string copyStatus: ChaSetI18n.tr("components.hover-copy.hoverHint", "Hover the card, then click anywhere on the overlay to copy.")
     property string playgroundRadius: "md"
     property real playgroundDim: 0.45
     property int playgroundResetTime: 2000
@@ -42,7 +42,7 @@ DocLayout {
         }
 
         DocText {
-            text: ChaSetI18n.tr("components.hover-copy.overviewDesc", "Hover any wrapped content to reveal a dim scrim with a floating copy button. Click the button to copy the configured text payload.")
+            text: ChaSetI18n.tr("components.hover-copy.overviewDesc", "Hover any wrapped content to reveal a dim scrim with a centered copy button. Click anywhere on the overlay to copy the configured text payload.")
             color: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap

@@ -79,7 +79,7 @@
         "id": "hover-copy",
         "title": "Hover Copy",
         "href": "#/components/hover-copy",
-        "desc": "Hover-dim overlay with floating copy button for arbitrary content."
+        "desc": "Hover-dim overlay with centered copy button; clicking anywhere copies."
       },
       {
         "id": "split-button",

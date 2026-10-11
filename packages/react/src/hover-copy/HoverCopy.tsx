@@ -51,7 +51,9 @@ const ICONS = {
 } as const;
 
 /**
- * Hover-dim overlay + floating copy button around arbitrary content.
+ * Hover-dim overlay + centered copy button around arbitrary content.
+ * The whole overlay is the copy trigger: hovering reveals a dim scrim with
+ * a centered button, and clicking anywhere on the overlay copies.
  * Capability layer: owns overlay interaction, when to copy, and feedback
  * state. Zero assumptions about wrapped content. State machine per
  * docs/architecture/hover-copy.md section 3: idle | hovered | copied.
@@ -163,7 +165,7 @@ export const HoverCopy = React.forwardRef<HTMLSpanElement, HoverCopyProps>(
       conceal();
     };
 
-    const handleCopy = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleCopy = async (event: React.MouseEvent<HTMLElement>) => {
       event.stopPropagation();
       if (disabled) return;
       // Transition #6: empty text is a silent no-op — no clipboard call, no
@@ -208,12 +210,18 @@ export const HoverCopy = React.forwardRef<HTMLSpanElement, HoverCopyProps>(
         ref={forwardedRef}
         data-state={state}
         aria-disabled={disabled || undefined}
-        className={cn('group relative inline-flex max-w-full align-middle', RADIUS_CLASS[radius], className)}
+        className={cn(
+          'group relative inline-flex max-w-full align-middle',
+          RADIUS_CLASS[radius],
+          revealed && !disabled && 'cursor-pointer',
+          className,
+        )}
         onPointerEnter={handlePointerEnter}
         onPointerLeave={handlePointerLeave}
         onPointerDown={handlePointerDown}
         onFocus={handleFocus}
         onBlur={handleBlur}
+        onClick={handleCopy}
         {...props}
       >
         {children}
@@ -231,7 +239,7 @@ export const HoverCopy = React.forwardRef<HTMLSpanElement, HoverCopyProps>(
           disabled={disabled}
           onClick={handleCopy}
           className={cn(
-            'absolute top-1 right-1 z-10 flex size-6 items-center justify-center rounded-full border border-border bg-popover text-popover-foreground shadow-sm transition-opacity duration-quick ease-standard',
+            'absolute left-1/2 top-1/2 z-10 flex size-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-popover text-popover-foreground shadow-sm transition-opacity duration-quick ease-standard',
             revealed ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0',
             disabled ? 'cursor-not-allowed' : 'cursor-pointer',
           )}

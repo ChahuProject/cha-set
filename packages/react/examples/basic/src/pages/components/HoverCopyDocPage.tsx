@@ -119,7 +119,7 @@ ChaSetHoverCopy {
     <DocLayout
       category="Base Primitives"
       title="Hover Copy"
-      description={t('components.hover-copy.description', 'Hover-dim overlay with floating copy button for arbitrary content.')}
+      description={t('components.hover-copy.description', 'Hover-dim overlay with centered copy button; clicking anywhere on the overlay copies.')}
       tocItems={[
         { id: 'overview', title: t('showcase.interactiveOverview', 'Interactive Overview') },
         { id: 'installation', title: t('showcase.installation', 'Installation') },
@@ -135,7 +135,7 @@ ChaSetHoverCopy {
           {t('showcase.interactiveOverview', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          {t('components.hover-copy.overviewDesc', 'Hover the card to reveal a dimmed scrim with a floating copy button. Click it to copy the hidden payload to the clipboard.')}
+          {t('components.hover-copy.overviewDesc', 'Hover the card to reveal a dimmed scrim with a centered copy button. Click anywhere on the overlay to copy the hidden payload to the clipboard.')}
         </p>
 
         <ComponentPreview
@@ -159,7 +159,7 @@ ChaSetHoverCopy {
             <span className="text-xs text-muted-foreground" aria-live="polite">
               {previewCopied
                 ? copiedStatus
-                : t('components.hover-copy.hoverHint', 'Hover the card, then click the floating button to copy.')}
+                : t('components.hover-copy.hoverHint', 'Hover the card, then click anywhere on the overlay to copy.')}
             </span>
           </div>
         </ComponentPreview>
@@ -201,7 +201,7 @@ ChaSetHoverCopy {
           <div className="flex flex-col items-center gap-3">
             <CopyableBadge text={presetText}>{presetText}</CopyableBadge>
             <span className="text-xs text-muted-foreground">
-              {t('components.hover-copy.presetHint', 'Hover the badge to reveal its copy button.')}
+              {t('components.hover-copy.presetHint', 'Hover the badge to reveal its copy overlay; click anywhere to copy.')}
             </span>
           </div>
         </ComponentPreview>
@@ -328,7 +328,7 @@ ChaSetHoverCopy {
           {t('showcase.keyboardNavigation', 'Keyboard Navigation')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          {t('components.hover-copy.keyboardDesc', 'Tab focuses the floating button, Enter or Space copies, and leaving focus dismisses the overlay.')}
+          {t('components.hover-copy.keyboardDesc', 'Tab focuses the centered button, Enter or Space copies, clicking anywhere on the overlay also copies, and leaving focus dismisses the overlay.')}
         </p>
         <KeyboardShortcutsTable componentId="hover-copy" />
       </section>

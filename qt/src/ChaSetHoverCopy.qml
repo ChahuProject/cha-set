@@ -1,4 +1,6 @@
-// ChaSetHoverCopy.qml — Hover-dim overlay + floating copy button (capability layer)
+// ChaSetHoverCopy.qml — Hover-dim overlay + centered copy button (capability layer)
+// The whole overlay is the copy trigger: hovering reveals a dim scrim with a
+// centered button, and tapping anywhere on the overlay copies.
 // Implements docs/architecture/hover-copy.md sections 3-4 exactly.
 // Zero assumptions about wrapped content: arbitrary children are hosted in
 // contentHost via the default property alias; the root hugs them.
@@ -67,8 +69,9 @@ Item {
         anchors.fill: parent
     }
 
-    // Dim scrim: full-bleed black overlay at alpha dim. Plain Rectangle with
-    // no handlers, so it NEVER intercepts pointer events.
+    // Dim scrim: full-bleed black overlay at alpha dim. Visual only by itself;
+    // the whole-overlay copy trigger is the TapHandler below, active while
+    // revealed — tapping anywhere on the scrim copies (same as the button).
     Rectangle {
         id: scrim
         anchors.fill: parent
@@ -82,19 +85,22 @@ Item {
             enabled: ThemeTokens.animationsEnabled && !root.forceHover && (typeof harnessMode === "undefined" || harnessMode === "")
             NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
         }
+
+        TapHandler {
+            id: scrimTap
+            enabled: root._revealed && !root.disabled
+            onTapped: root.copy()
+        }
     }
 
-    // Floating copy button: 24 logical-unit circle, inset 4 from top-right,
+    // Centered copy button: 24 logical-unit circle, centered in the overlay,
     // above the scrim. Present only while revealed (idle = not visible/clickable).
     Rectangle {
         id: copyBtn
         width: ThemeTokens.dp(24)
         height: ThemeTokens.dp(24)
         radius: ThemeTokens.dp(12)
-        anchors.top: parent.top
-        anchors.topMargin: ThemeTokens.dp(4)
-        anchors.right: parent.right
-        anchors.rightMargin: ThemeTokens.dp(4)
+        anchors.centerIn: parent
         z: 2
         // Surface + text pairing red line: panel surface, ThemeTokens.text icon.
         color: ThemeTokens.panel
@@ -154,12 +160,13 @@ Item {
         }
     }
 
-    // Reveal handler (#1): mouse hover over the wrapper. The wrapper itself
-    // stays ArrowCursor; only the copy button claims the pointing hand.
+    // Reveal handler (#1): mouse hover over the wrapper. The whole overlay is
+    // the copy trigger while revealed, so the wrapper claims the pointing
+    // hand alongside the centered button.
     HoverHandler {
         id: revealHover
         enabled: !root.disabled
-        cursorShape: Qt.ArrowCursor
+        cursorShape: (root._revealed && !root.disabled) ? Qt.PointingHandCursor : Qt.ArrowCursor
         onHoveredChanged: {
             root._hovered = revealHover.hovered
             if (revealHover.hovered) {
@@ -173,7 +180,8 @@ Item {
     }
 
     // Touch fallback (#3): first tap on content pins the overlay open when no
-    // hover modality is active; the button tap then copies (#5).
+    // hover modality is active; the second tap anywhere on the overlay
+    // (scrim or centered button) copies (#5).
     TapHandler {
         id: touchTap
         enabled: !root.disabled

@@ -429,7 +429,7 @@
       "Move focus between job list, action buttons, and log console": "在任务列表、操作按钮与日志控制台之间移动焦点",
       "Move focus between time segments and preset dropdown": "在时间分段与预设下拉菜单之间移动焦点",
       "Move focus into and out of table of contents navigation": "移入或移出目录大纲导航",
-      "Move focus to the floating copy button (reveals the overlay)": "将焦点移至浮层复制按钮（浮出遮罩）",
+      "Move focus to the centered copy button (reveals the overlay)": "将焦点移至居中复制按钮（浮出遮罩）",
       "Move row selection cursor up / down": "向上／向下移动行选择光标",
       "Move the roving focus through the cards in the stack": "在堆叠卡片之间轮转切换巡回焦点",
       "Move the roving focus through the notification cards": "在通知卡片之间轮转切换巡回焦点",
