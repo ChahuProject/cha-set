@@ -400,6 +400,7 @@ ApplicationWindow {
         case "sheet": return "SheetDocPage.qml";
         case "skeleton": return "SkeletonDocPage.qml";
         case "copy-button": return "CopyButtonDocPage.qml";
+        case "hover-copy": return "HoverCopyDocPage.qml";
         case "panel-card": return "PanelCardDocPage.qml";
         case "split-button": return "SplitButtonDocPage.qml";
         case "inline-editable-text": return "InlineEditableTextDocPage.qml";
@@ -1025,6 +1026,47 @@ ApplicationWindow {
             } else {
                 console.log("[qt-scenario] FAIL: Showcase page instantiation failed (" + pageErrors + " errors, " + instantiatedCount + " instantiated)");
                 failures++;
+            }
+        }
+
+        // Scenario 7b: HoverCopy QML-Side State Machine Sanity
+        // (Physical hover + clipboard verification lives in C++
+        // runRealHoverCopyVerification; this branch only asserts static
+        // geometry/defaults and a synchronous forceHover toggle, leaving
+        // the harness idle with no pending timers for the C++ stage.)
+        if (scenario === "all" || scenario === "hovercopy" || scenario === "hover-copy") {
+            var hcFailures = 0;
+            if (!testHoverCopy) {
+                console.log("[qt-scenario] FAIL: testHoverCopy harness item not found");
+                hcFailures++;
+            } else {
+                if (!(testHoverCopy.width > 0 && testHoverCopy.height > 0)) {
+                    console.log("[qt-scenario] FAIL: testHoverCopy geometry collapsed (width=" + testHoverCopy.width + ", height=" + testHoverCopy.height + ")");
+                    hcFailures++;
+                }
+                if (testHoverCopy.text !== "hover-copy-harness-token") {
+                    console.log("[qt-scenario] FAIL: testHoverCopy text expected 'hover-copy-harness-token', got '" + testHoverCopy.text + "'");
+                    hcFailures++;
+                }
+                if (testHoverCopy.dim !== 0.45 || testHoverCopy.radius !== "md" || testHoverCopy.resetTime !== 2000 || testHoverCopy.disabled !== false) {
+                    console.log("[qt-scenario] FAIL: testHoverCopy defaults drifted (dim=" + testHoverCopy.dim + ", radius=" + testHoverCopy.radius + ", resetTime=" + testHoverCopy.resetTime + ", disabled=" + testHoverCopy.disabled + ")");
+                    hcFailures++;
+                }
+                testHoverCopy.forceHover = true;
+                if (testHoverCopy.state !== "hovered") {
+                    console.log("[qt-scenario] FAIL: testHoverCopy forceHover=true should yield 'hovered', got '" + testHoverCopy.state + "'");
+                    hcFailures++;
+                }
+                testHoverCopy.forceHover = false;
+                if (testHoverCopy.state !== "idle") {
+                    console.log("[qt-scenario] FAIL: testHoverCopy forceHover=false should restore 'idle', got '" + testHoverCopy.state + "'");
+                    hcFailures++;
+                }
+            }
+            if (hcFailures === 0) {
+                console.log("[qt-scenario] PASS: HoverCopy QML harness geometry, defaults, and forceHover toggle verified");
+            } else {
+                failures += hcFailures;
             }
         }
 
@@ -1875,6 +1917,17 @@ ApplicationWindow {
             y: -1400
             text: "Copy Me"
             label: "Copy"
+            visible: true
+        }
+
+        ChaSetHoverCopy {
+            id: testHoverCopy
+            objectName: "testHoverCopy"
+            x: -2000
+            y: -1000
+            width: ThemeTokens.dp(200)
+            height: ThemeTokens.dp(56)
+            text: "hover-copy-harness-token"
             visible: true
         }
 

@@ -166,6 +166,8 @@ qt_add_qml_module(ChaSet
         src/ChaSetSheet.qml
         src/ChaSetSkeleton.qml
         src/ChaSetCopyButton.qml
+        src/ChaSetCopyableBadge.qml
+        src/ChaSetHoverCopy.qml
         src/ChaSetPanelCard.qml
         src/ChaSetSplitButton.qml
         src/ChaSetInlineEditableText.qml
@@ -306,6 +308,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/SheetDocPage.qml
             src/SkeletonDocPage.qml
             src/CopyButtonDocPage.qml
+            src/HoverCopyDocPage.qml
             src/PanelCardDocPage.qml
             src/SplitButtonDocPage.qml
             src/InlineEditableTextDocPage.qml

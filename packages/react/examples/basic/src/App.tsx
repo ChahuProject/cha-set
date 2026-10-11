@@ -82,6 +82,7 @@ import { SplitterDocPage } from './pages/components/SplitterDocPage';
 import { ResizableDocPage } from './pages/components/ResizableDocPage';
 import { WindowTitleBarDocPage } from './pages/components/WindowTitleBarDocPage';
 import { GenericDataTableDocPage } from './pages/components/GenericDataTableDocPage';
+import { HoverCopyDocPage } from './pages/components/HoverCopyDocPage';
 import { QueryBuilderDocPage } from './pages/components/QueryBuilderDocPage';
 import { ViewportConstrainedContainerDocPage } from './pages/components/ViewportConstrainedContainerDocPage';
 import { SidebarDocPage } from './pages/components/SidebarDocPage';
@@ -815,6 +816,8 @@ export function App() {
         return <SkeletonDocPage />;
       case '#/components/copy-button':
         return <CopyButtonDocPage />;
+      case '#/components/hover-copy':
+        return <HoverCopyDocPage />;
       case '#/components/panel-card':
         return <PanelCardDocPage />;
       case '#/components/split-button':

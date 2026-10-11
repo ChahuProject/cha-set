@@ -1069,6 +1069,158 @@ bool runRealTypographyVerification(QQuickWindow* window) {
     return true;
 }
 
+static bool runRealHoverCopyVerification(QQuickWindow* window) {
+    qInfo("[qt-scenario] Running authentic C++ HoverCopy state machine verification...");
+    auto* testHoverCopy = window->findChild<QQuickItem*>("testHoverCopy");
+    if (!testHoverCopy) {
+        qCritical("[qt-scenario] FAIL: testHoverCopy item not found by objectName");
+        return false;
+    }
+
+    // Root geometry must be explicitly bound (0x0-collapse red line).
+    if (!(testHoverCopy->width() > 0 && testHoverCopy->height() > 0)) {
+        qCritical() << "[qt-scenario] FAIL: testHoverCopy geometry collapsed (width=" << testHoverCopy->width()
+                    << ", height=" << testHoverCopy->height() << ")";
+        return false;
+    }
+
+    // Bring the harness onscreen above all content for physical hover probing.
+    // Restored on every exit path so later scenarios (cursor raycasting) are unaffected.
+    QQuickItem* origParent = testHoverCopy->parentItem();
+    const QPointF origPos(testHoverCopy->x(), testHoverCopy->y());
+    const qreal origZ = testHoverCopy->z();
+    auto restoreHarness = [&]() {
+        testHoverCopy->setProperty("forceHover", false);
+        testHoverCopy->setProperty("disabled", false);
+        testHoverCopy->setProperty("text", QStringLiteral("hover-copy-harness-token"));
+        testHoverCopy->setProperty("resetTime", 2000);
+        testHoverCopy->setParentItem(origParent);
+        testHoverCopy->setPosition(origPos);
+        testHoverCopy->setZ(origZ);
+        QTest::qWait(50);
+    };
+    auto fail = [&](const QString& msg) -> bool {
+        qCritical().noquote() << QStringLiteral("[qt-scenario] FAIL: ") + msg;
+        restoreHarness();
+        return false;
+    };
+    auto hoverState = [&]() -> QString { return testHoverCopy->property("state").toString(); };
+    QObject* qmlTimerObj = nullptr;
+    for (QObject* ch : testHoverCopy->findChildren<QObject*>()) {
+        if (QString::fromLatin1(ch->metaObject()->className()).contains(QStringLiteral("Timer")))
+            qmlTimerObj = ch;
+    }
+
+    testHoverCopy->setParentItem(window->contentItem());
+    testHoverCopy->setZ(1000000);
+    testHoverCopy->setPosition(QPointF(window->width() / 2.0 - testHoverCopy->width() / 2.0,
+                                       window->height() / 2.0 - testHoverCopy->height() / 2.0));
+    testHoverCopy->setProperty("forceHover", false);
+    testHoverCopy->setProperty("disabled", false);
+    testHoverCopy->setProperty("text", QStringLiteral("hover-copy-harness-token"));
+    testHoverCopy->setProperty("resetTime", 2000);
+    // A cursor left anywhere by an earlier scenario (e.g. cursor raycasting)
+    // makes Qt deliver a synthetic hover-enter the moment the harness is
+    // reparented under it, so park the pointer off-target first to establish
+    // a deterministic idle baseline before probing hover.
+    QTest::mouseMove(window, QPoint(4, 4), 50);
+    QTest::qWait(200);
+
+    // 1. Harness starts idle.
+    if (hoverState() != QStringLiteral("idle"))
+        return fail(QStringLiteral("initial state expected 'idle', got '%1'").arg(hoverState()));
+
+    // 2. Physical hover (#1): real QTest mouse move onto the instance reveals the overlay.
+    const QPoint hoverPt = testHoverCopy->mapToScene(
+        QPointF(testHoverCopy->width() / 2.0, testHoverCopy->height() / 2.0)).toPoint();
+    QTest::mouseMove(window, hoverPt, 50);
+    QTest::qWait(200);
+    if (hoverState() != QStringLiteral("hovered"))
+        return fail(QStringLiteral("QTest mouseMove did not reveal overlay (state='%1')").arg(hoverState()));
+    qInfo("[qt-scenario] PASS: Physical hover reveals overlay (idle -> hovered)");
+
+    // 3. Copy activation (#5): clipboard write + copied state.
+    ChaSetClipboard checkClip;
+    if (!QMetaObject::invokeMethod(testHoverCopy, "copy"))
+        return fail(QStringLiteral("invokeMethod copy() on testHoverCopy failed"));
+    QTest::qWait(100);
+    if (hoverState() != QStringLiteral("copied"))
+        return fail(QStringLiteral("copy() expected 'copied', got '%1'").arg(hoverState()));
+    if (checkClip.text() != QStringLiteral("hover-copy-harness-token"))
+        return fail(QStringLiteral("clipboard text mismatch after copy (got '%1')").arg(checkClip.text()));
+    qInfo("[qt-scenario] PASS: Copy activation writes clipboard and enters copied state");
+
+    // 4. Restore-while-hovering (#7, anti-flicker guarantee): with hover modality
+    // still engaged, the restore timer must land on hovered, NOT idle.
+    // NOTE: the countdown is always primed from a stopped timer. Restarting a
+    // running QQmlTimer in the same pass as an interval change is unreliable
+    // (the reschedule can be swallowed), so stop it explicitly first.
+    testHoverCopy->setProperty("forceHover", true);
+    if (qmlTimerObj) QMetaObject::invokeMethod(qmlTimerObj, "stop");
+    testHoverCopy->setProperty("resetTime", 350);
+    if (!QMetaObject::invokeMethod(testHoverCopy, "copy"))
+        return fail(QStringLiteral("invokeMethod re-copy on testHoverCopy failed"));
+    // Transition #10 (re-copy restarts the timer) doubles as a deterministic
+    // re-prime: a second activation immediately re-arms the countdown.
+    if (!QMetaObject::invokeMethod(testHoverCopy, "copy"))
+        return fail(QStringLiteral("invokeMethod second re-copy on testHoverCopy failed"));
+    bool restoredHover = false;
+    for (int poll = 0; poll < 10; ++poll) {
+        QTest::qWait(200);
+        if (hoverState() == QStringLiteral("hovered")) { restoredHover = true; break; }
+    }
+    if (!restoredHover)
+        return fail(QStringLiteral("restore timer under persistent hover expected 'hovered', got '%1'").arg(hoverState()));
+    qInfo("[qt-scenario] PASS: Restore timer under persistent hover returns to hovered (not idle)");
+
+    // 5. Restore-to-idle (#8): drop modality, leave, copy, and the timer must fade out.
+    testHoverCopy->setProperty("forceHover", false);
+    QTest::mouseMove(window, QPoint(8, 8), 50);
+    QTest::qWait(200);
+    if (hoverState() != QStringLiteral("idle"))
+        return fail(QStringLiteral("pointer leave expected 'idle', got '%1'").arg(hoverState()));
+    if (qmlTimerObj) QMetaObject::invokeMethod(qmlTimerObj, "stop");
+    if (!QMetaObject::invokeMethod(testHoverCopy, "copy"))
+        return fail(QStringLiteral("invokeMethod copy() before idle-restore failed"));
+    bool restoredIdle = false;
+    for (int poll = 0; poll < 10; ++poll) {
+        QTest::qWait(200);
+        if (hoverState() == QStringLiteral("idle")) { restoredIdle = true; break; }
+    }
+    if (!restoredIdle)
+        return fail(QStringLiteral("restore timer without hover expected 'idle', got '%1'").arg(hoverState()));
+    qInfo("[qt-scenario] PASS: Restore timer without hover returns to idle");
+
+    // 6. Empty text is a silent no-op (#6): no clipboard call, no state change.
+    testHoverCopy->setProperty("text", QStringLiteral(""));
+    const QString clipBefore = checkClip.text();
+    if (!QMetaObject::invokeMethod(testHoverCopy, "copy"))
+        return fail(QStringLiteral("invokeMethod copy() with empty text failed"));
+    QTest::qWait(150);
+    if (hoverState() != QStringLiteral("idle"))
+        return fail(QStringLiteral("empty-text copy expected 'idle', got '%1'").arg(hoverState()));
+    if (checkClip.text() != clipBefore)
+        return fail(QStringLiteral("empty-text copy must not touch the clipboard"));
+    qInfo("[qt-scenario] PASS: Empty text copy is a silent no-op");
+
+    // 7. Disabled forces idle and blocks copy (#11).
+    testHoverCopy->setProperty("text", QStringLiteral("hover-copy-harness-token"));
+    testHoverCopy->setProperty("disabled", true);
+    QTest::qWait(50);
+    if (hoverState() != QStringLiteral("idle"))
+        return fail(QStringLiteral("disabled=true expected 'idle', got '%1'").arg(hoverState()));
+    if (!QMetaObject::invokeMethod(testHoverCopy, "copy"))
+        return fail(QStringLiteral("invokeMethod copy() while disabled failed"));
+    QTest::qWait(150);
+    if (hoverState() != QStringLiteral("idle") || checkClip.text() != clipBefore)
+        return fail(QStringLiteral("disabled copy must be a no-op"));
+    qInfo("[qt-scenario] PASS: Disabled forces idle and blocks copy");
+
+    restoreHarness();
+    qInfo("[qt-scenario] PASS: Authentic C++ HoverCopy state machine verified (hover, copy, restore-while-hovering, restore-to-idle, empty-text, disabled)");
+    return true;
+}
+
 #if defined(Q_OS_WIN)
 #include <windows.h>
 #include <d3d11.h>
@@ -1384,6 +1536,13 @@ int main(int argc, char* argv[])
                         if (testScenario == "all" || testScenario == "navigation" || testScenario == "history") {
                             bool navOk = runRealNavigationHistoryVerification(window);
                             if (!navOk) {
+                                QCoreApplication::exit(1);
+                                return;
+                            }
+                        }
+                        if (testScenario == "all" || testScenario == "hovercopy" || testScenario == "hover-copy") {
+                            bool hoverCopyOk = runRealHoverCopyVerification(window);
+                            if (!hoverCopyOk) {
                                 QCoreApplication::exit(1);
                                 return;
                             }
