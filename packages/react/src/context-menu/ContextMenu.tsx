@@ -112,10 +112,10 @@ export function ContextMenuItem({
   );
 
   if (tooltip) {
-    const tooltipProps =
+    const tooltipProps: React.ComponentProps<typeof TooltipContent> =
       typeof tooltip === 'object' && tooltip !== null && !React.isValidElement(tooltip) && 'children' in (tooltip as any)
         ? (tooltip as React.ComponentProps<typeof TooltipContent>)
-        : { children: tooltip };
+        : { children: tooltip as React.ReactNode };
     return (
       <Tooltip className="w-full block">
         <TooltipTrigger asChild className="w-full">{itemNode}</TooltipTrigger>
@@ -217,10 +217,10 @@ export function ContextMenuCheckboxItem({
   );
 
   if (tooltip) {
-    const tooltipProps =
+    const tooltipProps: React.ComponentProps<typeof TooltipContent> =
       typeof tooltip === 'object' && tooltip !== null && !React.isValidElement(tooltip) && 'children' in (tooltip as any)
         ? (tooltip as React.ComponentProps<typeof TooltipContent>)
-        : { children: tooltip };
+        : { children: tooltip as React.ReactNode };
     return (
       <Tooltip className="w-full block">
         <TooltipTrigger asChild className="w-full">{itemNode}</TooltipTrigger>
@@ -288,10 +288,10 @@ export function ContextMenuRadioItem({
   );
 
   if (tooltip) {
-    const tooltipProps =
+    const tooltipProps: React.ComponentProps<typeof TooltipContent> =
       typeof tooltip === 'object' && tooltip !== null && !React.isValidElement(tooltip) && 'children' in (tooltip as any)
         ? (tooltip as React.ComponentProps<typeof TooltipContent>)
-        : { children: tooltip };
+        : { children: tooltip as React.ReactNode };
     return (
       <Tooltip className="w-full block">
         <TooltipTrigger asChild className="w-full">{itemNode}</TooltipTrigger>
