@@ -6,6 +6,7 @@ import {
   Button,
   SegmentedControl,
   Badge,
+  CopyableBadge,
   CodeBlock,
   useChaSetI18n,
 } from '@chahu/cha-set';
@@ -289,12 +290,12 @@ ChaSetTaskHud {
         <ul className="list-disc space-y-1.5 pl-5 text-sm text-foreground">
           <li>
             {t('desktopComposite.taskHud.animEnterPrefix', 'New cards enter with')}{' '}
-            <code className="rounded bg-muted px-1 text-xs">duration-medium</code>{' '}
+            <CopyableBadge size="sm" text="duration-medium" className="font-mono text-xs" />{' '}
             {t('desktopComposite.taskHud.animEnterMid', '(180ms) and the')}{' '}
-            <code className="rounded bg-muted px-1 text-xs">ease-standard</code>{' '}
+            <CopyableBadge size="sm" text="ease-standard" className="font-mono text-xs" />{' '}
             {t('desktopComposite.taskHud.animEnterSuffix', 'curve, sliding in from the anchored edge (Qt counterpart:')}{' '}
-            <code className="rounded bg-muted px-1 text-xs">ThemeTokens.motionMedium</code> {t('desktopComposite.taskHud.and', 'and')}{' '}
-            <code className="rounded bg-muted px-1 text-xs">ThemeTokens.easeStandard</code>
+            <CopyableBadge size="sm" text="ThemeTokens.motionMedium" className="font-mono text-xs" /> {t('desktopComposite.taskHud.and', 'and')}{' '}
+            <CopyableBadge size="sm" text="ThemeTokens.easeStandard" className="font-mono text-xs" />
             {t('desktopComposite.taskHud.animEnterEnd', ').')}
           </li>
           <li>
@@ -302,19 +303,19 @@ ChaSetTaskHud {
           </li>
           <li>
             {t('desktopComposite.taskHud.animProgressPrefix', 'Determinate progress transitions over')}{' '}
-            <code className="rounded bg-muted px-1 text-xs">duration-medium</code>
+            <CopyableBadge size="sm" text="duration-medium" className="font-mono text-xs" />
             {t('desktopComposite.taskHud.animProgressSuffix', '; indeterminate tasks run an infinite 1.6s shimmer rail.')}
           </li>
           <li>
             {t('desktopComposite.taskHud.animAutoHidePrefix', 'An emptied HUD holds its last frame for')}{' '}
-            <code className="rounded bg-muted px-1 text-xs">autoHideDelay</code>
+            <CopyableBadge size="sm" text="autoHideDelay" className="font-mono text-xs" />{' '}
             {t('desktopComposite.taskHud.animAutoHideSuffix', '(600ms) before fading out.')}
           </li>
           <li>
             {t('desktopComposite.taskHud.animReducedPrefix', 'Respects')}{' '}
-            <code className="rounded bg-muted px-1 text-xs">prefers-reduced-motion</code>{' '}
+            <CopyableBadge size="sm" text="prefers-reduced-motion" className="font-mono text-xs" />{' '}
             {t('desktopComposite.taskHud.animReducedMid', 'on Web and')}{' '}
-            <code className="rounded bg-muted px-1 text-xs">ThemeTokens.animationsEnabled</code>{' '}
+            <CopyableBadge size="sm" text="ThemeTokens.animationsEnabled" className="font-mono text-xs" />{' '}
             {t('desktopComposite.taskHud.animReducedSuffix', 'in Qt.')}
           </li>
         </ul>

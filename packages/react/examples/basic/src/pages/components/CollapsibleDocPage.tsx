@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Collapsible, CollapsibleTrigger, CollapsibleContent, Button, Card, CardHeader, CardTitle, CardDescription, CardContent, SegmentedControl, type CollapsibleVariant, CodeBlock, LockIcon, useChaSetI18n } from '@chahu/cha-set';
+import { Collapsible, CollapsibleTrigger, CollapsibleContent, Button, Card, CardHeader, CardTitle, CardDescription, CardContent, CopyableBadge, SegmentedControl, type CollapsibleVariant, CodeBlock, LockIcon, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -200,8 +200,9 @@ ChaSetCollapsible {
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
           {t('desktopComposite.collapsible.defaultOpenHeading', 'Default Open')}
         </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          {t('desktopComposite.collapsible.defaultOpenDesc', 'Render an uncontrolled collapsible with initial expanded state via')} <code>defaultOpen</code>.
+        <p className="text-sm text-muted-foreground mb-4 flex items-center gap-1.5 flex-wrap">
+          <span>{t('desktopComposite.collapsible.defaultOpenDesc', 'Render an uncontrolled collapsible with initial expanded state via')}</span>
+          <CopyableBadge size="sm" text="defaultOpen" />
         </p>
         <Card className="p-6">
           <CardContent className="space-y-4 p-0 max-w-sm">
@@ -216,10 +217,10 @@ ChaSetCollapsible {
               </div>
               <CollapsibleContent className="space-y-2 mt-2">
                 <div className="border rounded-md p-3 text-xs text-muted-foreground">
-                  Build flags: --release --target=x86_64-pc-windows-msvc
+                  {t('desktopComposite.collapsible.buildFlags', 'Build flags: --release --target=x86_64-pc-windows-msvc')}
                 </div>
                 <div className="border rounded-md p-3 text-xs text-muted-foreground">
-                  Render pipeline: Vulkan 1.3 / D3D12 Ultimate
+                  {t('desktopComposite.collapsible.renderPipeline', 'Render pipeline: Vulkan 1.3 / D3D12 Ultimate')}
                 </div>
               </CollapsibleContent>
             </Collapsible>

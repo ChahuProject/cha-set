@@ -1,5 +1,5 @@
 import React from 'react';
-import { useChaSetI18n } from '@chahu/cha-set';
+import { useChaSetI18n, CopyableBadge } from '@chahu/cha-set';
 import { KeyboardShortcutsTable } from './KeyboardShortcutsTable';
 import { PropsTable, type PropItem } from './PropsTable';
 
@@ -46,6 +46,12 @@ export function DocFooterSections({
                 {t('showcase.animationsItem2', 'Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).')}
               </li>
             </ul>
+            <div className="flex flex-wrap items-center gap-2 pt-3">
+              <CopyableBadge size="sm" text="duration-quick" className="font-mono text-xs" />
+              <CopyableBadge size="sm" text="ease-standard" className="font-mono text-xs" />
+              <CopyableBadge size="sm" text="prefers-reduced-motion" className="font-mono text-xs" />
+              <CopyableBadge size="sm" text="ThemeTokens.animationsEnabled" className="font-mono text-xs" />
+            </div>
           </div>
         )}
       </section>

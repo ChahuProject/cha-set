@@ -2,6 +2,7 @@ import React from 'react';
 import {
   ScrollArea,
   Badge,
+  CopyableBadge,
   Table,
   TableHeader,
   TableBody,
@@ -61,12 +62,14 @@ export function PropsTable({ title, componentId, props, items }: PropsTableProps
                     {p.required && <span className="text-destructive ml-1">*</span>}
                   </TableCell>
                   <TableCell className="py-3 px-4 font-mono text-xs text-muted-foreground">
-                    <Badge size="sm" variant="outline" className="font-mono text-[0.6875rem] text-foreground/80 bg-muted/60">
-                      {p.type}
-                    </Badge>
+                    <CopyableBadge size="sm" text={p.type} className="font-mono text-[0.6875rem] text-foreground/80" />
                   </TableCell>
                   <TableCell className="py-3 px-4 font-mono text-xs text-muted-foreground">
-                    {(p.default ?? p.defaultValue) ? <code className="text-foreground/70">{p.default ?? p.defaultValue}</code> : <span className="opacity-40">—</span>}
+                    {(p.default ?? p.defaultValue) ? (
+                      <CopyableBadge size="sm" text={p.default ?? p.defaultValue!} className="font-mono text-[0.6875rem] text-foreground/80" />
+                    ) : (
+                      <span className="opacity-40">—</span>
+                    )}
                   </TableCell>
                   <TableCell className="py-3 px-4 text-xs text-muted-foreground leading-relaxed">{localizedDesc}</TableCell>
                 </TableRow>

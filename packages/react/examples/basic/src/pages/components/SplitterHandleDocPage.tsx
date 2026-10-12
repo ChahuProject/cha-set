@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SplitterHandle, Card, Button, Badge, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
+import { SplitterHandle, Card, Button, Badge, CopyableBadge, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -133,8 +133,12 @@ ChaSetSplitterHandle {
 
       <section id="vertical-edge-handle" className="space-y-4 pt-6">
         <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.splitterHandle.verticalTitle', 'Vertical Edge Handle')}</h2>
-        <p className="text-sm text-muted-foreground">
-          {t('desktopComposite.splitterHandle.horizontalPrefix', 'Handles can also be attached to horizontal edges (')}<code>top</code> or <code>bottom</code>{t('desktopComposite.splitterHandle.horizontalSuffix', ') for bottom console or drawer resizing.')}
+        <p className="text-sm text-muted-foreground flex items-center gap-1.5 flex-wrap">
+          <span>{t('desktopComposite.splitterHandle.horizontalPrefix', 'Handles can also be attached to horizontal edges (')}</span>
+          <CopyableBadge size="sm" text="top" />
+          <span>{t('common.or', 'or')}</span>
+          <CopyableBadge size="sm" text="bottom" />
+          <span>{t('desktopComposite.splitterHandle.horizontalSuffix', ') for bottom console or drawer resizing.')}</span>
         </p>
         <Card className="w-full max-w-xl mx-auto h-64 flex flex-col overflow-hidden bg-card">
           <div className="flex-1 p-4 text-sm text-muted-foreground">
@@ -166,20 +170,24 @@ ChaSetSplitterHandle {
         </p>
         <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
           <li>
-            Active indicator color and opacity transitions animate smoothly over{' '}
-            <code className="text-xs bg-muted px-1 rounded">duration-quick</code> (150ms) using{' '}
-            <code className="text-xs bg-muted px-1 rounded">ease-standard</code> curve (Qt counterpart:{' '}
-            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.motionQuick</code> and{' '}
-            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.easeStandard</code>).
+            {t('desktopComposite.splitterHandle.animationsBullet1', 'Active indicator color and opacity transitions animate smoothly over duration-quick (150ms) using ease-standard curve (Qt counterpart: ThemeTokens.motionQuick and ThemeTokens.easeStandard).')}
           </li>
           <li>
             {t('desktopComposite.splitterHandle.dragStaticDesc', 'Handle dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.')}
           </li>
           <li>
-            {t('desktopComposite.splitterHandle.reducedMotionPrefix', 'Respects')} <code className="text-xs bg-muted px-1 rounded">prefers-reduced-motion</code> on Web and{' '}
-            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.animationsEnabled</code> {t('desktopComposite.splitterHandle.reducedMotionSuffix', 'in Qt.')}
+            {t('desktopComposite.splitterHandle.reducedMotionPrefix', 'Respects')}{' '}
+            <CopyableBadge size="sm" text="prefers-reduced-motion" className="font-mono text-xs" /> on Web and{' '}
+            <CopyableBadge size="sm" text="ThemeTokens.animationsEnabled" className="font-mono text-xs" />{' '}
+            {t('desktopComposite.splitterHandle.reducedMotionSuffix', 'in Qt.')}
           </li>
         </ul>
+        <div className="flex flex-wrap items-center gap-2 pt-3">
+          <CopyableBadge size="sm" text="duration-quick" className="font-mono text-xs" />
+          <CopyableBadge size="sm" text="ease-standard" className="font-mono text-xs" />
+          <CopyableBadge size="sm" text="ThemeTokens.motionQuick" className="font-mono text-xs" />
+          <CopyableBadge size="sm" text="ThemeTokens.easeStandard" className="font-mono text-xs" />
+        </div>
       </section>
 
       <ComponentReference

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SegmentedControl, type SegmentedControlOption, Card, Button, Checkbox, CodeBlock, GridIcon, ListIcon, TableIcon, useChaSetI18n } from '@chahu/cha-set';
+import { SegmentedControl, type SegmentedControlOption, Card, Button, Checkbox, CodeBlock, CopyableBadge, GridIcon, ListIcon, TableIcon, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -189,8 +189,10 @@ ChaSetSegmentedControl {
 
       <section id="tooltips-custom-hints" className="space-y-4 pt-6">
         <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.segmentedControl.tooltipsHintsTitle', 'Tooltips & Custom Hints')}</h2>
-        <p className="text-sm text-muted-foreground">
-          Options support rich interactive tooltips. You can provide plain text, keyboard shortcut badges, custom placement, rich custom content, or a global <code>renderTooltip</code> function.
+        <p className="text-sm text-muted-foreground flex items-center gap-1.5 flex-wrap">
+          <span>{t('desktopComposite.segmentedControl.tooltipsHintsDesc', 'Options support rich interactive tooltips. You can provide plain text, keyboard shortcut badges, custom placement, rich custom content, or a global')}</span>
+          <CopyableBadge size="sm" text="renderTooltip" />
+          <span>{t('desktopComposite.segmentedControl.functionSuffix', 'function.')}</span>
         </p>
         <Card className="p-6 space-y-6">
           <div className="space-y-2">

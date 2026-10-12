@@ -9,6 +9,8 @@ export interface CopyableBadgeProps {
   children?: React.ReactNode;
   /** Blocks reveal + copy; forwarded to HoverCopy. @default false */
   disabled?: boolean;
+  /** Badge size. @default 'default' */
+  size?: 'default' | 'sm';
   /** Fired with the payload on successful copy. */
   onCopy?: (text: string) => void;
   /** Fired when the clipboard write fails. */
@@ -17,7 +19,7 @@ export interface CopyableBadgeProps {
 }
 
 /**
- * Thin preset: Badge (secondary, default size) wrapped in HoverCopy with pill
+ * Thin preset: Badge (secondary, default/sm size) wrapped in HoverCopy with pill
  * radius. Forwards everything to HoverCopy — no copy logic, timing, or state
  * of its own. See docs/architecture/hover-copy.md section 7.
  */
@@ -25,6 +27,7 @@ export function CopyableBadge({
   text,
   children,
   disabled = false,
+  size = 'default',
   onCopy,
   onError,
   className,
@@ -38,7 +41,7 @@ export function CopyableBadge({
       onError={onError}
       className={className}
     >
-      <Badge variant="secondary" size="default">
+      <Badge variant="secondary" size={size}>
         {children ?? text}
       </Badge>
     </HoverCopy>

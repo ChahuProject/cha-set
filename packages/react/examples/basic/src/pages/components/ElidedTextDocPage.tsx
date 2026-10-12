@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ElidedText, Card, Button, Slider, useChaSetI18n } from '@chahu/cha-set';
+import { ElidedText, CopyableBadge, Card, Button, Slider, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
@@ -130,16 +130,18 @@ export function ElidedTextDocPage() {
           </p>
           <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
             <li>
-              State changes (hover, press, focus) animate over{" "}
-              <code className="text-xs bg-muted px-1 rounded">duration-quick</code> with the{" "}
-              <code className="text-xs bg-muted px-1 rounded">ease-standard</code> curve.
+              {t('showcase.animationsItem1', 'State changes (hover, press, focus) animate over duration-quick with the ease-standard curve.')}
             </li>
             <li>
-              Durations and easing resolve from theme tokens, so{" "}
-              <code>prefers-reduced-motion</code> zeroes them automatically (Qt: governed by{" "}
-              <code>ThemeTokens.animationsEnabled</code>).
+              {t('showcase.animationsItem2', 'Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).')}
             </li>
           </ul>
+          <div className="flex flex-wrap items-center gap-2 pt-3">
+            <CopyableBadge size="sm" text="duration-quick" className="font-mono text-xs" />
+            <CopyableBadge size="sm" text="ease-standard" className="font-mono text-xs" />
+            <CopyableBadge size="sm" text="prefers-reduced-motion" className="font-mono text-xs" />
+            <CopyableBadge size="sm" text="ThemeTokens.animationsEnabled" className="font-mono text-xs" />
+          </div>
         </div>
       </section>
 

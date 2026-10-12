@@ -363,4 +363,10 @@ describe('CopyableBadge', () => {
     fireEvent.pointerEnter(wrapper as HTMLElement);
     expect(wrapper).toHaveAttribute('data-state', 'idle');
   });
+
+  it('forwards size="sm" to inner Badge', () => {
+    render(<CopyableBadge text="SM-PAYLOAD" size="sm" />);
+    const badge = screen.getByText('SM-PAYLOAD');
+    expect(badge).toHaveAttribute('data-size', 'sm');
+  });
 });

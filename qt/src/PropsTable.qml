@@ -68,8 +68,8 @@ Column {
             interactive: false
             columns: [
                 { key: "prop", title: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.prop", "PROP").toUpperCase() : "PROP", width: 170, code: true },
-                { key: "type", title: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.type", "TYPE").toUpperCase() : "TYPE", width: 240, badge: true },
-                { key: "defaultVal", title: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.default", "DEFAULT").toUpperCase() : "DEFAULT", width: 110, code: true },
+                { key: "type", title: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.type", "TYPE").toUpperCase() : "TYPE", width: 240, copyableBadge: true },
+                { key: "defaultVal", title: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.default", "DEFAULT").toUpperCase() : "DEFAULT", width: 110, copyableBadge: true },
                 { key: "description", title: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("showcase.description", "DESCRIPTION").toUpperCase() : "DESCRIPTION", wrap: true }
             ]
             rows: {

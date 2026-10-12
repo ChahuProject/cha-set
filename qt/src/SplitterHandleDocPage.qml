@@ -220,12 +220,32 @@ ChaSetSplitterHandle {
                 width: parent.width
                 height: implicitHeight
 
-                DocText {
+                Flow {
                     width: parent.width
-                    wrapMode: TextEdit.Wrap
-                    text: ChaSetI18n.tr("desktopComposite.splitterHandle.horizontalDesc", "Handles can also be attached to horizontal edges (top or bottom) for bottom console or drawer resizing.")
-                    color: ThemeTokens.subduedText
-                    font.pixelSize: Typography.sizeSmall
+                    spacing: 6
+                    DocText {
+                        text: ChaSetI18n.tr("desktopComposite.splitterHandle.horizontalPrefix", "Handles can also be attached to horizontal edges (")
+                        color: ThemeTokens.subduedText
+                        font.pixelSize: Typography.sizeSmall
+                    }
+                    ChaSetCopyableBadge {
+                        size: "sm"
+                        text: "top"
+                    }
+                    DocText {
+                        text: ChaSetI18n.tr("common.or", "or")
+                        color: ThemeTokens.subduedText
+                        font.pixelSize: Typography.sizeSmall
+                    }
+                    ChaSetCopyableBadge {
+                        size: "sm"
+                        text: "bottom"
+                    }
+                    DocText {
+                        text: ChaSetI18n.tr("desktopComposite.splitterHandle.horizontalSuffix", ") for bottom console or drawer resizing.")
+                        color: ThemeTokens.subduedText
+                        font.pixelSize: Typography.sizeSmall
+                    }
                 }
 
                 Rectangle {
@@ -327,7 +347,7 @@ ChaSetSplitterHandle {
         }
 
         DocText {
-            text: "• Active indicator color and opacity transitions animate smoothly over ThemeTokens.motionQuick (150ms) using ThemeTokens.easeStandard curve."
+            text: "• " + ChaSetI18n.tr("desktopComposite.splitterHandle.animationsBulletQt1", "Active indicator color and opacity transitions animate smoothly over ThemeTokens.motionQuick (150ms) using ThemeTokens.easeStandard curve.")
             color: ThemeTokens.text
             font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap
@@ -341,7 +361,7 @@ ChaSetSplitterHandle {
             width: parent.width
         }
         DocText {
-            text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."
+            text: "• " + ChaSetI18n.tr("desktopComposite.splitterHandle.animationsBulletQt3", "All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop.")
             color: ThemeTokens.text
             font.pixelSize: Typography.sizeBody
             wrapMode: TextEdit.WordWrap

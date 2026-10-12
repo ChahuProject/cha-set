@@ -36,6 +36,24 @@ Column {
             wrapMode: TextEdit.WordWrap
             width: parent.width
         }
+
+        Flow {
+            width: parent.width
+            spacing: ThemeTokens.dp(8)
+
+            ChaSetCopyableBadge {
+                text: "ThemeTokens.motionQuick"
+                size: "sm"
+            }
+            ChaSetCopyableBadge {
+                text: "ThemeTokens.easeStandard"
+                size: "sm"
+            }
+            ChaSetCopyableBadge {
+                text: "ThemeTokens.animationsEnabled"
+                size: "sm"
+            }
+        }
     }
 
     // 2. Keyboard Navigation Section

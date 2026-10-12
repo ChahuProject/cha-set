@@ -84,7 +84,7 @@ DocLayout {
             spacing: 8
             Row {
                 spacing: 8
-                ChaSetBadge { variant: "secondary"; text: "showLineNumbers" }
+                ChaSetCopyableBadge { text: "showLineNumbers"; size: "sm" }
                 DocText { text: ChaSetI18n.tr("desktopComposite.codeBlock.gutterDesc", "Gutter with right-aligned line numbers"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
             }
             ChaSetCodeBlock {
@@ -102,7 +102,7 @@ DocLayout {
             spacing: 8
             Row {
                 spacing: 8
-                ChaSetBadge { variant: "secondary"; text: ChaSetI18n.tr("desktopComposite.codeBlock.wrapBadge", "wrap") }
+                ChaSetCopyableBadge { text: "wrap"; displayText: ChaSetI18n.tr("desktopComposite.codeBlock.wrapBadge", "wrap"); size: "sm" }
                 DocText { text: ChaSetI18n.tr("desktopComposite.codeBlock.wrapDesc", "Soft-wrap long lines instead of horizontal scroll"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
             }
             ChaSetCodeBlock {
@@ -119,7 +119,7 @@ DocLayout {
             spacing: 8
             Row {
                 spacing: 8
-                ChaSetBadge { variant: "secondary"; text: "highlight={false}" }
+                ChaSetCopyableBadge { text: "highlight={false}"; size: "sm" }
                 DocText { text: ChaSetI18n.tr("desktopComposite.codeBlock.monochromeDesc", "Monochrome fallback using the same layout"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
             }
             ChaSetCodeBlock {
@@ -137,7 +137,7 @@ DocLayout {
             spacing: 8
             Row {
                 spacing: 8
-                ChaSetBadge { variant: "secondary"; text: ChaSetI18n.tr("desktopComposite.codeBlock.embeddedBadge", "embedded") }
+                ChaSetCopyableBadge { text: "embedded"; displayText: ChaSetI18n.tr("desktopComposite.codeBlock.embeddedBadge", "embedded"); size: "sm" }
                 DocText { text: ChaSetI18n.tr("desktopComposite.codeBlock.embeddedDesc", "Drop the card chrome and header for inline embedding"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeSmall; anchors.verticalCenter: parent.verticalCenter }
             }
             ChaSetCodeBlock {

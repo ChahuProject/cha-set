@@ -277,10 +277,24 @@ Rectangle {
                                 }
                             }
 
+                            // CopyableBadge rendering
+                            ChaSetCopyableBadge {
+                                visible: Boolean(columnDef && columnDef.copyableBadge)
+                                anchors.verticalCenter: parent ? parent.verticalCenter : undefined
+                                anchors.left: parent.left
+                                anchors.leftMargin: ThemeTokens.dp(12)
+                                size: "sm"
+                                text: {
+                                    if (!rowRecord || !columnDef || columnDef.key === undefined) return "";
+                                    var val = rowRecord[columnDef.key];
+                                    return val !== undefined && val !== null ? String(val) : "";
+                                }
+                            }
+
                             // Standard Text / Code rendering
                             TextEdit {
                                 id: bodyCellText
-                                visible: !Boolean(columnDef && (columnDef.badge || columnDef.kbd))
+                                visible: !Boolean(columnDef && (columnDef.badge || columnDef.kbd || columnDef.copyableBadge))
                                 anchors.fill: parent
                                 anchors.leftMargin: ThemeTokens.dp(12)
                                 anchors.rightMargin: ThemeTokens.dp(12)

@@ -10,6 +10,7 @@ Item {
 
     property string text: ""
     property string displayText: ""
+    property string size: "default"
     property bool disabled: false
 
     signal copiedToClipboard(string text)
@@ -35,7 +36,7 @@ Item {
 
         ChaSetBadge {
             variant: "secondary"
-            size: "default"
+            size: root.size
             text: root.displayText !== "" ? root.displayText : root.text
         }
     }

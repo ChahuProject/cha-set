@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LanguageSettings, CodeBlock, useChaSetI18n, type LocalePreference } from '@chahu/cha-set';
+import { LanguageSettings, CopyableBadge, CodeBlock, useChaSetI18n, type LocalePreference } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -67,12 +67,16 @@ ChaSetLanguageSettings {
 
       <section id="animations" className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground">{t('showcase.animations', 'Animations')}</h2>
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          {t('desktopComposite.languageSettings.animDescPrefix', 'LanguageSettings utilizes smooth token transitions for card focus, active selection rings, and checkmark badge states. Transitions use')}{' '}
-          <code className="text-xs bg-muted px-1.5 py-0.5 rounded text-foreground">duration-quick</code> and{' '}
-          <code className="text-xs bg-muted px-1.5 py-0.5 rounded text-foreground">ease-standard</code>.
-          {t('desktopComposite.taskHud.animReducedPrefix', 'Respects')} <code className="text-xs bg-muted px-1.5 py-0.5 rounded text-foreground">prefers-reduced-motion</code>{' '}
-          {t('desktopComposite.languageSettings.animDescSuffix', 'and Qt')} <code className="text-xs bg-muted px-1.5 py-0.5 rounded text-foreground">ThemeTokens.animationsEnabled</code> {t('desktopComposite.languageSettings.animDescEnd', 'as global kill switches.')}
+        <p className="text-sm text-muted-foreground leading-relaxed flex flex-wrap items-center gap-1.5">
+          <span>{t('desktopComposite.languageSettings.animDescPrefix', 'LanguageSettings utilizes smooth token transitions for card focus, active selection rings, and checkmark badge states. Transitions use')}</span>
+          <CopyableBadge size="sm" text="duration-quick" className="font-mono text-xs" />
+          <span>{t('common.and', 'and')}</span>
+          <CopyableBadge size="sm" text="ease-standard" className="font-mono text-xs" />.
+          <span>{t('desktopComposite.taskHud.animReducedPrefix', 'Respects')}</span>
+          <CopyableBadge size="sm" text="prefers-reduced-motion" className="font-mono text-xs" />
+          <span>{t('desktopComposite.languageSettings.animDescSuffix', 'and Qt')}</span>
+          <CopyableBadge size="sm" text="ThemeTokens.animationsEnabled" className="font-mono text-xs" />
+          <span>{t('desktopComposite.languageSettings.animDescEnd', 'as global kill switches.')}</span>
         </p>
       </section>
 

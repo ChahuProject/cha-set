@@ -1,5 +1,5 @@
 import React from 'react';
-import { CodeBlock, Badge, useChaSetI18n } from '@chahu/cha-set';
+import { CodeBlock, CopyableBadge, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -129,7 +129,7 @@ ChaSetCodeBlock {
         <div className="flex flex-col gap-6">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <Badge variant="secondary">showLineNumbers</Badge>
+              <CopyableBadge size="sm" text="showLineNumbers" />
               <span className="text-xs text-muted-foreground">{t('desktopComposite.codeBlock.gutterDesc', 'Gutter with right-aligned line numbers')}</span>
             </div>
             <CodeBlock code={TSX_SAMPLE} language="tsx" showLineNumbers maxHeight={220} />
@@ -137,7 +137,7 @@ ChaSetCodeBlock {
 
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <Badge variant="secondary">{t('desktopComposite.codeBlock.wrapBadge', 'wrap')}</Badge>
+              <CopyableBadge size="sm" text="wrap">{t('desktopComposite.codeBlock.wrapBadge', 'wrap')}</CopyableBadge>
               <span className="text-xs text-muted-foreground">{t('desktopComposite.codeBlock.wrapDesc', 'Soft-wrap long lines instead of horizontal scroll')}</span>
             </div>
             <CodeBlock
@@ -149,7 +149,7 @@ ChaSetCodeBlock {
 
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <Badge variant="secondary">highlight={false}</Badge>
+              <CopyableBadge size="sm" text="highlight={false}" />
               <span className="text-xs text-muted-foreground">{t('desktopComposite.codeBlock.monochromeDesc', 'Monochrome fallback using the same layout')}</span>
             </div>
             <CodeBlock code={TSX_SAMPLE} language="tsx" highlight={false} showLineNumbers />
@@ -157,7 +157,7 @@ ChaSetCodeBlock {
 
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <Badge variant="secondary">{t('desktopComposite.codeBlock.embeddedBadge', 'embedded')}</Badge>
+              <CopyableBadge size="sm" text="embedded">{t('desktopComposite.codeBlock.embeddedBadge', 'embedded')}</CopyableBadge>
               <span className="text-xs text-muted-foreground">{t('desktopComposite.codeBlock.embeddedDesc', 'Drop the card chrome and header for inline embedding')}</span>
             </div>
             <CodeBlock code={`export const VERSION = '1.4.0';`} language="ts" embedded className="rounded-md border border-border" />

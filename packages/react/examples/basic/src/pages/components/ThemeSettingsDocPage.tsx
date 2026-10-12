@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ThemeSettings, DEFAULT_THEME_CONFIG, Card, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
+import { ThemeSettings, DEFAULT_THEME_CONFIG, Card, CodeBlock, CopyableBadge, useChaSetI18n } from '@chahu/cha-set';
 import type { ThemeConfig } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
@@ -75,12 +75,16 @@ ChaSetThemeSettings {
 
       <section id="animations" className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground">{t('showcase.animations', 'Animations')}</h2>
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          {t('desktopComposite.themeSettings.animDescPrefix', 'ThemeSettings uses unified motion tokens for smooth state transitions across buttons, segmented controls, color pickers, and override drawers. Transitions use')}{' '}
-          <code className="text-xs bg-muted px-1.5 py-0.5 rounded text-foreground">duration-quick</code> and{' '}
-          <code className="text-xs bg-muted px-1.5 py-0.5 rounded text-foreground">ease-standard</code>.
-          {t('desktopComposite.taskHud.animReducedPrefix', 'Respects')} <code className="text-xs bg-muted px-1.5 py-0.5 rounded text-foreground">prefers-reduced-motion</code>{' '}
-          {t('desktopComposite.themeSettings.animDescSuffix', 'and Qt')} <code className="text-xs bg-muted px-1.5 py-0.5 rounded text-foreground">ThemeTokens.animationsEnabled</code> {t('desktopComposite.themeSettings.animDescEnd', 'as global kill switches.')}
+        <p className="text-sm text-muted-foreground leading-relaxed flex flex-wrap items-center gap-1.5">
+          <span>{t('desktopComposite.themeSettings.animDescPrefix', 'ThemeSettings uses unified motion tokens for smooth state transitions across buttons, segmented controls, color pickers, and override drawers. Transitions use')}</span>
+          <CopyableBadge size="sm" text="duration-quick" className="font-mono text-xs" />
+          <span>{t('common.and', 'and')}</span>
+          <CopyableBadge size="sm" text="ease-standard" className="font-mono text-xs" />.
+          <span>{t('desktopComposite.taskHud.animReducedPrefix', 'Respects')}</span>
+          <CopyableBadge size="sm" text="prefers-reduced-motion" className="font-mono text-xs" />
+          <span>{t('desktopComposite.themeSettings.animDescSuffix', 'and Qt')}</span>
+          <CopyableBadge size="sm" text="ThemeTokens.animationsEnabled" className="font-mono text-xs" />
+          <span>{t('desktopComposite.themeSettings.animDescEnd', 'as global kill switches.')}</span>
         </p>
       </section>
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AddressBar, Card, CodeBlock, Button, useChaSetI18n } from '@chahu/cha-set';
+import { AddressBar, CopyableBadge, Card, CodeBlock, Button, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -9,16 +9,15 @@ import { PropsTable } from '../../components/PropsTable';
 
 export function AddressBarDocPage() {
   const { t } = useChaSetI18n();
-  const [currentPath, setCurrentPath] = useState('此电脑/C:/Users/Development/Projects/cha-set');
+  const [currentPath, setCurrentPath] = useState('C:/Users/Development/Projects/cha-set');
   const [history, setHistory] = useState<string[]>([
-    '此电脑',
-    '此电脑/C:',
-    '此电脑/C:/Users',
-    '此电脑/C:/Users/Development',
-    '此电脑/C:/Users/Development/Projects',
-    '此电脑/C:/Users/Development/Projects/cha-set',
+    'C:/',
+    'C:/Users',
+    'C:/Users/Development',
+    'C:/Users/Development/Projects',
+    'C:/Users/Development/Projects/cha-set',
   ]);
-  const [historyIndex, setHistoryIndex] = useState(5);
+  const [historyIndex, setHistoryIndex] = useState(4);
   const [refreshCount, setRefreshCount] = useState(0);
 
   const canGoBack = historyIndex > 0;
@@ -106,14 +105,14 @@ export function AddressBarDocPage() {
                 size="sm"
                 onClick={() => navigateTo('C:/Windows/System32')}
               >
-                System32
+                {t('desktopComposite.addressBar.locSystem32', 'System32')}
               </Button>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => navigateTo('/var/log/nginx')}
               >
-                POSIX /var/log
+                {t('desktopComposite.addressBar.locPosixLog', 'POSIX /var/log')}
               </Button>
             </div>
           }
@@ -137,8 +136,8 @@ export function AddressBarDocPage() {
             />
 
             <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t border-border/40">
-              <span>
-                {t('desktopComposite.addressBar.activePath', 'Active Path:')} <code className="text-foreground font-mono bg-muted px-1 py-0.5 rounded">{currentPath}</code>
+              <span className="flex items-center gap-1.5">
+                {t('desktopComposite.addressBar.activePath', 'Active Path:')} <CopyableBadge size="sm" text={currentPath} className="font-mono text-xs" />
               </span>
               <span>{t('desktopComposite.addressBar.refreshes', 'Refreshes: {{count}}', { count: refreshCount })}</span>
             </div>
@@ -178,16 +177,16 @@ ChaSetAddressBar {
         <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
           <li>
             {t('desktopComposite.addressBar.animHoverPrefix', 'Breadcrumb segment hover highlights transition over')}{' '}
-            <code className="text-xs bg-muted px-1 rounded">duration-quick</code> {t('desktopComposite.addressBar.animHoverMid', '(100ms) with')}{' '}
-            <code className="text-xs bg-muted px-1 rounded">ease-standard</code> {t('desktopComposite.addressBar.animHoverSuffix', 'curve (Qt counterpart:')}{' '}
-            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.motionQuick</code>).
+            <CopyableBadge size="sm" text="duration-quick" className="font-mono text-xs" /> {t('desktopComposite.addressBar.animHoverMid', '(100ms) with')}{' '}
+            <CopyableBadge size="sm" text="ease-standard" className="font-mono text-xs" /> {t('desktopComposite.addressBar.animHoverSuffix', 'curve (Qt counterpart:')}{' '}
+            <CopyableBadge size="sm" text="ThemeTokens.motionQuick" className="font-mono text-xs" />).
           </li>
           <li>
             {t('desktopComposite.addressBar.animSuggest', 'Suggestions popover renders with an entry scale and fade animation over 120ms.')}
           </li>
           <li>
-            {t('desktopComposite.taskHud.animReducedPrefix', 'Respects')} <code className="text-xs bg-muted px-1 rounded">prefers-reduced-motion</code> {t('desktopComposite.taskHud.animReducedMid', 'on Web and')}{' '}
-            <code className="text-xs bg-muted px-1 rounded">ThemeTokens.animationsEnabled</code> {t('desktopComposite.taskHud.animReducedSuffix', 'in Qt.')}
+            {t('desktopComposite.taskHud.animReducedPrefix', 'Respects')} <CopyableBadge size="sm" text="prefers-reduced-motion" className="font-mono text-xs" /> {t('desktopComposite.taskHud.animReducedMid', 'on Web and')}{' '}
+            <CopyableBadge size="sm" text="ThemeTokens.animationsEnabled" className="font-mono text-xs" /> {t('desktopComposite.taskHud.animReducedSuffix', 'in Qt.')}
           </li>
         </ul>
       </section>
