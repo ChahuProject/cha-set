@@ -24,7 +24,12 @@ Rectangle {
     default property alias contentData: bodyContent.data
 
     width: ThemeTokens.dp(320)
-    height: ThemeTokens.dp(220)
+    readonly property real maxSafeHeight: {
+        var pw = parent ? parent.height : (Window.window ? Window.window.height : ThemeTokens.dp(768));
+        return Math.max(ThemeTokens.dp(120), pw - ThemeTokens.dp(32));
+    }
+    readonly property real contentPreferredHeight: titleBar.height + ThemeTokens.dp(1) + (footerArea.visible ? footerArea.height : 0) + (scrollAreaContent.implicitHeight > 0 ? scrollAreaContent.implicitHeight : ThemeTokens.dp(160))
+    height: root.autoFitHeight ? Math.min(maxSafeHeight, contentPreferredHeight) : ThemeTokens.dp(220)
     color: ThemeTokens.panel
     border.color: ThemeTokens.border
     border.width: 1
@@ -298,10 +303,28 @@ Rectangle {
             color: ThemeTokens.border
         }
 
-        Item {
-            id: bodyContent
+        ChaSetScrollArea {
+            id: modalScrollArea
             width: parent.width
-            height: parent.height - ThemeTokens.dp(37) - (footerArea.visible ? footerArea.height : 0)
+            height: parent.height - titleBar.height - ThemeTokens.dp(1) - (footerArea.visible ? footerArea.height : 0)
+            clip: true
+            floating: true
+            showHorizontalScrollBar: false
+            contentWidth: availableWidth
+            contentHeight: scrollAreaContent.height
+
+            Item {
+                id: scrollAreaContent
+                x: ThemeTokens.dp(16)
+                width: Math.max(0, modalScrollArea.width - ThemeTokens.dp(32))
+                implicitHeight: (bodyContent.childrenRect.height > 0) ? bodyContent.childrenRect.height : (bodyContent.implicitHeight > 0 ? bodyContent.implicitHeight : ThemeTokens.dp(160))
+                height: implicitHeight
+
+                Item {
+                    id: bodyContent
+                    anchors.fill: parent
+                }
+            }
         }
 
         // Fixed Footer
