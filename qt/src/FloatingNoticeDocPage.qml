@@ -10,6 +10,8 @@ DocLayout {
     description: ChaSetI18n.tr("components.floatingNotice.description", "Floating stacked notice pill anchored to top or bottom with priority queueing, card-stack cycling, and extensible content.")
 
     property string demoPlacement: "top"
+    property string demoGap: "auto"
+    readonly property var effectiveDemoGap: root.demoGap === "auto" ? undefined : Number(root.demoGap)
     property var demoNotices: [
         {
             id: "n-1",
@@ -88,13 +90,13 @@ DocLayout {
         stageHeight: 300
         reactCode: `<FloatingNotice
   notices={notices}
-  placement="${root.demoPlacement}"
+  placement="${root.demoPlacement}"${root.effectiveDemoGap !== undefined ? '\n  gap={' + root.effectiveDemoGap + '}' : ''}
   onDismiss={handleDismiss}
   pauseOnHover={true}
   zoomOnHover={true}
 />`
         qtCode: `ChaSetFloatingNotice {
-    placement: "${root.demoPlacement}"
+    placement: "${root.demoPlacement}"${root.effectiveDemoGap !== undefined ? '\n    gap: ' + root.effectiveDemoGap : ''}
     notices: demoNotices
     pauseOnHover: true
     zoomOnHover: true
@@ -135,7 +137,30 @@ DocLayout {
                         onClicked: root.addNotice("error", "Operation failed", 30)
                     }
 
-                    Item { width: ThemeTokens.dp(10); height: 1 }
+                    Item { width: ThemeTokens.dp(6); height: 1 }
+
+                    Row {
+                        spacing: ThemeTokens.dp(6)
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        Text {
+                            anchors.verticalCenter: parent.verticalCenter
+                            text: ChaSetI18n.tr("overlays.floatingNotice.gap", "Spacing:")
+                            color: ThemeTokens.subduedText
+                            font.pixelSize: Typography.sizeSmall
+                        }
+
+                        ChaSetSegmentedControl {
+                            options: [
+                                { label: ChaSetI18n.tr("overlays.floatingNotice.gapAuto", "Auto"), value: "auto" },
+                                { label: ChaSetI18n.tr("overlays.floatingNotice.gapCompact", "Compact (7dp)"), value: "7" },
+                                { label: ChaSetI18n.tr("overlays.floatingNotice.gapRelaxed", "Relaxed (12dp)"), value: "12" },
+                                { label: ChaSetI18n.tr("overlays.floatingNotice.gapSpacious", "Spacious (16dp)"), value: "16" }
+                            ]
+                            value: root.demoGap
+                            onValueChanged: function(val) { root.demoGap = String(val) }
+                        }
+                    }
 
                     ChaSetSegmentedControl {
                         options: [
@@ -159,6 +184,7 @@ DocLayout {
                     id: sandboxNotice
                     placement: root.demoPlacement
                     offset: 56
+                    gap: root.effectiveDemoGap
                     notices: root.demoNotices
                     onDismissed: function(id) { root.removeNotice(id) }
                 }
@@ -265,6 +291,7 @@ ChaSetFloatingNotice {
                 { name: "notices", type: "var", default: "[]", description: ChaSetI18n.tr("components.floatingNotice.noticesDesc", "Array of notice items to display and queue.") },
                 { name: "placement", type: "string", default: "\"top\"", description: ChaSetI18n.tr("components.floatingNotice.placementDesc", "Anchoring edge for the floating notice container.") },
                 { name: "offset", type: "int", default: "16", description: ChaSetI18n.tr("components.floatingNotice.offsetDesc", "Inset from anchored viewport edge in logical dp.") },
+                { name: "gap", type: "real", default: "undefined (adaptive)", description: ChaSetI18n.tr("components.floatingNotice.gapDesc", "Joint spacing between stacked notice cards in logical dp. Omit for adaptive spacing based on notice count.") },
                 { name: "defaultDuration", type: "int", default: "3000", description: ChaSetI18n.tr("components.floatingNotice.defaultDurationDesc", "Fallback lifetime in ms before auto-dismiss.") },
                 { name: "pauseOnHover", type: "bool", default: "true", description: ChaSetI18n.tr("components.floatingNotice.pauseOnHoverDesc", "Whether mouse hovering suspends cycling and expiry timers.") },
                 { name: "zoomOnHover", type: "bool", default: "true", description: ChaSetI18n.tr("components.floatingNotice.zoomOnHoverDesc", "Whether hovering smoothly magnifies the notice by 1.05x.") },

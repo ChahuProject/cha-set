@@ -21,6 +21,8 @@ export interface FloatingNoticeProps {
   placement?: FloatingNoticePlacement;
   /** Inset from the anchored viewport edge in logical units (dp). @default 16 */
   offset?: number;
+  /** Joint spacing between stacked notice cards in logical units (dp). Omit for adaptive spacing based on notice count. */
+  gap?: number;
   /** Fallback lifetime in ms for items that do not state their own duration. @default 3000 */
   defaultDuration?: number;
   /** Hovering the notice container suspends cycling and countdowns. @default true */
@@ -92,6 +94,7 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
   notices,
   placement = 'top',
   offset = 16,
+  gap,
   defaultDuration = 3000,
   pauseOnHover = true,
   zoomOnHover = true,
@@ -199,7 +202,24 @@ export const FloatingNotice: React.FC<FloatingNoticeProps> = ({
   // Every joint uses the same gap — depth 0 is geometrically identical to any
   // other position, no reveal gap, no special cases. Gaps never depend on
   // which card is raised, so raising causes no motion and no hover chase.
-  const BODY_GAP_REM = 0.4375; // 7px uniform steps, mirrored above/below
+  //
+  // Spacing contract:
+  // When notice count is small (<= 2: 12dp / 0.75rem, == 3: 10dp / 0.625rem),
+  // gaps are enlarged so peeking strips are clear and accessible; as items grow
+  // (>= 4), gaps settle back to 7dp (0.4375rem).
+  // Callers can explicitly configure `gap` (in logical dp) to override adaptive sizing.
+  const adaptiveGapDp = (count: number): number => {
+    if (count <= 2) return 12;
+    if (count === 3) return 10;
+    return 7;
+  };
+
+  const effectiveGapDp =
+    gap !== undefined && gap !== null && !isNaN(gap) && gap >= 0
+      ? gap
+      : adaptiveGapDp(sortedNotices.length);
+
+  const BODY_GAP_REM = effectiveGapDp * 0.0625;
   const HOVER_EXPAND = 1.75; // gap multiplier while the stack is hovered
   const BASE_INSET_REM = 1; // 16px narrower per distance step (decaying)
   const INSET_DECAY = 0.8;

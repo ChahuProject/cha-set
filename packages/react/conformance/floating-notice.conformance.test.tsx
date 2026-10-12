@@ -25,6 +25,7 @@ describe('FloatingNotice conformance (spec contract)', () => {
       ],
       placement: 'top',
       offset: 16,
+      gap: 12,
       defaultDuration: 3000,
       pauseOnHover: true,
       zoomOnHover: true,
@@ -36,6 +37,7 @@ describe('FloatingNotice conformance (spec contract)', () => {
     const defaultParsed = floatingNoticeSchema.parse({});
     expect(defaultParsed.placement).toBe('top');
     expect(defaultParsed.offset).toBe(16);
+    expect(defaultParsed.gap).toBeUndefined();
     expect(defaultParsed.defaultDuration).toBe(3000);
     expect(defaultParsed.pauseOnHover).toBe(true);
     expect(defaultParsed.zoomOnHover).toBe(true);

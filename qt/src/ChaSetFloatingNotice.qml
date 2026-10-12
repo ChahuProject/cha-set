@@ -13,6 +13,8 @@ Item {
     property string placement: "top"
     /** Inset from the anchored viewport edge in logical dp. Default 16. */
     property int offset: 16
+    /** Joint spacing between stacked notice cards in logical dp. When undefined or negative, adaptive spacing is used based on notice count. Default undefined. */
+    property var gap: undefined
     /** Fallback lifetime in ms for items that do not state duration. Default 3000. */
     property int defaultDuration: 3000
     /** Suspends countdown and cycling while pointer rests on the notice. Default true. */
@@ -75,9 +77,19 @@ Item {
         return root._hovered ? 1.75 : 1.0;
     }
 
+    function effectiveBaseGap() {
+        if (root.gap !== undefined && root.gap !== null && !isNaN(Number(root.gap)) && Number(root.gap) >= 0) {
+            return Number(root.gap);
+        }
+        var count = root._sorted.length;
+        if (count <= 2) return 12;
+        if (count === 3) return 10;
+        return 7;
+    }
+
     function stackGap(depth) {
         if (depth <= 0) return 0;
-        return ThemeTokens.dp(7);
+        return ThemeTokens.dp(root.effectiveBaseGap());
     }
 
     function stackOffset(idx) {
@@ -132,6 +144,7 @@ Item {
 
     onNoticesChanged: root.sync()
     onDefaultDurationChanged: root.sync()
+    onGapChanged: root._revision++
     on_ActiveIndexChanged: {
         if (root.activeItem) {
             root.activeChanged(String(root.activeItem.id), root._activeIndex);

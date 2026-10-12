@@ -36,8 +36,13 @@ Positions are fixed by sorted order; sizes follow **distance** `d = |index − a
 
 ### 3.1 Offsets (identical above and below)
 
-- Every joint between adjacent depths uses the same gap: `7px` (`0.4375rem` / `ThemeTokens.dp(7)`), so the fan reads identically above and below any raised card. Depth 0 gets no special joint, no special width, no special anything.
-- `offset(i) = i × gap × expand`, where `expand` is `1.0` at rest and `1.75` while the stack is hovered (peeking strips grow from ~7px to ~12px so they stay reachable). `bottom` placement mirrors the sign.
+- Every joint between adjacent depths uses the same uniform base gap, so the fan reads identically above and below any raised card. Depth 0 gets no special joint, no special width, no special anything.
+- **Adaptive Spacing Contract**: When the notice queue contains few items, the base gap automatically expands so peeking cards behind are prominent and easily discoverable/targetable:
+  - `count <= 2`: `12dp` (`0.75rem` / `ThemeTokens.dp(12)`)
+  - `count == 3`: `10dp` (`0.625rem` / `ThemeTokens.dp(10)`)
+  - `count >= 4`: `7dp` (`0.4375rem` / `ThemeTokens.dp(7)`)
+- **Explicit Override (`gap` option)**: Callers can explicitly specify `gap` (in logical units dp / rem) to set a fixed base joint spacing regardless of item count.
+- `offset(i) = i × gap × expand`, where `expand` is `1.0` at rest and `1.75` while the stack is hovered (peeking strips grow by 1.75x so they stay reachable). `bottom` placement mirrors the sign.
 - The container size comes from a fixed invisible sizer (React: content-free `16rem × 2.125rem` block; Qt: `pill.implicitHeight + maxOffset`), never from raised content — switching messages never resizes the container.
 
 ### 3.2 Distance Fan (symmetric both ways)

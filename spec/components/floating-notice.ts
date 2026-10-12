@@ -34,6 +34,8 @@ export const floatingNoticeSchema = z.object({
   placement: floatingNoticePlacementSchema.default('top'),
   /** Inset from the anchored viewport edge in logical units (dp). */
   offset: z.number().default(16),
+  /** Joint spacing between stacked notice cards in logical units (dp). Omit for adaptive spacing based on notice count. */
+  gap: z.number().optional(),
   /** Fallback lifetime in ms for items that do not state their own duration. */
   defaultDuration: z.number().default(3000),
   /** Hovering the notice container suspends cycling and expiry countdowns. */

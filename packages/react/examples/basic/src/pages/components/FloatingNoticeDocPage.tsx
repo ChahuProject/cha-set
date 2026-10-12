@@ -18,6 +18,8 @@ export function FloatingNoticeDocPage() {
   const { t } = useChaSetI18n();
 
   const [placement, setPlacement] = useState<FloatingNoticePlacement>('top');
+  const [gapMode, setGapMode] = useState<string>('auto');
+  const selectedGap = gapMode === 'auto' ? undefined : Number(gapMode);
   const [notices, setNotices] = useState<FloatingNoticeItem[]>([
     {
       id: 'n-1',
@@ -111,13 +113,13 @@ export function FloatingNoticeDocPage() {
           title={t('overlays.floatingNotice.previewTitle', 'Floating Notice Stack')}
           reactCode={`<FloatingNotice
   notices={notices}
-  placement="${placement}"
+  placement="${placement}"${selectedGap !== undefined ? `\n  gap={${selectedGap}}` : ''}
   onDismiss={handleDismiss}
   pauseOnHover={true}
   zoomOnHover={true}
 />`}
           qtCode={`ChaSetFloatingNotice {
-    placement: "${placement}"
+    placement: "${placement}"${selectedGap !== undefined ? `\n    gap: ${selectedGap}` : ''}
     notices: demoNotices
     pauseOnHover: true
     zoomOnHover: true
@@ -151,7 +153,20 @@ export function FloatingNoticeDocPage() {
                 </Button>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <span>{t('overlays.floatingNotice.gap', 'Spacing:')}</span>
+                  <SegmentedControl
+                    value={gapMode}
+                    onChange={(v) => setGapMode(String(v))}
+                    options={[
+                      { label: t('overlays.floatingNotice.gapAuto', 'Auto'), value: 'auto' },
+                      { label: t('overlays.floatingNotice.gapCompact', 'Compact (7dp)'), value: '7' },
+                      { label: t('overlays.floatingNotice.gapRelaxed', 'Relaxed (12dp)'), value: '12' },
+                      { label: t('overlays.floatingNotice.gapSpacious', 'Spacious (16dp)'), value: '16' },
+                    ]}
+                  />
+                </div>
                 <SegmentedControl
                   value={placement}
                   onChange={(v) => setPlacement(v as FloatingNoticePlacement)}
@@ -171,6 +186,7 @@ export function FloatingNoticeDocPage() {
               notices={notices}
               placement={placement}
               offset={12}
+              gap={selectedGap}
               onDismiss={handleDismiss}
             />
 
@@ -252,6 +268,12 @@ ChaSetFloatingNotice {
               type: 'number',
               default: '16',
               description: t('components.floatingNotice.offsetDesc', 'Inset from anchored viewport edge in logical dp.'),
+            },
+            {
+              name: 'gap',
+              type: 'number',
+              default: 'undefined (adaptive: 12dp / 10dp / 7dp)',
+              description: t('components.floatingNotice.gapDesc', 'Joint spacing between stacked notice cards in logical dp. Omit for adaptive spacing based on notice count.'),
             },
             {
               name: 'defaultDuration',

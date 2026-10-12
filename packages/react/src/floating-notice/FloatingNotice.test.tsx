@@ -192,7 +192,7 @@ describe('FloatingNotice', () => {
       { id: 'c', title: 'Notice C' },
     ];
 
-    render(<FloatingNotice notices={notices} />);
+    render(<FloatingNotice notices={notices} gap={7} />);
 
     const container = screen.getByTestId('floating-notice-container');
     const resting = screen.getByTestId('queue-dot-1').style.transform;
@@ -208,6 +208,48 @@ describe('FloatingNotice', () => {
     expect(screen.getByTestId('queue-dot-1').style.transform).toContain(
       'translateY(0.4375rem)'
     );
+  });
+
+  it('adapts gap dynamically based on notice item count', () => {
+    // 2 items: enlarged gap (12dp = 0.75rem)
+    const twoItems: FloatingNoticeItem[] = [
+      { id: '1', title: 'Item 1' },
+      { id: '2', title: 'Item 2' },
+    ];
+    const { unmount: unmount2 } = render(<FloatingNotice notices={twoItems} />);
+    expect(screen.getByTestId('queue-dot-1').style.transform).toContain('translateY(0.75rem)');
+    unmount2();
+
+    // 3 items: medium gap (10dp = 0.625rem)
+    const threeItems: FloatingNoticeItem[] = [
+      { id: '1', title: 'Item 1' },
+      { id: '2', title: 'Item 2' },
+      { id: '3', title: 'Item 3' },
+    ];
+    const { unmount: unmount3 } = render(<FloatingNotice notices={threeItems} />);
+    expect(screen.getByTestId('queue-dot-1').style.transform).toContain('translateY(0.625rem)');
+    unmount3();
+
+    // 4+ items: compact standard gap (7dp = 0.4375rem)
+    const fourItems: FloatingNoticeItem[] = [
+      { id: '1', title: 'Item 1' },
+      { id: '2', title: 'Item 2' },
+      { id: '3', title: 'Item 3' },
+      { id: '4', title: 'Item 4' },
+    ];
+    const { unmount: unmount4 } = render(<FloatingNotice notices={fourItems} />);
+    expect(screen.getByTestId('queue-dot-1').style.transform).toContain('translateY(0.4375rem)');
+    unmount4();
+  });
+
+  it('respects explicit custom gap override regardless of notice count', () => {
+    const twoItems: FloatingNoticeItem[] = [
+      { id: '1', title: 'Item 1' },
+      { id: '2', title: 'Item 2' },
+    ];
+    render(<FloatingNotice notices={twoItems} gap={16} />);
+    // 16dp * 0.0625 = 1rem
+    expect(screen.getByTestId('queue-dot-1').style.transform).toContain('translateY(1rem)');
   });
 
   it('disperses deeper layers with diminishing gaps and shrinking sizes', () => {
