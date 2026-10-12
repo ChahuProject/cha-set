@@ -99,7 +99,7 @@ export function DropdownMenuContent({
         <MenuPrimitive.Popup
           data-slot="dropdown-menu-content"
           className={cn(
-            'relative z-50 max-h-(--available-height) min-w-32 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-md duration-short outline-none',
+            'relative z-50 flex flex-col max-h-(--available-height) min-w-32 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-md duration-short outline-none',
             'data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
             'data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95',
             'data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95',
@@ -126,8 +126,8 @@ export function DropdownMenuContent({
 export interface DropdownMenuGroupProps
   extends React.ComponentProps<typeof MenuPrimitive.Group> {}
 
-export function DropdownMenuGroup({ ...props }: DropdownMenuGroupProps) {
-  return <MenuPrimitive.Group data-slot="dropdown-menu-group" {...props} />;
+export function DropdownMenuGroup({ className, ...props }: DropdownMenuGroupProps) {
+  return <MenuPrimitive.Group data-slot="dropdown-menu-group" className={cn('w-full flex flex-col', className)} {...props} />;
 }
 
 export interface DropdownMenuItemProps
@@ -152,7 +152,7 @@ export function DropdownMenuItem({
       data-inset={inset}
       data-variant={variant}
       className={cn(
-        'group/dropdown-menu-item relative flex cursor-pointer items-center gap-1.5 rounded-sm px-2 py-1.5 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
+        'group/dropdown-menu-item relative flex w-full cursor-pointer items-center gap-1.5 rounded-sm px-2 py-1.5 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
         'focus:bg-accent focus:text-accent-foreground',
         'data-inset:pl-8',
         'data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive',
@@ -170,8 +170,8 @@ export function DropdownMenuItem({
         ? (tooltip as React.ComponentProps<typeof TooltipContent>)
         : { children: tooltip };
     return (
-      <Tooltip>
-        <TooltipTrigger asChild>{itemNode}</TooltipTrigger>
+      <Tooltip className="w-full block">
+        <TooltipTrigger asChild className="w-full">{itemNode}</TooltipTrigger>
         <TooltipContent side={tooltipSide} align="center" {...tooltipProps} />
       </Tooltip>
     );
@@ -201,7 +201,7 @@ export function DropdownMenuCheckboxItem({
       data-slot="dropdown-menu-checkbox-item"
       data-inset={inset}
       className={cn(
-        'relative flex cursor-pointer items-center gap-1.5 rounded-sm py-1.5 pr-8 pl-2 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
+        'relative flex w-full cursor-pointer items-center gap-1.5 rounded-sm py-1.5 pr-8 pl-2 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
         'focus:bg-accent focus:text-accent-foreground',
         'data-inset:pl-8',
         'data-disabled:cursor-not-allowed data-disabled:opacity-50',
@@ -229,8 +229,8 @@ export function DropdownMenuCheckboxItem({
         ? (tooltip as React.ComponentProps<typeof TooltipContent>)
         : { children: tooltip };
     return (
-      <Tooltip>
-        <TooltipTrigger asChild>{itemNode}</TooltipTrigger>
+      <Tooltip className="w-full block">
+        <TooltipTrigger asChild className="w-full">{itemNode}</TooltipTrigger>
         <TooltipContent side={tooltipSide} align="center" {...tooltipProps} />
       </Tooltip>
     );
@@ -273,7 +273,7 @@ export function DropdownMenuRadioItem({
       data-slot="dropdown-menu-radio-item"
       data-inset={inset}
       className={cn(
-        'relative flex cursor-pointer items-center gap-1.5 rounded-sm py-1.5 pr-8 pl-2 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
+        'relative flex w-full cursor-pointer items-center gap-1.5 rounded-sm py-1.5 pr-8 pl-2 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
         'focus:bg-accent focus:text-accent-foreground',
         'data-inset:pl-8',
         'data-disabled:cursor-not-allowed data-disabled:opacity-50',
@@ -300,8 +300,8 @@ export function DropdownMenuRadioItem({
         ? (tooltip as React.ComponentProps<typeof TooltipContent>)
         : { children: tooltip };
     return (
-      <Tooltip>
-        <TooltipTrigger asChild>{itemNode}</TooltipTrigger>
+      <Tooltip className="w-full block">
+        <TooltipTrigger asChild className="w-full">{itemNode}</TooltipTrigger>
         <TooltipContent side={tooltipSide} align="center" {...tooltipProps} />
       </Tooltip>
     );
@@ -393,7 +393,7 @@ export function DropdownMenuSubTrigger({
       data-slot="dropdown-menu-sub-trigger"
       data-inset={inset}
       className={cn(
-        'flex cursor-pointer items-center gap-1.5 rounded-sm px-2 py-1.5 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
+        'flex w-full cursor-pointer items-center gap-1.5 rounded-sm px-2 py-1.5 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
         'focus:bg-accent focus:text-accent-foreground',
         'data-inset:pl-8',
         'data-open:bg-accent data-open:text-accent-foreground',
@@ -420,7 +420,7 @@ export function DropdownMenuSubContent({
       <MenuPrimitive.Popup
         data-slot="dropdown-menu-sub-content"
         className={cn(
-          'relative z-50 min-w-32 origin-(--transform-origin) overflow-hidden rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-md duration-short outline-none',
+          'relative z-50 flex flex-col min-w-32 origin-(--transform-origin) overflow-hidden rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-md duration-short outline-none',
           'data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95',
           'data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95',
           className,

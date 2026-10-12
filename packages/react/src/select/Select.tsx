@@ -134,7 +134,7 @@ export function SelectGroup({ className, ...props }: SelectGroupProps) {
   return (
     <SelectPrimitive.Group
       data-slot="select-group"
-      className={cn('scroll-my-1', className)}
+      className={cn('w-full flex flex-col scroll-my-1', className)}
       {...props}
     />
   );
@@ -249,7 +249,7 @@ export function SelectContent({
           data-slot="select-content"
           data-align-trigger={position === 'item-aligned'}
           className={cn(
-            'relative z-50 max-h-(--available-height) min-w-36 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-md duration-short outline-none',
+            'relative z-50 flex flex-col max-h-(--available-height) min-w-36 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-md duration-short outline-none',
             'data-[align-trigger=true]:animate-none',
             'data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
             'data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95',
@@ -261,7 +261,7 @@ export function SelectContent({
           {...props}
         >
           <SelectScrollUpButton />
-          <div className={cn(position === 'popper' && 'w-full min-w-(--anchor-width)')}>
+          <div className={cn('w-full flex flex-col', position === 'popper' && 'min-w-(--anchor-width)')}>
             {children}
           </div>
           <SelectScrollDownButton />
@@ -343,8 +343,8 @@ export function SelectItem({
         ? (tooltip as React.ComponentProps<typeof TooltipContent>)
         : { children: tooltip };
     return (
-      <Tooltip>
-        <TooltipTrigger asChild>{itemNode}</TooltipTrigger>
+      <Tooltip className="w-full block">
+        <TooltipTrigger asChild className="w-full">{itemNode}</TooltipTrigger>
         <TooltipContent side={tooltipSide} align="center" {...tooltipProps} />
       </Tooltip>
     );

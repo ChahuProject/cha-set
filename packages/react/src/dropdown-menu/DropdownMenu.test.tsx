@@ -173,4 +173,24 @@ describe('DropdownMenu', () => {
     await user.keyboard('{Escape}');
     expect(screen.queryByText('Action 1')).toBeNull();
   });
+
+  it('renders items with tooltips with full-width block wrapper and item node', () => {
+    render(
+      <DropdownMenu open>
+        <DropdownMenuTrigger>Menu</DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuGroup>
+            <DropdownMenuItem tooltip="Profile tooltip">Profile</DropdownMenuItem>
+            <DropdownMenuItem tooltip="Billing tooltip">Billing</DropdownMenuItem>
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>,
+    );
+
+    const profileItem = screen.getByText('Profile').closest('[data-slot="dropdown-menu-item"]');
+    expect(profileItem).toHaveClass('w-full');
+    const tooltipRoot = profileItem?.closest('[data-slot="tooltip-root"]');
+    expect(tooltipRoot).toHaveClass('w-full');
+    expect(tooltipRoot).toHaveClass('block');
+  });
 });

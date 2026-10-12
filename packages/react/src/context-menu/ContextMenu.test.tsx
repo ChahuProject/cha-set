@@ -5,6 +5,7 @@ import {
   ContextMenu,
   ContextMenuTrigger,
   ContextMenuContent,
+  ContextMenuGroup,
   ContextMenuItem,
   ContextMenuSeparator,
   ContextMenuShortcut,
@@ -120,5 +121,27 @@ describe('ContextMenu', () => {
 
     await user.keyboard('{Escape}');
     expect(screen.queryByText('Item')).toBeNull();
+  });
+
+  it('renders items with tooltips with full-width block wrapper and item node', async () => {
+    render(
+      <ContextMenu defaultOpen>
+        <ContextMenuTrigger>
+          <div>Target</div>
+        </ContextMenuTrigger>
+        <ContextMenuContent>
+          <ContextMenuGroup>
+            <ContextMenuItem tooltip="Back in history">Back</ContextMenuItem>
+            <ContextMenuItem tooltip="Reload page">Reload</ContextMenuItem>
+          </ContextMenuGroup>
+        </ContextMenuContent>
+      </ContextMenu>,
+    );
+
+    const backItem = (await screen.findByText('Back')).closest('[data-slot="context-menu-item"]');
+    expect(backItem).toHaveClass('w-full');
+    const tooltipRoot = backItem?.closest('[data-slot="tooltip-root"]');
+    expect(tooltipRoot).toHaveClass('w-full');
+    expect(tooltipRoot).toHaveClass('block');
   });
 });

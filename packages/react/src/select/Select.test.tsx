@@ -175,4 +175,30 @@ describe('Select', () => {
     await user.keyboard('{Escape}');
     expect(screen.queryByRole('option', { name: 'Apple' })).toBeNull();
   });
+
+  it('renders items with tooltips with full-width block wrapper and item node', async () => {
+    const user = userEvent.setup();
+    render(
+      <Select>
+        <SelectTrigger>
+          <SelectValue placeholder="Choose option" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectItem value="apple" tooltip="Fuji crisp apples">Apple</SelectItem>
+            <SelectItem value="banana" tooltip="Cavendish sweet bananas">Banana</SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>,
+    );
+
+    const trigger = screen.getByRole('combobox');
+    await user.click(trigger);
+
+    const appleOption = (await screen.findByRole('option', { name: 'Apple' })).closest('[data-slot="select-item"]');
+    expect(appleOption).toHaveClass('w-full');
+    const tooltipRoot = appleOption?.closest('[data-slot="tooltip-root"]');
+    expect(tooltipRoot).toHaveClass('w-full');
+    expect(tooltipRoot).toHaveClass('block');
+  });
 });

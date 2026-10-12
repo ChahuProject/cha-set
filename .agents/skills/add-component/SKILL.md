@@ -108,6 +108,7 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
     - **Horizontal Action Rows & Form Fields → `top`**: Standalone buttons, copy buttons (`CopyButton`), segmented controls, and form inputs (`Input`, `DurationInput`, `ColorPicker`) default to `side="top"`.
     - **Dogfooding & Title Elimination**: Components embedding tooltips internally (`CopyButton`, `WindowTitleBar`, `DraggableModal`, `ScaleOsd`) MUST use ChaSet `<Tooltip>` / `ChaSetTooltip` and omit native HTML `title` attributes on buttons to prevent browser-native tooltips from doubling with library bubbles.
     - **Showcase Living Examples**: Living showcase pages for menu-like components (`DropdownMenuDocPage`, `ContextMenuDocPage`, `SelectDocPage`) MUST declare `tooltip` properties in their interactive sandboxes and code snippets so users can verify default placement in action.
+    - **Vertical Stacking & Zero Inline Collapse (菜单/选项包裹 Tooltip 防横排塌陷律)**: When wrapping items in `<Tooltip>` (`DropdownMenuItem`, `SelectItem`, `ContextMenuItem`), `<Tooltip>` MUST declare `className="w-full block"` and `<TooltipTrigger asChild className="w-full">` while item nodes declare `w-full`. Popups and groups must maintain `flex flex-col` / `w-full flex flex-col`. Never allow `TooltipRoot`'s default `inline-flex` to cause vertical items to collapse into inline chips sitting side-by-side on the same row.
 
 ---
 

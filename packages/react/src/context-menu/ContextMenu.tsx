@@ -65,7 +65,7 @@ export function ContextMenuContent({
         <ContextMenuPrimitive.Popup
           data-slot="context-menu-content"
           className={cn(
-            'relative z-50 min-w-36 origin-(--transform-origin) overflow-hidden rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-md duration-short outline-none',
+            'relative z-50 flex flex-col min-w-36 origin-(--transform-origin) overflow-hidden rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-md duration-short outline-none',
             'data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95',
             'data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95',
             className,
@@ -99,7 +99,7 @@ export function ContextMenuItem({
       data-variant={variant}
       data-inset={inset}
       className={cn(
-        'relative flex cursor-pointer items-center gap-1.5 rounded-sm px-2 py-1.5 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
+        'relative flex w-full cursor-pointer items-center gap-1.5 rounded-sm px-2 py-1.5 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
         'focus:bg-accent focus:text-accent-foreground',
         'data-inset:pl-8',
         'data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive',
@@ -117,8 +117,8 @@ export function ContextMenuItem({
         ? (tooltip as React.ComponentProps<typeof TooltipContent>)
         : { children: tooltip };
     return (
-      <Tooltip>
-        <TooltipTrigger asChild>{itemNode}</TooltipTrigger>
+      <Tooltip className="w-full block">
+        <TooltipTrigger asChild className="w-full">{itemNode}</TooltipTrigger>
         <TooltipContent side={tooltipSide} align="center" {...tooltipProps} />
       </Tooltip>
     );
@@ -130,8 +130,8 @@ export function ContextMenuItem({
 export interface ContextMenuGroupProps
   extends React.ComponentProps<typeof ContextMenuPrimitive.Group> {}
 
-export function ContextMenuGroup({ ...props }: ContextMenuGroupProps) {
-  return <ContextMenuPrimitive.Group data-slot="context-menu-group" {...props} />;
+export function ContextMenuGroup({ className, ...props }: ContextMenuGroupProps) {
+  return <ContextMenuPrimitive.Group data-slot="context-menu-group" className={cn('w-full flex flex-col', className)} {...props} />;
 }
 
 export interface ContextMenuLabelProps
@@ -194,7 +194,7 @@ export function ContextMenuCheckboxItem({
       data-slot="context-menu-checkbox-item"
       data-inset={inset}
       className={cn(
-        'relative flex cursor-pointer items-center gap-1.5 rounded-sm py-1.5 pr-8 pl-2 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
+        'relative flex w-full cursor-pointer items-center gap-1.5 rounded-sm py-1.5 pr-8 pl-2 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
         'focus:bg-accent focus:text-accent-foreground',
         'data-inset:pl-8',
         'data-disabled:cursor-not-allowed data-disabled:opacity-50',
@@ -222,8 +222,8 @@ export function ContextMenuCheckboxItem({
         ? (tooltip as React.ComponentProps<typeof TooltipContent>)
         : { children: tooltip };
     return (
-      <Tooltip>
-        <TooltipTrigger asChild>{itemNode}</TooltipTrigger>
+      <Tooltip className="w-full block">
+        <TooltipTrigger asChild className="w-full">{itemNode}</TooltipTrigger>
         <TooltipContent side={tooltipSide} align="center" {...tooltipProps} />
       </Tooltip>
     );
@@ -266,7 +266,7 @@ export function ContextMenuRadioItem({
       data-slot="context-menu-radio-item"
       data-inset={inset}
       className={cn(
-        'relative flex cursor-pointer items-center gap-1.5 rounded-sm py-1.5 pr-8 pl-2 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
+        'relative flex w-full cursor-pointer items-center gap-1.5 rounded-sm py-1.5 pr-8 pl-2 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
         'focus:bg-accent focus:text-accent-foreground',
         'data-inset:pl-8',
         'data-disabled:cursor-not-allowed data-disabled:opacity-50',
@@ -293,8 +293,8 @@ export function ContextMenuRadioItem({
         ? (tooltip as React.ComponentProps<typeof TooltipContent>)
         : { children: tooltip };
     return (
-      <Tooltip>
-        <TooltipTrigger asChild>{itemNode}</TooltipTrigger>
+      <Tooltip className="w-full block">
+        <TooltipTrigger asChild className="w-full">{itemNode}</TooltipTrigger>
         <TooltipContent side={tooltipSide} align="center" {...tooltipProps} />
       </Tooltip>
     );
@@ -347,7 +347,7 @@ export function ContextMenuSubTrigger({
       data-slot="context-menu-sub-trigger"
       data-inset={inset}
       className={cn(
-        'flex cursor-pointer items-center gap-1.5 rounded-sm px-2 py-1.5 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
+        'flex w-full cursor-pointer items-center gap-1.5 rounded-sm px-2 py-1.5 text-sm text-foreground outline-hidden select-none transition-colors duration-quick ease-standard',
         'focus:bg-accent focus:text-accent-foreground',
         'data-inset:pl-8',
         'data-open:bg-accent data-open:text-accent-foreground',
@@ -374,7 +374,7 @@ export function ContextMenuSubContent({
       <ContextMenuPrimitive.Popup
         data-slot="context-menu-sub-content"
         className={cn(
-          'relative z-50 min-w-32 origin-(--transform-origin) overflow-hidden rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-md duration-short outline-none',
+          'relative z-50 flex flex-col min-w-32 origin-(--transform-origin) overflow-hidden rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-md duration-short outline-none',
           'data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95',
           'data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95',
           className,
