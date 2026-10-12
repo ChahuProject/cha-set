@@ -6,7 +6,11 @@ import ChaSet
 
 Rectangle {
     id: root
-    parent: (typeof Overlay !== "undefined" && Overlay.overlay) ? Overlay.overlay : ((Window.window && Window.window.contentItem) ? Window.window.contentItem : undefined)
+    parent: (Window.window && Window.window.contentItem)
+            ? Window.window.contentItem
+            : ((typeof Overlay !== "undefined" && Overlay.overlay && Overlay.overlay.width > 0)
+               ? Overlay.overlay
+               : undefined)
     anchors.fill: parent
     z: 200
     color: Qt.rgba(0, 0, 0, 0.6)
@@ -145,8 +149,12 @@ Rectangle {
     // Overlay scrim click to dismiss
     MouseArea {
         anchors.fill: parent
-        onClicked: {
-            if (root.closeOnOverlayClick) {
+        hoverEnabled: true
+        acceptedButtons: Qt.AllButtons
+        preventStealing: true
+        onWheel: (wheel) => { wheel.accepted = true; }
+        onClicked: (mouse) => {
+            if (mouse.button === Qt.LeftButton && root.closeOnOverlayClick) {
                 root.open = false
                 root.rejected()
             }
@@ -177,10 +185,14 @@ Rectangle {
             NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeEntrance }
         }
 
-        // Intercept clicks to prevent dismissal when clicking inside the card
+        // Intercept clicks, hover and wheel to prevent dismissal & piercing when clicking/moving inside the card
         MouseArea {
             anchors.fill: parent
             z: -1
+            hoverEnabled: true
+            acceptedButtons: Qt.AllButtons
+            preventStealing: true
+            onWheel: (wheel) => { wheel.accepted = true; }
             onClicked: {}
         }
 

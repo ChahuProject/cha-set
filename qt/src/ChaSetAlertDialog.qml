@@ -5,7 +5,11 @@ import ChaSet
 
 Rectangle {
     id: root
-    parent: (typeof Overlay !== "undefined" && Overlay.overlay) ? Overlay.overlay : ((Window.window && Window.window.contentItem) ? Window.window.contentItem : undefined)
+    parent: (Window.window && Window.window.contentItem)
+            ? Window.window.contentItem
+            : ((typeof Overlay !== "undefined" && Overlay.overlay && Overlay.overlay.width > 0)
+               ? Overlay.overlay
+               : undefined)
     anchors.fill: parent
     z: 250
     color: Qt.rgba(0, 0, 0, 0.6)
@@ -36,7 +40,7 @@ Rectangle {
 
     Behavior on opacity {
         enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
-        NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: ThemeTokens.easeEmphasized }
+        NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeEntrance }
     }
 
     // Registry / Escape contract — see ChaSetOverlayHub.
@@ -103,8 +107,12 @@ Rectangle {
 
     MouseArea {
         anchors.fill: parent
-        onClicked: {
-            if (root.closeOnOverlayClick) {
+        hoverEnabled: true
+        acceptedButtons: Qt.AllButtons
+        preventStealing: true
+        onWheel: (wheel) => { wheel.accepted = true; }
+        onClicked: (mouse) => {
+            if (mouse.button === Qt.LeftButton && root.closeOnOverlayClick) {
                 root.open = false
                 root.cancelled()
             }
@@ -129,13 +137,17 @@ Rectangle {
 
         Behavior on scale {
             enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
-            NumberAnimation { duration: ThemeTokens.motionMedium; easing.type: ThemeTokens.easeEmphasized }
+            NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeEntrance }
         }
 
         MouseArea {
             anchors.fill: parent
             z: -1
-            // prevent scrim dismiss when clicking inside dialog
+            hoverEnabled: true
+            acceptedButtons: Qt.AllButtons
+            preventStealing: true
+            onWheel: (wheel) => { wheel.accepted = true; }
+            onClicked: {}
         }
 
         // Title Column (pinned at top)

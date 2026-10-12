@@ -417,7 +417,7 @@ Item {
                     id: delegateHover
                     cursorShape: Qt.PointingHandCursor
                     onHoveredChanged: {
-                        if (hovered) {
+                        if (hovered && !pillHover.hovered) {
                             checkHoverRaise();
                         } else if (root._pendingRaise === index) {
                             root._pendingRaise = -1;
@@ -425,6 +425,7 @@ Item {
                     }
 
                     onPointChanged: {
+                        if (pillHover.hovered) return;
                         if (delegateHover.hovered && (index === root._lastRaisedFrom)) {
                             var curX = stackHover.point ? stackHover.point.position.x : -1;
                             var curY = stackHover.point ? stackHover.point.position.y : -1;
@@ -439,6 +440,7 @@ Item {
                     }
 
                     function checkHoverRaise() {
+                        if (pillHover.hovered) return;
                         var now = Date.now();
                         var inSettle = now < root._settleUntil;
                         var isRecentExit = (index === root._lastRaisedFrom);
@@ -474,6 +476,11 @@ Item {
         // Raised pill (full-size, top of the stack, kept at its sorted position).
         Rectangle {
             id: pill
+
+            HoverHandler {
+                id: pillHover
+                blocking: true
+            }
 
             width: implicitWidth
             height: implicitHeight

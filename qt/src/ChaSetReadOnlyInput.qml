@@ -144,7 +144,7 @@ Item {
             id: hoverArea
             anchors.fill: parent
             z: -1
-            hoverEnabled: false
+            hoverEnabled: !root.disabled
             cursorShape: root.disabled ? Qt.ForbiddenCursor : Qt.IBeamCursor
             onClicked: {
                 if (!root.disabled) {
