@@ -2,7 +2,7 @@
 import QtQuick 6.10
 import ChaSet
 
-Item {
+FocusScope {
     id: root
 
     property string keybinding: "Ctrl+K"
@@ -43,19 +43,31 @@ Item {
 
     // While capturing, Escape cancels the recording — so the overlay registry must stand
     // down, otherwise a window-level Escape consumer would dismiss a host layer instead.
-    onRecordingChanged: ChaSetOverlayHub.escapeSuspended = root.recording
+    onRecordingChanged: {
+        ChaSetOverlayHub.escapeSuspended = root.recording
+        if (root.recording) {
+            recorderRect.forceActiveFocus()
+        }
+    }
 
     Component.onDestruction: {
         if (root.recording) ChaSetOverlayHub.escapeSuspended = false
     }
 
     Rectangle {
+        id: recorderRect
         anchors.fill: parent
         color: root.recording ? ThemeTokens.hover : ThemeTokens.panel
         border.color: root.recording ? ThemeTokens.accent : ThemeTokens.border
         border.width: root.recording ? 2 : 1
         radius: root.effectiveRadius
-        focus: root.recording
+        focus: true
+
+        onActiveFocusChanged: {
+            if (!activeFocus && root.recording) {
+                root.recording = false
+            }
+        }
 
         Behavior on color {
             enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
@@ -133,6 +145,9 @@ Item {
                 // Whole-box click toggles recording; Escape cancels.
                 if (!root.disabled) {
                     root.recording = !root.recording
+                    if (root.recording) {
+                        recorderRect.forceActiveFocus()
+                    }
                 }
             }
         }
@@ -178,6 +193,13 @@ Item {
                 if (text && text.trim().length > 0 && text.charCodeAt(0) >= 32)
                     return text.trim().toUpperCase()
                 return ""
+            }
+        }
+
+        Keys.priority: Keys.BeforeItem
+        Keys.onShortcutOverride: function(event) {
+            if (root.recording && !root.disabled) {
+                event.accepted = true
             }
         }
 
