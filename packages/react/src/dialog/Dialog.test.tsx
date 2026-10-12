@@ -10,6 +10,8 @@ import {
   DialogDescription,
   DialogFooter,
   DialogClose,
+  DialogAction,
+  DialogCancel,
   type DialogSizeOption,
 } from './Dialog';
 
@@ -398,5 +400,42 @@ describe('Dialog', () => {
     // Close affordance: below the button, falling into the modal body.
     expect(tooltip).toHaveAttribute('data-side', 'bottom');
     expect(tooltip.parentElement).toBe(document.body);
+  });
+
+  it('renders alert variant with alertdialog role and Action/Cancel controls', async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+
+    render(
+      <Dialog variant="alert" defaultOpen onOpenChange={onOpenChange}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Deactivate Account?</DialogTitle>
+            <DialogDescription>All your data will be permanently deleted.</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <DialogCancel>Cancel</DialogCancel>
+            <DialogAction variant="destructive">Deactivate</DialogAction>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>,
+    );
+
+    const dialog = screen.getByRole('alertdialog');
+    expect(dialog).toBeInTheDocument();
+    expect(dialog).toHaveAttribute('data-variant', 'alert');
+
+    // Close button should not be present by default in alert variant
+    expect(screen.queryByRole('button', { name: 'Close' })).toBeNull();
+
+    const cancelBtn = screen.getByRole('button', { name: 'Cancel' });
+    const actionBtn = screen.getByRole('button', { name: 'Deactivate' });
+    expect(cancelBtn).toBeInTheDocument();
+    expect(actionBtn).toBeInTheDocument();
+    expect(actionBtn).toHaveClass('text-destructive');
+
+    // Clicking cancel should dismiss the dialog
+    await user.click(cancelBtn);
+    expect(onOpenChange).toHaveBeenCalledWith(false);
   });
 });

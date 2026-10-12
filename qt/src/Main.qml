@@ -396,7 +396,7 @@ ApplicationWindow {
         case "select": return "SelectDocPage.qml";
         case "popover": return "PopoverDocPage.qml";
         case "context-menu": return "ContextMenuDocPage.qml";
-        case "alert-dialog": return "AlertDialogDocPage.qml";
+        case "alert-dialog": return "DialogDocPage.qml";
         case "sheet": return "SheetDocPage.qml";
         case "skeleton": return "SkeletonDocPage.qml";
         case "copy-button": return "CopyButtonDocPage.qml";

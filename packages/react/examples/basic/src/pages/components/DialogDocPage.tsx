@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Button, Input, Badge, Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose, type DialogSizeOption, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
+import { useState } from 'react';
+import { Button, Input, Badge, Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose, DialogAction, DialogCancel, type DialogSizeOption, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -223,7 +223,7 @@ export function DialogDocPage() {
             <span className="text-xs text-muted-foreground mb-3">
               {t('overlays.dialog.destructiveConfirmationDesc', 'Dialog for destructive operations that require explicit confirmation.')}
             </span>
-            <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+            <Dialog variant="alert" open={confirmOpen} onOpenChange={setConfirmOpen}>
               <DialogTrigger asChild>
                 <Button variant="destructive" size="sm">
                   {t('overlays.dialog.deleteAccount', 'Delete Account')}
@@ -237,18 +237,20 @@ export function DialogDocPage() {
                   </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
-                  <DialogClose asChild>
+                  <DialogCancel asChild>
                     <Button variant="outline" size="sm">
                       {t('common.cancel', 'Cancel')}
                     </Button>
-                  </DialogClose>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => setConfirmOpen(false)}
-                  >
-                    {t('overlays.dialog.yesDeleteAccount', 'Yes, delete account')}
-                  </Button>
+                  </DialogCancel>
+                  <DialogAction asChild variant="destructive">
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => setConfirmOpen(false)}
+                    >
+                      {t('overlays.dialog.yesDeleteAccount', 'Yes, delete account')}
+                    </Button>
+                  </DialogAction>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
@@ -320,6 +322,12 @@ export function DialogDocPage() {
               type: 'boolean',
               default: 'false',
               description: t('components.dialog.openDesc', 'The controlled open state of the dialog.'),
+            },
+            {
+              name: 'variant',
+              type: "'default' | 'alert'",
+              default: "'default'",
+              description: t('components.dialog.variantDesc', 'Visual and behavioral variant of the dialog (standard modal or alert confirmation).'),
             },
             {
               name: 'defaultOpen',

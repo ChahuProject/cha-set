@@ -10,12 +10,15 @@ import {
   dialogDescriptionSchema,
   dialogFooterSchema,
   dialogCloseSchema,
+  dialogActionSchema,
+  dialogCancelSchema,
 } from '@chahu/spec/dialog';
 
 describe('Dialog conformance (spec contract)', () => {
   it('accepts a props fixture that satisfies the spec contract', () => {
     const rootFixture = {
       open: false,
+      variant: 'alert',
       title: 'Modal Title',
       description: 'Modal description text',
     } as const;
@@ -23,6 +26,7 @@ describe('Dialog conformance (spec contract)', () => {
 
     const defaultParsed = dialogSchema.parse({});
     expect(defaultParsed.open).toBe(false);
+    expect(defaultParsed.variant).toBe('default');
 
     const triggerFixture = {
       asChild: false,
@@ -32,6 +36,7 @@ describe('Dialog conformance (spec contract)', () => {
 
     const contentFixture = {
       customRadius: 8,
+      variant: 'default' as const,
       size: 'lg' as const,
       closeOnOverlayClick: true,
       closeOnEscape: true,
@@ -43,6 +48,19 @@ describe('Dialog conformance (spec contract)', () => {
     expect(parsedContent.size).toBe('lg');
     expect(parsedContent.closeOnOverlayClick).toBe(true);
     expect(parsedContent.closeOnEscape).toBe(true);
+    expect(parsedContent.variant).toBe('default');
+
+    const alertContentFixture = {
+      variant: 'alert' as const,
+      closeOnOverlayClick: false,
+      showCloseButton: false,
+      draggable: false,
+    };
+    const parsedAlert = dialogContentSchema.parse(alertContentFixture);
+    expect(parsedAlert.variant).toBe('alert');
+    expect(parsedAlert.closeOnOverlayClick).toBe(false);
+    expect(parsedAlert.showCloseButton).toBe(false);
+    expect(parsedAlert.draggable).toBe(false);
 
     const desktopContentFixture = {
       draggable: true,
@@ -72,12 +90,15 @@ describe('Dialog conformance (spec contract)', () => {
     expect(() => dialogFooterSchema.parse({})).not.toThrow();
     expect(() => dialogFooterSchema.parse({ showCloseButton: true })).not.toThrow();
     expect(() => dialogCloseSchema.parse({})).not.toThrow();
+    expect(() => dialogActionSchema.parse({ disabled: false, variant: 'destructive' })).not.toThrow();
+    expect(() => dialogCancelSchema.parse({ disabled: false })).not.toThrow();
   });
 
   it('rejects invalid types per the contract', () => {
     expect(() => dialogSchema.parse({ open: 'not-a-boolean' })).toThrow();
     expect(() => dialogContentSchema.parse({ draggable: 'not-a-bool' })).toThrow();
     expect(() => dialogContentSchema.parse({ initialPositionMode: 'invalid-mode' })).toThrow();
+    expect(() => dialogActionSchema.parse({ disabled: 'invalid' })).toThrow();
   });
 
   it('earned coverage declares must capabilities', () => {
@@ -93,7 +114,7 @@ describe('Dialog conformance (spec contract)', () => {
       console.warn('[conformance] coverage.json has no dialog entry yet; skipping earned-capability assertions');
       return;
     }
-    for (const cap of ['open', 'portal', 'overlay', 'closeButton', 'escapeKey', 'size'] as const) {
+    for (const cap of ['open', 'portal', 'overlay', 'closeButton', 'escapeKey', 'variant', 'size'] as const) {
       expect(coverage.dialog?.[cap], `capability "${cap}" must be earned`).toBe(true);
     }
   });

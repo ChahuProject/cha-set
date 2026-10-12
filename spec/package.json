@@ -25,7 +25,7 @@
     "./select": "./components/select.ts",
     "./popover": "./components/popover.ts",
     "./context-menu": "./components/context-menu.ts",
-    "./alert-dialog": "./components/alert-dialog.ts",
+    "./alert-dialog": "./components/dialog.ts",
     "./sheet": "./components/sheet.ts",
     "./skeleton": "./components/skeleton.ts",
     "./hover-copy": "./components/hover-copy.ts",

@@ -231,6 +231,12 @@ DocLayout {
                 description: ChaSetI18n.tr("components.dialog.openDescQt", "Controls the visible / open state of the modal dialog.")
             },
             {
+                name: "variant",
+                type: "string",
+                defaultVal: "\"default\"",
+                description: ChaSetI18n.tr("components.dialog.variantDescQt", "Visual and behavioral variant of the dialog ('default' or 'alert').")
+            },
+            {
                 name: "title",
                 type: "string",
                 defaultVal: "\"\"",
@@ -417,28 +423,13 @@ DocLayout {
     // Confirmation Destructive Dialog Instance
     ChaSetDialog {
         id: confirmDialog
+        variant: "alert"
+        destructive: true
         title: ChaSetI18n.tr("overlays.dialog.areYouSure", "Are you absolutely sure?")
         description: ChaSetI18n.tr("overlays.dialog.deleteAccountDesc", "This action cannot be undone. This will permanently delete your account.")
+        confirmText: ChaSetI18n.tr("overlays.dialog.yesDeleteAccount", "Yes, delete account")
+        cancelText: ChaSetI18n.tr("common.cancel", "Cancel")
         dialogWidth: 440
-
-        Row {
-            anchors.right: parent.right
-            spacing: 10
-
-            ChaSetButton {
-                size: "sm"
-                variant: "outline"
-                text: ChaSetI18n.tr("common.cancel", "Cancel")
-                onClicked: confirmDialog.reject()
-            }
-
-            ChaSetButton {
-                size: "sm"
-                variant: "destructive"
-                text: ChaSetI18n.tr("overlays.dialog.yesDeleteAccount", "Yes, delete account")
-                onClicked: confirmDialog.accept()
-            }
-        }
     }
 
     // Informational Notice Dialog Instance

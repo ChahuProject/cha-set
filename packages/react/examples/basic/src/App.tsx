@@ -58,7 +58,6 @@ import { DropdownMenuDocPage } from './pages/components/DropdownMenuDocPage';
 import { SelectDocPage } from './pages/components/SelectDocPage';
 import { PopoverDocPage } from './pages/components/PopoverDocPage';
 import { ContextMenuDocPage } from './pages/components/ContextMenuDocPage';
-import { AlertDialogDocPage } from './pages/components/AlertDialogDocPage';
 import { SheetDocPage } from './pages/components/SheetDocPage';
 import { SkeletonDocPage } from './pages/components/SkeletonDocPage';
 import { CopyButtonDocPage } from './pages/components/CopyButtonDocPage';
@@ -809,7 +808,7 @@ export function App() {
       case '#/components/context-menu':
         return <ContextMenuDocPage />;
       case '#/components/alert-dialog':
-        return <AlertDialogDocPage />;
+        return <DialogDocPage />;
       case '#/components/sheet':
         return <SheetDocPage />;
       case '#/components/skeleton':

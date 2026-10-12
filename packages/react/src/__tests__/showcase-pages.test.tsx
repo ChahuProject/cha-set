@@ -2,7 +2,6 @@ import * as React from 'react';
 import { describe, it, expect } from 'vitest';
 import { render, fireEvent } from '@testing-library/react';
 
-import { AlertDialogDocPage } from '../../examples/basic/src/pages/components/AlertDialogDocPage';
 import { BadgeDocPage } from '../../examples/basic/src/pages/components/BadgeDocPage';
 import { ButtonDocPage } from '../../examples/basic/src/pages/components/ButtonDocPage';
 import { CardDocPage } from '../../examples/basic/src/pages/components/CardDocPage';
@@ -55,7 +54,6 @@ import { ViewportConstrainedContainerDocPage } from '../../examples/basic/src/pa
 import { IconsPage } from '../../examples/basic/src/pages/get-started/IconsPage';
 
 const pages = [
-  { name: 'AlertDialogDocPage', Component: AlertDialogDocPage },
   { name: 'BadgeDocPage', Component: BadgeDocPage },
   { name: 'ButtonDocPage', Component: ButtonDocPage },
   { name: 'CardDocPage', Component: CardDocPage },

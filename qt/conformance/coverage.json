@@ -96,7 +96,11 @@
     "portal": true,
     "overlay": true,
     "closeButton": true,
-    "escapeKey": true
+    "escapeKey": true,
+    "variant": true,
+    "action": true,
+    "cancel": true,
+    "destructive": true
   },
   "tooltip": {
     "content": true,
@@ -141,12 +145,6 @@
     "trigger": true,
     "items": true,
     "submenus": true
-  },
-  "alertDialog": {
-    "open": true,
-    "action": true,
-    "cancel": true,
-    "overlay": true
   },
   "sheet": {
     "open": true,

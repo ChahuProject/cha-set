@@ -1392,15 +1392,8 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "dialog",
         "title": "Dialog",
         "href": "#/components/dialog",
-        "desc": "Modal window that interrupts the user with critical content.",
-        "description": "Modal window that interrupts the user with critical content."
-      },
-      {
-        "id": "alert-dialog",
-        "title": "Alert Dialog",
-        "href": "#/components/alert-dialog",
-        "desc": "A modal dialog that interrupts the user with important content and requires confirmation.",
-        "description": "A modal dialog that interrupts the user with important content and requires confirmation."
+        "desc": "Modal window that interrupts the user with critical content, with standard and alert confirmation variants.",
+        "description": "Modal window that interrupts the user with critical content, with standard and alert confirmation variants."
       },
       {
         "id": "sheet",

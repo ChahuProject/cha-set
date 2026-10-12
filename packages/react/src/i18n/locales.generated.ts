@@ -1711,6 +1711,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "closeOnOverlayClickDesc": "点击背景遮罩是否关闭对话框。",
       "closeOnOverlayClickDescQt": "点击背景遮罩是否关闭对话框。",
       "closedDesc": "模态关闭时触发。",
+      "confirmText": "继续",
       "contentClassNameDesc": "可滚动内部内容容器的自定义类名。",
       "contentDataDesc": "正文内容元素的默认属性别名。",
       "customRadiusDesc": "模态对话框卡片的圆角半径。",
@@ -1739,7 +1740,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "sizeMenuTooltipDesc": "尺寸切换下拉按钮的提示文本。",
       "sizeOptionsDesc": "右上角尺寸切换下拉菜单的预设尺寸选项。",
       "titleDescQt": "以醒目粗体样式显示的标题文本。",
-      "topMarginRemDesc": "当 initialPositionMode 为 top 时以 rem 为单位的顶部边距。"
+      "topMarginRemDesc": "当 initialPositionMode 为 top 时以 rem 为单位的顶部边距。",
+      "variantDesc": "对话框的视觉与交互变体（标准模态或警告确认弹窗）。",
+      "variantDescQt": "对话框的视觉与交互变体（'default' 或 'alert'）。"
     },
     "draggableModal": {
       "autoFitHeightDesc": "是否根据内容自然高度动态自适应贴高。",
@@ -5542,6 +5545,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "closeOnOverlayClickDesc": "Whether clicking the backdrop overlay dismisses the dialog.",
       "closeOnOverlayClickDescQt": "Whether clicking the backdrop overlay dismisses the dialog.",
       "closedDesc": "Emitted when the modal has closed.",
+      "confirmText": "Continue",
       "contentClassNameDesc": "Custom class name for the scrollable inner content container.",
       "contentDataDesc": "Default property alias for body content elements.",
       "customRadiusDesc": "Corner radius of the modal dialog card.",
@@ -5570,7 +5574,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "sizeMenuTooltipDesc": "Tooltip text for the size switcher dropdown button.",
       "sizeOptionsDesc": "Preset sizing options for the top-right size switcher dropdown menu.",
       "titleDescQt": "Header title text displayed in prominent bold styling.",
-      "topMarginRemDesc": "Top margin in rem when initialPositionMode is top."
+      "topMarginRemDesc": "Top margin in rem when initialPositionMode is top.",
+      "variantDesc": "Visual and behavioral variant of the dialog (standard modal or alert confirmation).",
+      "variantDescQt": "Visual and behavioral variant of the dialog ('default' or 'alert')."
     },
     "draggableModal": {
       "autoFitHeightDesc": "Whether to auto-fit height to natural content height.",

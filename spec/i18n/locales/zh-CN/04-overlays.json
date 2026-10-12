@@ -57,6 +57,7 @@
       "closeOnOverlayClickDesc": "点击背景遮罩是否关闭对话框。",
       "closeOnOverlayClickDescQt": "点击背景遮罩是否关闭对话框。",
       "closedDesc": "模态关闭时触发。",
+      "confirmText": "继续",
       "contentClassNameDesc": "可滚动内部内容容器的自定义类名。",
       "contentDataDesc": "正文内容元素的默认属性别名。",
       "customRadiusDesc": "模态对话框卡片的圆角半径。",
@@ -85,7 +86,9 @@
       "sizeMenuTooltipDesc": "尺寸切换下拉按钮的提示文本。",
       "sizeOptionsDesc": "右上角尺寸切换下拉菜单的预设尺寸选项。",
       "titleDescQt": "以醒目粗体样式显示的标题文本。",
-      "topMarginRemDesc": "当 initialPositionMode 为 top 时以 rem 为单位的顶部边距。"
+      "topMarginRemDesc": "当 initialPositionMode 为 top 时以 rem 为单位的顶部边距。",
+      "variantDesc": "对话框的视觉与交互变体（标准模态或警告确认弹窗）。",
+      "variantDescQt": "对话框的视觉与交互变体（'default' 或 'alert'）。"
     },
     "draggableModal": {
       "autoFitHeightDesc": "是否根据内容自然高度动态自适应贴高。",

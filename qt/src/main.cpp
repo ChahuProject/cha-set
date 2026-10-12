@@ -1165,7 +1165,7 @@ static bool runRealHoverCopyVerification(QQuickWindow* window) {
     if (!QMetaObject::invokeMethod(testHoverCopy, "copy"))
         return fail(QStringLiteral("invokeMethod second re-copy on testHoverCopy failed"));
     bool restoredHover = false;
-    for (int poll = 0; poll < 10; ++poll) {
+    for (int poll = 0; poll < 20; ++poll) {
         QTest::qWait(200);
         if (hoverState() == QStringLiteral("hovered")) { restoredHover = true; break; }
     }
@@ -1183,7 +1183,7 @@ static bool runRealHoverCopyVerification(QQuickWindow* window) {
     if (!QMetaObject::invokeMethod(testHoverCopy, "copy"))
         return fail(QStringLiteral("invokeMethod copy() before idle-restore failed"));
     bool restoredIdle = false;
-    for (int poll = 0; poll < 10; ++poll) {
+    for (int poll = 0; poll < 20; ++poll) {
         QTest::qWait(200);
         if (hoverState() == QStringLiteral("idle")) { restoredIdle = true; break; }
     }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createPortal } from 'react-dom';
-import { Button } from '../button';
+import { Button, buttonVariants, type ButtonVariant } from '../button';
 import {
   DraggableModal,
   type DraggableModalSizeOption,
@@ -14,6 +14,8 @@ import { useChaSetI18n } from '../i18n';
 
 export type { DraggableModalSizeOption as DialogSizeOption, DraggableModalSizeOption as 弹窗尺寸选项 };
 
+export type DialogVariant = 'default' | 'alert';
+
 export interface DialogContextValue {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -21,6 +23,7 @@ export interface DialogContextValue {
   description?: string;
   titleId: string;
   descriptionId: string;
+  variant: DialogVariant;
 }
 
 const DialogContext = React.createContext<DialogContextValue | null>(null);
@@ -40,6 +43,7 @@ export interface DialogProps {
   onOpenChange?: (open: boolean) => void;
   title?: string;
   description?: string;
+  variant?: DialogVariant;
 }
 
 export function DialogRoot({
@@ -49,6 +53,7 @@ export function DialogRoot({
   onOpenChange,
   title,
   description,
+  variant = 'default',
 }: DialogProps) {
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen);
   const isControlled = controlledOpen !== undefined;
@@ -76,8 +81,9 @@ export function DialogRoot({
       description,
       titleId,
       descriptionId,
+      variant,
     }),
-    [open, setOpen, title, description, titleId, descriptionId],
+    [open, setOpen, title, description, titleId, descriptionId, variant],
   );
 
   return (
@@ -251,7 +257,7 @@ export interface DialogOverlayProps
 
 export const DialogOverlay = React.forwardRef<HTMLDivElement, DialogOverlayProps>(
   ({ className, onClick, forceMount = false, closeOnClick = true, ...props }, ref) => {
-    const { open, setOpen } = useDialogContext();
+    const { open, setOpen, variant } = useDialogContext();
     const { visible, exiting } = useExitAnimation(open);
 
     if (!visible && !forceMount) {
@@ -268,7 +274,7 @@ export const DialogOverlay = React.forwardRef<HTMLDivElement, DialogOverlayProps
     return (
       <div
         ref={ref}
-        data-slot="dialog-overlay"
+        data-slot={(props as Record<string, any>)['data-slot'] ?? (variant === 'alert' ? 'alert-dialog-overlay' : 'dialog-overlay')}
         data-exiting={exiting ? 'true' : undefined}
         className={cn(
           'fixed inset-0 z-50 bg-black/60 backdrop-blur-xs',
@@ -294,6 +300,14 @@ const sizeClasses: Record<DialogSize, string> = {
   full: 'max-w-[calc(100vw-2rem)]',
 };
 
+const alertSizeClasses: Record<DialogSize, string> = {
+  sm: 'max-w-md',
+  default: 'max-w-lg',
+  lg: 'max-w-xl',
+  xl: 'max-w-2xl',
+  full: 'max-w-[calc(100vw-2rem)]',
+};
+
 const defaultSizeWidths: Record<DialogSize, number | undefined> = {
   sm: 24,
   default: 32,
@@ -304,6 +318,7 @@ const defaultSizeWidths: Record<DialogSize, number | undefined> = {
 
 export interface DialogContentProps
   extends React.HTMLAttributes<HTMLDivElement> {
+  variant?: DialogVariant;
   size?: DialogSize;
   closeOnOverlayClick?: boolean;
   closeOnEscape?: boolean;
@@ -347,11 +362,12 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
       children,
       forceMount = false,
       container,
+      variant: contentVariant,
       size = 'default',
-      closeOnOverlayClick = true,
+      closeOnOverlayClick,
       closeOnEscape = true,
-      draggable = true,
-      showCloseButton = true,
+      draggable,
+      showCloseButton,
       showEscBadge = false,
       closeTooltip,
       defaultWidthRem,
@@ -382,9 +398,16 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
     },
     ref,
   ) => {
-    const { open, setOpen, titleId, descriptionId } = useDialogContext();
+    const { open, setOpen, titleId, descriptionId, variant: contextVariant } = useDialogContext();
     const { visible, exiting } = useExitAnimation(open);
     const { t } = useChaSetI18n();
+
+    const resolvedVariant = contentVariant ?? contextVariant;
+    const isAlert = resolvedVariant === 'alert';
+    const effectiveCloseOnOverlayClick = closeOnOverlayClick !== undefined ? closeOnOverlayClick : !isAlert;
+    const effectiveShowCloseButton = showCloseButton !== undefined ? showCloseButton : !isAlert;
+    const effectiveDraggable = draggable !== undefined ? draggable : !isAlert;
+    const effectiveRole = isAlert ? 'alertdialog' : 'dialog';
 
     React.useEffect(() => {
       if (!open || !closeOnEscape) return;
@@ -422,7 +445,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
     const { content, fixedFooter } = splitFixedFooter(children, DialogFooter);
     const resolvedCloseTooltip = closeTooltip ?? t('common.close', 'Close');
 
-    const closeControl = showCloseButton && (
+    const closeControl = effectiveShowCloseButton && (
       <Tooltip content={resolvedCloseTooltip} shortcut="Esc" side="bottom">
         <DialogClose asChild>
           <Button
@@ -439,10 +462,10 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
       </Tooltip>
     );
 
-    if (draggable) {
+    if (effectiveDraggable) {
       return (
         <DialogPortal container={container}>
-          <DialogOverlay className={overlayClassName} closeOnClick={closeOnOverlayClick} />
+          <DialogOverlay className={overlayClassName} closeOnClick={effectiveCloseOnOverlayClick} />
           <div
             data-slot="dialog-content-layer"
             className={cn(
@@ -452,7 +475,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
           >
             <DraggableModal
               ref={ref}
-              role="dialog"
+              role={effectiveRole}
               aria-modal="true"
               aria-labelledby={props['aria-labelledby'] ?? titleId}
               aria-describedby={props['aria-describedby'] ?? descriptionId}
@@ -483,18 +506,19 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
 
     return (
       <DialogPortal container={container}>
-        <DialogOverlay className={overlayClassName} closeOnClick={closeOnOverlayClick} />
+        <DialogOverlay className={overlayClassName} closeOnClick={effectiveCloseOnOverlayClick} />
         <div
           ref={ref}
-          role="dialog"
+          role={effectiveRole}
           aria-modal="true"
           aria-labelledby={props['aria-labelledby'] ?? titleId}
           aria-describedby={props['aria-describedby'] ?? descriptionId}
-          data-slot="dialog-content"
+          data-slot={(props as Record<string, any>)['data-slot'] ?? (isAlert ? 'alert-dialog-content' : 'dialog-content')}
+          data-variant={resolvedVariant}
           className={cn(
             'fixed left-1/2 top-1/2 z-50 grid w-full -translate-x-1/2 -translate-y-1/2 gap-4 border border-border bg-background text-foreground p-6 shadow-2xl rounded-xl pointer-events-auto',
             contentAnim,
-            sizeClasses[size],
+            isAlert ? alertSizeClasses[size] : sizeClasses[size],
             className,
           )}
           onClick={(e) => {
@@ -519,14 +543,18 @@ DialogContent.displayName = 'DialogContent';
 export interface DialogHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const DialogHeader = React.forwardRef<HTMLDivElement, DialogHeaderProps>(
-  ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      data-slot="dialog-header"
-      className={cn('flex flex-col gap-1.5 text-left pr-8', className)}
-      {...props}
-    />
-  ),
+  ({ className, ...props }, ref) => {
+    const context = React.useContext(DialogContext);
+    const isAlert = context?.variant === 'alert';
+    return (
+      <div
+        ref={ref}
+        data-slot={(props as Record<string, any>)['data-slot'] ?? (isAlert ? 'alert-dialog-header' : 'dialog-header')}
+        className={cn('flex flex-col gap-1.5 text-left', !isAlert && 'pr-8', className)}
+        {...props}
+      />
+    );
+  },
 );
 DialogHeader.displayName = 'DialogHeader';
 
@@ -535,24 +563,29 @@ export interface DialogFooterProps extends React.HTMLAttributes<HTMLDivElement> 
 }
 
 export const DialogFooter = React.forwardRef<HTMLDivElement, DialogFooterProps>(
-  ({ className, showCloseButton = false, children, ...props }, ref) => (
-    <div
-      ref={ref}
-      data-slot="dialog-footer"
-      className={cn(
-        'flex flex-col-reverse gap-2 border-t border-border px-6 py-4 sm:flex-row sm:justify-end',
-        className,
-      )}
-      {...props}
-    >
-      {children}
-      {showCloseButton && (
-        <DialogClose asChild>
-          <Button variant="outline">Close</Button>
-        </DialogClose>
-      )}
-    </div>
-  ),
+  ({ className, showCloseButton = false, children, ...props }, ref) => {
+    const context = React.useContext(DialogContext);
+    const isAlert = context?.variant === 'alert';
+    return (
+      <div
+        ref={ref}
+        data-slot={(props as Record<string, any>)['data-slot'] ?? (isAlert ? 'alert-dialog-footer' : 'dialog-footer')}
+        className={cn(
+          'flex flex-col-reverse gap-2 sm:flex-row sm:justify-end',
+          !isAlert && 'border-t border-border px-6 py-4',
+          className,
+        )}
+        {...props}
+      >
+        {children}
+        {showCloseButton && (
+          <DialogClose asChild>
+            <Button variant="outline">Close</Button>
+          </DialogClose>
+        )}
+      </div>
+    );
+  },
 );
 DialogFooter.displayName = 'DialogFooter';
 
@@ -564,14 +597,16 @@ export interface DialogTitleProps
 
 export const DialogTitle = React.forwardRef<HTMLHeadingElement, DialogTitleProps>(
   ({ className, id, asChild = false, render, children, ...props }, ref) => {
-    const { titleId, title } = useDialogContext();
+    const { titleId, title, variant } = useDialogContext();
     const resolvedId = id || titleId;
+    const isAlert = variant === 'alert';
+    const slot = (props as Record<string, any>)['data-slot'] ?? (isAlert ? 'alert-dialog-title' : 'dialog-title');
 
     if (render && React.isValidElement(render)) {
       return React.cloneElement(render as React.ReactElement<any>, {
         ref,
         id: resolvedId,
-        'data-slot': 'dialog-title',
+        'data-slot': slot,
       });
     }
 
@@ -580,7 +615,7 @@ export const DialogTitle = React.forwardRef<HTMLHeadingElement, DialogTitleProps
       return React.cloneElement(child, {
         ref,
         id: resolvedId,
-        'data-slot': 'dialog-title',
+        'data-slot': slot,
       });
     }
 
@@ -588,7 +623,7 @@ export const DialogTitle = React.forwardRef<HTMLHeadingElement, DialogTitleProps
       <h2
         ref={ref}
         id={resolvedId}
-        data-slot="dialog-title"
+        data-slot={slot}
         className={cn(
           'text-base font-semibold leading-6 text-foreground tracking-tight',
           className,
@@ -610,14 +645,16 @@ export interface DialogDescriptionProps
 
 export const DialogDescription = React.forwardRef<HTMLParagraphElement, DialogDescriptionProps>(
   ({ className, id, asChild = false, render, children, ...props }, ref) => {
-    const { descriptionId, description } = useDialogContext();
+    const { descriptionId, description, variant } = useDialogContext();
     const resolvedId = id || descriptionId;
+    const isAlert = variant === 'alert';
+    const slot = (props as Record<string, any>)['data-slot'] ?? (isAlert ? 'alert-dialog-description' : 'dialog-description');
 
     if (render && React.isValidElement(render)) {
       return React.cloneElement(render as React.ReactElement<any>, {
         ref,
         id: resolvedId,
-        'data-slot': 'dialog-description',
+        'data-slot': slot,
       });
     }
 
@@ -626,7 +663,7 @@ export const DialogDescription = React.forwardRef<HTMLParagraphElement, DialogDe
       return React.cloneElement(child, {
         ref,
         id: resolvedId,
-        'data-slot': 'dialog-description',
+        'data-slot': slot,
       });
     }
 
@@ -634,7 +671,7 @@ export const DialogDescription = React.forwardRef<HTMLParagraphElement, DialogDe
       <p
         ref={ref}
         id={resolvedId}
-        data-slot="dialog-description"
+        data-slot={slot}
         className={cn(
           'text-sm leading-6 text-muted-foreground *:[a]:underline *:[a]:underline-offset-3 *:[a]:hover:text-foreground',
           className,
@@ -648,10 +685,124 @@ export const DialogDescription = React.forwardRef<HTMLParagraphElement, DialogDe
 );
 DialogDescription.displayName = 'DialogDescription';
 
+export interface DialogActionProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+  asChild?: boolean;
+}
+
+export const DialogAction = React.forwardRef<HTMLButtonElement, DialogActionProps>(
+  ({ className, variant = 'default', asChild = false, onClick, children, ...props }, ref) => {
+    const { setOpen, variant: dialogVariant } = useDialogContext();
+    const isAlert = dialogVariant === 'alert';
+
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      onClick?.(e);
+      if (!e.defaultPrevented) {
+        setOpen(false);
+      }
+    };
+
+    if (asChild && React.isValidElement(children)) {
+      const child = children as React.ReactElement<any>;
+      return React.cloneElement(child, {
+        ...props,
+        ...child.props,
+        ref: (node: HTMLButtonElement | null) => {
+          if (typeof ref === 'function') ref(node);
+          else if (ref && 'current' in ref) (ref as any).current = node;
+
+          const childRef = (child.props as any)?.ref ?? (child as any).ref;
+          if (typeof childRef === 'function') childRef(node);
+          else if (childRef && 'current' in childRef) childRef.current = node;
+        },
+        onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
+          child.props.onClick?.(e);
+          if (!e.defaultPrevented) {
+            handleClick(e);
+          }
+        },
+      });
+    }
+
+    return (
+      <button
+        ref={ref}
+        type="button"
+        data-slot={(props as Record<string, any>)['data-slot'] ?? (isAlert ? 'alert-dialog-action' : 'dialog-action')}
+        className={cn(buttonVariants({ variant }), className)}
+        onClick={handleClick}
+        {...props}
+      >
+        {children}
+      </button>
+    );
+  },
+);
+DialogAction.displayName = 'DialogAction';
+
+export interface DialogCancelProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+  asChild?: boolean;
+}
+
+export const DialogCancel = React.forwardRef<HTMLButtonElement, DialogCancelProps>(
+  ({ className, variant = 'outline', asChild = false, onClick, children, ...props }, ref) => {
+    const { setOpen, variant: dialogVariant } = useDialogContext();
+    const isAlert = dialogVariant === 'alert';
+
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      onClick?.(e);
+      if (!e.defaultPrevented) {
+        setOpen(false);
+      }
+    };
+
+    if (asChild && React.isValidElement(children)) {
+      const child = children as React.ReactElement<any>;
+      return React.cloneElement(child, {
+        ...props,
+        ...child.props,
+        ref: (node: HTMLButtonElement | null) => {
+          if (typeof ref === 'function') ref(node);
+          else if (ref && 'current' in ref) (ref as any).current = node;
+
+          const childRef = (child.props as any)?.ref ?? (child as any).ref;
+          if (typeof childRef === 'function') childRef(node);
+          else if (childRef && 'current' in childRef) childRef.current = node;
+        },
+        onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
+          child.props.onClick?.(e);
+          if (!e.defaultPrevented) {
+            handleClick(e);
+          }
+        },
+      });
+    }
+
+    return (
+      <button
+        ref={ref}
+        type="button"
+        data-slot={(props as Record<string, any>)['data-slot'] ?? (isAlert ? 'alert-dialog-cancel' : 'dialog-cancel')}
+        className={cn(buttonVariants({ variant }), 'text-foreground', className)}
+        onClick={handleClick}
+        {...props}
+      >
+        {children}
+      </button>
+    );
+  },
+);
+DialogCancel.displayName = 'DialogCancel';
+
 export const Dialog = Object.assign(DialogRoot, {
   Trigger: DialogTrigger,
   Portal: DialogPortal,
   Close: DialogClose,
+  Action: DialogAction,
+  Cancel: DialogCancel,
   Overlay: DialogOverlay,
   Content: DialogContent,
   Header: DialogHeader,
@@ -659,3 +810,4 @@ export const Dialog = Object.assign(DialogRoot, {
   Title: DialogTitle,
   Description: DialogDescription,
 });
+

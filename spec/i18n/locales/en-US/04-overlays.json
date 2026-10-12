@@ -57,6 +57,7 @@
       "closeOnOverlayClickDesc": "Whether clicking the backdrop overlay dismisses the dialog.",
       "closeOnOverlayClickDescQt": "Whether clicking the backdrop overlay dismisses the dialog.",
       "closedDesc": "Emitted when the modal has closed.",
+      "confirmText": "Continue",
       "contentClassNameDesc": "Custom class name for the scrollable inner content container.",
       "contentDataDesc": "Default property alias for body content elements.",
       "customRadiusDesc": "Corner radius of the modal dialog card.",
@@ -85,7 +86,9 @@
       "sizeMenuTooltipDesc": "Tooltip text for the size switcher dropdown button.",
       "sizeOptionsDesc": "Preset sizing options for the top-right size switcher dropdown menu.",
       "titleDescQt": "Header title text displayed in prominent bold styling.",
-      "topMarginRemDesc": "Top margin in rem when initialPositionMode is top."
+      "topMarginRemDesc": "Top margin in rem when initialPositionMode is top.",
+      "variantDesc": "Visual and behavioral variant of the dialog (standard modal or alert confirmation).",
+      "variantDescQt": "Visual and behavioral variant of the dialog ('default' or 'alert')."
     },
     "draggableModal": {
       "autoFitHeightDesc": "Whether to auto-fit height to natural content height.",

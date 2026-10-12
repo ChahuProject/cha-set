@@ -16,26 +16,31 @@ Rectangle {
     color: Qt.rgba(0, 0, 0, 0.6)
 
     property bool open: false
+    property string variant: "default"  // "default" | "alert"
     property string size: "default"     // "sm" | "default" | "lg" | "xl" | "full"
     property string title: ""
     property string description: ""
+    property string confirmText: ChaSetI18n.tr("components.dialog.confirmText", "Continue")
+    property string cancelText: ChaSetI18n.tr("common.cancel", "Cancel")
+    property bool destructive: false
+    property string actionVariant: destructive ? "destructive" : "default"
     property int customRadius: 8
     property int dialogWidth: {
         switch (root.size) {
-        case "sm": return ThemeTokens.dp(380)
-        case "default": return ThemeTokens.dp(500)
-        case "lg": return ThemeTokens.dp(680)
+        case "sm": return ThemeTokens.dp(root.variant === "alert" ? 400 : 380)
+        case "default": return ThemeTokens.dp(root.variant === "alert" ? 460 : 500)
+        case "lg": return ThemeTokens.dp(root.variant === "alert" ? 560 : 680)
         case "xl": return ThemeTokens.dp(840)
         case "full": return Math.min(parent ? (parent.width - ThemeTokens.dp(40)) : ThemeTokens.dp(1100), ThemeTokens.dp(1100))
-        default: return ThemeTokens.dp(500)
+        default: return ThemeTokens.dp(root.variant === "alert" ? 460 : 500)
         }
     }
-    property bool showCloseButton: true
+    property bool showCloseButton: root.variant !== "alert"
     property bool showEscBadge: false
     property string closeTooltip: ""
-    property bool draggable: true
+    property bool draggable: root.variant !== "alert"
     property bool closeOnEscape: true
-    property bool closeOnOverlayClick: true
+    property bool closeOnOverlayClick: root.variant !== "alert"
     property Item headerItem: null
     property Component headerComponent: null
     property Item footer: null
@@ -45,6 +50,8 @@ Rectangle {
     signal closed()
     signal accepted()
     signal rejected()
+    signal confirmed()
+    signal cancelled()
 
     default property alias contentData: bodyContent.data
 
@@ -62,7 +69,10 @@ Rectangle {
     function close(reason) {
         if (!root.open) return;
         root.open = false;
-        if (reason === "escape") root.rejected();
+        if (reason === "escape") {
+            root.cancelled();
+            root.rejected();
+        }
     }
 
     onOpenChanged: {
@@ -167,7 +177,7 @@ Rectangle {
         width: Math.min((parent ? parent.width : ThemeTokens.dp(1000)) - ThemeTokens.dp(40), root.dialogWidth)
         readonly property real maxSafeHeight: Math.max(ThemeTokens.dp(120), (parent ? parent.height : ThemeTokens.dp(800)) - ThemeTokens.dp(40))
         readonly property real headerAreaHeight: headerContainer.visible ? (headerContainer.implicitHeight + ThemeTokens.dp(16)) : 0
-        readonly property real footerAreaHeight: footerContainer.visible ? (footerContainer.implicitHeight + ThemeTokens.dp(16)) : 0
+        readonly property real footerAreaHeight: footerContainer.visible ? (footerContainer.implicitHeight + ThemeTokens.dp(16)) : (buttonRow.visible ? (buttonRow.implicitHeight + ThemeTokens.dp(20)) : 0)
         readonly property real contentPreferredHeight: headerAreaHeight + footerAreaHeight + bodyContent.implicitHeight + ThemeTokens.dp(40)
         implicitHeight: contentPreferredHeight
         height: Math.min(maxSafeHeight, contentPreferredHeight)
@@ -396,13 +406,38 @@ Rectangle {
             }
         }
 
+        // Action Buttons Row (pinned at bottom for alert variant)
+        Row {
+            id: buttonRow
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: ThemeTokens.dp(20)
+            anchors.right: parent.right
+            anchors.rightMargin: ThemeTokens.dp(20)
+            spacing: ThemeTokens.dp(8)
+            visible: root.variant === "alert"
+
+            ChaSetButton {
+                text: root.cancelText
+                variant: "outline"
+                size: "sm"
+                onClicked: root.cancel()
+            }
+
+            ChaSetButton {
+                text: root.confirmText
+                variant: root.actionVariant
+                size: "sm"
+                onClicked: root.confirm()
+            }
+        }
+
         // Dialog Body Content Area (Flickable + ChaSetScrollBar)
         Flickable {
             id: bodyFlickable
             anchors.top: headerContainer.visible ? headerContainer.bottom : parent.top
             anchors.topMargin: headerContainer.visible ? ThemeTokens.dp(16) : ThemeTokens.dp(20)
-            anchors.bottom: footerContainer.visible ? footerContainer.top : parent.bottom
-            anchors.bottomMargin: footerContainer.visible ? ThemeTokens.dp(16) : ThemeTokens.dp(20)
+            anchors.bottom: footerContainer.visible ? footerContainer.top : (buttonRow.visible ? buttonRow.top : parent.bottom)
+            anchors.bottomMargin: (footerContainer.visible || buttonRow.visible) ? ThemeTokens.dp(16) : ThemeTokens.dp(20)
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.rightMargin: ThemeTokens.dp(2)
@@ -456,10 +491,24 @@ Rectangle {
     function accept() {
         root.open = false
         root.accepted()
+        root.confirmed()
     }
 
     function reject() {
         root.open = false
+        root.rejected()
+        root.cancelled()
+    }
+
+    function confirm() {
+        root.open = false
+        root.confirmed()
+        root.accepted()
+    }
+
+    function cancel() {
+        root.open = false
+        root.cancelled()
         root.rejected()
     }
 }

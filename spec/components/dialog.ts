@@ -7,9 +7,11 @@ import { draggableModalSizeOptionSchema } from './draggable-modal';
  * DialogTitle, DialogDescription, DialogFooter, and DialogClose public surfaces across all stacks.
  */
 export const dialogSizeSchema = z.enum(['sm', 'default', 'lg', 'xl', 'full']);
+export const dialogVariantSchema = z.enum(['default', 'alert']).default('default');
 
 export const dialogSchema = z.object({
   open: z.boolean().default(false),
+  variant: dialogVariantSchema,
   onOpenChange: z.function().optional(),
   title: z.string().optional(),
   description: z.string().optional(),
@@ -22,6 +24,7 @@ export const dialogTriggerSchema = z.object({
 
 export const dialogContentSchema = z.object({
   customRadius: z.number().optional(),
+  variant: dialogVariantSchema,
   size: dialogSizeSchema.default('default'),
   draggable: z.boolean().default(true),
   showCloseButton: z.boolean().default(true),
@@ -52,7 +55,28 @@ export const dialogFooterSchema = z.object({
 export const dialogCloseSchema = z.object({
   asChild: z.boolean().default(false),
 });
+export const dialogActionSchema = z.object({
+  disabled: z.boolean().default(false),
+  variant: z.enum(['default', 'destructive', 'outline', 'secondary', 'ghost', 'link']).default('default'),
+});
+export const dialogCancelSchema = z.object({
+  disabled: z.boolean().default(false),
+});
 
+// Backward-compatibility aliases for legacy AlertDialog consumers
+export const alertDialogSchema = dialogSchema;
+export const alertDialogTriggerSchema = dialogTriggerSchema;
+export const alertDialogPortalSchema = z.object({});
+export const alertDialogOverlaySchema = z.object({});
+export const alertDialogContentSchema = dialogContentSchema;
+export const alertDialogHeaderSchema = dialogHeaderSchema;
+export const alertDialogFooterSchema = dialogFooterSchema;
+export const alertDialogTitleSchema = dialogTitleSchema;
+export const alertDialogDescriptionSchema = dialogDescriptionSchema;
+export const alertDialogActionSchema = dialogActionSchema;
+export const alertDialogCancelSchema = dialogCancelSchema;
+
+export type DialogVariant = z.infer<typeof dialogVariantSchema>;
 export type DialogApi = z.infer<typeof dialogSchema>;
 export type DialogTriggerApi = z.infer<typeof dialogTriggerSchema>;
 export type DialogContentApi = z.infer<typeof dialogContentSchema>;
@@ -61,3 +85,6 @@ export type DialogTitleApi = z.infer<typeof dialogTitleSchema>;
 export type DialogDescriptionApi = z.infer<typeof dialogDescriptionSchema>;
 export type DialogFooterApi = z.infer<typeof dialogFooterSchema>;
 export type DialogCloseApi = z.infer<typeof dialogCloseSchema>;
+export type DialogActionApi = z.infer<typeof dialogActionSchema>;
+export type DialogCancelApi = z.infer<typeof dialogCancelSchema>;
+
