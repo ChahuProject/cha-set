@@ -39,6 +39,7 @@ Rectangle {
     property bool showEscBadge: false
     property string closeTooltip: ""
     property bool draggable: root.variant !== "alert"
+    property bool userDragged: false
     property bool closeOnEscape: true
     property bool closeOnOverlayClick: root.variant !== "alert"
     property Item headerItem: null
@@ -77,6 +78,7 @@ Rectangle {
 
     onOpenChanged: {
         if (root.open) {
+            root.userDragged = false
             resetCardPosition()
             ChaSetOverlayHub.register(root)
             root.forceActiveFocus()
@@ -88,19 +90,23 @@ Rectangle {
     }
 
     function resetCardPosition() {
+        root.userDragged = false
         if (!root || root.width <= 0 || root.height <= 0) return;
-        var minX = ThemeTokens.dp(8);
-        var minY = ThemeTokens.dp(8);
-        var maxX = Math.max(minX, root.width - card.width - minX);
-        var maxY = Math.max(minY, root.height - card.height - minY);
-        var targetX = Math.round((root.width - card.width) / 2);
-        var targetY = Math.round((root.height - card.height) / 2);
-        card.x = Math.max(minX, Math.min(targetX, maxX));
-        card.y = Math.max(minY, Math.min(targetY, maxY));
+        if (root.draggable && root.userDragged) {
+            var minX = ThemeTokens.dp(8);
+            var minY = ThemeTokens.dp(8);
+            var maxX = Math.max(minX, root.width - card.width - minX);
+            var maxY = Math.max(minY, root.height - card.height - minY);
+            var targetX = Math.round((root.width - card.width) / 2);
+            var targetY = Math.round((root.height - card.height) / 2);
+            card.x = Math.max(minX, Math.min(targetX, maxX));
+            card.y = Math.max(minY, Math.min(targetY, maxY));
+        }
     }
 
     function clampCardPosition() {
         if (!root || root.width <= 0 || root.height <= 0) return;
+        if (!root.draggable || !root.userDragged) return;
         var minX = ThemeTokens.dp(8);
         var minY = ThemeTokens.dp(8);
         var maxX = Math.max(minX, root.width - card.width - minX);
@@ -181,8 +187,8 @@ Rectangle {
         readonly property real contentPreferredHeight: headerAreaHeight + footerAreaHeight + bodyContent.implicitHeight + ThemeTokens.dp(40)
         implicitHeight: contentPreferredHeight
         height: Math.min(maxSafeHeight, contentPreferredHeight)
-        x: (root.width > 0 && width > 0) ? Math.max(ThemeTokens.dp(8), Math.round((root.width - width) / 2)) : 0
-        y: (root.height > 0 && height > 0) ? Math.max(ThemeTokens.dp(8), Math.round((root.height - height) / 2)) : 0
+        anchors.horizontalCenter: (!root.draggable || !root.userDragged) ? parent.horizontalCenter : undefined
+        anchors.verticalCenter: (!root.draggable || !root.userDragged) ? parent.verticalCenter : undefined
         color: ThemeTokens.panel
         border.color: ThemeTokens.border
         border.width: 1
@@ -229,6 +235,15 @@ Rectangle {
                 xAxis.maximum: Math.max(ThemeTokens.dp(8), root.width - card.width - ThemeTokens.dp(8))
                 yAxis.minimum: ThemeTokens.dp(8)
                 yAxis.maximum: Math.max(ThemeTokens.dp(8), root.height - card.height - ThemeTokens.dp(8))
+                onActiveChanged: {
+                    if (active) {
+                        var curX = card.x
+                        var curY = card.y
+                        root.userDragged = true
+                        card.x = curX
+                        card.y = curY
+                    }
+                }
             }
 
             HoverHandler {
@@ -414,7 +429,7 @@ Rectangle {
             anchors.right: parent.right
             anchors.rightMargin: ThemeTokens.dp(20)
             spacing: ThemeTokens.dp(8)
-            visible: root.variant === "alert"
+            visible: root.variant === "alert" && !root.footer && !root.footerComponent
 
             ChaSetButton {
                 text: root.cancelText
