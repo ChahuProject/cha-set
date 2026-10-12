@@ -11,7 +11,11 @@ Item {
     property string copiedLabel: "Copied!"
     property int timeout: 2000
     property string variant: "outline"
-    property string size: label.length > 0 ? "sm" : "icon-xs"
+    property string size: root.label.length > 0 ? "sm" : "icon-xs"
+    property string title: ChaSetI18n.tr("common.copy", "Copy")
+    property string copiedTitle: ChaSetI18n.tr("common.copied", "Copied")
+    property string tooltipSide: "top"
+    property bool showTooltip: true
     property bool copied: false
     readonly property bool hovered: btn.effectiveHovered
     readonly property bool isSolidColored: root.variant === "default" || root.variant === "primary"
@@ -22,6 +26,15 @@ Item {
     implicitHeight: btn.implicitHeight
     width: implicitWidth
     height: implicitHeight
+
+    ChaSetTooltip {
+        id: copyTooltip
+        visible: root.showTooltip && (root.title.length > 0 || root.copiedTitle.length > 0)
+        target: root
+        text: root.copied ? (root.copiedTitle.length > 0 ? root.copiedTitle : ChaSetI18n.tr("common.copied", "Copied")) : (root.title.length > 0 ? root.title : ChaSetI18n.tr("common.copy", "Copy"))
+        side: root.tooltipSide
+        hovered: btn.effectiveHovered
+    }
 
     Timer {
         id: resetTimer

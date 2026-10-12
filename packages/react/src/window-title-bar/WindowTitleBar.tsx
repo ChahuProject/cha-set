@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { cn } from '../lib/utils';
+import { Tooltip, type TooltipSide } from '../tooltip';
 
 export interface WindowTitleBarProps extends Omit<React.HTMLAttributes<HTMLElement>, 'title'> {
   /** Application or window title */
@@ -30,6 +31,10 @@ export interface WindowTitleBarProps extends Omit<React.HTMLAttributes<HTMLEleme
   restoreTitle?: string;
   /** Close button tooltip */
   closeTitle?: string;
+  /** Tooltip position (default: "bottom") */
+  tooltipSide?: TooltipSide;
+  /** Whether to show tooltips on caption buttons (default: true) */
+  showTooltips?: boolean;
   /** Whether to render caption buttons */
   showControls?: boolean;
   /** Extra controls to render before the caption buttons */
@@ -54,6 +59,8 @@ export function WindowTitleBar({
   maximizeTitle = 'Maximize',
   restoreTitle = 'Restore',
   closeTitle = 'Close',
+  tooltipSide = 'bottom',
+  showTooltips = true,
   showControls = true,
   extraControls,
   dragRegion = true,
@@ -66,6 +73,22 @@ export function WindowTitleBar({
       onMaximize?.();
     }
   };
+
+  const renderButtonWithTooltip = (
+    content: string,
+    button: React.ReactElement,
+  ) => {
+    if (showTooltips && content) {
+      return (
+        <Tooltip content={content} side={tooltipSide}>
+          {button}
+        </Tooltip>
+      );
+    }
+    return button;
+  };
+
+  const maxRestoreTitle = isMaximized ? restoreTitle : maximizeTitle;
 
   return (
     <header
@@ -110,52 +133,61 @@ export function WindowTitleBar({
 
         {showControls && (
           <>
-            <button
-              type="button"
-              className="flex h-full w-[2.875rem] cursor-pointer items-center justify-center border-none bg-transparent text-foreground/70 transition-colors duration-quick ease-standard hover:bg-muted/70 hover:text-foreground"
-              title={minimizeTitle}
-              aria-label={minimizeTitle}
-              onClick={onMinimize}
-              onDoubleClick={(e) => e.stopPropagation()}
-            >
-              <svg className="h-[0.0625rem] w-2.5" viewBox="0 0 10 1" aria-hidden="true" preserveAspectRatio="none">
-                <rect width="10" height="1" fill="currentColor" />
-              </svg>
-            </button>
-
-            <button
-              type="button"
-              className="flex h-full w-[2.875rem] cursor-pointer items-center justify-center border-none bg-transparent text-foreground/70 transition-colors duration-quick ease-standard hover:bg-muted/70 hover:text-foreground"
-              title={isMaximized ? restoreTitle : maximizeTitle}
-              aria-label={isMaximized ? restoreTitle : maximizeTitle}
-              onClick={onMaximize}
-              onDoubleClick={(e) => e.stopPropagation()}
-            >
-              {isMaximized ? (
-                <svg className="size-2.5" viewBox="0 0 10 10" aria-hidden="true">
-                  <rect x="2" y="0" width="8" height="8" rx="0.5" ry="0.5" fill="none" stroke="currentColor" strokeWidth="1" />
-                  <rect x="0" y="2" width="8" height="8" rx="0.5" ry="0.5" fill="none" stroke="currentColor" strokeWidth="1" />
+            {renderButtonWithTooltip(
+              minimizeTitle,
+              <button
+                type="button"
+                className="flex h-full w-[2.875rem] cursor-pointer items-center justify-center border-none bg-transparent text-foreground/70 transition-colors duration-quick ease-standard hover:bg-muted/70 hover:text-foreground"
+                title={showTooltips ? undefined : minimizeTitle}
+                aria-label={minimizeTitle}
+                onClick={onMinimize}
+                onDoubleClick={(e) => e.stopPropagation()}
+              >
+                <svg className="h-[0.0625rem] w-2.5" viewBox="0 0 10 1" aria-hidden="true" preserveAspectRatio="none">
+                  <rect width="10" height="1" fill="currentColor" />
                 </svg>
-              ) : (
-                <svg className="size-2.5" viewBox="0 0 10 10" aria-hidden="true">
-                  <rect x="0.5" y="0.5" width="9" height="9" rx="0.5" ry="0.5" fill="none" stroke="currentColor" strokeWidth="1" />
-                </svg>
-              )}
-            </button>
+              </button>,
+            )}
 
-            <button
-              type="button"
-              className="flex h-full w-[2.875rem] cursor-pointer items-center justify-center border-none bg-transparent text-foreground/70 transition-colors duration-quick ease-standard hover:bg-[#e81123] hover:text-white"
-              title={closeTitle}
-              aria-label={closeTitle}
-              onClick={onClose}
-              onDoubleClick={(e) => e.stopPropagation()}
-            >
-              <svg className="size-2.5" viewBox="0 0 10 10" aria-hidden="true">
-                <line x1="0" y1="0" x2="10" y2="10" stroke="currentColor" strokeWidth="1" />
-                <line x1="10" y1="0" x2="0" y2="10" stroke="currentColor" strokeWidth="1" />
-              </svg>
-            </button>
+            {renderButtonWithTooltip(
+              maxRestoreTitle,
+              <button
+                type="button"
+                className="flex h-full w-[2.875rem] cursor-pointer items-center justify-center border-none bg-transparent text-foreground/70 transition-colors duration-quick ease-standard hover:bg-muted/70 hover:text-foreground"
+                title={showTooltips ? undefined : maxRestoreTitle}
+                aria-label={maxRestoreTitle}
+                onClick={onMaximize}
+                onDoubleClick={(e) => e.stopPropagation()}
+              >
+                {isMaximized ? (
+                  <svg className="size-2.5" viewBox="0 0 10 10" aria-hidden="true">
+                    <rect x="2" y="0" width="8" height="8" rx="0.5" ry="0.5" fill="none" stroke="currentColor" strokeWidth="1" />
+                    <rect x="0" y="2" width="8" height="8" rx="0.5" ry="0.5" fill="none" stroke="currentColor" strokeWidth="1" />
+                  </svg>
+                ) : (
+                  <svg className="size-2.5" viewBox="0 0 10 10" aria-hidden="true">
+                    <rect x="0.5" y="0.5" width="9" height="9" rx="0.5" ry="0.5" fill="none" stroke="currentColor" strokeWidth="1" />
+                  </svg>
+                )}
+              </button>,
+            )}
+
+            {renderButtonWithTooltip(
+              closeTitle,
+              <button
+                type="button"
+                className="flex h-full w-[2.875rem] cursor-pointer items-center justify-center border-none bg-transparent text-foreground/70 transition-colors duration-quick ease-standard hover:bg-[#e81123] hover:text-white"
+                title={showTooltips ? undefined : closeTitle}
+                aria-label={closeTitle}
+                onClick={onClose}
+                onDoubleClick={(e) => e.stopPropagation()}
+              >
+                <svg className="size-2.5" viewBox="0 0 10 10" aria-hidden="true">
+                  <line x1="0" y1="0" x2="10" y2="10" stroke="currentColor" strokeWidth="1" />
+                  <line x1="10" y1="0" x2="0" y2="10" stroke="currentColor" strokeWidth="1" />
+                </svg>
+              </button>,
+            )}
           </>
         )}
       </div>

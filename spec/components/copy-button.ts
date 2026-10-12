@@ -13,6 +13,7 @@ export const copyButtonSchema = z.object({
   label: z.string().optional(),
   copiedLabel: z.string().optional(),
   iconClassName: z.string().default('size-3.5'),
+  tooltipSide: z.enum(['top', 'bottom', 'left', 'right']).default('top'),
 });
 
 export type CopyButtonApi = z.infer<typeof copyButtonSchema>;

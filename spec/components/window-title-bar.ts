@@ -10,6 +10,7 @@ export const windowTitleBarSchema = z.object({
   isFocused: z.boolean().default(true),
   showControls: z.boolean().default(true),
   dragRegion: z.boolean().default(true).optional(),
+  tooltipSide: z.enum(['top', 'bottom', 'left', 'right']).default('bottom'),
 });
 
 export type WindowTitleBarApi = z.infer<typeof windowTitleBarSchema>;

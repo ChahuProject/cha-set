@@ -36,9 +36,13 @@ export const selectContentSchema = z.object({
   sideOffset: z.number().default(4),
 });
 
+export const selectSideSchema = z.enum(['top', 'bottom', 'left', 'right']);
+
 export const selectItemSchema = z.object({
   value: z.string(),
   disabled: z.boolean().default(false),
+  tooltip: z.string().optional(),
+  tooltipSide: selectSideSchema.default('right'),
 });
 
 export const selectGroupSchema = z.object({});

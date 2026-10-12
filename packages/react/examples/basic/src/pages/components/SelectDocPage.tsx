@@ -16,9 +16,9 @@ export function SelectDocPage() {
   <SelectContent>
     <SelectGroup>
       <SelectLabel>Fruits</SelectLabel>
-      <SelectItem value="apple">Apple</SelectItem>
-      <SelectItem value="banana">Banana</SelectItem>
-      <SelectItem value="blueberry">Blueberry</SelectItem>
+      <SelectItem value="apple" tooltip="Fuji crisp apples">Apple</SelectItem>
+      <SelectItem value="banana" tooltip="Cavendish sweet bananas">Banana</SelectItem>
+      <SelectItem value="blueberry" tooltip="Rich in antioxidants">Blueberry</SelectItem>
       <SelectItem value="grapes">Grapes</SelectItem>
       <SelectItem value="pineapple">Pineapple</SelectItem>
     </SelectGroup>
@@ -44,9 +44,9 @@ export function SelectDocPage() {
     value: "apple"
     placeholder: "Choose fruit..."
     options: [
-        { value: "apple", label: "Apple" },
-        { value: "banana", label: "Banana" },
-        { value: "cherry", label: "Cherry" }
+        { value: "apple", label: "Apple", tooltip: "Fuji crisp apples" },
+        { value: "banana", label: "Banana", tooltip: "Cavendish sweet bananas" },
+        { value: "cherry", label: "Cherry", tooltip: "Rich in antioxidants" }
     ]
     onValueChanged: function(val) { console.log(val) }
 }`} title={t('desktopComposite.select.sandboxTitle', 'Select Sandbox')} reactCode={reactCode}>
@@ -57,9 +57,9 @@ export function SelectDocPage() {
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>{t('formsA.select.fruitsGroup', 'Fruits')}</SelectLabel>
-                <SelectItem value="apple">{t('formsA.select.apple', 'Apple')}</SelectItem>
-                <SelectItem value="banana">{t('formsA.select.banana', 'Banana')}</SelectItem>
-                <SelectItem value="blueberry">{t('formsA.select.blueberry', 'Blueberry')}</SelectItem>
+                <SelectItem value="apple" tooltip={t('formsA.select.appleTooltip', 'Fuji crisp apples')}>{t('formsA.select.apple', 'Apple')}</SelectItem>
+                <SelectItem value="banana" tooltip={t('formsA.select.bananaTooltip', 'Cavendish sweet bananas')}>{t('formsA.select.banana', 'Banana')}</SelectItem>
+                <SelectItem value="blueberry" tooltip={t('formsA.select.blueberryTooltip', 'Rich in antioxidants')}>{t('formsA.select.blueberry', 'Blueberry')}</SelectItem>
                 <SelectItem value="grapes">{t('formsA.select.grapes', 'Grapes')}</SelectItem>
                 <SelectItem value="pineapple">{t('formsA.select.pineapple', 'Pineapple')}</SelectItem>
               </SelectGroup>

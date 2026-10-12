@@ -222,7 +222,8 @@
     - **Bottom-Docked Chrome → `top`**: `media-progress` 时间胶囊、底部贴边条（`bottom` 会被 `clampedY` 拉回叠住自身）。
     - **Left Rail → `right` (Right Rail 镜像为 `left`)**: `sidebar` 折叠图标轨；右停靠时镜像或依赖碰撞翻转。
     - **Everything Else → `top`**: 孤立按钮/输入/`badge`/`card`、`segmented-control` 选项、`elided-text`（但处在纵向密集列表内的 `ElidedText` 必须覆盖为 `right`）。
-    - **DocPages 举证**: `TooltipDocPage` 双端 `overview` 必须复述本策略，且 `Examples` 网格必须各含一个 `Menu Items (Right Default)` 纵向三行示例（React 与 Qt 数量/顺序 1:1，见 SPAS 2.0 红线）。
+    - **Dogfooding & Title Attribute Elimination (禁止原生 title 属性干扰)**: 内部封装 Tooltip 的组件（如 `CopyButton`、`WindowTitleBar`、`DraggableModal`、`ScaleOsd`）必须使用 ChaSet `<Tooltip>` / `ChaSetTooltip`，且严禁在底层 `<button>` 元素上附带原生 HTML `title="..."` 属性，防止浏览器原生黑色气泡与组件库高保真气泡发生重叠双弹出。
+    - **DocPages 举证**: `TooltipDocPage` 双端 `overview` 必须复述本策略，且 `Examples` 网格必须各含一个 `Menu Items (Right Default)` 纵向三行示例（React 与 Qt 数量/顺序 1:1，见 SPAS 2.0 红线）；各宿主组件（如 `DropdownMenuDocPage`、`ContextMenuDocPage`、`SelectDocPage`）的沙盒演示与代码样例中必须包含实际 `tooltip` 配置以供用户直观检验。
 
 ---
 

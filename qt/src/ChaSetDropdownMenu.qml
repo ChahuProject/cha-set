@@ -338,6 +338,16 @@ Item {
                             }
                         }
                     }
+
+                    ChaSetTooltip {
+                        id: itemTooltip
+                        visible: !!(delegateItem.modelData && delegateItem.modelData.tooltip)
+                        target: delegateItem
+                        text: (delegateItem.modelData && delegateItem.modelData.tooltip) || ""
+                        side: (delegateItem.modelData && delegateItem.modelData.tooltipSide) ? delegateItem.modelData.tooltipSide : "right"
+                        disabled: !root.open || !delegateItem.modelData || !delegateItem.modelData.tooltip
+                        hovered: root.open && itemMouse.containsMouse && !delegateItem.isSep && !delegateItem.isLbl
+                    }
                 }
             }
 

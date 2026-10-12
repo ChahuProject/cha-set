@@ -341,6 +341,16 @@ Item {
                             root.forceActiveFocus()
                         }
                     }
+
+                    ChaSetTooltip {
+                        id: optTooltip
+                        visible: !!(parent && parent.modelData && parent.modelData.tooltip)
+                        target: parent
+                        text: (parent && parent.modelData && parent.modelData.tooltip) || ""
+                        side: (parent && parent.modelData && parent.modelData.tooltipSide) ? parent.modelData.tooltipSide : "right"
+                        disabled: !selectPopup.visible || !parent || !parent.modelData || !parent.modelData.tooltip
+                        hovered: selectPopup.visible && optMouse.containsMouse
+                    }
                 }
             }
         }

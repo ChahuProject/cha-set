@@ -8,6 +8,12 @@ Rectangle {
     property string title: "ChaSet Desktop Studio"
     property string icon: "logo"
     property bool maximized: false
+    property string minimizeTitle: "Minimize"
+    property string maximizeTitle: "Maximize"
+    property string restoreTitle: "Restore"
+    property string closeTitle: "Close"
+    property string tooltipSide: "bottom"
+    property bool showTooltips: true
 
     signal minimizeClicked()
     signal maximizeClicked()
@@ -56,6 +62,7 @@ Rectangle {
 
         // Minimize
         Rectangle {
+            id: minBtn
             width: ThemeTokens.dp(44)
             height: parent.height
             color: minMouse.containsMouse ? ThemeTokens.hover : "transparent"
@@ -79,10 +86,19 @@ Rectangle {
                 cursorShape: Qt.PointingHandCursor
                 onClicked: root.minimizeClicked()
             }
+
+            ChaSetTooltip {
+                visible: root.showTooltips && root.minimizeTitle.length > 0
+                target: minBtn
+                text: root.minimizeTitle
+                side: root.tooltipSide
+                hovered: minMouse.containsMouse
+            }
         }
 
         // Maximize / Restore
         Rectangle {
+            id: maxBtn
             width: ThemeTokens.dp(44)
             height: parent.height
             color: maxMouse.containsMouse ? ThemeTokens.hover : "transparent"
@@ -109,10 +125,19 @@ Rectangle {
                     root.maximizeClicked()
                 }
             }
+
+            ChaSetTooltip {
+                visible: root.showTooltips
+                target: maxBtn
+                text: root.maximized ? root.restoreTitle : root.maximizeTitle
+                side: root.tooltipSide
+                hovered: maxMouse.containsMouse
+            }
         }
 
         // Close
         Rectangle {
+            id: closeBtn
             width: ThemeTokens.dp(44)
             height: parent.height
             color: closeMouse.containsMouse ? Qt.rgba(239/255, 68/255, 68/255, 0.85) : "transparent"
@@ -135,6 +160,14 @@ Rectangle {
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
                 onClicked: root.closeClicked()
+            }
+
+            ChaSetTooltip {
+                visible: root.showTooltips && root.closeTitle.length > 0
+                target: closeBtn
+                text: root.closeTitle
+                side: root.tooltipSide
+                hovered: closeMouse.containsMouse
             }
         }
     }

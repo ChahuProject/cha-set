@@ -34,6 +34,8 @@ export const dropdownMenuItemSchema = z.object({
   disabled: z.boolean().default(false),
   variant: dropdownMenuItemVariantSchema.default('default'),
   inset: z.boolean().default(false),
+  tooltip: z.string().optional(),
+  tooltipSide: dropdownMenuSideSchema.default('right'),
 });
 
 export const dropdownMenuCheckboxItemSchema = z.object({
@@ -41,12 +43,16 @@ export const dropdownMenuCheckboxItemSchema = z.object({
   defaultChecked: z.boolean().optional(),
   disabled: z.boolean().default(false),
   inset: z.boolean().default(false),
+  tooltip: z.string().optional(),
+  tooltipSide: dropdownMenuSideSchema.default('right'),
 });
 
 export const dropdownMenuRadioItemSchema = z.object({
   value: z.string().optional(),
   disabled: z.boolean().default(false),
   inset: z.boolean().default(false),
+  tooltip: z.string().optional(),
+  tooltipSide: dropdownMenuSideSchema.default('right'),
 });
 
 export const dropdownMenuGroupSchema = z.object({});

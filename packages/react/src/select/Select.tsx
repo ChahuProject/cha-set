@@ -2,6 +2,7 @@ import { Select as SelectPrimitive } from '@base-ui/react/select';
 import * as React from 'react';
 import { cn } from '../lib/utils';
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '../lib/icons';
+import { Tooltip, TooltipTrigger, TooltipContent, type TooltipSide } from '../tooltip';
 
 interface SelectContextValue {
   registerItem: (value: any, label: React.ReactNode) => void;
@@ -286,6 +287,8 @@ export function SelectLabel({ className, ...props }: SelectLabelProps) {
 export interface SelectItemProps
   extends React.ComponentProps<typeof SelectPrimitive.Item> {
   itemText?: React.ReactNode;
+  tooltip?: React.ReactNode | React.ComponentProps<typeof TooltipContent>;
+  tooltipSide?: TooltipSide;
 }
 
 export function SelectItem({
@@ -293,6 +296,8 @@ export function SelectItem({
   children,
   itemText,
   value,
+  tooltip,
+  tooltipSide = 'right',
   ...props
 }: SelectItemProps) {
   const ctx = React.useContext(SelectContext);
@@ -307,7 +312,7 @@ export function SelectItem({
     }
   }, [ctx, value, itemText, children]);
 
-  return (
+  const itemNode = (
     <SelectPrimitive.Item
       data-slot="select-item"
       value={value}
@@ -331,6 +336,21 @@ export function SelectItem({
       </SelectPrimitive.ItemText>
     </SelectPrimitive.Item>
   );
+
+  if (tooltip) {
+    const tooltipProps =
+      typeof tooltip === 'object' && tooltip !== null && !React.isValidElement(tooltip) && 'children' in (tooltip as any)
+        ? (tooltip as React.ComponentProps<typeof TooltipContent>)
+        : { children: tooltip };
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>{itemNode}</TooltipTrigger>
+        <TooltipContent side={tooltipSide} align="center" {...tooltipProps} />
+      </Tooltip>
+    );
+  }
+
+  return itemNode;
 }
 
 export interface SelectSeparatorProps

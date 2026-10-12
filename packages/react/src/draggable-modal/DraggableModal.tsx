@@ -490,17 +490,18 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
           )}
           {effectiveSizeOptions && effectiveSizeOptions.length > 0 && (
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button
-                  type="button"
-                  data-slot="dropdown-menu-trigger"
-                  title={effectiveTooltip}
-                  aria-label={effectiveTooltip}
-                  className="flex size-7 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-colors duration-quick ease-standard hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
-                >
-                  <Maximize2Icon className="size-3.5" />
-                </button>
-              </DropdownMenuTrigger>
+              <Tooltip content={effectiveTooltip} side="bottom">
+                <DropdownMenuTrigger asChild>
+                  <button
+                    type="button"
+                    data-slot="dropdown-menu-trigger"
+                    aria-label={effectiveTooltip}
+                    className="flex size-7 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-colors duration-quick ease-standard hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+                  >
+                    <Maximize2Icon className="size-3.5" />
+                  </button>
+                </DropdownMenuTrigger>
+              </Tooltip>
               <DropdownMenuContent align="end">
                 {effectiveSizeOptions.map((option, idx) => {
                   const label = option.name ?? option.名称 ?? `Option ${idx + 1}`;

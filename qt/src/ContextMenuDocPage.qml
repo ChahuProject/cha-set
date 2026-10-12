@@ -39,15 +39,28 @@ DocLayout {
     Right click here
   </ContextMenuTrigger>
   <ContextMenuContent>
-    <ContextMenuItem>Back</ContextMenuItem>
-    <ContextMenuItem>Reload</ContextMenuItem>
+    <ContextMenuItem tooltip="Navigate back in history">
+      Back
+      <ContextMenuShortcut>⌘[</ContextMenuShortcut>
+    </ContextMenuItem>
+    <ContextMenuItem disabled tooltip="No forward history available">
+      Forward
+      <ContextMenuShortcut>⌘]</ContextMenuShortcut>
+    </ContextMenuItem>
+    <ContextMenuItem tooltip="Refresh current page content">
+      Reload
+      <ContextMenuShortcut>⌘R</ContextMenuShortcut>
+    </ContextMenuItem>
+    <ContextMenuSeparator />
+    <ContextMenuItem>Save As...</ContextMenuItem>
+    <ContextMenuItem>Inspect</ContextMenuItem>
   </ContextMenuContent>
 </ContextMenu>`
         qtCode: `ChaSetContextMenu {
     items: [
-        { id: "back", label: "Back", shortcut: "Alt+Left" },
-        { id: "forward", label: "Forward", shortcut: "Alt+Right" },
-        { id: "reload", label: "Reload", shortcut: "Ctrl+R" },
+        { id: "back", label: "Back", shortcut: "Alt+Left", tooltip: "Navigate back in history" },
+        { id: "forward", label: "Forward", shortcut: "Alt+Right", disabled: true, tooltip: "No forward history available" },
+        { id: "reload", label: "Reload", shortcut: "Ctrl+R", tooltip: "Refresh current page content" },
         { id: "inspect", label: "Inspect Element", shortcut: "F12" }
     ]
     onItemSelected: function(id) { console.log(id) }
@@ -69,10 +82,10 @@ DocLayout {
                     width: ThemeTokens.dp(320)
                     height: ThemeTokens.dp(160)
                     items: [
-                        { id: "back", label: ChaSetI18n.tr("overlays.contextMenu.back", "Back"), shortcut: "Alt+Left" },
-                        { id: "forward", label: ChaSetI18n.tr("overlays.contextMenu.forward", "Forward"), shortcut: "Alt+Right", disabled: true },
+                        { id: "back", label: ChaSetI18n.tr("overlays.contextMenu.back", "Back"), shortcut: "Alt+Left", tooltip: ChaSetI18n.tr("overlays.contextMenu.backTooltip", "Navigate back in history") },
+                        { id: "forward", label: ChaSetI18n.tr("overlays.contextMenu.forward", "Forward"), shortcut: "Alt+Right", disabled: true, tooltip: ChaSetI18n.tr("overlays.contextMenu.forwardTooltip", "No forward history available") },
                         { id: "settings", label: ChaSetI18n.tr("common.settings", "Settings"), status: "intermediate", intermediateBadge: ChaSetI18n.tr("common.opened", "已打开") },
-                        { id: "reload", label: ChaSetI18n.tr("overlays.contextMenu.reload", "Reload"), shortcut: "Ctrl+R" },
+                        { id: "reload", label: ChaSetI18n.tr("overlays.contextMenu.reload", "Reload"), shortcut: "Ctrl+R", tooltip: ChaSetI18n.tr("overlays.contextMenu.reloadTooltip", "Refresh current page content") },
                         { id: "save", label: ChaSetI18n.tr("overlays.contextMenu.saveAs", "Save As..."), shortcut: "Ctrl+S" },
                         { id: "inspect", label: ChaSetI18n.tr("overlays.contextMenu.inspectElement", "Inspect Element"), shortcut: "F12" }
                     ]

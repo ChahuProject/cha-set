@@ -39,18 +39,18 @@ DocLayout {
     <SelectValue placeholder="Choose fruit..." />
   </SelectTrigger>
   <SelectContent>
-    <SelectItem value="apple">Apple</SelectItem>
-    <SelectItem value="banana">Banana</SelectItem>
-    <SelectItem value="cherry">Cherry</SelectItem>
+    <SelectItem value="apple" tooltip="Fuji crisp apples">Apple</SelectItem>
+    <SelectItem value="banana" tooltip="Cavendish sweet bananas">Banana</SelectItem>
+    <SelectItem value="cherry" tooltip="Rich in antioxidants">Cherry</SelectItem>
   </SelectContent>
 </Select>`
         qtCode: `ChaSetSelect {
     value: "apple"
     placeholder: "Choose fruit..."
     options: [
-        { value: "apple", label: "Apple" },
-        { value: "banana", label: "Banana" },
-        { value: "cherry", label: "Cherry" }
+        { value: "apple", label: "Apple", tooltip: "Fuji crisp apples" },
+        { value: "banana", label: "Banana", tooltip: "Cavendish sweet bananas" },
+        { value: "cherry", label: "Cherry", tooltip: "Rich in antioxidants" }
     ]
     onValueChanged: function(val) { console.log(val) }
 }`
@@ -69,10 +69,10 @@ DocLayout {
                     value: root.selectedFruit
                     placeholder: ChaSetI18n.tr("formsA.select.placeholder", "Select a fruit...")
                     options: [
-                        { value: "apple", label: ChaSetI18n.tr("formsA.select.apple", "Apple") },
-                        { value: "banana", label: ChaSetI18n.tr("formsA.select.banana", "Banana") },
-                        { value: "cherry", label: ChaSetI18n.tr("formsA.select.cherry", "Cherry") },
-                        { value: "dragonfruit", label: ChaSetI18n.tr("formsA.select.dragonfruitDisabled", "Dragonfruit (Disabled)"), disabled: true }
+                        { value: "apple", label: ChaSetI18n.tr("formsA.select.apple", "Apple"), tooltip: ChaSetI18n.tr("formsA.select.appleTooltip", "Fuji crisp apples") },
+                        { value: "banana", label: ChaSetI18n.tr("formsA.select.banana", "Banana"), tooltip: ChaSetI18n.tr("formsA.select.bananaTooltip", "Cavendish sweet bananas") },
+                        { value: "cherry", label: ChaSetI18n.tr("formsA.select.cherry", "Cherry"), tooltip: ChaSetI18n.tr("formsA.select.cherryTooltip", "Fresh sweet cherries") },
+                        { value: "dragonfruit", label: ChaSetI18n.tr("formsA.select.dragonfruitDisabled", "Dragonfruit (Disabled)"), disabled: true, tooltip: ChaSetI18n.tr("formsA.select.dragonfruitTooltip", "Currently out of stock") }
                     ]
                     onValueChanged: root.selectedFruit = value
                 }

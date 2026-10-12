@@ -99,6 +99,15 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
     - All vector icons (`ChaSetIcon`, `ChaSetStatusIcon`) MUST scale strictly according to `ThemeTokens.dp(size)`.
     - Interactive sandbox containers (`ComponentPreview`, `TabsDocPage`) must never use fixed unscaled heights that clip components under high zoom.
     - Mechanically enforced via static linter `pnpm check:scaling` (`scripts/check-qt-scaling.mjs`) and headless runtime scenario (`QtChaSetDemo.exe --test-scenario uiscale`), both embedded directly in `pnpm gate`.
+15. **Mandatory Tooltip Placement Contract (浮层提示默认方位契约 — 严禁上下遮挡纵向同级项)**:
+    - **Single Source of Truth**: Follow the canonical placement policy defined in `spec/components/tooltip.ts` header comments.
+    - **Dense Vertical Lists → `right` (菜单类一律右侧)**: All menu-like vertical stacks (`dropdown-menu` items, `context-menu` items, `select` options, `sidebar` navigation, `virtual-tree` rows, row actions in `reorderable` / `table`) MUST default to `side="right"` + `align="center"`. Placing tooltips at `top`/`bottom` in vertical menus obscures adjacent items while the pointer travels; `right` leaves the whole stack visible while allowing collision handling (`avoidCollisions: true`) to flip safely to `left` when near the right viewport border.
+    - **Top-Docked Chrome → `bottom`**: `address-bar`, `breadcrumb`, top action toolbars, and `window-title-bar` caption buttons default to `side="bottom"` (bubbles at `top` would collide with the window/screen edge).
+    - **Modal Chrome → `bottom`**: Window/dialog close, minimize, maximize buttons (in `dialog`, `sheet`, `draggable-modal`) default to `side="bottom"`, rendering cleanly inside the container canvas rather than hanging outside.
+    - **Bottom-Docked Chrome → `top`**: `media-progress` capsule and bottom dock controls default to `side="top"`.
+    - **Horizontal Action Rows & Form Fields → `top`**: Standalone buttons, copy buttons (`CopyButton`), segmented controls, and form inputs (`Input`, `DurationInput`, `ColorPicker`) default to `side="top"`.
+    - **Dogfooding & Title Elimination**: Components embedding tooltips internally (`CopyButton`, `WindowTitleBar`, `DraggableModal`, `ScaleOsd`) MUST use ChaSet `<Tooltip>` / `ChaSetTooltip` and omit native HTML `title` attributes on buttons to prevent browser-native tooltips from doubling with library bubbles.
+    - **Showcase Living Examples**: Living showcase pages for menu-like components (`DropdownMenuDocPage`, `ContextMenuDocPage`, `SelectDocPage`) MUST declare `tooltip` properties in their interactive sandboxes and code snippets so users can verify default placement in action.
 
 ---
 

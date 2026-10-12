@@ -34,15 +34,41 @@ DocLayout {
 
     ComponentPreview {
         title: ChaSetI18n.tr("desktopComposite.dropdownMenu.sandboxTitle", "Dropdown Menu Sandbox")
-        reactCode: `<DropdownMenu items={items}>
-  <Button variant="outline">Options ▾</Button>
+        reactCode: `<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="outline">Options ▾</Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent className="w-56">
+    <DropdownMenuGroup>
+      <DropdownMenuLabel>Account Settings</DropdownMenuLabel>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem tooltip="View account profile">
+        Profile
+        <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+      </DropdownMenuItem>
+      <DropdownMenuItem tooltip="Manage billing and invoices">
+        Billing
+        <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+      </DropdownMenuItem>
+      <DropdownMenuItem tooltip="View keyboard navigation shortcuts">
+        Keyboard shortcuts
+        <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
+      </DropdownMenuItem>
+    </DropdownMenuGroup>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem variant="destructive" tooltip="Sign out of current account">
+      Log out
+      <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+    </DropdownMenuItem>
+  </DropdownMenuContent>
 </DropdownMenu>`
         qtCode: `ChaSetDropdownMenu {
     open: menuOpen
     items: [
-        { id: "profile", label: "Profile", shortcut: "⌘P" },
-        { id: "settings", label: "Settings", shortcut: "⌘S" },
-        { id: "delete", label: "Delete", destructive: true }
+        { id: "profile", label: "Profile", shortcut: "⌘P", tooltip: "View account profile" },
+        { id: "billing", label: "Billing", shortcut: "⌘B", tooltip: "Manage billing and invoices" },
+        { id: "settings", label: "Settings", shortcut: "⌘S", tooltip: "View keyboard navigation shortcuts" },
+        { id: "logout", label: "Log out", destructive: true, tooltip: "Sign out of current account" }
     ]
     onItemSelected: function(id) { console.log(id) }
 
@@ -66,10 +92,10 @@ DocLayout {
                     width: ThemeTokens.dp(120)
                     height: ThemeTokens.dp(32)
                     items: [
-                        { id: "profile", label: ChaSetI18n.tr("overlays.dropdownMenu.profile", "Profile"), shortcut: "⌘P" },
-                        { id: "billing", label: ChaSetI18n.tr("overlays.dropdownMenu.billing", "Billing"), shortcut: "⌘B" },
-                        { id: "settings", label: ChaSetI18n.tr("overlays.dropdownMenu.settings", "Settings"), shortcut: "⌘S" },
-                        { id: "logout", label: ChaSetI18n.tr("overlays.dropdownMenu.logout", "Log out"), destructive: true }
+                        { id: "profile", label: ChaSetI18n.tr("overlays.dropdownMenu.profile", "Profile"), shortcut: "⌘P", tooltip: ChaSetI18n.tr("overlays.dropdownMenu.profileTooltip", "View account profile") },
+                        { id: "billing", label: ChaSetI18n.tr("overlays.dropdownMenu.billing", "Billing"), shortcut: "⌘B", tooltip: ChaSetI18n.tr("overlays.dropdownMenu.billingTooltip", "Manage billing and invoices") },
+                        { id: "settings", label: ChaSetI18n.tr("overlays.dropdownMenu.settings", "Settings"), shortcut: "⌘S", tooltip: ChaSetI18n.tr("overlays.dropdownMenu.shortcutsTooltip", "View keyboard navigation shortcuts") },
+                        { id: "logout", label: ChaSetI18n.tr("overlays.dropdownMenu.logout", "Log out"), destructive: true, tooltip: ChaSetI18n.tr("overlays.dropdownMenu.logoutTooltip", "Sign out of current account") }
                     ]
                     onItemSelected: function(itemId) {
                         root.lastAction = itemId

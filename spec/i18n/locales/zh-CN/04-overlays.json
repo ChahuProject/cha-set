@@ -396,10 +396,13 @@
     },
     "contextMenu": {
       "back": "返回",
+      "backTooltip": "返回上一页",
       "forward": "前进",
+      "forwardTooltip": "没有可前进的历史记录",
       "inspect": "检查",
       "inspectElement": "检查元素",
       "reload": "重新加载",
+      "reloadTooltip": "重新加载当前页面",
       "rightClickAreaDesc": "将在指针坐标处弹出原生上下文菜单。",
       "rightClickAreaTitle": "在此区域内点击右键",
       "rightClickHere": "在此处右键点击",
@@ -466,11 +469,15 @@
       "actionNone": "操作：无",
       "actionSelected": "操作：已选择 {{id}}",
       "billing": "账单与订阅",
+      "billingTooltip": "管理账单与发票",
       "logout": "退出登录",
+      "logoutTooltip": "退出当前账户",
       "options": "选项 ▾",
       "profile": "个人资料",
+      "profileTooltip": "查看个人资料",
       "settings": "系统设置",
-      "shortcuts": "快捷键说明"
+      "shortcuts": "快捷键说明",
+      "shortcutsTooltip": "查看键盘导航快捷键"
     },
     "floatingNotice": {
       "addCopy": "+ 复制提示",

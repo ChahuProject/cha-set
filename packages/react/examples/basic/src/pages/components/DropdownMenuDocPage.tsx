@@ -15,21 +15,21 @@ export function DropdownMenuDocPage() {
     <DropdownMenuGroup>
       <DropdownMenuLabel>Account Settings</DropdownMenuLabel>
       <DropdownMenuSeparator />
-      <DropdownMenuItem>
+      <DropdownMenuItem tooltip="View account profile">
         Profile
         <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
       </DropdownMenuItem>
-      <DropdownMenuItem>
+      <DropdownMenuItem tooltip="Manage billing and invoices">
         Billing
         <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
       </DropdownMenuItem>
-      <DropdownMenuItem>
+      <DropdownMenuItem tooltip="View keyboard navigation shortcuts">
         Keyboard shortcuts
         <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
       </DropdownMenuItem>
     </DropdownMenuGroup>
     <DropdownMenuSeparator />
-    <DropdownMenuItem variant="destructive">
+    <DropdownMenuItem variant="destructive" tooltip="Sign out of current account">
       Log out
       <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
     </DropdownMenuItem>
@@ -54,9 +54,10 @@ export function DropdownMenuDocPage() {
           qtCode={`ChaSetDropdownMenu {
     open: menuOpen
     items: [
-        { id: "profile", label: "Profile", shortcut: "⌘P" },
-        { id: "settings", label: "Settings", shortcut: "⌘S" },
-        { id: "delete", label: "Delete", destructive: true }
+        { id: "profile", label: "Profile", shortcut: "⌘P", tooltip: "View account profile" },
+        { id: "billing", label: "Billing", shortcut: "⌘B", tooltip: "Manage billing and invoices" },
+        { id: "settings", label: "Settings", shortcut: "⌘S", tooltip: "View keyboard navigation shortcuts" },
+        { id: "logout", label: "Log out", destructive: true, tooltip: "Sign out of current account" }
     ]
     onItemSelected: function(id) { console.log(id) }
 
@@ -74,21 +75,21 @@ export function DropdownMenuDocPage() {
               <DropdownMenuGroup>
                 <DropdownMenuLabel>{t('overlays.dropdownMenu.accountSettings', 'Account Settings')}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem tooltip={t('overlays.dropdownMenu.profileTooltip', 'View account profile')}>
                   {t('overlays.dropdownMenu.profile', 'Profile')}
                   <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem tooltip={t('overlays.dropdownMenu.billingTooltip', 'Manage billing and invoices')}>
                   {t('overlays.dropdownMenu.billing', 'Billing')}
                   <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem tooltip={t('overlays.dropdownMenu.shortcutsTooltip', 'View keyboard navigation shortcuts')}>
                   {t('overlays.dropdownMenu.shortcuts', 'Keyboard shortcuts')}
                   <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem variant="destructive">
+              <DropdownMenuItem variant="destructive" tooltip={t('overlays.dropdownMenu.logoutTooltip', 'Sign out of current account')}>
                 {t('overlays.dropdownMenu.logout', 'Log out')}
                 <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
               </DropdownMenuItem>

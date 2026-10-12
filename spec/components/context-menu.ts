@@ -26,10 +26,14 @@ export const contextMenuContentSchema = z.object({
   collisionPadding: z.number().default(8),
 });
 
+export const contextMenuSideSchema = z.enum(['top', 'bottom', 'left', 'right']);
+
 export const contextMenuItemSchema = z.object({
   disabled: z.boolean().default(false),
   variant: contextMenuItemVariantSchema.default('default'),
   inset: z.boolean().default(false),
+  tooltip: z.string().optional(),
+  tooltipSide: contextMenuSideSchema.default('right'),
 });
 
 export const contextMenuGroupSchema = z.object({});
@@ -42,11 +46,15 @@ export const contextMenuCheckboxItemSchema = z.object({
   defaultChecked: z.boolean().optional(),
   disabled: z.boolean().default(false),
   inset: z.boolean().default(false),
+  tooltip: z.string().optional(),
+  tooltipSide: contextMenuSideSchema.default('right'),
 });
 export const contextMenuRadioItemSchema = z.object({
   value: z.string().optional(),
   disabled: z.boolean().default(false),
   inset: z.boolean().default(false),
+  tooltip: z.string().optional(),
+  tooltipSide: contextMenuSideSchema.default('right'),
 });
 export const contextMenuShortcutSchema = z.object({});
 export const contextMenuSubSchema = z.object({

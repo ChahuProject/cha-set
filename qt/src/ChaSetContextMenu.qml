@@ -310,6 +310,16 @@ Item {
                             root.itemSelected(parent.modelData.id || parent.modelData.label)
                         }
                     }
+
+                    ChaSetTooltip {
+                        id: itemTooltip
+                        visible: !!(parent.modelData && parent.modelData.tooltip)
+                        target: parent
+                        text: (parent.modelData && parent.modelData.tooltip) || ""
+                        side: (parent.modelData && parent.modelData.tooltipSide) ? parent.modelData.tooltipSide : "right"
+                        disabled: !contextPopup.visible || !parent.modelData || !parent.modelData.tooltip
+                        hovered: contextPopup.visible && itemMouse.containsMouse
+                    }
                 }
             }
         }

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Button, type ButtonProps } from '../button/Button';
 import { CheckIcon, CopyIcon } from '../lib/icons';
+import { Tooltip, type TooltipSide } from '../tooltip';
 import { cn } from '../lib/utils';
 
 export interface CopyButtonProps extends Omit<ButtonProps, 'children' | 'onClick' | 'onCopy'> {
@@ -16,6 +17,10 @@ export interface CopyButtonProps extends Omit<ButtonProps, 'children' | 'onClick
   label?: string;
   /** Optional companion text label when copied (defaults to "Copied!") */
   copiedLabel?: string;
+  /** Tooltip position (default: "top") */
+  tooltipSide?: TooltipSide;
+  /** Whether to display ChaSet Tooltip on hover (default: true) */
+  showTooltip?: boolean;
   /** Class name for inner icons */
   iconClassName?: string;
   /** Optional callback fired when text is copied successfully */
@@ -35,6 +40,8 @@ export function CopyButton({
   copiedTitle = 'Copied',
   label,
   copiedLabel = 'Copied!',
+  tooltipSide = 'top',
+  showTooltip = true,
   iconClassName = 'size-3.5',
   className,
   onCopy,
@@ -81,12 +88,14 @@ export function CopyButton({
     }
   };
 
-  return (
+  const tooltipText = copied ? copiedTitle : title;
+
+  const buttonElement = (
     <Button
       type="button"
       variant={variant}
       size={effectiveSize}
-      title={copied ? copiedTitle : title}
+      title={showTooltip ? undefined : tooltipText}
       aria-label={copied ? (label ? (copiedLabel ?? copiedTitle) : copiedTitle) : (label ?? title)}
       className={cn('transition-colors duration-quick ease-standard', className)}
       onClick={handleCopy}
@@ -112,4 +121,14 @@ export function CopyButton({
       )}
     </Button>
   );
+
+  if (showTooltip && tooltipText) {
+    return (
+      <Tooltip content={tooltipText} side={tooltipSide}>
+        {buttonElement}
+      </Tooltip>
+    );
+  }
+
+  return buttonElement;
 }

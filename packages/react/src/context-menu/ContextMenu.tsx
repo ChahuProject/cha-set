@@ -3,6 +3,7 @@ import * as React from 'react';
 import { cn } from '../lib/utils';
 import { CheckIcon, ChevronRightIcon } from '../lib/icons';
 import { Shortcut } from '../kbd/Shortcut';
+import { Tooltip, TooltipTrigger, TooltipContent, type TooltipSide } from '../tooltip';
 
 export interface ContextMenuProps
   extends React.ComponentProps<typeof ContextMenuPrimitive.Root> {}
@@ -80,15 +81,19 @@ export interface ContextMenuItemProps
   extends React.ComponentProps<typeof ContextMenuPrimitive.Item> {
   inset?: boolean;
   variant?: 'default' | 'destructive';
+  tooltip?: React.ReactNode | React.ComponentProps<typeof TooltipContent>;
+  tooltipSide?: TooltipSide;
 }
 
 export function ContextMenuItem({
   className,
   inset,
   variant = 'default',
+  tooltip,
+  tooltipSide = 'right',
   ...props
 }: ContextMenuItemProps) {
-  return (
+  const itemNode = (
     <ContextMenuPrimitive.Item
       data-slot="context-menu-item"
       data-variant={variant}
@@ -105,6 +110,21 @@ export function ContextMenuItem({
       {...props}
     />
   );
+
+  if (tooltip) {
+    const tooltipProps =
+      typeof tooltip === 'object' && tooltip !== null && !React.isValidElement(tooltip) && 'children' in (tooltip as any)
+        ? (tooltip as React.ComponentProps<typeof TooltipContent>)
+        : { children: tooltip };
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>{itemNode}</TooltipTrigger>
+        <TooltipContent side={tooltipSide} align="center" {...tooltipProps} />
+      </Tooltip>
+    );
+  }
+
+  return itemNode;
 }
 
 export interface ContextMenuGroupProps
@@ -156,6 +176,8 @@ export function ContextMenuSeparator({
 export interface ContextMenuCheckboxItemProps
   extends React.ComponentProps<typeof ContextMenuPrimitive.CheckboxItem> {
   inset?: boolean;
+  tooltip?: React.ReactNode | React.ComponentProps<typeof TooltipContent>;
+  tooltipSide?: TooltipSide;
 }
 
 export function ContextMenuCheckboxItem({
@@ -163,9 +185,11 @@ export function ContextMenuCheckboxItem({
   children,
   checked,
   inset,
+  tooltip,
+  tooltipSide = 'right',
   ...props
 }: ContextMenuCheckboxItemProps) {
-  return (
+  const itemNode = (
     <ContextMenuPrimitive.CheckboxItem
       data-slot="context-menu-checkbox-item"
       data-inset={inset}
@@ -191,6 +215,21 @@ export function ContextMenuCheckboxItem({
       {children}
     </ContextMenuPrimitive.CheckboxItem>
   );
+
+  if (tooltip) {
+    const tooltipProps =
+      typeof tooltip === 'object' && tooltip !== null && !React.isValidElement(tooltip) && 'children' in (tooltip as any)
+        ? (tooltip as React.ComponentProps<typeof TooltipContent>)
+        : { children: tooltip };
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>{itemNode}</TooltipTrigger>
+        <TooltipContent side={tooltipSide} align="center" {...tooltipProps} />
+      </Tooltip>
+    );
+  }
+
+  return itemNode;
 }
 
 export interface ContextMenuRadioGroupProps
@@ -210,15 +249,19 @@ export function ContextMenuRadioGroup({
 export interface ContextMenuRadioItemProps
   extends React.ComponentProps<typeof ContextMenuPrimitive.RadioItem> {
   inset?: boolean;
+  tooltip?: React.ReactNode | React.ComponentProps<typeof TooltipContent>;
+  tooltipSide?: TooltipSide;
 }
 
 export function ContextMenuRadioItem({
   className,
   children,
   inset,
+  tooltip,
+  tooltipSide = 'right',
   ...props
 }: ContextMenuRadioItemProps) {
-  return (
+  const itemNode = (
     <ContextMenuPrimitive.RadioItem
       data-slot="context-menu-radio-item"
       data-inset={inset}
@@ -243,6 +286,21 @@ export function ContextMenuRadioItem({
       {children}
     </ContextMenuPrimitive.RadioItem>
   );
+
+  if (tooltip) {
+    const tooltipProps =
+      typeof tooltip === 'object' && tooltip !== null && !React.isValidElement(tooltip) && 'children' in (tooltip as any)
+        ? (tooltip as React.ComponentProps<typeof TooltipContent>)
+        : { children: tooltip };
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>{itemNode}</TooltipTrigger>
+        <TooltipContent side={tooltipSide} align="center" {...tooltipProps} />
+      </Tooltip>
+    );
+  }
+
+  return itemNode;
 }
 
 export interface ContextMenuShortcutProps

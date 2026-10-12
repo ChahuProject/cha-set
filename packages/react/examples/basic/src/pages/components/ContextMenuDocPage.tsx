@@ -12,15 +12,15 @@ export function ContextMenuDocPage() {
     Right click here
   </ContextMenuTrigger>
   <ContextMenuContent className="w-64">
-    <ContextMenuItem>
+    <ContextMenuItem tooltip="Navigate back in history">
       Back
       <ContextMenuShortcut>⌘[</ContextMenuShortcut>
     </ContextMenuItem>
-    <ContextMenuItem disabled>
+    <ContextMenuItem disabled tooltip="No forward history available">
       Forward
       <ContextMenuShortcut>⌘]</ContextMenuShortcut>
     </ContextMenuItem>
-    <ContextMenuItem>
+    <ContextMenuItem tooltip="Refresh current page content">
       Reload
       <ContextMenuShortcut>⌘R</ContextMenuShortcut>
     </ContextMenuItem>
@@ -47,9 +47,9 @@ export function ContextMenuDocPage() {
         <ComponentPreview
           qtCode={`ChaSetContextMenu {
     items: [
-        { id: "back", label: "Back", shortcut: "Alt+Left" },
-        { id: "forward", label: "Forward", shortcut: "Alt+Right" },
-        { id: "reload", label: "Reload", shortcut: "Ctrl+R" },
+        { id: "back", label: "Back", shortcut: "Alt+Left", tooltip: "Navigate back in history" },
+        { id: "forward", label: "Forward", shortcut: "Alt+Right", disabled: true, tooltip: "No forward history available" },
+        { id: "reload", label: "Reload", shortcut: "Ctrl+R", tooltip: "Refresh current page content" },
         { id: "inspect", label: "Inspect Element", shortcut: "F12" }
     ]
     onItemSelected: function(id) { console.log(id) }
@@ -63,15 +63,15 @@ export function ContextMenuDocPage() {
               {t('overlays.contextMenu.rightClickHere', 'Right click here')}
             </ContextMenuTrigger>
             <ContextMenuContent className="w-64">
-              <ContextMenuItem>
+              <ContextMenuItem tooltip={t('overlays.contextMenu.backTooltip', 'Navigate back in history')}>
                 {t('overlays.contextMenu.back', 'Back')}
                 <ContextMenuShortcut>⌘[</ContextMenuShortcut>
               </ContextMenuItem>
-              <ContextMenuItem disabled>
+              <ContextMenuItem disabled tooltip={t('overlays.contextMenu.forwardTooltip', 'No forward history available')}>
                 {t('overlays.contextMenu.forward', 'Forward')}
                 <ContextMenuShortcut>⌘]</ContextMenuShortcut>
               </ContextMenuItem>
-              <ContextMenuItem>
+              <ContextMenuItem tooltip={t('overlays.contextMenu.reloadTooltip', 'Refresh current page content')}>
                 {t('overlays.contextMenu.reload', 'Reload')}
                 <ContextMenuShortcut>⌘R</ContextMenuShortcut>
               </ContextMenuItem>

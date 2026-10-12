@@ -5,6 +5,7 @@ import { CheckIcon, ChevronRightIcon } from '../lib/icons';
 import { Shortcut } from '../kbd/Shortcut';
 import { ShortcutBar } from '../kbd/ShortcutBar';
 import type { ShortcutItem } from '@chahu/spec/kbd';
+import { Tooltip, TooltipTrigger, TooltipContent, type TooltipSide } from '../tooltip';
 
 export interface DropdownMenuProps
   extends React.ComponentProps<typeof MenuPrimitive.Root> {}
@@ -133,15 +134,19 @@ export interface DropdownMenuItemProps
   extends React.ComponentProps<typeof MenuPrimitive.Item> {
   inset?: boolean;
   variant?: 'default' | 'destructive';
+  tooltip?: React.ReactNode | React.ComponentProps<typeof TooltipContent>;
+  tooltipSide?: TooltipSide;
 }
 
 export function DropdownMenuItem({
   className,
   inset,
   variant = 'default',
+  tooltip,
+  tooltipSide = 'right',
   ...props
 }: DropdownMenuItemProps) {
-  return (
+  const itemNode = (
     <MenuPrimitive.Item
       data-slot="dropdown-menu-item"
       data-inset={inset}
@@ -158,11 +163,28 @@ export function DropdownMenuItem({
       {...props}
     />
   );
+
+  if (tooltip) {
+    const tooltipProps =
+      typeof tooltip === 'object' && tooltip !== null && !React.isValidElement(tooltip) && 'children' in (tooltip as any)
+        ? (tooltip as React.ComponentProps<typeof TooltipContent>)
+        : { children: tooltip };
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>{itemNode}</TooltipTrigger>
+        <TooltipContent side={tooltipSide} align="center" {...tooltipProps} />
+      </Tooltip>
+    );
+  }
+
+  return itemNode;
 }
 
 export interface DropdownMenuCheckboxItemProps
   extends React.ComponentProps<typeof MenuPrimitive.CheckboxItem> {
   inset?: boolean;
+  tooltip?: React.ReactNode | React.ComponentProps<typeof TooltipContent>;
+  tooltipSide?: TooltipSide;
 }
 
 export function DropdownMenuCheckboxItem({
@@ -170,9 +192,11 @@ export function DropdownMenuCheckboxItem({
   children,
   checked,
   inset,
+  tooltip,
+  tooltipSide = 'right',
   ...props
 }: DropdownMenuCheckboxItemProps) {
-  return (
+  const itemNode = (
     <MenuPrimitive.CheckboxItem
       data-slot="dropdown-menu-checkbox-item"
       data-inset={inset}
@@ -198,6 +222,21 @@ export function DropdownMenuCheckboxItem({
       {children}
     </MenuPrimitive.CheckboxItem>
   );
+
+  if (tooltip) {
+    const tooltipProps =
+      typeof tooltip === 'object' && tooltip !== null && !React.isValidElement(tooltip) && 'children' in (tooltip as any)
+        ? (tooltip as React.ComponentProps<typeof TooltipContent>)
+        : { children: tooltip };
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>{itemNode}</TooltipTrigger>
+        <TooltipContent side={tooltipSide} align="center" {...tooltipProps} />
+      </Tooltip>
+    );
+  }
+
+  return itemNode;
 }
 
 export interface DropdownMenuRadioGroupProps
@@ -217,15 +256,19 @@ export function DropdownMenuRadioGroup({
 export interface DropdownMenuRadioItemProps
   extends React.ComponentProps<typeof MenuPrimitive.RadioItem> {
   inset?: boolean;
+  tooltip?: React.ReactNode | React.ComponentProps<typeof TooltipContent>;
+  tooltipSide?: TooltipSide;
 }
 
 export function DropdownMenuRadioItem({
   className,
   children,
   inset,
+  tooltip,
+  tooltipSide = 'right',
   ...props
 }: DropdownMenuRadioItemProps) {
-  return (
+  const itemNode = (
     <MenuPrimitive.RadioItem
       data-slot="dropdown-menu-radio-item"
       data-inset={inset}
@@ -250,6 +293,21 @@ export function DropdownMenuRadioItem({
       {children}
     </MenuPrimitive.RadioItem>
   );
+
+  if (tooltip) {
+    const tooltipProps =
+      typeof tooltip === 'object' && tooltip !== null && !React.isValidElement(tooltip) && 'children' in (tooltip as any)
+        ? (tooltip as React.ComponentProps<typeof TooltipContent>)
+        : { children: tooltip };
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>{itemNode}</TooltipTrigger>
+        <TooltipContent side={tooltipSide} align="center" {...tooltipProps} />
+      </Tooltip>
+    );
+  }
+
+  return itemNode;
 }
 
 export interface DropdownMenuLabelProps

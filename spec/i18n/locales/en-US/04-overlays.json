@@ -396,10 +396,13 @@
     },
     "contextMenu": {
       "back": "Back",
+      "backTooltip": "Navigate back in history",
       "forward": "Forward",
+      "forwardTooltip": "No forward history available",
       "inspect": "Inspect",
       "inspectElement": "Inspect Element",
       "reload": "Reload",
+      "reloadTooltip": "Refresh current page content",
       "rightClickAreaDesc": "A native contextual popup will appear at pointer coordinates.",
       "rightClickAreaTitle": "Right Click Inside This Area",
       "rightClickHere": "Right click here",
@@ -466,11 +469,15 @@
       "actionNone": "Action: None",
       "actionSelected": "Action: Selected: {{id}}",
       "billing": "Billing",
+      "billingTooltip": "Manage billing and invoices",
       "logout": "Log out",
+      "logoutTooltip": "Sign out of current account",
       "options": "Options ▾",
       "profile": "Profile",
+      "profileTooltip": "View account profile",
       "settings": "Settings",
-      "shortcuts": "Keyboard shortcuts"
+      "shortcuts": "Keyboard shortcuts",
+      "shortcutsTooltip": "View keyboard navigation shortcuts"
     },
     "floatingNotice": {
       "addCopy": "+ Copy Notice",
