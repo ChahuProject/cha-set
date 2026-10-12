@@ -477,6 +477,8 @@
       "switchScheme": "Switch application color scheme",
       "themeTooltipFormat": "Theme: {{label}} — Switch application color scheme",
       "tooltipsHintsTitle": "Tooltips & Custom Hints",
+      "tooltipsHintsDesc": "Options support rich interactive tooltips. You can provide plain text, keyboard shortcut badges, custom placement, rich custom content, or a global",
+      "functionSuffix": "function.",
       "weekLabel": "Week",
       "weeklyTip": "Weekly timeline view",
       "yearLabel": "Year"

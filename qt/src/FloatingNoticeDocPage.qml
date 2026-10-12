@@ -197,8 +197,8 @@ ChaSetFloatingNotice {
     pauseOnHover: true
     zoomOnHover: true
     notices: [
-        { id: "1", title: qsTr("已复制路径"), level: "default" },
-        { id: "2", title: qsTr("已评 5 星"), level: "info", priority: 10 }
+        { id: "1", title: ChaSetI18n.tr("overlays.floatingNotice.copiedTitle", "File path copied to clipboard"), level: "default" },
+        { id: "2", title: ChaSetI18n.tr("overlays.floatingNotice.ratingTitle", "Rated 5 stars"), level: "info", priority: 10 }
     ]
 }`
     }

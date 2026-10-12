@@ -157,6 +157,8 @@
       "forwardTooltip": "前进",
       "keyboardDesc": "键盘快捷键与按钮激活模式。",
       "locProjectRoot": "项目根目录",
+      "locSystem32": "系统目录 (System32)",
+      "locPosixLog": "POSIX 日志 (/var/log)",
       "quickLocations": "快捷位置:",
       "refreshes": "刷新次数: {{count}}",
       "refreshTooltip": "刷新",

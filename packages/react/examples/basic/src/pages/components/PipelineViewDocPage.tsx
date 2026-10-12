@@ -93,7 +93,7 @@ export function PipelineViewDocPage() {
     <DocLayout
       category="Composite Engines"
       title="Pipeline View"
-      description="Multi-stage execution view and pipeline center with job tracking, step timelines, and virtualized auto-scrolling log console."
+      description={t('components.pipelineView.description', 'Multi-stage execution view and pipeline center with job tracking, step timelines, and virtualized auto-scrolling log console.')}
     >
       <section id="overview" className="scroll-mt-20">
         <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">

@@ -200,7 +200,9 @@
       "sandboxTitle": "折叠面板沙盒",
       "toggleLabel": "切换",
       "trueLabel": "开启",
-      "vulkanBadge": "Vulkan 验证层：已启用"
+      "vulkanBadge": "Vulkan 验证层：已启用",
+      "buildFlags": "构建参数：--release --target=x86_64-pc-windows-msvc",
+      "renderPipeline": "渲染管线：Vulkan 1.3 / D3D12 Ultimate"
     },
     "panelCard": {
       "collapseHint": "点击 chevron 图标或标题以折叠／展开卡片面板主体。",
@@ -285,6 +287,9 @@
       "verticalTitle": "垂直分栏"
     },
     "splitterHandle": {
+      "animationsBullet1": "指示器颜色与透明度过渡以 duration-quick (150ms) 与 ease-standard 曲线平滑呈现（Qt 对应：ThemeTokens.motionQuick 与 ThemeTokens.easeStandard）。",
+      "animationsBulletQt1": "指示器颜色与透明度过渡以 ThemeTokens.motionQuick（150ms）与 ThemeTokens.easeStandard 曲线平滑呈现。",
+      "animationsBulletQt3": "所有过渡均受 ThemeTokens.animationsEnabled 守卫；禁用时时长归零且动画停止。",
       "animationsDesc": "SplitterHandle 边缘指示器的 motion 令牌与运动学时间契约。",
       "dragStaticDesc": "手柄拖拽运动学严格禁用动画，以保证确定性 60fps 实时指针追踪。",
       "horizontalDesc": "手柄亦可吸附于水平边缘（top 或 bottom），用于底部控制台或抽屉调参。",

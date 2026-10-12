@@ -1291,8 +1291,8 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "media-progress-bar",
         "title": "MediaProgressBar",
         "href": "#/components/media-progress-bar",
-        "desc": "通用媒体播放进度条组件，支持拖拽擦洗、点击 seek、悬停预览、左下方「位置 / 总长」时间显示、点击翻转正/倒计时与右键格式菜单。",
-        "description": "通用媒体播放进度条组件，支持拖拽擦洗、点击 seek、悬停预览、左下方「位置 / 总长」时间显示、点击翻转正/倒计时与右键格式菜单。"
+        "desc": "Universal media playback progress bar supporting drag-scrubbing, click-to-seek, hover preview, elapsed/remaining time display, click to toggle countdown, and context format menu.",
+        "description": "Universal media playback progress bar supporting drag-scrubbing, click-to-seek, hover preview, elapsed/remaining time display, click to toggle countdown, and context format menu."
       }
     ]
   },

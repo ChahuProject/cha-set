@@ -61,7 +61,8 @@
       "fullWidthAction": "Full Width Block Action",
       "logTitle": "Interaction Log (Click events)",
       "statesLabel": "states",
-      "title": "Components · Button Matrix"
+      "title": "Components · Button Matrix",
+      "desc": "Neutral contract (spec/components/button.ts) implemented via @base-ui/react. Full variant × size matrix, polymorphic link rendering, and asynchronous loading states."
     },
     "header": {
       "draggableModal": "Draggable Modal",

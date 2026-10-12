@@ -61,7 +61,8 @@
       "fullWidthAction": "全宽块级操作",
       "logTitle": "交互日志（点击事件）",
       "statesLabel": "状态",
-      "title": "组件 · 按钮矩阵"
+      "title": "组件 · 按钮矩阵",
+      "desc": "基于 @base-ui/react 实现的中立契约 (spec/components/button.ts)。包含完整的变体 × 尺寸矩阵、多态链接渲染和异步加载状态。"
     },
     "header": {
       "draggableModal": "可拖拽弹窗",

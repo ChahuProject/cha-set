@@ -383,7 +383,7 @@ export function DialogDocPage() {
             },
             {
               name: 'initialPositionMode',
-              type: "'center' | 'top' | '居中' | '顶部靠上'",
+              type: "'center' | 'top'",
               default: "'center'",
               description: t('components.dialog.initialPositionModeDesc', 'Initial positioning mode for the modal window.'),
             },
@@ -408,7 +408,7 @@ export function DialogDocPage() {
             {
               name: 'sizeMenuTooltip',
               type: 'string',
-              default: "'调整弹窗尺寸'",
+              default: "'Adjust Size'",
               description: t('components.dialog.sizeMenuTooltipDesc', 'Tooltip text for the size switcher dropdown button.'),
             },
             {

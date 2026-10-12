@@ -477,6 +477,8 @@
       "switchScheme": "切换应用配色方案",
       "themeTooltipFormat": "主题：{{label}} — 切换应用配色方案",
       "tooltipsHintsTitle": "工具提示与自定义提示",
+      "tooltipsHintsDesc": "选项支持丰富的交互式提示框。您可以提供纯文本、快捷键徽章、自定义位置、富文本自定义内容或全局",
+      "functionSuffix": "函数。",
       "weekLabel": "周",
       "weeklyTip": "每周时间线视图",
       "yearLabel": "年"

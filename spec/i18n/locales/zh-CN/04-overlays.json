@@ -247,7 +247,8 @@
       "shortcutDesc": "在提示气泡内渲染的键盘快捷键徽章。",
       "sideDesc": "相对触发器的首选放置方位。",
       "sideOffsetDesc": "目标元素与提示气泡之间的间距。",
-      "targetDesc": "未包裹子元素时要挂载提示的可选目标项。"
+      "targetDesc": "未包裹子元素时要挂载提示的可选目标项。",
+      "warmDesc": "是否参与全局预热悬停会话；设为 false 时使用独立的逐项定时器。"
     }
   },
   "desktopComposite": {
@@ -257,6 +258,7 @@
       "summaryText": "{{count}} 项{{label}}"
     },
     "alertDialog": {
+      "overviewDesc": "点击下方破坏性操作按钮唤起二次确认对话框。可通过上方控件切换尺寸预设与遮罩点击行为。",
       "pageDescription": "打断用户并要求确认重要内容的中断式模态弹窗。",
       "sandboxTitle": "警告弹窗沙盒"
     },

@@ -200,7 +200,9 @@
       "sandboxTitle": "Collapsible Sandbox",
       "toggleLabel": "Toggle",
       "trueLabel": "True",
-      "vulkanBadge": "Vulkan Validation Layers: Enabled"
+      "vulkanBadge": "Vulkan Validation Layers: Enabled",
+      "buildFlags": "Build flags: --release --target=x86_64-pc-windows-msvc",
+      "renderPipeline": "Render pipeline: Vulkan 1.3 / D3D12 Ultimate"
     },
     "panelCard": {
       "collapseHint": "Click the chevron icon or title to collapse and expand the card panel body.",
@@ -285,6 +287,9 @@
       "verticalTitle": "Vertical Splitter"
     },
     "splitterHandle": {
+      "animationsBullet1": "Active indicator color and opacity transitions animate smoothly over duration-quick (150ms) using ease-standard curve (Qt counterpart: ThemeTokens.motionQuick and ThemeTokens.easeStandard).",
+      "animationsBulletQt1": "Active indicator color and opacity transitions animate smoothly over ThemeTokens.motionQuick (150ms) using ThemeTokens.easeStandard curve.",
+      "animationsBulletQt3": "All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop.",
       "animationsDesc": "Motion tokens and kinematic timing contracts for SplitterHandle edge indicators.",
       "dragStaticDesc": "Handle dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.",
       "horizontalDesc": "Handles can also be attached to horizontal edges (top or bottom) for bottom console or drawer resizing.",

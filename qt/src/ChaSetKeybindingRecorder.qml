@@ -18,8 +18,8 @@ Item {
     property string size: "default" // "default" | "sm"
     property bool disabled: false
     // React parity (KeybindingRecorder.tsx defaults + spec/components/keybinding-recorder.ts).
-    property string placeholder: "No keybinding set"
-    property string recordingText: "Press key combination (Esc to cancel)..."
+    property string placeholder: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingRecorder.noBinding", "No keybinding set") : "No keybinding set"
+    property string recordingText: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingRecorder.recordingPrompt", "Press key combination (Esc to cancel)...") : "Press key combination (Esc to cancel)..."
 
     signal keybindingRecorded(string newBinding)
 

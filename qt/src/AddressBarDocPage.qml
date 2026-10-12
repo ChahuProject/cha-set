@@ -99,13 +99,13 @@ DocLayout {
                         ChaSetButton {
                             size: "sm"
                             variant: "outline"
-                            text: "System32"
+                            text: ChaSetI18n.tr("desktopComposite.addressBar.locSystem32", "System32")
                             onClicked: root.navigateTo("C:/Windows/System32")
                         }
                         ChaSetButton {
                             size: "sm"
                             variant: "outline"
-                            text: "POSIX /var/log"
+                            text: ChaSetI18n.tr("desktopComposite.addressBar.locPosixLog", "POSIX /var/log")
                             onClicked: root.navigateTo("/var/log/nginx")
                         }
                     }

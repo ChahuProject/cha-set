@@ -16,8 +16,7 @@ export default function ButtonSection() {
         <div>
           <h2>{t('desktopComposite.buttonSection.title', 'Components · Button Matrix')}</h2>
           <p className="desc">
-            Neutral contract (spec/components/button.ts) implemented via @base-ui/react. Full variant × size matrix,
-            polymorphic link rendering, and asynchronous loading states.
+            {t('desktopComposite.buttonSection.desc', 'Neutral contract (spec/components/button.ts) implemented via @base-ui/react. Full variant × size matrix, polymorphic link rendering, and asynchronous loading states.')}
           </p>
         </div>
       </div>

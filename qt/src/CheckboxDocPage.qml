@@ -321,9 +321,9 @@ DocLayout {
 
         DocText { text: ChaSetI18n.tr("desktopComposite.checkbox.animationsDesc", "Motion behavior and timing for the checked, indeterminate, and state transitions."); color: root.cMutedFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
 
-        DocText { text: "• The check-mark SVG stays mounted and cross-fades its opacity and scale when checked, using ThemeTokens.motionQuick with the easeEntrance curve on opacity/scale and easeStandard on colors."; color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "• " + ChaSetI18n.tr("desktopComposite.checkbox.animationsBullet1", "The check-mark SVG stays mounted and cross-fades its opacity and scale when checked, using ThemeTokens.motionQuick with the easeEntrance curve on opacity/scale and easeStandard on colors."); color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
         DocText { text: "• " + ChaSetI18n.tr("desktopComposite.checkbox.animationsBullet2", "The box border color cross-fades on hover, focus, checked, and invalid state changes."); color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."; color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        DocText { text: "• " + ChaSetI18n.tr("desktopComposite.checkbox.animationsBullet3", "All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."); color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
     }
 
     // Section 5: Component Reference (Keyboard + Props)

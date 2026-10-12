@@ -164,10 +164,10 @@ Item {
                 title = tr("showcase.examplesAndStates", "Examples & States");
             } else if (id === "variants-options") {
                 id = "variants";
-                title = "Variants & Options";
+                title = tr("showcase.variantsAndOptions", "Variants & Options");
             } else if (id === "multi-file-tabs") {
                 id = "multi-file";
-                title = "Multi-File Tabs";
+                title = tr("showcase.multiFileTabs", "Multi-File Tabs");
             }
 
             if (!seenIds[id]) {

@@ -7,7 +7,7 @@ DocLayout {
     id: root
     category: "Forms & Inputs"
     pageTitle: "MediaProgressBar"
-    description: "通用媒体播放进度条组件，支持拖拽擦洗、点击 seek、悬停预览、左下方「位置 / 总长」时间显示、点击翻转正/倒计时与右键格式菜单。"
+    description: ChaSetI18n.tr("components.mediaProgressBar.description", "Universal media playback progress bar supporting drag-scrubbing, click-to-seek, hover preview, elapsed/remaining time display, click to toggle countdown, and context format menu.")
 
     property real demoRatio: 0.35
     property real demoPosition: 42000

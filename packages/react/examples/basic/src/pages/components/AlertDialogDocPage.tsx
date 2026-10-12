@@ -43,7 +43,7 @@ export function AlertDialogDocPage() {
           {t('showcase.interactiveOverview', 'Interactive Overview')}
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Click the destructive button below to trigger the confirmation modal. You can toggle size presets and overlay click behavior.
+          {t('desktopComposite.alertDialog.overviewDesc', 'Click the destructive button below to trigger the confirmation modal. You can toggle size presets and overlay click behavior.')}
         </p>
 
         <ComponentPreview

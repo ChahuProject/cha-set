@@ -381,7 +381,7 @@ DocLayout {
                         width: parent.width
                         language: "cmake"
                         filename: "CMakeLists.txt"
-                        code: "find_package(ChaSet REQUIRED) # 或 FetchContent / add_subdirectory\ntarget_link_libraries(my_desktop_app PRIVATE ChaSetPlugin)"
+                        code: "find_package(ChaSet REQUIRED) # or FetchContent / add_subdirectory\ntarget_link_libraries(my_desktop_app PRIVATE ChaSetPlugin)"
                     }
 
                     ChaSetCodeBlock {

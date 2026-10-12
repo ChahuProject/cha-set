@@ -157,6 +157,8 @@
       "forwardTooltip": "Forward",
       "keyboardDesc": "Keyboard shortcuts and button activation patterns.",
       "locProjectRoot": "Project Root",
+      "locSystem32": "System32",
+      "locPosixLog": "POSIX /var/log",
       "quickLocations": "Quick Locations:",
       "refreshes": "Refreshes: {{count}}",
       "refreshTooltip": "Refresh",

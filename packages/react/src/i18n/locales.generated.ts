@@ -87,6 +87,8 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "copyAllCode": "复制代码全部内容",
     "selectAll": "全选",
     "default": "默认",
+    "and": "与",
+    "or": "或",
     "secondary": "次要",
     "outline": "线框",
     "ghost": "幽灵",
@@ -249,6 +251,8 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "anatomy": "结构分析",
     "anatomyDesc": "面向 React (TSX) 与 Qt Quick (QML) 的导入与基本结构定义。",
     "examplesAndStates": "示例与状态",
+    "variantsAndOptions": "变体与选项",
+    "multiFileTabs": "多文件标签页",
     "exportThemeConfig": "导出主题配置",
     "exportThemeDesc": "一键复制适用于目标框架的定制化样式与组件代码。",
     "variant": "变体:",
@@ -1897,7 +1901,8 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "shortcutDesc": "在提示气泡内渲染的键盘快捷键徽章。",
       "sideDesc": "相对触发器的首选放置方位。",
       "sideOffsetDesc": "目标元素与提示气泡之间的间距。",
-      "targetDesc": "未包裹子元素时要挂载提示的可选目标项。"
+      "targetDesc": "未包裹子元素时要挂载提示的可选目标项。",
+      "warmDesc": "是否参与全局预热悬停会话；设为 false 时使用独立的逐项定时器。"
     },
     "window-title-bar": {
       "description": "桌面端无边框窗口标题栏组件，包含应用标识、标题、拖拽移动区域以及最小化/最大化/关闭系统控制按钮。"
@@ -2163,7 +2168,8 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "fullWidthAction": "全宽块级操作",
       "logTitle": "交互日志（点击事件）",
       "statesLabel": "状态",
-      "title": "组件 · 按钮矩阵"
+      "title": "组件 · 按钮矩阵",
+      "desc": "基于 @base-ui/react 实现的中立契约 (spec/components/button.ts)。包含完整的变体 × 尺寸矩阵、多态链接渲染和异步加载状态。"
     },
     "header": {
       "draggableModal": "可拖拽弹窗",
@@ -2370,6 +2376,8 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "switchScheme": "切换应用配色方案",
       "themeTooltipFormat": "主题：{{label}} — 切换应用配色方案",
       "tooltipsHintsTitle": "工具提示与自定义提示",
+      "tooltipsHintsDesc": "选项支持丰富的交互式提示框。您可以提供纯文本、快捷键徽章、自定义位置、富文本自定义内容或全局",
+      "functionSuffix": "函数。",
       "weekLabel": "周",
       "weeklyTip": "每周时间线视图",
       "yearLabel": "年"
@@ -2417,7 +2425,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "sandboxTitle": "折叠面板沙盒",
       "toggleLabel": "切换",
       "trueLabel": "开启",
-      "vulkanBadge": "Vulkan 验证层：已启用"
+      "vulkanBadge": "Vulkan 验证层：已启用",
+      "buildFlags": "构建参数：--release --target=x86_64-pc-windows-msvc",
+      "renderPipeline": "渲染管线：Vulkan 1.3 / D3D12 Ultimate"
     },
     "panelCard": {
       "collapseHint": "点击 chevron 图标或标题以折叠／展开卡片面板主体。",
@@ -2502,6 +2512,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "verticalTitle": "垂直分栏"
     },
     "splitterHandle": {
+      "animationsBullet1": "指示器颜色与透明度过渡以 duration-quick (150ms) 与 ease-standard 曲线平滑呈现（Qt 对应：ThemeTokens.motionQuick 与 ThemeTokens.easeStandard）。",
+      "animationsBulletQt1": "指示器颜色与透明度过渡以 ThemeTokens.motionQuick（150ms）与 ThemeTokens.easeStandard 曲线平滑呈现。",
+      "animationsBulletQt3": "所有过渡均受 ThemeTokens.animationsEnabled 守卫；禁用时时长归零且动画停止。",
       "animationsDesc": "SplitterHandle 边缘指示器的 motion 令牌与运动学时间契约。",
       "dragStaticDesc": "手柄拖拽运动学严格禁用动画，以保证确定性 60fps 实时指针追踪。",
       "horizontalDesc": "手柄亦可吸附于水平边缘（top 或 bottom），用于底部控制台或抽屉调参。",
@@ -2538,6 +2551,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "summaryText": "{{count}} 项{{label}}"
     },
     "alertDialog": {
+      "overviewDesc": "点击下方破坏性操作按钮唤起二次确认对话框。可通过上方控件切换尺寸预设与遮罩点击行为。",
       "pageDescription": "打断用户并要求确认重要内容的中断式模态弹窗。",
       "sandboxTitle": "警告弹窗沙盒"
     },
@@ -2774,6 +2788,8 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "forwardTooltip": "前进",
       "keyboardDesc": "键盘快捷键与按钮激活模式。",
       "locProjectRoot": "项目根目录",
+      "locSystem32": "系统目录 (System32)",
+      "locPosixLog": "POSIX 日志 (/var/log)",
       "quickLocations": "快捷位置:",
       "refreshes": "刷新次数: {{count}}",
       "refreshTooltip": "刷新",
@@ -3890,6 +3906,8 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "copyAllCode": "Copy Entire Code",
     "selectAll": "Select All",
     "default": "Default",
+    "and": "and",
+    "or": "or",
     "secondary": "Secondary",
     "outline": "Outline",
     "ghost": "Ghost",
@@ -4052,6 +4070,8 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "anatomy": "Anatomy",
     "anatomyDesc": "Import and structure definition for React and Qt Quick.",
     "examplesAndStates": "Examples & States",
+    "variantsAndOptions": "Variants & Options",
+    "multiFileTabs": "Multi-File Tabs",
     "exportThemeConfig": "Export Theme Configuration",
     "exportThemeDesc": "One-click copy tailored styles and component code for your target framework.",
     "variant": "Variant:",
@@ -5700,7 +5720,8 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "shortcutDesc": "Keyboard shortcut badge rendered inside the tooltip bubble.",
       "sideDesc": "The preferred placement relative to the trigger.",
       "sideOffsetDesc": "Distance between target item and tooltip bubble.",
-      "targetDesc": "Optional target item to attach the tooltip to when not wrapping children."
+      "targetDesc": "Optional target item to attach the tooltip to when not wrapping children.",
+      "warmDesc": "Whether to participate in global warm hover sessions; set to false for independent per-item timers."
     },
     "window-title-bar": {
       "description": "Desktop window frame header with title, drag region, and minimize/maximize/close buttons."
@@ -5966,7 +5987,8 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "fullWidthAction": "Full Width Block Action",
       "logTitle": "Interaction Log (Click events)",
       "statesLabel": "states",
-      "title": "Components · Button Matrix"
+      "title": "Components · Button Matrix",
+      "desc": "Neutral contract (spec/components/button.ts) implemented via @base-ui/react. Full variant × size matrix, polymorphic link rendering, and asynchronous loading states."
     },
     "header": {
       "draggableModal": "Draggable Modal",
@@ -6173,6 +6195,8 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "switchScheme": "Switch application color scheme",
       "themeTooltipFormat": "Theme: {{label}} — Switch application color scheme",
       "tooltipsHintsTitle": "Tooltips & Custom Hints",
+      "tooltipsHintsDesc": "Options support rich interactive tooltips. You can provide plain text, keyboard shortcut badges, custom placement, rich custom content, or a global",
+      "functionSuffix": "function.",
       "weekLabel": "Week",
       "weeklyTip": "Weekly timeline view",
       "yearLabel": "Year"
@@ -6220,7 +6244,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "sandboxTitle": "Collapsible Sandbox",
       "toggleLabel": "Toggle",
       "trueLabel": "True",
-      "vulkanBadge": "Vulkan Validation Layers: Enabled"
+      "vulkanBadge": "Vulkan Validation Layers: Enabled",
+      "buildFlags": "Build flags: --release --target=x86_64-pc-windows-msvc",
+      "renderPipeline": "Render pipeline: Vulkan 1.3 / D3D12 Ultimate"
     },
     "panelCard": {
       "collapseHint": "Click the chevron icon or title to collapse and expand the card panel body.",
@@ -6305,6 +6331,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "verticalTitle": "Vertical Splitter"
     },
     "splitterHandle": {
+      "animationsBullet1": "Active indicator color and opacity transitions animate smoothly over duration-quick (150ms) using ease-standard curve (Qt counterpart: ThemeTokens.motionQuick and ThemeTokens.easeStandard).",
+      "animationsBulletQt1": "Active indicator color and opacity transitions animate smoothly over ThemeTokens.motionQuick (150ms) using ThemeTokens.easeStandard curve.",
+      "animationsBulletQt3": "All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop.",
       "animationsDesc": "Motion tokens and kinematic timing contracts for SplitterHandle edge indicators.",
       "dragStaticDesc": "Handle dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.",
       "horizontalDesc": "Handles can also be attached to horizontal edges (top or bottom) for bottom console or drawer resizing.",
@@ -6341,6 +6370,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "summaryText": "{{count}} items {{label}}"
     },
     "alertDialog": {
+      "overviewDesc": "Click the destructive button below to trigger the confirmation modal. You can toggle size presets and overlay click behavior.",
       "pageDescription": "A modal dialog that interrupts the user with important content and requires confirmation.",
       "sandboxTitle": "Alert Dialog Sandbox"
     },
@@ -6577,6 +6607,8 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "forwardTooltip": "Forward",
       "keyboardDesc": "Keyboard shortcuts and button activation patterns.",
       "locProjectRoot": "Project Root",
+      "locSystem32": "System32",
+      "locPosixLog": "POSIX /var/log",
       "quickLocations": "Quick Locations:",
       "refreshes": "Refreshes: {{count}}",
       "refreshTooltip": "Refresh",

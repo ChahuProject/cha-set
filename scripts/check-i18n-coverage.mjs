@@ -147,11 +147,15 @@ function maskSource(content) {
 }
 
 const REACT_T_RE = /\bt\(\s*(['"])((?:\\.|(?!\1).)*)\1\s*(?:,\s*(['"])((?:\\.|(?!\3).)*)\3)?\s*[\),]/g;
-const QT_TR_RE = /ChaSetI18n\.tr\(\s*(['"])((?:\\.|(?!\1).)*)\1\s*(?:,\s*(['"])((?:\\.|(?!\3).)*)\3)?/g;
+const QT_TR_RE = /ChaSetI18n\.tr\(\s*(['"])((?:\\.|(?!\1).)*)\1\s*(?:,\s*(['"])((?:\\.|(?!\3).)*)\3)?\s*[\),]/g;
 
 // Visible string props: JSX attributes (title="...") and property literals
 // (title: "...") shared by React option objects and QML property bindings.
-const VISIBLE_PROP_RE =
+// React components do not use a `text` prop for user-facing prose (only CopyButton/CopyableBadge clipboard payloads).
+const REACT_VISIBLE_PROP_RE =
+  /\b(title|pageTitle|sectionTitle|label|description|placeholder|placeholderText|tooltip|caption|header|headerTitle|statusText|emptyText|confirmText|cancelText)\s*(?:=|:)\s*(['"])((?:\\.|(?!\2).)*)\2/g;
+
+const QT_VISIBLE_PROP_RE =
   /\b(title|pageTitle|sectionTitle|label|description|placeholder|placeholderText|tooltip|caption|header|headerTitle|text|statusText|emptyText|confirmText|cancelText)\s*(?:=|:)\s*(['"])((?:\\.|(?!\2).)*)\2/g;
 
 const JSX_TEXT_RE = />([^<>{}]+)</g;
@@ -160,9 +164,23 @@ function isProseCandidate(raw) {
   const s = raw.replace(/\s+/g, ' ').trim();
   if (!s) return false;
   if (!/[A-Za-z\u3400-\u4dbf\u4e00-\u9fff]/.test(s)) return false;
-  if (/[;=`@#$^*\\|/]/.test(s)) return false;
-  if (/=>/.test(s) || /\(\)/.test(s)) return false;
-  if (s.length > 120) return false;
+  if (/[;=]/.test(s)) return false;
+  if (/\$\{/.test(s)) return false; // template literal interpolation
+  if (/\|/.test(s)) return false; // type union
+  if (/^@[\w.-]+(\/[\w.-]+)*$/.test(s)) return false; // npm package or handle (@radix-ui/primitives, @arivera)
+  if (/^#[0-9a-fA-F]{3,8}$/.test(s)) return false; // hex color
+  if (/^e\.g\.\s*#[0-9a-fA-F]+/i.test(s)) return false; // hex placeholder
+  if (/^(pnpm|npm|yarn|cargo|git)\s/.test(s)) return false; // shell commands
+  if (/^[A-Za-z_]\w*(\.[A-Za-z_]\w*)+$/.test(s)) return false; // property access (ThemeTokens.foo)
+  if (/^[a-z0-9]+(-[a-z0-9]+)+$/.test(s)) return false; // kebab-case tokens (duration-quick)
+  if (/^[\w.-]+(\/[\w.-]+)+\.[a-zA-Z]+$/.test(s)) return false; // file paths
+  if (/^qt-page:\/\//.test(s)) return false; // custom url schemes
+  if (/^user@example\.com$|^invalid-email@$/.test(s)) return false; // demo emails
+  if (/^Order #\d+|^cha-set \/ /.test(s)) return false; // demo IDs
+  if (/^(wrap|embedded|top|bottom)$/.test(s)) return false; // code options
+  if (/=>/.test(s) || /^\s*[{<].*[}>]\s*$/.test(s)) return false;
+  if (/^(import|export|const|let|var|function|return|class|interface|type)\s/.test(s)) return false;
+  if (/^[\d\s.,%pxremdpsp#+\-*\/()]+$/.test(s)) return false;
   return true;
 }
 
@@ -196,7 +214,7 @@ function scanReactContent(content) {
       hardcoded.push({ text: m[1].replace(/\s+/g, ' ').trim(), index: m.index, kind: 'jsx-text' });
     }
   }
-  for (const m of blanked.matchAll(VISIBLE_PROP_RE)) {
+  for (const m of blanked.matchAll(REACT_VISIBLE_PROP_RE)) {
     const val = m[3].replace(/\s+/g, ' ').trim();
     if (val && isProseCandidate(val)) {
       hardcoded.push({ text: val, index: m.index, kind: `prop:${m[1]}` });
@@ -221,7 +239,7 @@ function scanQtContent(content) {
   }).filter(Boolean));
 
   const hardcoded = [];
-  for (const m of blanked.matchAll(VISIBLE_PROP_RE)) {
+  for (const m of blanked.matchAll(QT_VISIBLE_PROP_RE)) {
     const val = m[3].replace(/\s+/g, ' ').trim();
     if (val && isProseCandidate(val)) {
       hardcoded.push({ text: val, index: m.index, kind: `prop:${m[1]}` });
@@ -313,6 +331,7 @@ export function analyzeI18nCoverage() {
     };
 
     for (const call of i18nCalls) {
+      if (call.key.endsWith('.')) continue;
       const line = lineOf(content, call.index);
       const zhVal = dictLookup(zhDict, call.key);
       const enVal = dictLookup(enDict, call.key);
@@ -456,37 +475,65 @@ export function verifyI18nCoverage(options = {}) {
   const warnings = [];
 
   const { findings, files, pages } = analyzeI18nCoverage();
-  const currentIds = new Set(findings.map(f => f.id));
+  // 1. Zero tolerance for missing keys: missing keys must NEVER exist or be masked by baseline!
+  const missingKeys = findings.filter(f => f.type === 'missing-key');
+  for (const f of missingKeys) {
+    errors.push(`MISSING KEY [${f.stack}] ${f.file}:${f.line} — key "${f.key}" absent from locale dictionaries (${f.detail})`);
+  }
+  if (missingKeys.length > 0) {
+    errors.push(`Zero-Tolerance Gate Failure: ${missingKeys.length} missing dictionary key(s) detected. Missing keys can never be ratcheted.`);
+  }
+
+  // 2. Zero tolerance for zh-latin (untranslated English in zh-CN) and en-cjk (leaked CJK in en-US)
+  const zhLatin = findings.filter(f => f.type === 'zh-latin');
+  for (const f of zhLatin) {
+    errors.push(`ZH-LATIN [${f.stack}] ${f.file}:${f.line} — key "${f.key}" ${f.detail}`);
+  }
+  if (zhLatin.length > 0) {
+    errors.push(`Zero-Tolerance Gate Failure: ${zhLatin.length} untranslated English string(s) in zh-CN.`);
+  }
+
+  const enCjk = findings.filter(f => f.type === 'en-cjk');
+  for (const f of enCjk) {
+    errors.push(`EN-CJK [${f.stack}] ${f.file}:${f.line} — key "${f.key}" ${f.detail}`);
+  }
+  if (enCjk.length > 0) {
+    errors.push(`Zero-Tolerance Gate Failure: ${enCjk.length} CJK leak(s) in en-US.`);
+  }
+
+  // 3. Ratchet baseline applies exclusively to legacy hardcoded JSX/prop strings backlog
+  const hardcodedFindings = findings.filter(f => f.type === 'hardcoded');
+  const currentHardcodedIds = new Set(hardcodedFindings.map(f => f.id));
 
   let baseline = loadBaseline();
   if (!baseline || updateBaseline) {
     baseline = {
       version: 1,
       generatedAt: new Date().toISOString(),
-      totalFindings: findings.length,
-      ids: findings.map(f => f.id).sort(),
+      totalFindings: hardcodedFindings.length,
+      ids: hardcodedFindings.map(f => f.id).sort(),
     };
     writeFileSync(BASELINE_PATH, JSON.stringify(baseline, null, 2) + '\n', 'utf8');
-    warnings.push(`ratchet baseline (re)written: ${BASELINE_PATH} (${findings.length} findings)`);
+    warnings.push(`ratchet baseline (re)written: ${BASELINE_PATH} (${hardcodedFindings.length} hardcoded findings)`);
     // A fresh baseline equals the current state by definition — this run is clean.
   }
 
   const baselineIds = new Set(baseline.ids || []);
-  const newOnes = findings.filter(f => !baselineIds.has(f.id));
-  const stale = [...baselineIds].filter(id => !currentIds.has(id));
+  const newOnes = hardcodedFindings.filter(f => !baselineIds.has(f.id));
+  const stale = [...baselineIds].filter(id => !currentHardcodedIds.has(id));
 
   for (const f of newOnes.slice(0, 40)) {
-    errors.push(`NEW ${f.type} [${f.stack}] ${f.file}:${f.line} — ${f.key ?? ''} ${f.detail}`);
+    errors.push(`NEW hardcoded [${f.stack}] ${f.file}:${f.line} — ${f.detail}`);
   }
   if (newOnes.length > 40) {
     errors.push(`... and ${newOnes.length - 40} more new violations`);
   }
   if (newOnes.length > 0) {
-    errors.push(`Ratchet: ${newOnes.length} new i18n coverage violation(s) not present in the baseline.`);
+    errors.push(`Ratchet: ${newOnes.length} new un-internationalized string(s) not present in the baseline.`);
     errors.push(`Fix the translations, or (only after real translation work) run: pnpm check:i18n --update-baseline`);
   }
   if (stale.length > 0) {
-    errors.push(`Stale baseline: ${stale.length} baseline entr(y|ies) no longer match any current finding — the ratchet may only shrink.`);
+    errors.push(`Stale baseline: ${stale.length} baseline entry(ies) no longer match any current finding — the ratchet may only shrink.`);
     errors.push(`Run: pnpm check:i18n --update-baseline`);
   }
 

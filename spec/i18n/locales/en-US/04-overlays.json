@@ -247,7 +247,8 @@
       "shortcutDesc": "Keyboard shortcut badge rendered inside the tooltip bubble.",
       "sideDesc": "The preferred placement relative to the trigger.",
       "sideOffsetDesc": "Distance between target item and tooltip bubble.",
-      "targetDesc": "Optional target item to attach the tooltip to when not wrapping children."
+      "targetDesc": "Optional target item to attach the tooltip to when not wrapping children.",
+      "warmDesc": "Whether to participate in global warm hover sessions; set to false for independent per-item timers."
     }
   },
   "desktopComposite": {
@@ -257,6 +258,7 @@
       "summaryText": "{{count}} items {{label}}"
     },
     "alertDialog": {
+      "overviewDesc": "Click the destructive button below to trigger the confirmation modal. You can toggle size presets and overlay click behavior.",
       "pageDescription": "A modal dialog that interrupts the user with important content and requires confirmation.",
       "sandboxTitle": "Alert Dialog Sandbox"
     },

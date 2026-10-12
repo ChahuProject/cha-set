@@ -40,7 +40,7 @@ export function SwitchDocPage() {
     <DocLayout
       category="Forms & Inputs"
       title="Switch"
-      description="A control that allows the user to toggle between checked and not checked states, with support for async loading, read-only mode, and helper descriptions."
+      description={t('components.switch.description', 'A control that allows the user to toggle between checked and not checked states, with support for async loading, read-only mode, and helper descriptions.')}
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
