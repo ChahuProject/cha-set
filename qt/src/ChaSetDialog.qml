@@ -218,20 +218,22 @@ Rectangle {
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
+            readonly property bool hasHeaderContent: !root.headerItem && !root.headerComponent
+                                                     && (root.title !== "" || root.description !== "")
             height: {
                 if (root.headerItem) return root.headerItem.height + ThemeTokens.dp(20);
                 if (headerLoader.item) return headerLoader.item.height + ThemeTokens.dp(20);
-                if (headerCol.visible) return headerCol.implicitHeight + ThemeTokens.dp(20);
+                if (hasHeaderContent) return headerCol.implicitHeight + ThemeTokens.dp(20);
                 return root.draggable ? ThemeTokens.dp(36) : 0;
             }
             implicitHeight: height
-            // 可见性必须只依赖根级属性，严禁读取 headerCol.visible（子的有效可见性）：
+            // 可见性与高度必须只依赖根级属性，严禁读取 headerCol.visible（子的有效可见性）：
             // 弹窗以关闭态创建时整棵树有效不可见，子的 visible 首次求值即为 false 并
             // 烤进本绑定；打开后子的有效可见性因本项不可见依旧为 false，无任何依赖
             // 变化触发重算 → 有效可见性死锁。alert 变体（draggable=false）首当其冲：
             // 标题/描述区域永久隐藏，卡片塌陷成只剩按钮行。
             visible: root.draggable || !!root.headerItem || !!root.headerComponent
-                     || root.title !== "" || root.description !== ""
+                     || hasHeaderContent
 
             DragHandler {
                 id: headerDragHandler
