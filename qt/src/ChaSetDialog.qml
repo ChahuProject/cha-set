@@ -182,11 +182,15 @@ Rectangle {
         id: card
         width: Math.min((parent ? parent.width : ThemeTokens.dp(1000)) - ThemeTokens.dp(40), root.dialogWidth)
         readonly property real maxSafeHeight: Math.max(ThemeTokens.dp(120), (parent ? parent.height : ThemeTokens.dp(800)) - ThemeTokens.dp(40))
-        readonly property real headerAreaHeight: headerContainer.visible ? (headerContainer.implicitHeight + ThemeTokens.dp(16)) : 0
-        readonly property real footerAreaHeight: footerContainer.visible ? (footerContainer.implicitHeight + ThemeTokens.dp(16)) : (buttonRow.visible ? (buttonRow.implicitHeight + ThemeTokens.dp(20)) : 0)
+        readonly property bool hasHeaderArea: root.draggable || !!root.headerItem || !!root.headerComponent || headerContainer.hasHeaderContent
+        readonly property bool hasFooterArea: (root.footer !== null && root.footer !== undefined) || (root.footerComponent !== null) || (root.variant === "alert")
+        readonly property real headerAreaHeight: hasHeaderArea ? (headerContainer.implicitHeight + ThemeTokens.dp(16)) : 0
+        readonly property real footerAreaHeight: ((root.footer !== null && root.footer !== undefined) || (root.footerComponent !== null && footerLoader.item !== null))
+                                                 ? (footerContainer.implicitHeight + ThemeTokens.dp(16))
+                                                 : ((root.variant === "alert" && !root.footer && !root.footerComponent) ? (buttonRow.implicitHeight + ThemeTokens.dp(20)) : 0)
         readonly property real contentPreferredHeight: headerAreaHeight + footerAreaHeight + bodyContent.implicitHeight + ThemeTokens.dp(40)
         implicitHeight: contentPreferredHeight
-        height: Math.min(maxSafeHeight, contentPreferredHeight)
+        height: Math.min(maxSafeHeight, Math.max(contentPreferredHeight, hasHeaderArea ? (headerAreaHeight + footerAreaHeight + ThemeTokens.dp(20)) : ThemeTokens.dp(100)))
         anchors.horizontalCenter: (!root.draggable || !root.userDragged) ? parent.horizontalCenter : undefined
         anchors.verticalCenter: (!root.draggable || !root.userDragged) ? parent.verticalCenter : undefined
         color: ThemeTokens.panel
@@ -232,8 +236,7 @@ Rectangle {
             // 烤进本绑定；打开后子的有效可见性因本项不可见依旧为 false，无任何依赖
             // 变化触发重算 → 有效可见性死锁。alert 变体（draggable=false）首当其冲：
             // 标题/描述区域永久隐藏，卡片塌陷成只剩按钮行。
-            visible: root.draggable || !!root.headerItem || !!root.headerComponent
-                     || hasHeaderContent
+            visible: card.hasHeaderArea
 
             DragHandler {
                 id: headerDragHandler
@@ -279,10 +282,13 @@ Rectangle {
                 anchors.right: parent.right
                 anchors.rightMargin: ThemeTokens.dp(20)
                 spacing: ThemeTokens.dp(6)
-                visible: !root.headerItem && !root.headerComponent && (root.title !== "" || root.description !== "")
+                visible: headerContainer.hasHeaderContent
 
                 Row {
+                    id: headerTitleRow
                     width: parent.width
+                    height: Math.max(titleText.height, headerActions.height, ThemeTokens.dp(24))
+                    implicitHeight: height
                     spacing: ThemeTokens.dp(8)
 
                     HoverHandler {
@@ -297,7 +303,8 @@ Rectangle {
                         color: ThemeTokens.text
                         font.pixelSize: Typography.sizeHeading
                         font.weight: Font.Bold
-                        height: contentHeight
+                        height: Math.max(contentHeight, ThemeTokens.dp(20))
+                        implicitHeight: height
                         readOnly: true
                         selectByMouse: true
                         selectByKeyboard: true
@@ -390,7 +397,8 @@ Rectangle {
                     color: ThemeTokens.subduedText
                     font.pixelSize: Typography.sizeBody
                     wrapMode: TextEdit.WordWrap
-                    height: contentHeight
+                    height: Math.max(contentHeight, ThemeTokens.dp(18))
+                    implicitHeight: height
                     visible: text !== ""
                     readOnly: true
                     selectByMouse: true
@@ -436,6 +444,8 @@ Rectangle {
             anchors.bottomMargin: ThemeTokens.dp(20)
             anchors.right: parent.right
             anchors.rightMargin: ThemeTokens.dp(20)
+            height: ThemeTokens.dp(32)
+            implicitHeight: height
             spacing: ThemeTokens.dp(8)
             visible: root.variant === "alert" && !root.footer && !root.footerComponent
 
@@ -457,10 +467,10 @@ Rectangle {
         // Dialog Body Content Area (Flickable + ChaSetScrollBar)
         Flickable {
             id: bodyFlickable
-            anchors.top: headerContainer.visible ? headerContainer.bottom : parent.top
-            anchors.topMargin: headerContainer.visible ? ThemeTokens.dp(16) : ThemeTokens.dp(20)
-            anchors.bottom: footerContainer.visible ? footerContainer.top : (buttonRow.visible ? buttonRow.top : parent.bottom)
-            anchors.bottomMargin: (footerContainer.visible || buttonRow.visible) ? ThemeTokens.dp(16) : ThemeTokens.dp(20)
+            anchors.top: card.hasHeaderArea ? headerContainer.bottom : parent.top
+            anchors.topMargin: card.hasHeaderArea ? ThemeTokens.dp(16) : ThemeTokens.dp(20)
+            anchors.bottom: footerContainer.hasFooterContent ? footerContainer.top : (buttonRow.visible ? buttonRow.top : parent.bottom)
+            anchors.bottomMargin: (footerContainer.hasFooterContent || buttonRow.visible) ? ThemeTokens.dp(16) : ThemeTokens.dp(20)
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.rightMargin: ThemeTokens.dp(2)
@@ -485,13 +495,14 @@ Rectangle {
         Item {
             id: footerContainer
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: visible ? ThemeTokens.dp(20) : 0
+            readonly property bool hasFooterContent: (root.footer !== null && root.footer !== undefined) || (root.footerComponent !== null && footerLoader.item !== null)
+            anchors.bottomMargin: hasFooterContent ? ThemeTokens.dp(20) : 0
             anchors.left: parent.left
             anchors.leftMargin: ThemeTokens.dp(20)
             anchors.right: parent.right
             anchors.rightMargin: ThemeTokens.dp(20)
-            visible: (root.footer !== null && root.footer !== undefined) || (root.footerComponent !== null && footerLoader.item !== null)
-            height: visible ? (root.footer ? (root.footer.implicitHeight > 0 ? root.footer.implicitHeight : root.footer.height) : (footerLoader.item ? (footerLoader.item.implicitHeight > 0 ? footerLoader.item.implicitHeight : footerLoader.item.height) : 0)) : 0
+            visible: hasFooterContent
+            height: hasFooterContent ? (root.footer ? (root.footer.implicitHeight > 0 ? root.footer.implicitHeight : root.footer.height) : (footerLoader.item ? (footerLoader.item.implicitHeight > 0 ? footerLoader.item.implicitHeight : footerLoader.item.height) : 0)) : 0
             implicitHeight: height
 
             Loader {
