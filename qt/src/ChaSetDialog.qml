@@ -288,7 +288,6 @@ Rectangle {
                     id: headerTitleRow
                     width: parent.width
                     height: Math.max(titleText.height, headerActions.height, ThemeTokens.dp(24))
-                    implicitHeight: height
                     spacing: ThemeTokens.dp(8)
 
                     HoverHandler {
@@ -304,7 +303,6 @@ Rectangle {
                         font.pixelSize: Typography.sizeHeading
                         font.weight: Font.Bold
                         height: Math.max(contentHeight, ThemeTokens.dp(20))
-                        implicitHeight: height
                         readOnly: true
                         selectByMouse: true
                         selectByKeyboard: true
@@ -398,7 +396,6 @@ Rectangle {
                     font.pixelSize: Typography.sizeBody
                     wrapMode: TextEdit.WordWrap
                     height: Math.max(contentHeight, ThemeTokens.dp(18))
-                    implicitHeight: height
                     visible: text !== ""
                     readOnly: true
                     selectByMouse: true
@@ -445,7 +442,6 @@ Rectangle {
             anchors.right: parent.right
             anchors.rightMargin: ThemeTokens.dp(20)
             height: ThemeTokens.dp(32)
-            implicitHeight: height
             spacing: ThemeTokens.dp(8)
             visible: root.variant === "alert" && !root.footer && !root.footerComponent
 
