@@ -10,7 +10,7 @@ Rectangle {
             ? Window.window.contentItem
             : ((typeof Overlay !== "undefined" && Overlay.overlay && Overlay.overlay.width > 0)
                ? Overlay.overlay
-               : undefined)
+               : null)
     anchors.fill: parent
     z: 200
     color: Qt.rgba(0, 0, 0, 0.6)
