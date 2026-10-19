@@ -82,8 +82,8 @@ T.ScrollBar {
 
     // ---- Overflow & Visibility ----
     readonly property bool hasOverflow: _scrollTarget
-        ? (isVertical ? (_scrollTarget.contentHeight > (typeof _scrollTarget.availableHeight !== "undefined" ? _scrollTarget.availableHeight : _scrollTarget.height))
-                      : (_scrollTarget.contentWidth > (typeof _scrollTarget.availableWidth !== "undefined" ? _scrollTarget.availableWidth : _scrollTarget.width)))
+        ? (isVertical ? ((_scrollTarget.contentHeight - (typeof _scrollTarget.availableHeight !== "undefined" ? _scrollTarget.availableHeight : _scrollTarget.height)) > 1.0)
+                      : ((_scrollTarget.contentWidth - (typeof _scrollTarget.availableWidth !== "undefined" ? _scrollTarget.availableWidth : _scrollTarget.width)) > 1.0))
         : (size > 0 && size < 0.99)
 
     policy: ScrollBar.AsNeeded

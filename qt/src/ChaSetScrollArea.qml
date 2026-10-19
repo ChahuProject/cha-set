@@ -369,7 +369,7 @@ Flickable {
         barSize: root.size
         floating: root.floating
         height: (hScrollBar.visible) ? (root.height - hScrollBar.height) : root.height
-        visible: root.showVerticalScrollBar && (policy === ScrollBar.AlwaysOn || (policy === ScrollBar.AsNeeded && root.contentHeight > root.availableHeight))
+        visible: root.showVerticalScrollBar && (policy === ScrollBar.AlwaysOn || (policy === ScrollBar.AsNeeded && (root.contentHeight - root.availableHeight) > 1.0))
         showButtons: root.showButtons
         collapsedSize: root.collapsedSize
         expandedSize: root.expandedSize
@@ -387,7 +387,7 @@ Flickable {
         barSize: root.size
         floating: root.floating
         width: (vScrollBar.visible) ? (root.width - vScrollBar.width) : root.width
-        visible: root.showHorizontalScrollBar && (policy === ScrollBar.AlwaysOn || (policy === ScrollBar.AsNeeded && root.contentWidth > root.availableWidth))
+        visible: root.showHorizontalScrollBar && (policy === ScrollBar.AlwaysOn || (policy === ScrollBar.AsNeeded && (root.contentWidth - root.availableWidth) > 1.0))
         showButtons: root.showButtons
         collapsedSize: root.collapsedSize
         expandedSize: root.expandedSize
