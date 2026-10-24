@@ -17,9 +17,8 @@
     "skill_lang": "en",
     "skills": [
       "arch-align",
-      "branch-sync",
       "caveman",
-      "commit",
+      "git-workflow",
       "grill-me",
       "subrepo-sync",
       "write-a-skill"
@@ -32,15 +31,17 @@
     ".agents\\skills\\arch-align\\SKILL.md": "05a7b27400a21dc0be0ed0c065211bb43a85ef2f436d09246550af98a7092622",
     ".agents\\skills\\arch-align\\references\\GENERATE-DOC.md": "22e2dc3856f70700aa6b2e6308e1917f7d760dd81e8f4b867328302876525597",
     ".agents\\skills\\arch-align\\references\\GENERATE-INDEX.md": "42cbf1e09650fb29a681d7f653685a83055882ea78240e8ad2e07e2e4996975f",
-    ".agents\\skills\\branch-sync\\REFERENCE.md": "91d434bcd013a783b44a29828ef0d166b1ec4715df4a25b364e93289b779b6ee",
-    ".agents\\skills\\branch-sync\\SKILL.md": "4ff76c01880c49d4a4d5dafb5d62d3fe1eb7d11c35515b912312a74ee133bd91",
-    ".agents\\skills\\branch-sync\\scripts\\align-branches.ps1": "6e2d5296ac294d713c74b1e193c92ef000a7fa82bc91a1115ae9dd76e40475ff",
-    ".agents\\skills\\branch-sync\\scripts\\continue-sync.ps1": "e189df180ae24c808340735dd0cd08ffd49a805849ce4465776713da840e73c4",
-    ".agents\\skills\\branch-sync\\scripts\\manage-sync-backups.ps1": "3dcb20f651ab611bf7ca448fb2d51382b7a3732c4870eb1deff4651df2502654",
-    ".agents\\skills\\branch-sync\\scripts\\show-branch-topology.ps1": "10822e95063955a44142eb9273c2a3f147a18b896b96e07fe16f1ff351a57a61",
-    ".agents\\skills\\branch-sync\\scripts\\sync-branch.ps1": "a615d3b1f4714d673407a0d9219c4447d33c231bee7c52b23039809f818350a4",
     ".agents\\skills\\caveman\\SKILL.md": "ad046cafde3ee094136ce091b7dfde5c09bcf25914734c249f9c54e17b4bdf4b",
-    ".agents\\skills\\commit\\SKILL.md": "af87f87ee2efb560e5245ffbe42f0ac634bdd543b5aa045d58d0ebb1cc24cddf",
+    ".agents\\skills\\git-workflow\\SKILL.md": "925041656bbd70b776d1f607761da3a83b5485d42f642577a03e35e6fd55c5a6",
+    ".agents\\skills\\git-workflow\\references\\branch-sync.md": "5c5b862bc8315e541e0d00a20a6df03395985374387311cfe35eed888a9d3fbc",
+    ".agents\\skills\\git-workflow\\references\\commit.md": "435487c0338e4bebc41e8dbc2ca947fc66735657bc0e1913850a9c93d37c72c4",
+    ".agents\\skills\\git-workflow\\references\\non-interactive.md": "c1132bb6989f527671e538eac25bf7cc46753990cb60f7c454769d5a0eee4aa1",
+    ".agents\\skills\\git-workflow\\references\\rebase-conflict.md": "0909941d7d8af993da1f04ae1dfbb7feab2fd44dad282ce8ee01bacd6a7b96f5",
+    ".agents\\skills\\git-workflow\\scripts\\align-branches.ps1": "8e5ca44e27429559c1f53166a4c1999b4277bca9292a4d393e6672f3f32cc8a9",
+    ".agents\\skills\\git-workflow\\scripts\\continue-sync.ps1": "e7655dc035323ee66f9a04b632bd24eab68be62b05a76c845c69b211ed8313b3",
+    ".agents\\skills\\git-workflow\\scripts\\manage-sync-backups.ps1": "3a52a163ee8667c114e7b3459c6138dc11875fa50333473c709be7d1a1c019ed",
+    ".agents\\skills\\git-workflow\\scripts\\show-branch-topology.ps1": "a84b2df370c5fb8d6843e1648ed86a0eba0273e51a5dfc7c7d14be9874e2609e",
+    ".agents\\skills\\git-workflow\\scripts\\sync-branch.ps1": "b6775cad5b8844ff21f293c12f3304b7f64cb94e9c49a4e32711bf41c316071f",
     ".agents\\skills\\grill-me\\SKILL.md": "e0dcf39584c33a0a2b35cca1e32ce8bbfd1f30266042f38d65387fc35d60cbc7",
     ".agents\\skills\\subrepo-sync\\EXAMPLES.md": "cfc92b50bd39127855be86b9eb12308fcb5251cd32045debe50d20bf7b097daf",
     ".agents\\skills\\subrepo-sync\\REFERENCE.md": "06377e09923e924ad8618cb055e05679126111cc4256c9ffb2b24ce1fbdbeec7",
@@ -50,8 +51,8 @@
     ".gitattributes": "269bd23209da05b77373f5f13adf48536b6ca8f5025570f1a2e5cce289a60b26",
     ".gitignore": "487365bb2c4b334d0ee18412bd102d728349dc86700e9527abf7617303a3b660",
     ".vscode\\settings.json": "59588125b818b5bd3689b1f4f86e592e2808ba526961c5f857c273b64290f701",
-    "AGENTS.md": "b6bc348f089ac5f0af4b75f320a9c304effc359a39762ff4e8f599ebe016c8ab",
+    "AGENTS.md": "b1e4040492498aeab66edbcc2513df252f7966e360c6183e659786cae8d49120",
     "commitlint.base.js": "7a6e2a5ae12b31ee0da5104b3d3ef321ea55aa07c8fa630e0aa11e7e3195a4f2",
-    "package.json": "fb96b9ad8ce3843b4bf1eec7b0c2ef5ac4b5f36418ff3892a0c5a1f213757dad"
+    "package.json": "5dc8a80c59d6023a9b05da5f607843e27935000b59b820feb12b02b778b44a6e"
   }
 }

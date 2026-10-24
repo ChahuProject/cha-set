@@ -6,7 +6,7 @@
 
 ## General conventions
 
-- Commits follow Conventional Commits — titles in English (see `.agents/skills/commit`).
+- Commits follow Conventional Commits — titles in English (see `.agents/skills/git-workflow`).
 - **Pre-Response Commit Gate (Mandatory Barrier — No Accumulation)**: Whenever files (code, tests, or docs) are created, modified, or deleted in the current turn and have passed verification (builds/tests pass), **you MUST run the commit workflow (completeness checks, split commits, and `git push`) as the very last tool-calling step BEFORE stopping to output your final response to the user**. Never leave verified changes sitting in the working directory before yielding control; never defer committing until the end of a multi-turn conversation or wait for the user to prompt `/commit`.
   - **Planning Modes (`/plan` / `/boost`) Enforcement**: In planning modes, creating or updating `walkthrough.md` does NOT conclude the task; **you are strictly forbidden from stopping after writing a walkthrough — you MUST proceed immediately to commit and push before finishing your turn**.
   - **Exemptions**: Committing is only skipped if the turn is purely conversational (zero file changes in `git status`) or if tests/builds failed and you are stopping specifically to ask the user for diagnostic input.
@@ -19,9 +19,8 @@
 ### Enabled skills
 
 - `arch-align` — see `.agents/skills/arch-align/SKILL.md`
-- `branch-sync` — see `.agents/skills/branch-sync/SKILL.md`
 - `caveman` — see `.agents/skills/caveman/SKILL.md`
-- `commit` — see `.agents/skills/commit/SKILL.md`
+- `git-workflow` — see `.agents/skills/git-workflow/SKILL.md`
 - `grill-me` — see `.agents/skills/grill-me/SKILL.md`
 - `subrepo-sync` — see `.agents/skills/subrepo-sync/SKILL.md`
 - `write-a-skill` — see `.agents/skills/write-a-skill/SKILL.md`
