@@ -15,7 +15,7 @@ void ChaSetSystemTheme::setupListener()
     }
 }
 
-bool ChaSetSystemTheme::isDark() const
+bool ChaSetSystemTheme::resolveSystemDark()
 {
 #if defined(Q_OS_WIN)
     // On Windows 10/11, check registry Personalize\AppsUseLightTheme for 100% accuracy
@@ -32,6 +32,11 @@ bool ChaSetSystemTheme::isDark() const
         return hints->colorScheme() == Qt::ColorScheme::Dark;
     }
     return false;
+}
+
+bool ChaSetSystemTheme::isDark() const
+{
+    return resolveSystemDark();
 }
 
 QString ChaSetSystemTheme::colorScheme() const

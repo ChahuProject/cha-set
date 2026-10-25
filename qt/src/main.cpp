@@ -15,6 +15,7 @@
 #include <QElapsedTimer>
 #include "ChaSetFontSystem.h"
 #include "ChaSetClipboard.h"
+#include "ChaSetSystemTheme.h"
 
 class GlobalWheelZoomFilter : public QObject {
 public:
@@ -1405,6 +1406,13 @@ int main(int argc, char* argv[])
 
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("harnessValue", harnessValue);
+    // Seed the colour scheme before the QML tree exists. ThemeTokens ships
+    // with `dark: false`; resolving it only inside Component.onCompleted means
+    // the window is already on screen (visible: true is applied while the root
+    // object is still being populated) and paints every surface/border with
+    // light tokens for the whole tree build (~0.8s) before repainting.
+    const bool initialDark = startDark || (!startLight && ChaSetSystemTheme::resolveSystemDark());
+    engine.rootContext()->setContextProperty("initialDark", initialDark);
     engine.rootContext()->setContextProperty("reqScrollY", reqScrollY);
     engine.rootContext()->setContextProperty("startupPage", startupPage);
     engine.rootContext()->setContextProperty("startupLight", startLight);

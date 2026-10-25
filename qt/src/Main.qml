@@ -7,11 +7,29 @@ import ChaSet
 
 ApplicationWindow {
     id: win
+
+    // ---- Theme bootstrap (MUST stay the first declared property) ----
+    // ThemeTokens ships with `dark: false`, and this window turns visible while
+    // it is still being populated. Resolving the OS scheme later (the previous
+    // Component.onCompleted path) created the native window with a light
+    // background and built every surface/border from light tokens, then
+    // repainted ~0.8s later — the startup white flash. Seeding the token set
+    // here, before any child exists, makes the very first build dark.
+    readonly property bool _themeBootstrapped: win.bootstrapTheme()
+
+    function bootstrapTheme() {
+        ThemeTokens.dark = (typeof initialDark !== "undefined" && initialDark === true)
+        return true
+    }
+
     width: (typeof reqWidth !== "undefined" && reqWidth > 0) ? reqWidth : ((typeof harnessMode !== "undefined" && (harnessMode === "button" || harnessMode === "badge" || harnessMode === "label")) ? 220 : ((typeof harnessMode !== "undefined" && (harnessMode === "scroll-area" || harnessMode === "scrollbar")) ? 120 : ((typeof harnessMode !== "undefined" && harnessMode === "tabs") ? 260 : ((typeof harnessMode !== "undefined" && harnessMode === "scale-osd") ? 320 : 1150))))
     height: (typeof reqHeight !== "undefined" && reqHeight > 0) ? reqHeight : ((typeof harnessMode !== "undefined" && (harnessMode === "button" || harnessMode === "badge" || harnessMode === "label")) ? 80 : ((typeof harnessMode !== "undefined" && (harnessMode === "scroll-area" || harnessMode === "scrollbar")) ? 200 : ((typeof harnessMode !== "undefined" && harnessMode === "tabs") ? 80 : ((typeof harnessMode !== "undefined" && harnessMode === "scale-osd") ? 80 : 850))))
+    // `color` stays declared before `visible`: flipping `visible` creates the
+    // platform window, which takes its background from the already-evaluated
+    // `color`. Showing first hands Windows a white window until frame one.
+    color: win.cBg
     visible: true
     title: "ChaSet Studio"
-    color: win.cBg
     font.family: Typography.familySans
 
     // ---- Reactive Theme State ----

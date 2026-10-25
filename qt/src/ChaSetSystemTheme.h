@@ -23,6 +23,11 @@ public:
     [[nodiscard]] bool isDark() const;
     [[nodiscard]] QString colorScheme() const;
 
+    // Resolves the OS colour scheme without needing a QML engine or a live
+    // singleton instance. The demo host calls this before the QML tree is
+    // created so the first frame already uses the right token set.
+    [[nodiscard]] static bool resolveSystemDark();
+
 signals:
     void colorSchemeChanged();
 
