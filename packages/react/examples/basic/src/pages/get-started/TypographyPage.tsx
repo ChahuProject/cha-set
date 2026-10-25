@@ -1,6 +1,8 @@
 import { Badge, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { SectionHeader } from '../../components/SectionHeader';
 import { TYPOGRAPHY_RAMP_DATA } from '../../data/showcaseData.generated';
+import { DocText } from '../../components/DocText';
 
 const CMAKE_SNIPPET = `target_link_libraries(YourApp PRIVATE ChaSet)`;
 
@@ -91,10 +93,10 @@ export function TypographyPage() {
     >
       <div className="space-y-12">
         <section className="block" id="rasterizer">
-          <h2>{t('getStarted.typography.rasterizer.title', 'Rasterization Path')}</h2>
-          <p className="desc">
-            {t('getStarted.typography.rasterizer.desc', 'The two stacks reach the same glyph outlines through different rasterizers. Web asks Chromium for grayscale antialiasing with no grid fitting; Desktop resolves one policy for the whole process before the first window exists.')}
-          </p>
+          <SectionHeader
+            title={t('getStarted.typography.rasterizer.title', 'Rasterization Path')}
+            description={t('getStarted.typography.rasterizer.desc', 'The two stacks reach the same glyph outlines through different rasterizers. Web asks Chromium for grayscale antialiasing with no grid fitting; Desktop resolves one policy for the whole process before the first window exists.')}
+          />
 
           <div className="space-y-4">
             <div className="rounded-lg border border-border bg-card p-4 text-card-foreground">
@@ -134,10 +136,10 @@ export function TypographyPage() {
         </section>
 
         <section className="block" id="ramp">
-          <h2>{t('getStarted.typography.ramp.title', 'Cross-Script Size Ramp')}</h2>
-          <p className="desc">
-            {t('getStarted.typography.ramp.desc', 'Five script portals, each rendered once per type scale step. The passage never changes inside a block, so strokes can be compared across the whole ramp — including the rounded CJK and Hangul curves that reveal grid fitting first. Sizes follow the type scale and the interface scale, so they are named by token instead of by unit.')}
-          </p>
+          <SectionHeader
+            title={t('getStarted.typography.ramp.title', 'Cross-Script Size Ramp')}
+            description={t('getStarted.typography.ramp.desc', 'Five script portals, each rendered once per type scale step. The passage never changes inside a block, so strokes can be compared across the whole ramp — including the rounded CJK and Hangul curves that reveal grid fitting first. Sizes follow the type scale and the interface scale, so they are named by token instead of by unit.')}
+          />
 
           <div className="space-y-6">
             {quotes.map((quote) => (
@@ -175,10 +177,10 @@ export function TypographyPage() {
         </section>
 
         <section className="block" id="integration">
-          <h2>{t('getStarted.typography.integration.title', 'Host Integration')}</h2>
-          <p className="desc">
-            {t('getStarted.typography.integration.desc', "How host applications configure and initialize ChaSet's typography subsystem across desktop and web runtimes.")}
-          </p>
+          <SectionHeader
+            title={t('getStarted.typography.integration.title', 'Host Integration')}
+            description={t('getStarted.typography.integration.desc', "How host applications configure and initialize ChaSet's typography subsystem across desktop and web runtimes.")}
+          />
 
           <div className="space-y-6">
             {/* Desktop · Qt Card */}

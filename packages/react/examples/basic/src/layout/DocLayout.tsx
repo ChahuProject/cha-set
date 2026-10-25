@@ -3,6 +3,7 @@ import { Button, CopyButton, Separator, ListIcon, useChaSetI18n } from '@chahu/c
 import { TableOfContents, type TocItem } from './TableOfContents';
 import { useToc } from './TocContext';
 import { useResponsive } from './useResponsive';
+import { DocText } from '../components/DocText';
 
 export interface DocLayoutProps {
   category: string;
@@ -30,21 +31,31 @@ export function DocLayout({
   return (
     <div className="flex w-full min-w-0 justify-center">
       <main className="w-full max-w-4xl min-w-0 px-4 py-8 md:px-8 lg:py-10">
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-2">
-          <span>{t('showcase.docs', 'Docs')}</span>
-          <span>/</span>
-          <span className="text-foreground font-medium">{t('showcase.categories.' + category, category)}</span>
-          <span>/</span>
-          <span className="text-foreground font-semibold">{title}</span>
+        {/* Breadcrumb — micro type from the role table, not from utilities */}
+        <div className="flex items-center gap-1.5 mb-2">
+          <DocText role="micro" as="span">
+            {t('showcase.docs', 'Docs')}
+          </DocText>
+          <DocText role="micro" as="span">
+            /
+          </DocText>
+          <DocText role="micro" as="span" tone="default">
+            {t('showcase.categories.' + category, category)}
+          </DocText>
+          <DocText role="micro" as="span">
+            /
+          </DocText>
+          <DocText role="micro" as="span" tone="default">
+            {title}
+          </DocText>
         </div>
 
         {/* Page Header */}
         <div className="flex flex-col gap-2 pb-6">
           <div className="flex items-center justify-between gap-4">
-            <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            <DocText role="display" as="h1">
               {title}
-            </h1>
+            </DocText>
             <div className="flex items-center gap-2">
               {items.length > 0 && !isWide && (
                 <Button
@@ -66,9 +77,9 @@ export function DocLayout({
               />
             </div>
           </div>
-          <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+          <DocText role="lead">
             {localizedDescription}
-          </p>
+          </DocText>
         </div>
         <Separator className="mb-8" />
 

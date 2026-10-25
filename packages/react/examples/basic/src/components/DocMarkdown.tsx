@@ -1,6 +1,7 @@
 import React from 'react';
 import { useChaSetI18n } from '@chahu/cha-set';
 import { buildDocAst, type DocBlock, type DocInline, type DocPage } from '../../../../../../spec/shared/docAst.mjs';
+import { DocText } from './DocText';
 
 /**
  * Living-doc prose is authored once in spec/content/<docId>/<locale>.md and parsed at
@@ -76,13 +77,16 @@ function renderInline(nodes: DocInline[], keyPrefix: string): React.ReactNode[] 
       case 'code':
         // Markdown code span rendered with the documented "token chip" feel: a small
         // surface behind monospace text, inline with the sentence (never a trailing row).
+        // Typography comes from the `code` role; only the chip surface is local.
         return (
-          <code
+          <DocText
             key={key}
-            className="rounded-sm bg-secondary px-1.5 py-0.5 font-mono text-[0.85em] text-foreground"
+            role="code"
+            as="code"
+            className="rounded-sm bg-secondary px-1.5 py-0.5 text-[0.85em]"
           >
             {node.v}
-          </code>
+          </DocText>
         );
       default:
         return <React.Fragment key={key}>{node.v}</React.Fragment>;
@@ -94,26 +98,20 @@ function renderBlock(block: DocBlock, index: number, slots: DocMarkdownProps['sl
   const key = `block-${index}`;
   switch (block.t) {
     case 'heading': {
-      const Tag = block.level >= 3 ? 'h3' : 'h2';
+      // Markdown level → doc role. Level is DATA: `#` is h1, `##` is h2 … and
+      // anything at `####` or deeper collapses onto h4 (the scale stops there).
+      const role = block.level <= 1 ? 'h1' : block.level === 2 ? 'h2' : block.level === 3 ? 'h3' : 'h4';
       return (
-        <Tag
-          key={key}
-          id={block.id}
-          className={
-            block.level >= 3
-              ? 'text-base font-semibold tracking-tight text-foreground mb-2'
-              : 'text-xl font-bold tracking-tight text-foreground mb-3'
-          }
-        >
+        <DocText key={key} id={block.id} role={role} className={block.level <= 2 ? 'mb-3' : 'mb-2'}>
           {renderInline(block.inlines, key)}
-        </Tag>
+        </DocText>
       );
     }
     case 'para':
       return (
-        <p key={key} className="text-sm text-muted-foreground mb-4">
+        <DocText role="p" key={key} className="mb-4">
           {renderInline(block.inlines, key)}
-        </p>
+        </DocText>
       );
     case 'list': {
       const ListTag = block.ordered ? 'ol' : 'ul';
