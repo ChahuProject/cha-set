@@ -444,13 +444,16 @@ ApplicationWindow {
         }
     }
 
-    // Dynamic Colors based on theme
+    // Dynamic Colors based on theme.
+    // Surfaces and text come from ThemeTokens so the showcase renders the same numbers the
+    // React demo now reads from styles.css (both sides used to carry a hand-copied Tailwind
+    // slate palette; only the canvas stays demo-local and identical on both stacks).
     readonly property color cBg: ThemeTokens.dark ? (overrideBackground !== "" ? overrideBackground : "#020817") : (overrideBackground !== "" ? overrideBackground : "#ffffff")
-    readonly property color cCard: ThemeTokens.dark ? (overrideCard !== "" ? overrideCard : "#0f172a") : (overrideCard !== "" ? overrideCard : "#ffffff")
-    readonly property color cBorder: ThemeTokens.dark ? "#1e293b" : "#e2e8f0"
-    readonly property color cFg: ThemeTokens.dark ? "#f8fafc" : "#020817"
-    readonly property color cMutedFg: ThemeTokens.dark ? "#94a3b8" : "#64748b"
-    readonly property color cAccentBg: ThemeTokens.dark ? "#1e293b" : "#f1f5f9"
+    readonly property color cCard: overrideCard !== "" ? overrideCard : ThemeTokens.panel
+    readonly property color cBorder: ThemeTokens.border
+    readonly property color cFg: ThemeTokens.text
+    readonly property color cMutedFg: ThemeTokens.subduedText
+    readonly property color cAccentBg: ThemeTokens.panelRaised
     readonly property color cPrimary: overridePrimary !== "" ? overridePrimary : (ThemeTokens.dark ? "#30a0ff" : "#1d7ae0")
     readonly property color cPrimaryFg: overridePrimaryFg !== "" ? overridePrimaryFg : "#ffffff"
     readonly property color cDestructive: overrideDestructive !== "" ? overrideDestructive : "#ef4444"
@@ -2001,9 +2004,9 @@ ApplicationWindow {
                 width: scrollHarnessContainer.containerW
                 height: scrollHarnessContainer.containerH
                 radius: 6
-                color: ThemeTokens.dark ? "#0f172a" : "#ffffff"
+                color: win.cCard
                 border.width: 1
-                border.color: ThemeTokens.dark ? "#1e293b" : "#e2e8f0"
+                border.color: win.cBorder
                 clip: true
 
                 ChaSetScrollArea {

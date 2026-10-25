@@ -29,6 +29,7 @@
     "check:concentric": "node scripts/check-concentric-radii.mjs",
     "check:i18n": "node scripts/check-i18n-coverage.mjs",
     "check:docs": "node scripts/check-doc-content.mjs",
+    "check:palette": "node scripts/check-showcase-palette.mjs",
     "build": "pnpm --filter @chahu/cha-set build",
     "showcase": "pnpm --filter @chaset/example-react-button dev",
     "showcase:qt": "node scripts/run-qt-showcase.mjs",

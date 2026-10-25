@@ -375,6 +375,29 @@ if (existsSync(docContentCheckPath)) {
   console.log(`[gate] OK — Markdown Doc Content Gate passed (${dcRes.checked} documented component(s) share identical sections)`);
 }
 
+// 2.15b Showcase Palette Parity Gate
+// The Qt demo renders ThemeTokens (spec preset "dunting"); the React demo cannot, because
+// generate-css only emits the "launcher" preset, so its styles.css mirrors the dunting values
+// by hand. That copy is exactly how the two showcases ended up showing different foreground
+// and muted colours. This gate pins the copy so retuning a preset cannot silently diverge.
+const showcasePaletteCheckPath = resolve(root, 'scripts/check-showcase-palette.mjs');
+if (existsSync(showcasePaletteCheckPath)) {
+  const { verifyShowcasePalette, selfTest: paletteSelfTest } = await import(pathToFileURL(showcasePaletteCheckPath).href);
+  const spSt = paletteSelfTest();
+  if (!spSt.ok) {
+    console.error('[gate] FAIL: showcase palette gate self-test failed — the detector no longer sees drift');
+    for (const e of spSt.errors) console.error('  - ' + e);
+    process.exit(1);
+  }
+  const spRes = verifyShowcasePalette({ quiet: true });
+  if (!spRes.ok) {
+    console.error('[gate] FAIL: Showcase Palette Gate failed — the two demos render different palettes:');
+    for (const err of spRes.errors) console.error('  - ' + err);
+    process.exit(1);
+  }
+  console.log(`[gate] OK — Showcase Palette Gate passed (${spRes.checked} semantic colours match ThemeTokens)`);
+}
+
 // 2.16 Mandatory Theme-Adaptive Color Contract Gate
 // Strictly enforces Red Line 18: bare border -> currentColor fallback, hardcoded
 // white/black/zinc borders, and bg surfaces without text pairing across React + Qt.

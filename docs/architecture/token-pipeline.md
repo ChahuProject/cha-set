@@ -49,3 +49,18 @@
 1. **Deterministic Order**: Aggregated `spec/tokens.json` must always preserve exact alphabetical/hierarchical key sorting to prevent noisy git diffs.
 2. **Preset Completeness**: Any new semantic role added to `semantic/core.json` must specify values for both desktop and web presets.
 3. **No Direct Hex Hardcoding in Components**: Components must reference semantic token variables (CSS vars in Web, `ThemeTokens.<role>` in QML) rather than hardcoded colors.
+
+### 4.1 The Two Showcases Must Render One Palette
+
+The Qt library and demo consume `ThemeTokens` (preset `dunting`). The React library and demo consume the CSS emit, which only exists for preset `launcher`. The showcase therefore had a third, hand-written Tailwind slate palette in `packages/react/examples/basic/src/styles.css`, while the Qt demo hardcoded the same slate for its chrome and kept reading `dunting` for text:
+
+| | Qt showcase | React showcase (before) |
+| :--- | :--- | :--- |
+| body text | `#e6f0fa` | `#f8fafc` |
+| muted text | `#a0b2c6` | `#94a3b8` |
+| raised surface | `#252d3d` | `#1e293b` |
+| border | `#3c4858` | `#1e293b` |
+
+On the same canvas this reads as "the Qt text is lighter and flatter" — a palette divergence, not a rendering bug. The rule now is: **the React demo mirrors the `dunting` values by hand, and `pnpm check:palette` fails the build when a mirror drifts** (`scripts/check-showcase-palette.mjs`, wired as gate 2.15b). Only `background` is exempt: both demos pin the canvas to the same `#020817` / `#ffffff` outside the token layer.
+
+When a semantic role is added or retuned, run `pnpm gen:qt` and copy the mapped value into `styles.css`; the gate names the exact property and both colours if you forget.
