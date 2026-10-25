@@ -27,11 +27,14 @@ class ChaSetTextFragments : public QObject
 public:
     explicit ChaSetTextFragments(QObject *parent = nullptr);
 
-    /// Rects for every fragment whose anchor href starts with @p prefix.
+    /// Rects for every run of fragments whose anchor href starts with @p prefix.
     ///
     /// @p document is the QQuickTextDocument exposed by TextEdit.textDocument.
-    /// A fragment that wrapped across lines yields one rect per line segment, so a chip that
-    /// breaks in two is drawn as two boxes rather than one crossing the whole block.
+    /// Consecutive marked fragments are merged first: a chip is authored as three fragments
+    /// (smaller padding cell, token, padding cell), and emitting one box per fragment would
+    /// draw three pills. A run that wrapped across lines still yields one rect per line
+    /// segment, so a chip that breaks in two is drawn as two boxes rather than one crossing
+    /// the whole block.
     /// Returned entries are {x, y, w, h} in the text item's content coordinates.
     Q_INVOKABLE QVariantList fragmentRects(QObject *document, const QString &prefix) const;
 };
