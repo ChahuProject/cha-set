@@ -957,7 +957,12 @@ static bool runShowcaseCursorRaycasting(QQuickWindow* window) {
                 int actual = window->cursor().shape();
 
                 if (actual != expected) {
-                    QQuickItem* deepest = window->contentItem();
+                    // Raycast from the PAGE, not from the window. `contentItem` always reports
+                    // QQuickOverlay as its topmost child (the overlay exists for the lifetime
+                    // of the window and only its dim child is hidden), so a window-level walk
+                    // stops at the overlay and can never tell whether the point really landed
+                    // on the item. Walking the page subtree answers that question directly.
+                    QQuickItem* deepest = pageItem;
                     while (deepest) {
                         QPointF local = deepest->mapFromScene(scenePoint);
                         QQuickItem* child = deepest->childAt(local.x(), local.y());
@@ -967,19 +972,12 @@ static bool runShowcaseCursorRaycasting(QQuickWindow* window) {
 
                     // Occlusion / clipping: when the point does not resolve back to this item
                     // (or one of its descendants), the item's own centre is covered by something
-                    // else — a modal's dim overlay, a scroll child scrolled out of its viewport.
-                    // The user cannot hover the item there, so comparing cursors would be an
-                    // assertion about z-order, not about the control's cursor contract. It is
-                    // also the one check whose outcome depends on event delivery timing, which
-                    // made this audit fail roughly one run in three on an unchanged build.
-                    bool reachable = false;
-                    for (QQuickItem* d = deepest; d; d = d->parentItem()) {
-                        if (d == item) {
-                            reachable = true;
-                            break;
-                        }
-                    }
-                    if (!reachable) {
+                    // else — a sibling drawn on top, a scroll child scrolled out of its
+                    // viewport. The user cannot hover the item there, so comparing cursors
+                    // would be an assertion about z-order and event timing rather than about
+                    // the control's cursor contract; it is what made this audit fail roughly
+                    // one run in three on an unchanged build.
+                    if (deepest != item && !item->isAncestorOf(deepest)) {
                         totalOccluded++;
                         continue;
                     }
