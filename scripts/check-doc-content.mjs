@@ -13,7 +13,7 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { buildDocAst, sectionIds, slotNames } from '../spec/shared/docAst.mjs';
+import { buildDocAst, sectionIds, slotNames, inlineText, splitShortcut } from '../spec/shared/docAst.mjs';
 
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const contentDir = join(rootDir, 'spec', 'content');
@@ -179,6 +179,43 @@ export function selfTest() {
   if (slotNames(probe.page).join(',') !== 'overview') errors.push('parser lost the slot fence');
   const inline = probe.page?.sections[0]?.blocks[2]?.items?.[0] ?? [];
   if (!inline.some((node) => node.t === 'code' && node.v === 'a')) errors.push('parser lost inline code');
+
+  // Keycaps and typed tables are the tableture of the docs: a regression here renders a
+  // table as plain text (or drops a keycap) on both stacks without any error dialog.
+  const rich = buildDocAst(
+    fixture +
+      '\nPress [[Ctrl+K]] and [[Space / Enter]].\n\n' +
+      '```table shortcuts\n| Key | Behavior |\n| --- | --- |\n| [[Tab]] | Move focus |\n```\n\n' +
+      '```table props\n| Prop | Type | Default | Description |\n| --- | --- | --- | --- |\n| `variant` | `"a" \\| "b"` | `"a"` | Appearance |\n```\n',
+  );
+  if (rich.errors.length) errors.push(`parser rejected keycap/table fixture: ${rich.errors.join(' | ')}`);
+
+  const richBlocks = rich.page?.sections[0]?.blocks ?? [];
+  const keycapParagraph = richBlocks.find((b) => b.t === 'para' && b.inlines.some((n) => n.t === 'kbd'));
+  if (!keycapParagraph) errors.push('parser lost inline [[kbd]]');
+  else if (keycapParagraph.inlines.filter((n) => n.t === 'kbd').map((n) => n.v).join('|') !== 'Ctrl+K|Space / Enter') {
+    errors.push('parser mangled the keycap payload');
+  }
+
+  const shortcutTable = richBlocks.find((b) => b.t === 'table' && b.schema === 'shortcuts');
+  if (!shortcutTable) errors.push('parser lost the "table shortcuts" schema');
+  const propsTable = richBlocks.find((b) => b.t === 'table' && b.schema === 'props');
+  if (!propsTable) errors.push('parser lost the "table props" schema');
+  else if (inlineText(propsTable.rows[0][1]) !== '"a" | "b"') {
+    errors.push('parser lost the escaped pipe inside a table cell');
+  }
+
+  if (splitShortcut('Space / Enter').length !== 2) errors.push('splitShortcut lost the "/" alternative');
+  if (splitShortcut('Ctrl + Shift + P')[0]?.length !== 3) errors.push('splitShortcut lost the "+" chord');
+
+  const badSchema = buildDocAst(`${fixture}\n\`\`\`table nope\n| a |\n| --- |\n\`\`\`\n`);
+  if (!badSchema.errors.some((error) => error.includes('unknown table schema'))) {
+    errors.push('parser accepted an unknown table schema');
+  }
+  const shortProps = buildDocAst(`${fixture}\n\`\`\`table props\n| a | b |\n| --- | --- |\n| 1 | 2 |\n\`\`\`\n`);
+  if (!shortProps.errors.some((error) => error.includes('needs 4 columns'))) {
+    errors.push('parser accepted a props table with the wrong column count');
+  }
 
   const bad = buildDocAst('> quote\n\n## H {#h}\n');
   if (!bad.errors.some((error) => error.includes('blockquote'))) errors.push('parser accepted a blockquote');

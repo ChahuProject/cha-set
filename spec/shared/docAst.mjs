@@ -12,14 +12,51 @@
  * The dialect is a closed whitelist: anything outside it is reported as an error instead
  * of being silently swallowed, because a dropped node renders as blank space on one stack.
  *
- * Blocks: heading (##/###), paragraph, unordered/ordered list, GFM table, slot fence.
- * Inline: `code`, **strong**, *em*.
+ * Blocks: heading (##/###), paragraph, unordered/ordered list, GFM table, typed table
+ *         fence (```table props``` / ```table shortcuts```), slot fence.
+ * Inline: `code`, **strong**, *em*, [[Ctrl+K]].
  * Slots: ```overview```, ```anatomy```, ```props``` delegate to native code.
  */
 
 export var DOC_SLOTS = ["overview", "anatomy", "props"];
 
+/**
+ * Table schemas — the authoring contract behind ```table <schema>```.
+ *
+ * A schema is a COLUMN LIST, not a component. Both renderers turn it into the column
+ * descriptors their design-system table already accepts (React `TableColumn[]`,
+ * `ChaSetTable.columns`), so a Markdown table inherits the exact look of the hand-written
+ * props / shortcuts tables instead of being painted a second time. Adding a schema is one
+ * entry here plus a `kind` the two renderers already know how to draw.
+ *
+ * `kind` is the cell treatment:
+ *   "rich"     — inline AST (text / chip / strong / em / kbd), rendered by the stack
+ *   "code"     — identifier: monospace + accent, plain text
+ *   "copyable" — copyable badge (types, defaults), plain text
+ *   "kbd"      — keycap group via the stack's Kbd primitive, plain text
+ *
+ * `width` reserves space (dp on Qt, px on the web); the last column stays flexible.
+ * An empty array means "one `rich` column per header cell" — the schema-free case.
+ */
+export var DOC_SCHEMAS = {
+  plain: [],
+  props: [
+    { kind: "code", width: 170 },
+    { kind: "copyable", width: 240 },
+    // 130, not the 110 PropsTable uses: a quoted default such as `"On this page"` overflows
+    // an 110dp badge and gets clipped by the Qt cell, and a clipped badge reads as corrupt
+    // data rather than as a width decision.
+    { kind: "copyable", width: 130 },
+    { kind: "rich", wrap: true }
+  ],
+  shortcuts: [
+    { kind: "kbd", width: 220 },
+    { kind: "rich", wrap: true }
+  ]
+};
+
 var RE_FENCE = /^```(\S*)\s*$/;
+var RE_TABLE_FENCE = /^```table(?:\s+([a-z]+))?\s*$/;
 var RE_HEADING = /^(#{2,3})\s+(.*)$/;
 var RE_UL = /^[-*]\s+(.*)$/;
 var RE_OL = /^(\d+)\.\s+(.*)$/;
@@ -63,7 +100,7 @@ export function parseFrontMatter(source) {
   return { meta: meta, body: source.slice(match[0].length), errors: errors };
 }
 
-/** Inline scanner: `code`, **strong**, *em*. Everything else stays literal text. */
+/** Inline scanner: `code`, **strong**, *em*, [[Ctrl+K]]. Everything else stays literal text. */
 export function parseInline(text) {
   var out = [];
   var buffer = "";
@@ -109,6 +146,23 @@ export function parseInline(text) {
       }
     }
 
+    // Keycap: [[Ctrl+K]] / [[Space / Enter]]. The payload stays verbatim — the two Kbd
+    // primitives already parse the serialized form, so the AST must not pre-split it into
+    // a second, drift-prone representation. `splitShortcut()` exposes the same split for
+    // renderers that need per-key geometry (Qt paints one cap per key).
+    if (ch === "[" && text.charAt(i + 1) === "[") {
+      var keyEnd = text.indexOf("]]", i + 2);
+      if (keyEnd > i + 2) {
+        var shortcut = text.slice(i + 2, keyEnd);
+        if (shortcut.indexOf("[") < 0 && shortcut.indexOf("]") < 0) {
+          flush();
+          out.push({ t: "kbd", v: shortcut.replace(/^\s+|\s+$/g, "") });
+          i = keyEnd + 2;
+          continue;
+        }
+      }
+    }
+
     buffer += ch;
     i += 1;
   }
@@ -117,10 +171,32 @@ export function parseInline(text) {
   return out;
 }
 
+/**
+ * Split one pipe-table row into cells. `\|` is an escaped literal pipe, which is the only
+ * way to write a union type (`"a" | "b"`) inside a cell — unescaped pipes are separators.
+ */
 function splitTableRow(line) {
-  var inner = line.replace(/^\s*\|/, "").replace(/\|\s*$/, "");
-  var cells = inner.split("|");
-  for (var i = 0; i < cells.length; i += 1) cells[i] = cells[i].replace(/^\s+|\s+$/g, "");
+  var inner = line.replace(/^\s+/, "");
+  if (inner.charAt(0) === "|") inner = inner.slice(1);
+  if (inner.charAt(inner.length - 1) === "|") inner = inner.slice(0, -1);
+
+  var cells = [];
+  var buffer = "";
+  for (var i = 0; i < inner.length; i += 1) {
+    var ch = inner.charAt(i);
+    if (ch === "\\" && inner.charAt(i + 1) === "|") {
+      buffer += "|";
+      i += 1;
+      continue;
+    }
+    if (ch === "|") {
+      cells.push(buffer.replace(/^\s+|\s+$/g, ""));
+      buffer = "";
+      continue;
+    }
+    buffer += ch;
+  }
+  cells.push(buffer.replace(/^\s+|\s+$/g, ""));
   return cells;
 }
 
@@ -128,10 +204,40 @@ function plainInline(nodes) {
   var text = "";
   for (var i = 0; i < nodes.length; i += 1) {
     var node = nodes[i];
-    if (node.c) text += plainInline(node.c);
+    if (node.t === "kbd") text += node.v;
+    else if (node.c) text += plainInline(node.c);
     else text += node.v;
   }
   return text.replace(/^\s+|\s+$/g, "");
+}
+
+/** Flatten inline nodes to the plain text a plain-text-only cell needs (badges, kbd). */
+export function inlineText(nodes) {
+  return plainInline(nodes);
+}
+
+/**
+ * `"Ctrl + Shift + P"` → [["Ctrl","Shift","P"]];  `"Space / Enter"` → [["Space"],["Enter"]].
+ *
+ * "/" separates alternatives, "+" separates keys inside one chord — the exact syntax the
+ * React `Kbd` and `ChaSetKbd` primitives both accept, so this split is the AST-side helper
+ * for renderers that need one box per key (Qt paints keycaps from fragment geometry).
+ * A literal "+" key is not expressible; write it as `Plus`.
+ */
+export function splitShortcut(text) {
+  var raw = String(text === null || text === undefined ? "" : text);
+  var branches = raw.split(/\s*\/\s*/);
+  var out = [];
+  for (var i = 0; i < branches.length; i += 1) {
+    var keys = branches[i].split(/\s*\+\s*/);
+    var group = [];
+    for (var j = 0; j < keys.length; j += 1) {
+      var key = keys[j].replace(/^\s+|\s+$/g, "");
+      if (key) group.push(key);
+    }
+    if (group.length > 0) out.push(group);
+  }
+  return out;
 }
 
 function slugFallback(text) {
@@ -139,6 +245,61 @@ function slugFallback(text) {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
+}
+
+/**
+ * Read a GFM table starting at `start`. Returns null when those lines are not a table, so
+ * both callers (a bare table in the flow, and a ```table``` fence body) share one parser.
+ */
+function readTable(lines, start) {
+  if (start < 0 || start >= lines.length) return null;
+  var headLine = lines[start].replace(/^\s+|\s+$/g, "");
+  if (!RE_TABLE_ROW.test(headLine)) return null;
+  if (start + 1 >= lines.length) return null;
+  if (!RE_TABLE_DELIM.test(lines[start + 1].replace(/\s+$/g, ""))) return null;
+
+  var head = splitTableRow(headLine);
+  var rows = [];
+  var i = start + 2;
+  while (i < lines.length) {
+    var rowLine = lines[i].replace(/^\s+|\s+$/g, "");
+    if (!RE_TABLE_ROW.test(rowLine)) break;
+    rows.push(splitTableRow(rowLine));
+    i += 1;
+  }
+  return { head: head, rows: rows, end: i };
+}
+
+/**
+ * Build the `table` block for a schema, reporting shape mistakes instead of letting a
+ * renderer pad or drop cells (a silent pad renders as an empty cell on both stacks).
+ */
+function buildTable(schema, parsed, lineNumber, errors) {
+  var spec = DOC_SCHEMAS[schema];
+  if (!spec) return null;
+
+  if (spec.length > 0 && parsed.head.length !== spec.length) {
+    errors.push(
+      'table schema "' + schema + '" needs ' + spec.length + " columns, found " + parsed.head.length + " (line " + lineNumber + ")"
+    );
+  }
+  for (var r = 0; r < parsed.rows.length; r += 1) {
+    if (parsed.rows[r].length !== parsed.head.length) {
+      errors.push(
+        "table row " + (r + 1) + " has " + parsed.rows[r].length + " cells, header has " + parsed.head.length + " (line " + lineNumber + ")"
+      );
+    }
+  }
+
+  var headCells = [];
+  for (var h = 0; h < parsed.head.length; h += 1) headCells.push(parseInline(parsed.head[h]));
+  var rowCells = [];
+  for (var i = 0; i < parsed.rows.length; i += 1) {
+    var cells = [];
+    for (var c = 0; c < parsed.rows[i].length; c += 1) cells.push(parseInline(parsed.rows[i][c]));
+    rowCells.push(cells);
+  }
+  return { t: "table", schema: schema, head: headCells, rows: rowCells };
 }
 
 /**
@@ -171,6 +332,47 @@ export function buildDocAst(source) {
 
     if (!trimmed) {
       i += 1;
+      continue;
+    }
+
+    // Typed table fence: ```table props```. The body is an ordinary GFM table, so an author
+    // who does not need the column semantics can simply write the table without the fence.
+    var tableFence = RE_TABLE_FENCE.exec(trimmed);
+    if (tableFence) {
+      var schema = tableFence[1] || "plain";
+      var openedAt = i + 1;
+      var bodyLines = [];
+      var tableClosed = false;
+      i += 1;
+      while (i < lines.length) {
+        if (/^```\s*$/.test(lines[i].replace(/\s+$/, ""))) {
+          tableClosed = true;
+          i += 1;
+          break;
+        }
+        bodyLines.push(lines[i]);
+        i += 1;
+      }
+      if (!tableClosed) errors.push("unclosed table fence at line " + openedAt);
+
+      if (!Object.prototype.hasOwnProperty.call(DOC_SCHEMAS, schema)) {
+        errors.push(
+          'unknown table schema "' + schema + '" (known: ' + Object.keys(DOC_SCHEMAS).join(", ") + ") at line " + openedAt
+        );
+      } else {
+        var start = 0;
+        while (start < bodyLines.length && !bodyLines[start].replace(/^\s+|\s+$/g, "")) start += 1;
+        var fenced = readTable(bodyLines, start);
+        if (!fenced) {
+          errors.push('table fence "' + schema + '" must contain a pipe table (line ' + openedAt + ")");
+        } else {
+          if (bodyLines.slice(fenced.end).some(function (leftover) { return !!leftover.replace(/^\s+|\s+$/g, ""); })) {
+            errors.push('table fence "' + schema + '" has content after the table (line ' + openedAt + ")");
+          }
+          var fencedTable = buildTable(schema, fenced, openedAt + 1 + start, errors);
+          if (fencedTable) current.blocks.push(fencedTable);
+        }
+      }
       continue;
     }
 
@@ -232,22 +434,10 @@ export function buildDocAst(source) {
     }
 
     if (RE_TABLE_ROW.test(trimmed) && i + 1 < lines.length && RE_TABLE_DELIM.test(lines[i + 1].replace(/\s+$/, ""))) {
-      var head = splitTableRow(trimmed);
-      var rows = [];
-      i += 2;
-      while (i < lines.length && RE_TABLE_ROW.test(lines[i].replace(/^\s+/, ""))) {
-        rows.push(splitTableRow(lines[i]));
-        i += 1;
-      }
-      var headCells = [];
-      for (var h = 0; h < head.length; h += 1) headCells.push(parseInline(head[h]));
-      var rowCells = [];
-      for (var rr = 0; rr < rows.length; rr += 1) {
-        var cells = [];
-        for (var cc = 0; cc < rows[rr].length; cc += 1) cells.push(parseInline(rows[rr][cc]));
-        rowCells.push(cells);
-      }
-      current.blocks.push({ t: "table", head: headCells, rows: rowCells });
+      var bare = readTable(lines, i);
+      var bareTable = buildTable("plain", bare, i + 1, errors);
+      if (bareTable) current.blocks.push(bareTable);
+      i = bare.end;
       continue;
     }
 
@@ -288,7 +478,7 @@ export function buildDocAst(source) {
       var nextRaw = lines[i];
       var next = nextRaw.replace(/^\s+/, "").replace(/\s+$/, "");
       if (!next) break;
-      if (RE_HEADING.test(next) || RE_FENCE.test(next) || RE_UL.test(next) || RE_OL.test(next)) break;
+      if (RE_HEADING.test(next) || RE_FENCE.test(next) || RE_TABLE_FENCE.test(next) || RE_UL.test(next) || RE_OL.test(next)) break;
       if (RE_TABLE_ROW.test(next) && i + 1 < lines.length && RE_TABLE_DELIM.test(lines[i + 1].replace(/\s+$/, ""))) break;
       if (next.charAt(0) === ">" || next.charAt(0) === "<") break;
       paragraph = joinSoft(paragraph, next);
