@@ -401,26 +401,11 @@ DocLayout {
         reactCode: `import { TableOfContents, type TocItem } from '@chahu/cha-set';\n\n<TableOfContents\n  items={items}\n  activeId={activeId}\n  onSelect={(item) => scrollTo(item)}\n/>`
     }
 
-    // 3. Footer Sections (Animations, Keyboard Navigation, Props Reference)
-        // Animations
-    Column {
+    // 3. Footer Sections — prose is single-sourced from spec/content/table-of-contents/
+    DocMarkdown {
         width: parent.width
-        spacing: ThemeTokens.dp(8)
-
-        DocText {
-            text: ChaSetI18n.tr("showcase.animations", "Animations")
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-            color: ThemeTokens.text
-        }
-
-        DocText {
-            text: ChaSetI18n.tr("showcase.animationsDescQml", "State changes (hover, press, focus) animate over duration-quick with standard easing curves. Durations and easing resolve from theme tokens; prefers-reduced-motion zeroes them automatically (governed by ThemeTokens.animationsEnabled).")
-            color: ThemeTokens.subduedText
-            font.pixelSize: Typography.sizeBody
-            wrapMode: TextEdit.WordWrap
-            width: parent.width
-        }
+        docId: "table-of-contents"
+        section: "animations"
     }
 
     ComponentReference {

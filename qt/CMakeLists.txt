@@ -43,6 +43,16 @@ set_source_files_properties(src/ShowcaseData.generated.qml PROPERTIES
     QT_QML_SKIP_CACHEGEN TRUE
 )
 
+# Markdown-derived doc content contract (spec/content/**.md -> pnpm gen:docs).
+# Lives in the ChaSet module next to the other generated data singletons: a singleton
+# defined in the demo module is not reachable from its own sibling files, so DocMarkdown
+# could not see DocContent.pages and rendered nothing at all.
+set_source_files_properties(src/DocContent.generated.qml PROPERTIES
+    QT_QML_SINGLETON_TYPE TRUE
+    QT_QML_SOURCE_TYPENAME DocContent
+    QT_QML_SKIP_CACHEGEN TRUE
+)
+
 # Icon specification contract and compiled artwork (emitted from
 # spec/icons/registry.json by pnpm gen:icons). QT_QML_SINGLETON_TYPE is what makes
 # ChaSetIcons.resolveIcon() / shapesFor() callable from other components; the pragma
@@ -222,6 +232,7 @@ qt_add_qml_module(ChaSet
         src/ChaSetIcons.generated.qml
 
         src/ShowcaseData.generated.qml
+        src/DocContent.generated.qml
         src/ChaSetI18nData.generated.qml
         src/ChaSetI18n.qml
 
@@ -273,6 +284,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/Main.qml
             src/DocLayout.qml
             src/DocText.qml
+            src/DocMarkdown.qml
             src/DocAnatomy.qml
             src/DocFooterSections.qml
             src/PropsTable.qml

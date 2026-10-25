@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   TableOfContents,
-  CopyableBadge,
   Button,
   Switch,
   SegmentedControl,
@@ -13,6 +12,7 @@ import {
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentReference } from "../../components/ComponentReference";
 import type { PropItem } from '../../components/PropsTable';
 
@@ -228,32 +228,8 @@ export function TableOfContentsDocPage() {
         qtCode={`import ChaSet\n\nChaSetTableOfContents {\n    items: demoItems\n    activeId: currentSectionId\n}`}
       />
 
-      {/* 3. Footer Sections (Animations, Keyboard Navigation, Props Reference) */}
-            {/* Animations */}
-      <section id="animations" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">
-          {t('showcase.animations', 'Animations')}
-        </h2>
-        <div>
-          <p className="text-sm text-muted-foreground mb-4">
-            {t('showcase.animationsDesc', 'Motion behavior and timing for interactive states aligned with ChaSet tokens.')}
-          </p>
-          <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
-            <li>
-              {t('showcase.animationsItem1', 'State changes (hover, press, focus) animate over duration-quick with the ease-standard curve.')}
-            </li>
-            <li>
-              {t('showcase.animationsItem2', 'Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).')}
-            </li>
-          </ul>
-          <div className="flex flex-wrap items-center gap-2 pt-3">
-            <CopyableBadge size="sm" text="duration-quick" className="font-mono text-xs" />
-            <CopyableBadge size="sm" text="ease-standard" className="font-mono text-xs" />
-            <CopyableBadge size="sm" text="prefers-reduced-motion" className="font-mono text-xs" />
-            <CopyableBadge size="sm" text="ThemeTokens.animationsEnabled" className="font-mono text-xs" />
-          </div>
-        </div>
-      </section>
+      {/* 3. Footer Sections — prose is single-sourced from spec/content/table-of-contents/ */}
+      <DocMarkdown id="table-of-contents" section="animations" />
 
       <ComponentReference
         name="TableOfContents"
