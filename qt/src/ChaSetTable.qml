@@ -44,17 +44,6 @@ Rectangle {
     color: cBg
     clip: true
 
-    /// A non-interactive table is a block of selectable text — the cells already select with
-    /// the mouse, but their I-beam only covers the glyph box, so hovering a column gap, the
-    /// row padding or a copyable badge fell back to the arrow and the whole surface read as
-    /// "not text". Claiming I-beam at the root closes those holes; a child that sets its own
-    /// cursor (a copy affordance, an interactive row) still wins, because a cursor belongs to
-    /// the deepest item that defines one.
-    HoverHandler {
-        enabled: !root.interactive
-        cursorShape: Qt.IBeamCursor
-    }
-
     function getColWidth(index, totalWidth) {
         if (!columns || columns.length === 0) return totalWidth;
         var col = columns[index];
@@ -118,9 +107,14 @@ Rectangle {
 
                         TextEdit {
                             id: headerCellText
-                            anchors.fill: parent
-                            anchors.leftMargin: ThemeTokens.dp(12)
-                            anchors.rightMargin: ThemeTokens.dp(12)
+                            width: Math.min(parent.width - ThemeTokens.dp(24), contentWidth)
+                            height: Math.min(headerRow.height, contentHeight)
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.left: (modelData && (modelData.align === "right" || modelData.align === "center")) ? undefined : parent.left
+                            anchors.right: (modelData && modelData.align === "right") ? parent.right : undefined
+                            anchors.horizontalCenter: (modelData && modelData.align === "center") ? parent.horizontalCenter : undefined
+                            anchors.leftMargin: (modelData && (modelData.align === "right" || modelData.align === "center")) ? 0 : ThemeTokens.dp(12)
+                            anchors.rightMargin: (modelData && modelData.align === "right") ? ThemeTokens.dp(12) : 0
                             verticalAlignment: TextEdit.AlignVCenter
                             horizontalAlignment: root.getAlignment(modelData ? modelData.align : "left")
                             text: modelData ? (modelData.title || "") : ""
@@ -306,11 +300,20 @@ Rectangle {
                             TextEdit {
                                 id: bodyCellText
                                 visible: !Boolean(columnDef && (columnDef.badge || columnDef.kbd || columnDef.copyableBadge))
-                                anchors.fill: parent
-                                anchors.leftMargin: ThemeTokens.dp(12)
-                                anchors.rightMargin: ThemeTokens.dp(12)
+                                width: (columnDef && columnDef.wrap)
+                                    ? (parent.width - ThemeTokens.dp(24))
+                                    : Math.min(parent.width - ThemeTokens.dp(24), contentWidth)
+                                height: (columnDef && columnDef.wrap)
+                                    ? contentHeight
+                                    : Math.min(parent.height, contentHeight)
+                                anchors.verticalCenter: (columnDef && columnDef.wrap) ? undefined : parent.verticalCenter
+                                anchors.top: (columnDef && columnDef.wrap) ? parent.top : undefined
                                 anchors.topMargin: (columnDef && columnDef.wrap) ? ThemeTokens.dp(8) : 0
-                                anchors.bottomMargin: (columnDef && columnDef.wrap) ? ThemeTokens.dp(8) : 0
+                                anchors.left: (columnDef && (columnDef.align === "right" || columnDef.align === "center")) ? undefined : parent.left
+                                anchors.right: (columnDef && columnDef.align === "right") ? parent.right : undefined
+                                anchors.horizontalCenter: (columnDef && columnDef.align === "center") ? parent.horizontalCenter : undefined
+                                anchors.leftMargin: (columnDef && (columnDef.align === "right" || columnDef.align === "center")) ? 0 : ThemeTokens.dp(12)
+                                anchors.rightMargin: (columnDef && columnDef.align === "right") ? ThemeTokens.dp(12) : 0
                                 verticalAlignment: (columnDef && columnDef.wrap) ? TextEdit.AlignTop : TextEdit.AlignVCenter
                                 horizontalAlignment: root.getAlignment(columnDef ? columnDef.align : "left")
                                 text: {
@@ -378,13 +381,10 @@ Rectangle {
                 MouseArea {
                     id: rowMouseArea
                     anchors.fill: parent
+                    visible: root.interactive
                     hoverEnabled: root.interactive
                     enabled: root.interactive
-                    // MouseArea::setCursorShape calls setCursor() unconditionally, so a
-                    // disabled row area would still shadow the table's own cursor with an
-                    // arrow. Off-interactive it must claim the text cursor instead: the row
-                    // is selectable text, and this is the area between the cells.
-                    cursorShape: root.interactive ? Qt.PointingHandCursor : Qt.IBeamCursor
+                    cursorShape: root.interactive ? Qt.PointingHandCursor : undefined
                     onClicked: {
                         if (root.interactive) {
                             root.selectedIndex = rowItem.index;
