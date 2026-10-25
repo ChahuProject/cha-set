@@ -245,7 +245,7 @@ Even with identical font metrics and tokens, visual discrepancy ("像素感" / b
 2. **Hinting Is What Eats the Antialiasing (`QFont::PreferNoHinting`)**:
    - `PreferVerticalHinting` + the platform rasterizer snaps outlines to the pixel grid. Stems that happen to land on a pixel boundary are painted solid and their neighbours empty, and every curve breaks into a 1px staircase — the "chewed edge" look. What survives is not grayscale AA but a hard binary edge plus a thin grey residue.
    - Measured on the same 2× Latin+CJK line: hinted **3 240** ink pixels, unhinted **3 522**. Hinting squeezes stems thinner and moves them, so letterforms are re-shaped, not just sharpened.
-   - The trap that let this ship: hinted output has the *highest* solid-to-fringe ratio of the three policies (0.86 → 1.31 in the guide's own crops). Aliasing scores as "crisp" on any coverage-ratio metric, which is exactly why the guide flipped to it. Coverage ratios cannot see a staircase; edge structure and chroma can.
+   - The trap that let this ship: hinted output has the *highest* solid-to-fringe ratio of the three policies — measured 1.47, against 1.18 for `curve` and 0.82 for `qt` on the same crop. Aliasing scores as "crisp" on any coverage-ratio metric, which is exactly why the guide flipped to it. Coverage ratios cannot see a staircase; edge structure and chroma can.
    - Resolution: the application font is now `PreferNoHinting`. The curve rasterizer ignores the preference outright (measured: byte-identical frames for `PreferVerticalHinting` vs `PreferNoHinting`), so this only constrains the `native`/`qt` escape hatches.
 
 3. **Window-Level Text Rasterizer Single Truth (`CHASET_TEXT_RENDER`)**:
