@@ -1,6 +1,15 @@
 import React from 'react';
-import { useChaSetI18n } from '@chahu/cha-set';
-import { buildDocAst, type DocBlock, type DocInline, type DocPage } from '../../../../../../spec/shared/docAst.mjs';
+import { useChaSetI18n, Kbd, CopyableBadge, Table } from '@chahu/cha-set';
+import type { TableColumn } from '@chahu/cha-set';
+import {
+  buildDocAst,
+  DOC_SCHEMAS,
+  inlineText,
+  type DocBlock,
+  type DocInline,
+  type DocPage,
+  type DocTableCellKind,
+} from '../../../../../../spec/shared/docAst.mjs';
 import { DocText } from './DocText';
 
 /**
@@ -9,7 +18,7 @@ import { DocText } from './DocText';
  * imports. Nothing is code-generated, so editing an .md reloads the page directly.
  *
  * This component owns typography only: Markdown syntax maps onto the design system
- * (14px body, 20px h2, mono inline code) instead of raw HTML.
+ * (14px body, 20px h2, mono inline code, real keycaps) instead of raw HTML.
  */
 const rawDocs = import.meta.glob('../../../../../../spec/content/*/*.md', {
   query: '?raw',
@@ -88,10 +97,43 @@ function renderInline(nodes: DocInline[], keyPrefix: string): React.ReactNode[] 
             {node.v}
           </DocText>
         );
+      case 'kbd':
+        // `[[Ctrl+K]]` — the raw shortcut string goes straight to the Kbd primitive, which
+        // already owns the compact-symbol mapping and the "/" alternative syntax. Splitting
+        // it here would create a second, drift-prone interpretation.
+        return (
+          <Kbd key={key} shortcut={node.v} compact="never" size="sm" variant="outline" className="mx-0.5 align-middle" />
+        );
       default:
         return <React.Fragment key={key}>{node.v}</React.Fragment>;
     }
   });
+}
+
+/**
+ * One table cell. Structured kinds (`code` / `copyable` / `kbd`) take plain text because the
+ * column itself supplies the treatment — feeding them rich inline would fight the badge and
+ * keycap chrome. `rich` cells keep the full inline vocabulary, chips included.
+ */
+function renderCell(cell: DocInline[], kind: DocTableCellKind, key: string): React.ReactNode {
+  if (kind === 'rich') return <>{renderInline(cell, key)}</>;
+
+  const text = inlineText(cell);
+  switch (kind) {
+    case 'code':
+      return <span className="font-mono text-xs font-medium text-primary">{text}</span>;
+    case 'copyable':
+      return text ? (
+        <CopyableBadge size="sm" text={text} className="font-mono text-[0.6875rem] text-foreground/80" />
+      ) : (
+        // An empty default cell reads as "no default", exactly like PropsTable's em dash.
+        <span className="opacity-40">—</span>
+      );
+    case 'kbd':
+      return text ? <Kbd shortcut={text} compact="never" size="xs" variant="outline" /> : null;
+    default:
+      return <>{renderInline(cell, key)}</>;
+  }
 }
 
 function renderBlock(block: DocBlock, index: number, slots: DocMarkdownProps['slots']): React.ReactNode {
@@ -126,33 +168,33 @@ function renderBlock(block: DocBlock, index: number, slots: DocMarkdownProps['sl
         </ListTag>
       );
     }
-    case 'table':
+    case 'table': {
+      // Schema → column descriptors for the design system's Table. An empty schema (`plain`)
+      // maps the header row 1:1 and keeps every cell rich, so a schema-free table still
+      // renders chips, bold and keycaps. A typed schema only says *what each column is* —
+      // the chrome (header strip, borders, row rhythm) still comes from Table itself, which
+      // is why a Markdown props table lands on the same pixels as the hand-written one.
+      const spec = DOC_SCHEMAS[block.schema] ?? [];
+      const columns: TableColumn[] = block.head.map((cell, cellIndex) => {
+        const kind: DocTableCellKind = spec[cellIndex]?.kind ?? 'rich';
+        return {
+          key: `c${cellIndex}`,
+          title: inlineText(cell),
+          width: spec[cellIndex]?.width,
+          render: (_value, row) => renderCell(row[`c${cellIndex}`] as DocInline[], kind, `${key}-${cellIndex}`),
+        };
+      });
+      const data = block.rows.map((row) => {
+        const record: Record<string, DocInline[]> = {};
+        row.forEach((cell, cellIndex) => {
+          record[`c${cellIndex}`] = cell;
+        });
+        return record;
+      });
       return (
-        <div key={key} className="overflow-x-auto my-4">
-          <table className="w-full border-collapse text-sm text-foreground">
-            <thead>
-              <tr className="border-b border-border">
-                {block.head.map((cell, cellIndex) => (
-                  <th key={`${key}-h-${cellIndex}`} className="py-2 pr-4 text-left font-semibold">
-                    {renderInline(cell, `${key}-h-${cellIndex}`)}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {block.rows.map((row, rowIndex) => (
-                <tr key={`${key}-r-${rowIndex}`} className="border-b border-border/50">
-                  {row.map((cell, cellIndex) => (
-                    <td key={`${key}-r-${rowIndex}-c-${cellIndex}`} className="py-2 pr-4 text-muted-foreground">
-                      {renderInline(cell, `${key}-r-${rowIndex}-c-${cellIndex}`)}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <Table key={key} containerClassName="my-5" bordered columns={columns} data={data} />
       );
+    }
     case 'slot':
       return <React.Fragment key={key}>{slots?.[block.name] ?? null}</React.Fragment>;
     default:
