@@ -6,6 +6,13 @@ title: Scale OSD
 description: Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide.
 ---
 
+## Animations {#animations}
+
+Motion behavior and timing for OSD visibility and auto-hide countdown.
+
+- OSD enter and exit transitions run over `duration-short` (120ms) with the `ease-standard` curve (Qt: `ThemeTokens.motionShort` / `ThemeTokens.easeStandard`).
+- The 1400ms auto-hide countdown pauses deterministically on hover.
+
 ## Keyboard Navigation {#keyboard}
 
 Keyboard operations supported by this component, matching its behaviour without a pointer.

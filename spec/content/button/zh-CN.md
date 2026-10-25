@@ -6,6 +6,13 @@ title: Button
 description: 展示一个按钮或具有按钮外观的组件，提供多种变体、尺寸和状态。
 ---
 
+## 动效规范 {#animations}
+
+交互状态的动效行为与时间节奏，严格遵循 ChaSet 令牌体系。
+
+- 状态切换（悬停、按下、聚焦）在 `duration-quick` 时长内以 `ease-standard` 缓动曲线过渡。
+- 动效时长与缓动直接解析自主题令牌，启用减弱动效偏好（`prefers-reduced-motion`）时将自动置零；Qt 端由 `ThemeTokens.animationsEnabled` 集中管控该开关。
+
 ## 键盘导航 {#keyboard}
 
 本节列出该组件支持的键盘操作，与无鼠标操作时的行为一致。

@@ -6,6 +6,14 @@ title: Splitter
 description: 面向 IDE 与桌面工具包的带可拖拽分隔条与折叠限制的多窗格可调布局容器。
 ---
 
+## 动效规范 {#animations}
+
+分栏指示器与拖拽行为遵循 ChaSet 令牌体系。
+
+- 沟槽指示器颜色与不透明度过渡在 `duration-quick`（150ms）时长内以 `ease-standard` 缓动曲线平滑过渡。
+- 分隔条拖拽动态严格无动效，保证确定性 60fps 实时指针跟踪。
+- 动效时长与缓动由 `ThemeTokens.animationsEnabled` 与 `prefers-reduced-motion` 集中管控。
+
 ## 键盘导航 {#keyboard}
 
 本节列出该组件支持的键盘操作，与无鼠标操作时的行为一致。

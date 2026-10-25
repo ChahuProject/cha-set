@@ -190,18 +190,10 @@ ChaSetSheet {
 </Sheet>`
     }
 
-    // Animations
-    Column {
+    DocMarkdown {
         width: parent.width
-        spacing: 12
-
-        DocText { text: ChaSetI18n.tr("showcase.animations", "Animations"); color: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
-
-        DocText { text: ChaSetI18n.tr("desktopComposite.sheet.animationsDescQt", "Motion behavior and timing driven by ThemeTokens for the backdrop and sliding panel."); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-
-        DocText { text: ChaSetI18n.tr("desktopComposite.sheet.animationsBullet1Qt", "The panel translates along its entry edge while the backdrop cross-fades its opacity."); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: ChaSetI18n.tr("desktopComposite.sheet.animationsBullet2Qt", "Transitions use ThemeTokens.motionMedium with the easeEmphasized curve for a deliberate slide."); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: ChaSetI18n.tr("desktopComposite.sheet.animationsBullet3Qt", "All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        docId: "sheet"
+        section: "animations"
     }
 
     DocMarkdown {

@@ -606,27 +606,13 @@ DocLayout {
 
 
     // Section 7: Animations
-    Column {
+
+    DocMarkdown {
         width: parent.width
-        spacing: ThemeTokens.dp(8)
-
-        DocText {
-            text: ChaSetI18n.tr("showcase.animations", "Animations")
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-            color: ThemeTokens.text
-        }
-
-        DocText {
-            text: ChaSetI18n.tr("desktopComposite.kbd.animationsDesc", "Interactive micro-interaction transitions aligned with ChaSet tokens.")
-            color: ThemeTokens.subduedText
-            font.pixelSize: Typography.sizeBody
-            wrapMode: TextEdit.WordWrap
-            width: parent.width
-        }
+        docId: "kbd"
+        section: "animations"
     }
 
-    // Section 8: Component Reference
     DocMarkdown {
         width: parent.width
         docId: "kbd"

@@ -198,31 +198,10 @@ ChaSetScaleOsd {
 <ScaleOsd scale={100} onZoomIn={() => {}} onZoomOut={() => {}} onReset={() => {}} />`
     }
 
-    Item {
-        id: animationsSection
-        width: parent ? parent.width : 0
-        height: animCol.implicitHeight
-
-        Column {
-            id: animCol
-            width: parent.width
-            spacing: 8
-
-            DocText {
-                text: ChaSetI18n.tr("showcase.animations", "Animations")
-                font.pixelSize: Typography.sizeTitleSm
-                font.bold: true
-                color: ThemeTokens.text
-            }
-
-            DocText {
-                width: parent.width
-                wrap: true
-                text: ChaSetI18n.tr("desktopComposite.scaleOsd.animationsDesc", "OSD enter and exit transitions run over duration-short (120ms) with the ease-standard curve (Qt: ThemeTokens.motionShort / ThemeTokens.easeStandard). The 1400ms auto-hide countdown pauses deterministically on hover.")
-                color: ThemeTokens.subduedText
-                font.pixelSize: Typography.sizeSmall
-            }
-        }
+    DocMarkdown {
+        width: parent.width
+        docId: "scale-osd"
+        section: "animations"
     }
 
     DocMarkdown {

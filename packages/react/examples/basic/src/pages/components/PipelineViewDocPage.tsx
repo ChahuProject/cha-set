@@ -135,25 +135,7 @@ ChaSetPipelineView {
 
 
 
-      <section id="animations" className="scroll-mt-20 my-10">
-        <DocText role="h2" className="mb-3">
-          {t('showcase.animations', 'Animations')}
-        </DocText>
-        <DocText role="p" className="mb-3">
-          {t('desktopComposite.pipelineView.animationsDesc', 'Execution transitions and status node states are governed by shared motion tokens:')}
-        </DocText>
-        <ul className="list-disc pl-5 text-xs text-muted-foreground space-y-1.5 leading-relaxed">
-          <li>
-            {t('desktopComposite.pipelineView.animationsBullet1', 'Active execution nodes (running, compiling, retrying) display continuous rotation using animate-spin.')}
-          </li>
-          <li>
-            {t('desktopComposite.pipelineView.animationsBullet2', 'Job list hover and selection transitions use duration-quick ease-standard.')}
-          </li>
-          <li>
-            {t('showcase.animationsItem2', 'Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).')}
-          </li>
-        </ul>
-      </section>
+      <DocMarkdown id="pipeline-view" section="animations" />
 
                         <DocMarkdown id="pipeline-view" section="keyboard" />
 

@@ -176,18 +176,10 @@ DocLayout {
         }
     }
 
-    // Animations
-    Column {
+    DocMarkdown {
         width: parent.width
-        spacing: 12
-
-        DocText { text: ChaSetI18n.tr("showcase.animations", "Animations"); color: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
-
-        DocText { text: ChaSetI18n.tr("desktopComposite.codeBlock.animationsDescQt", "Motion behavior and timing driven by ThemeTokens for file switching and the header affordances."); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-
-        DocText { text: ChaSetI18n.tr("desktopComposite.codeBlock.animationsBullet1Qt", "Switching the active file cross-fades the body over ThemeTokens.motionShort with the easeEntrance curve."); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: ChaSetI18n.tr("desktopComposite.codeBlock.animationsBullet2Qt", "The header affordances inherit token motion from their primitives: file tabs interpolate color and border over ThemeTokens.motionQuick with the easeStandard curve, as do the copy button and the scroll bars."); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: ChaSetI18n.tr("desktopComposite.codeBlock.animationsBullet3Qt", "All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        docId: "code-block"
+        section: "animations"
     }
 
     DocMarkdown {

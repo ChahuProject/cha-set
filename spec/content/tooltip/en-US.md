@@ -6,6 +6,14 @@ title: Tooltip
 description: A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.
 ---
 
+## Animations {#animations}
+
+Motion behavior and timing for the tooltip bubble on open and close.
+
+- Opening fades and zooms in over `duration-short` with the `ease-entrance` curve.
+- Closing fades and zooms out, delaying unmount until the exit animation finishes.
+- Durations and easing resolve from theme tokens, so `prefers-reduced-motion` zeroes them automatically (Qt: governed by `ThemeTokens.animationsEnabled`).
+
 ## Keyboard Navigation {#keyboard}
 
 Keyboard operations supported by this component, matching its behaviour without a pointer.

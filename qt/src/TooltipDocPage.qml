@@ -387,21 +387,13 @@ DocLayout {
         }
     }
 
-    // Animations
-    Column {
+    DocMarkdown {
         width: parent.width
-        spacing: 12
-
-        DocText { text: ChaSetI18n.tr("showcase.animations", "Animations"); color: root.cFg; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
-
-        DocText { text: ChaSetI18n.tr("desktopComposite.tooltip.animationsDescQt", "Motion behavior and timing driven by ThemeTokens for the tooltip bubble on open and close."); color: root.cMutedFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-
-        DocText { text: ChaSetI18n.tr("desktopComposite.tooltip.animationsBulletQt1", "• The bubble cross-fades its opacity and scales it slightly on entry and exit to signal appearance."); color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: ChaSetI18n.tr("desktopComposite.tooltip.animationsBulletQt2", "• Transitions use ThemeTokens.motionShort with the easeEntrance curve."); color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: ChaSetI18n.tr("desktopComposite.tooltip.animationsBulletQt3", "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."); color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        docId: "tooltip"
+        section: "animations"
     }
 
-        DocMarkdown {
+    DocMarkdown {
             width: parent.width
             docId: "tooltip"
             section: "keyboard"

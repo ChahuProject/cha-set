@@ -67,32 +67,10 @@ ChaSetSnapSlider {
 }`
     }
 
-    Item {
-        id: animationsSection
-        property string sectionId: "animations"
-        width: parent ? parent.width : 0
-        height: animCol.implicitHeight
-
-        Column {
-            id: animCol
-            width: parent.width
-            spacing: 8
-
-            DocText {
-                text: ChaSetI18n.tr("showcase.animations", "Animations")
-                font.pixelSize: Typography.sizeTitleSm
-                font.bold: true
-                color: ThemeTokens.text
-            }
-
-            DocText {
-                width: parent.width
-                wrap: true
-                text: ChaSetI18n.tr("desktopComposite.snapSlider.animationsDescQt", "Thumb hover and focus transitions animate over ThemeTokens.motionQuick (90ms) with ThemeTokens.easeStandard. Dragging tracks pointer without lag in 60fps.")
-                color: ThemeTokens.subduedText
-                font.pixelSize: Typography.sizeSmall
-            }
-        }
+    DocMarkdown {
+        width: parent.width
+        docId: "snap-slider"
+        section: "animations"
     }
 
     DocMarkdown {

@@ -102,25 +102,7 @@ Column {
 
 
 
-      <section id="animations" className="scroll-mt-20 my-10">
-        <DocText role="h2" className="mb-3">
-          {t('showcase.animations', 'Animations')}
-        </DocText>
-        <DocText role="p" className="mb-4">
-          {t('desktopComposite.skeleton.animationsDesc', 'Motion behavior and timing for the placeholder loading effects.')}
-        </DocText>
-        <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
-          <li>
-            {t('desktopComposite.skeleton.animationsBullet1', 'pulse uses the default animate-pulse keyframes for a soft opacity fade.')}
-          </li>
-          <li>
-            {t('desktopComposite.skeleton.animationsBullet2', 'wave uses the custom cs-shimmer keyframes via the animate-shimmer utility for a sweeping highlight.')}
-          </li>
-          <li>
-            {t('desktopComposite.skeleton.animationsBullet3', 'When prefers-reduced-motion is set, animations resolve to animation: none automatically (Qt: governed by ThemeTokens.animationsEnabled).')}
-          </li>
-        </ul>
-      </section>
+      <DocMarkdown id="skeleton" section="animations" />
 
                         <DocMarkdown id="skeleton" section="keyboard" />
 

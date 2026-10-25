@@ -6,6 +6,14 @@ title: Address Bar
 description: 资源管理器与浏览器风格的地址导航栏，具备可交互的面包屑路径分段与行内路径即时编辑功能。
 ---
 
+## 动效规范 {#animations}
+
+地址栏在模式切换与建议列表弹出时遵循 ChaSet 动效令牌规范。
+
+- 面包屑片段的悬停高亮在 `duration-quick`（100ms）内以 `ease-standard` 缓动过渡（Qt 端对应 `ThemeTokens.motionQuick`）。
+- 建议列表弹出层在 120ms 内以淡入与缩放动画呈现。
+- 在 Web 端遵循 `prefers-reduced-motion`，在 Qt 端由 `ThemeTokens.animationsEnabled` 统一管控。
+
 ## 键盘导航 {#keyboard}
 
 本节列出该组件支持的键盘操作，与无鼠标操作时的行为一致。

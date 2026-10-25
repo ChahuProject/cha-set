@@ -121,17 +121,10 @@ Column {
 </div>`
     }
 
-    // Animations
-    Column {
+    DocMarkdown {
         width: parent.width
-        spacing: 12
-
-        DocText { text: ChaSetI18n.tr("showcase.animations", "Animations"); color: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
-
-        DocText { text: ChaSetI18n.tr("desktopComposite.skeleton.animationsDesc", "Motion behavior and timing for the placeholder loading effects."); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-
-        DocText { text: ChaSetI18n.tr("desktopComposite.skeleton.animationsBulletQt1", "pulse animates a SequentialAnimation over opacity; wave moves a linear NumberAnimation over x for the shimmer sweep."); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: ChaSetI18n.tr("desktopComposite.skeleton.animationsBulletQt2", "All animations stop when ThemeTokens.animationsEnabled is false, keeping the skeleton static."); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        docId: "skeleton"
+        section: "animations"
     }
 
     DocMarkdown {

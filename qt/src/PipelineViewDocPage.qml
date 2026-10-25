@@ -108,17 +108,10 @@ ChaSetPipelineView {
 <PipelineView stages={stages} activeStageIndex={0} />`
     }
 
-    // Animations
-    Column {
-        property string sectionId: "animations"
+    DocMarkdown {
         width: parent.width
-        spacing: 12
-
-        Text { text: ChaSetI18n.tr("showcase.animations", "Animations"); color: ThemeTokens.text; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
-        Text { text: ChaSetI18n.tr("desktopComposite.pipelineView.animationsDesc", "Execution transitions and status node states are governed by shared motion tokens:"); color: ThemeTokens.subduedText; font.pixelSize: Typography.sizeBody; wrapMode: Text.WordWrap; width: parent.width }
-        Text { text: ChaSetI18n.tr("desktopComposite.pipelineView.animationsBulletQt1", "• Active execution nodes (running, compiling, retrying) display continuous rotation animations."); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: Text.WordWrap; width: parent.width }
-        Text { text: ChaSetI18n.tr("desktopComposite.pipelineView.animationsBulletQt2", "• Job list selection and hover states interpolate smoothly using ThemeTokens.motionQuick."); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: Text.WordWrap; width: parent.width }
-        Text { text: ChaSetI18n.tr("desktopComposite.pipelineView.animationsBulletQt3", "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero."); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: Text.WordWrap; width: parent.width }
+        docId: "pipeline-view"
+        section: "animations"
     }
 
     DocMarkdown {

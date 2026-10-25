@@ -185,25 +185,7 @@ ChaSetSheet {
 
 
 
-      <section id="animations" className="scroll-mt-20 my-10">
-        <DocText role="h2" className="mb-3">
-          {t('showcase.animations', 'Animations')}
-        </DocText>
-        <DocText role="p" className="mb-4">
-          {t('desktopComposite.sheet.animationsDesc', 'Motion behavior and timing for the backdrop and sliding panel.')}
-        </DocText>
-        <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
-          <li>
-            {t('desktopComposite.sheet.animationsBullet1', 'The backdrop overlay cross-fades with animate-fade-in / animate-fade-out.')}
-          </li>
-          <li>
-            {t('desktopComposite.sheet.animationsBullet2', 'The panel slides in and out from its edge using slide-in-from-{side}-10 and slide-out-to-{side}-10, animated over duration-medium with the ease-emphasized curve.')}
-          </li>
-          <li>
-            {t('desktopComposite.sheet.animationsBullet3', 'Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).')}
-          </li>
-        </ul>
-      </section>
+      <DocMarkdown id="sheet" section="animations" />
 
                         <DocMarkdown id="sheet" section="keyboard" />
 

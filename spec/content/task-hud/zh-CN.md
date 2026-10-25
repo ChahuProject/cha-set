@@ -6,6 +6,16 @@ title: Task HUD
 description: 后台任务浮动执行栈，支持进度展示、溢出收纳与折叠摘要。
 ---
 
+## 动效规范 {#animations}
+
+任务面板的进入、退出与进度更新动效规范。
+
+- 新任务卡片在 `duration-short`（180ms）内以 `ease-entrance` 缓动展开并淡入。
+- 关闭的卡片作为淡出残影停留同样的 180ms，使下方卡片平滑重新排序而非突变。
+- 确定性进度条在 `duration-medium` 内过渡；不确定任务运行 1.6s 的无限微光动画。
+- 清空后的 HUD 保持最后一帧 `autoHideDelay`（600ms）后淡出。
+- 在 Web 端遵循 `prefers-reduced-motion`，在 Qt 端由 `ThemeTokens.animationsEnabled` 统一管控。
+
 ## 键盘导航 {#keyboard}
 
 本节列出该组件支持的键盘操作，与无鼠标操作时的行为一致。

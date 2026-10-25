@@ -558,48 +558,10 @@ ChaSetResizable {
         }
     }
 
-    // Animations Section
-    Column {
-        property string sectionId: "animations"
+    DocMarkdown {
         width: parent.width
-        spacing: 12
-
-        DocText {
-            text: ChaSetI18n.tr("showcase.animations", "Animations")
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeTitleSm
-            font.bold: true
-        }
-
-        DocText {
-            text: ChaSetI18n.tr("desktopComposite.resizable.animationsDesc", "Motion tokens and kinematic timing contracts for Resizable dividers and handles.")
-            color: ThemeTokens.subduedText
-            font.pixelSize: Typography.sizeBody
-            wrapMode: TextEdit.WordWrap
-            width: parent.width
-        }
-
-        DocText {
-            text: "• " + ChaSetI18n.tr("desktopComposite.resizable.animationsBullet1", "Separator grip indicator border and hover highlight color transitions animate smoothly over duration-quick (150ms) using ease-standard curve (Qt: ThemeTokens.motionQuick / ThemeTokens.easeStandard).")
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeBody
-            wrapMode: TextEdit.WordWrap
-            width: parent.width
-        }
-        DocText {
-            text: "• " + ChaSetI18n.tr("desktopComposite.resizable.animationsBullet2", "Panel resizing kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.")
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeBody
-            wrapMode: TextEdit.WordWrap
-            width: parent.width
-        }
-        DocText {
-            text: "• " + ChaSetI18n.tr("desktopComposite.resizable.animationsBullet3", "Respects prefers-reduced-motion on Web and ThemeTokens.animationsEnabled in Qt.")
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeBody
-            wrapMode: TextEdit.WordWrap
-            width: parent.width
-        }
+        docId: "resizable"
+        section: "animations"
     }
 
     DocMarkdown {

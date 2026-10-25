@@ -315,48 +315,10 @@ ChaSetSplitter {
         }
     }
 
-    // Animations Section
-    Column {
-        property string sectionId: "animations"
+    DocMarkdown {
         width: parent.width
-        spacing: 12
-
-        DocText {
-            text: ChaSetI18n.tr("showcase.animations", "Animations")
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeTitleSm
-            font.bold: true
-        }
-
-        DocText {
-            text: ChaSetI18n.tr("desktopComposite.splitter.animationsDesc", "Motion tokens and kinematic timing contracts for Splitter divider gutters.")
-            color: ThemeTokens.subduedText
-            font.pixelSize: Typography.sizeBody
-            wrapMode: TextEdit.WordWrap
-            width: parent.width
-        }
-
-        DocText {
-            text: ChaSetI18n.tr("desktopComposite.splitter.animationsBulletQt1", "• Gutter indicator color and opacity transitions animate smoothly over ThemeTokens.motionQuick (150ms) using ThemeTokens.easeStandard curve.")
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeBody
-            wrapMode: TextEdit.WordWrap
-            width: parent.width
-        }
-        DocText {
-            text: ChaSetI18n.tr("desktopComposite.splitter.animationsBullet2", "• Divider dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.")
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeBody
-            wrapMode: TextEdit.WordWrap
-            width: parent.width
-        }
-        DocText {
-            text: ChaSetI18n.tr("desktopComposite.splitter.animationsBulletQt3", "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop.")
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeBody
-            wrapMode: TextEdit.WordWrap
-            width: parent.width
-        }
+        docId: "splitter"
+        section: "animations"
     }
 
     DocMarkdown {

@@ -68,28 +68,13 @@ ChaSetLanguageSettings {
     }
 
     // Section 3: Animations
-    Column {
-        property string sectionId: "animations"
+
+    DocMarkdown {
         width: parent.width
-        spacing: ThemeTokens.dp(8)
-
-        DocText {
-            text: ChaSetI18n.tr("showcase.animations", "Animations")
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeHeading
-            font.bold: true
-        }
-
-        DocText {
-            width: parent.width
-            text: ChaSetI18n.tr("desktopComposite.languageSettings.animFull", "LanguageSettings utilizes smooth token transitions for card focus, active selection rings, and checkmark badge states. Transitions use ThemeTokens.motionQuick and ThemeTokens.easeStandard. Respects ThemeTokens.animationsEnabled as global kill switch.")
-            color: ThemeTokens.subduedText
-            font.pixelSize: Typography.sizeBody
-            wrapMode: Text.Wrap
-        }
+        docId: "language-settings"
+        section: "animations"
     }
 
-    // Section 4: Keyboard Navigation & Props Reference
     DocMarkdown {
         width: parent.width
         docId: "language-settings"

@@ -6,6 +6,14 @@ title: Splitter Handle
 description: Edge resize handle with reference item coordinate stabilization and min/max clamping.
 ---
 
+## Animations {#animations}
+
+Motion behavior and timing for handle state transitions.
+
+- Active indicator color and opacity transitions animate smoothly over `duration-quick` (150ms) using `ease-standard` curve.
+- Handle dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.
+- All transitions are guarded by `ThemeTokens.animationsEnabled` and `prefers-reduced-motion`.
+
 ## Keyboard Navigation {#keyboard}
 
 Keyboard operations supported by this component, matching its behaviour without a pointer.

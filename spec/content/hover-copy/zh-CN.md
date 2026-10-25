@@ -6,6 +6,14 @@ title: Hover Copy
 description: 为任意内容提供悬浮变暗遮罩与居中复制按钮，点击遮罩任意位置即可复制，成功显示勾选图标。
 ---
 
+## 动效规范 {#animations}
+
+悬停复制浮层与图标状态切换遵循 ChaSet 动效令牌规范。
+
+- 遮罩层显隐在 `duration-quick` 内以 `ease-standard` 缓动曲线平滑过渡（Qt 端对应 `ThemeTokens.motionQuick` + `easeStandard`）。
+- 静息到复制成功图标切换采用 `duration-short` 令牌。
+- 动效时长与缓动由 `ThemeTokens.animationsEnabled` 与 `prefers-reduced-motion` 集中管控，恢复倒计时为逻辑时间不受动效开关影响。
+
 ## 键盘导航 {#keyboard}
 
 Tab 聚焦居中按钮，Enter 或 Space 执行复制，点击遮罩任意位置同样复制，移开焦点后遮罩消失。

@@ -6,6 +6,14 @@ title: Floating Notice
 description: Floating stacked notice pill anchored to top or bottom with priority queueing, card-stack cycling, and extensible content.
 ---
 
+## Animations {#animations}
+
+Floating Notice utilizes shared motion tokens for micro-interactions.
+
+- Zoom-on-hover utilizes `duration-short` (120ms) with `ease-standard`.
+- Notice cycling and indicator dots use `duration-quick` (90ms).
+- Dismiss transitions fade and slide out smoothly.
+
 ## Keyboard Navigation {#keyboard}
 
 Keyboard operations supported by this component, matching its behaviour without a pointer.

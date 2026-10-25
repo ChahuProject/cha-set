@@ -263,25 +263,11 @@ DocLayout {
     }
 
     // 4. Footer Sections (Animations, Keyboard, Props)
-        // Animations
-    Column {
+
+    DocMarkdown {
         width: parent.width
-        spacing: ThemeTokens.dp(8)
-
-        DocText {
-            text: ChaSetI18n.tr("showcase.animations", "Animations")
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-            color: ThemeTokens.text
-        }
-
-        DocText {
-            text: ChaSetI18n.tr("showcase.animationsDescQml", "State changes (hover, press, focus) animate over duration-quick with standard easing curves. Durations and easing resolve from theme tokens; prefers-reduced-motion zeroes them automatically (governed by ThemeTokens.animationsEnabled).")
-            color: ThemeTokens.subduedText
-            font.pixelSize: Typography.sizeBody
-            wrapMode: TextEdit.WordWrap
-            width: parent.width
-        }
+        docId: "button"
+        section: "animations"
     }
 
     DocMarkdown {

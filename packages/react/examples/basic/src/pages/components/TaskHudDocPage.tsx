@@ -282,44 +282,7 @@ ChaSetTaskHud {
 }`}
       />
 
-      <section id="animations" className="space-y-4 pt-6">
-        <DocText role="h2">{t('showcase.animations', 'Animations')}</DocText>
-        <DocText role="p">
-          {t('desktopComposite.taskHud.animationsDesc', 'Motion tokens and kinematic timing contracts for the activity stack and its cards.')}
-        </DocText>
-        <ul className="list-disc space-y-1.5 pl-5 text-sm text-foreground">
-          <li>
-            {t('desktopComposite.taskHud.animEnterPrefix', 'New cards enter with')}{' '}
-            <CopyableBadge size="sm" text="duration-medium" className="font-mono text-xs" />{' '}
-            {t('desktopComposite.taskHud.animEnterMid', '(180ms) and the')}{' '}
-            <CopyableBadge size="sm" text="ease-standard" className="font-mono text-xs" />{' '}
-            {t('desktopComposite.taskHud.animEnterSuffix', 'curve, sliding in from the anchored edge (Qt counterpart:')}{' '}
-            <CopyableBadge size="sm" text="ThemeTokens.motionMedium" className="font-mono text-xs" /> {t('desktopComposite.taskHud.and', 'and')}{' '}
-            <CopyableBadge size="sm" text="ThemeTokens.easeStandard" className="font-mono text-xs" />
-            {t('desktopComposite.taskHud.animEnterEnd', ').')}
-          </li>
-          <li>
-            {t('desktopComposite.taskHud.animExitGhosts', 'Dismissed cards linger as exit ghosts for the same 180ms so the stack reorders underneath them instead of snapping.')}
-          </li>
-          <li>
-            {t('desktopComposite.taskHud.animProgressPrefix', 'Determinate progress transitions over')}{' '}
-            <CopyableBadge size="sm" text="duration-medium" className="font-mono text-xs" />
-            {t('desktopComposite.taskHud.animProgressSuffix', '; indeterminate tasks run an infinite 1.6s shimmer rail.')}
-          </li>
-          <li>
-            {t('desktopComposite.taskHud.animAutoHidePrefix', 'An emptied HUD holds its last frame for')}{' '}
-            <CopyableBadge size="sm" text="autoHideDelay" className="font-mono text-xs" />{' '}
-            {t('desktopComposite.taskHud.animAutoHideSuffix', '(600ms) before fading out.')}
-          </li>
-          <li>
-            {t('desktopComposite.taskHud.animReducedPrefix', 'Respects')}{' '}
-            <CopyableBadge size="sm" text="prefers-reduced-motion" className="font-mono text-xs" />{' '}
-            {t('desktopComposite.taskHud.animReducedMid', 'on Web and')}{' '}
-            <CopyableBadge size="sm" text="ThemeTokens.animationsEnabled" className="font-mono text-xs" />{' '}
-            {t('desktopComposite.taskHud.animReducedSuffix', 'in Qt.')}
-          </li>
-        </ul>
-      </section>
+      <DocMarkdown id="task-hud" section="animations" />
 
       <DocMarkdown id="task-hud" section="keyboard" />
 

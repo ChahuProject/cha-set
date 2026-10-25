@@ -6,6 +6,13 @@ title: Squircle
 description: iOS continuous curvature superellipse rounded corners (G2 continuity). Eliminates harsh creases caused by abrupt curvature transitions in classic circular arcs, providing smooth, organic modern corners across the design system.
 ---
 
+## Animations {#animations}
+
+Motion behavior and timing for interactive states aligned with ChaSet tokens.
+
+- State changes (hover, press, focus) animate over `duration-quick` with the `ease-standard` curve.
+- Durations and easing resolve from theme tokens, so enabling the reduced-motion preference (`prefers-reduced-motion`) zeroes them automatically; on Qt the switch is governed by `ThemeTokens.animationsEnabled`.
+
 ## Keyboard Navigation {#keyboard}
 
 Keyboard operations supported by this component, matching its behaviour without a pointer.

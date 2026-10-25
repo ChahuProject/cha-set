@@ -256,65 +256,10 @@ ChaSetTaskHud {
 }`
     }
 
-    Column {
-        property string sectionId: "animations"
+    DocMarkdown {
         width: parent.width
-        spacing: ThemeTokens.dp(8)
-
-        DocText {
-            text: ChaSetI18n.tr("showcase.animations", "Animations")
-            font.pixelSize: Typography.sizeTitleSm
-            font.bold: true
-            color: ThemeTokens.text
-        }
-
-        DocText {
-            width: parent.width
-            wrap: true
-            text: ChaSetI18n.tr("desktopComposite.taskHud.animationsDesc", "Motion tokens and kinematic timing contracts for the activity stack and its cards.")
-            color: ThemeTokens.subduedText
-            font.pixelSize: Typography.sizeSmall
-        }
-
-        DocText {
-            width: parent.width
-            wrap: true
-            text: ChaSetI18n.tr("desktopComposite.taskHud.animEnterFull", "New cards enter over ThemeTokens.motionMedium (180ms) with the ThemeTokens.easeStandard curve, sliding in from the anchored edge.")
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeSmall
-        }
-
-        DocText {
-            width: parent.width
-            wrap: true
-            text: ChaSetI18n.tr("desktopComposite.taskHud.animExitGhosts", "Dismissed cards linger as exit ghosts for the same 180ms so the stack reorders underneath them instead of snapping.")
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeSmall
-        }
-
-        DocText {
-            width: parent.width
-            wrap: true
-            text: ChaSetI18n.tr("desktopComposite.taskHud.animProgressFull", "Determinate progress transitions over ThemeTokens.motionDuration(300); indeterminate tasks run an infinite 1.6s shimmer rail.")
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeSmall
-        }
-
-        DocText {
-            width: parent.width
-            wrap: true
-            text: ChaSetI18n.tr("desktopComposite.taskHud.animAutoHideFull", "An emptied HUD holds its last frame for autoHideDelay (600ms) before fading out.")
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeSmall
-        }
-
-        DocText {
-            width: parent.width
-            wrap: true
-            text: ChaSetI18n.tr("desktopComposite.taskHud.animReducedFull", "Every transition is guarded by ThemeTokens.animationsEnabled, which resolves durations to zero when motion is disabled.")
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeSmall
-        }
+        docId: "task-hud"
+        section: "animations"
     }
 
     DocMarkdown {

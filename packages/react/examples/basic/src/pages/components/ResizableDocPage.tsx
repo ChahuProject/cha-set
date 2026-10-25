@@ -344,25 +344,7 @@ ChaSetResizable {
 
       {/* 4. Installation */}
       {/* 5. Animations */}
-      <section id="animations" className="scroll-mt-20 my-10">
-        <DocText role="h2" className="mb-3">
-          {t('showcase.animations', 'Animations')}
-        </DocText>
-        <DocText role="p" className="mb-4">
-          {t('desktopComposite.resizable.animationsDesc', 'Motion tokens and kinematic timing contracts for Resizable dividers and handles.')}
-        </DocText>
-        <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
-          <li>
-            {t('desktopComposite.resizable.animationsBullet1', 'Separator grip indicator border and hover highlight color transitions animate smoothly over duration-quick (150ms) using ease-standard curve (Qt: ThemeTokens.motionQuick / ThemeTokens.easeStandard).')}
-          </li>
-          <li>
-            {t('desktopComposite.resizable.animationsBullet2', 'Panel resizing kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.')}
-          </li>
-          <li>
-            {t('desktopComposite.resizable.animationsBullet3', 'Respects prefers-reduced-motion on Web and ThemeTokens.animationsEnabled in Qt.')}
-          </li>
-        </ul>
-      </section>
+      <DocMarkdown id="resizable" section="animations" />
 
       {/* 6. Keyboard Navigation */}
                         <DocMarkdown id="resizable" section="keyboard" />

@@ -6,6 +6,14 @@ title: Hover Copy
 description: Hover-dim overlay with centered copy button; clicking anywhere on the overlay copies arbitrary content.
 ---
 
+## Animations {#animations}
+
+Motion behavior and timing for interactive states aligned with ChaSet tokens.
+
+- Overlay reveal and leave animate over `duration-quick` with the `ease-standard` curve (Qt: `ThemeTokens.motionQuick` + `easeStandard`).
+- The resting-to-success icon swap uses the `duration-short` token.
+- Durations and easing resolve from theme tokens, so `prefers-reduced-motion` zeroes them automatically (Qt: governed by `ThemeTokens.animationsEnabled`). The restore timer is logic timing and is never shortened.
+
 ## Keyboard Navigation {#keyboard}
 
 Tab focuses the centered button, Enter or Space copies, clicking anywhere on the overlay also copies, and leaving focus dismisses the overlay.

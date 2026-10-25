@@ -199,57 +199,10 @@ ChaSetNotificationStack {
 }`
     }
 
-    Column {
-        property string sectionId: "animations"
+    DocMarkdown {
         width: parent.width
-        spacing: ThemeTokens.dp(8)
-
-        DocText {
-            text: ChaSetI18n.tr("showcase.animations", "Animations")
-            font.pixelSize: Typography.sizeTitleSm
-            font.bold: true
-            color: ThemeTokens.text
-        }
-
-        DocText {
-            width: parent.width
-            wrap: true
-            text: ChaSetI18n.tr("desktopComposite.notificationStack.animationsDesc", "Motion tokens and lifetime contracts shared with the activity stack.")
-            color: ThemeTokens.subduedText
-            font.pixelSize: Typography.sizeSmall
-        }
-
-        DocText {
-            width: parent.width
-            wrap: true
-            text: ChaSetI18n.tr("desktopComposite.notificationStack.animationsBullet1", "Notifications enter and exit over duration-medium (180ms) with the ease-standard curve, sliding through the anchored edge (Qt: ThemeTokens.motionMedium / ThemeTokens.easeStandard).")
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeSmall
-        }
-
-        DocText {
-            width: parent.width
-            wrap: true
-            text: ChaSetI18n.tr("desktopComposite.notificationStack.animationsBullet2", "Expiry is a remaining-time budget, not a bare timer: hovering the stack freezes every countdown mid-flight and releases it from the same remainder when the pointer leaves.")
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeSmall
-        }
-
-        DocText {
-            width: parent.width
-            wrap: true
-            text: ChaSetI18n.tr("desktopComposite.notificationStack.animationsBullet3", "A duration of 0 pins a notification on screen until it is dismissed, which is what action-bearing messages use.")
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeSmall
-        }
-
-        DocText {
-            width: parent.width
-            wrap: true
-            text: ChaSetI18n.tr("desktopComposite.notificationStack.animationsBullet4", "Every transition respects prefers-reduced-motion on Web and ThemeTokens.animationsEnabled in Qt, resolving durations to zero when motion is disabled.")
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeSmall
-        }
+        docId: "notification-stack"
+        section: "animations"
     }
 
     DocMarkdown {

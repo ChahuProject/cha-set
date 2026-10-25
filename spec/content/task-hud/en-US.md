@@ -6,6 +6,16 @@ title: Task HUD
 description: Floating stack of background executions with progress, overflow and collapse-to-summary.
 ---
 
+## Animations {#animations}
+
+Entry, exit, and progress transitions for task cards in the HUD stack.
+
+- New task cards expand their row height and fade in over `duration-short` (180ms) with `ease-entrance`.
+- Dismissed cards linger as exit ghosts for the same 180ms so the stack reorders underneath them instead of snapping.
+- Determinate progress transitions over `duration-medium`; indeterminate tasks run an infinite 1.6s shimmer rail.
+- An emptied HUD holds its last frame for `autoHideDelay` (600ms) before fading out.
+- Respects `prefers-reduced-motion` on Web and `ThemeTokens.animationsEnabled` in Qt.
+
 ## Keyboard Navigation {#keyboard}
 
 Keyboard operations supported by this component, matching its behaviour without a pointer.

@@ -6,6 +6,13 @@ title: Scale OSD
 description: 用于画布缩放调节的浮动屏幕显示条，支持自动隐藏。
 ---
 
+## 动效规范 {#animations}
+
+缩放 OSD 浮层进入与退出动效规范。
+
+- OSD 进入与退出过渡在 `duration-short`（120ms）内以 `ease-standard` 曲线执行（Qt 端对应 `ThemeTokens.motionShort` / `ThemeTokens.easeStandard`）。
+- 1400ms 自动隐藏倒计时在指针悬停时确定性暂停。
+
 ## 键盘导航 {#keyboard}
 
 本节列出该组件支持的键盘操作，与无鼠标操作时的行为一致。

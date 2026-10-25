@@ -168,27 +168,7 @@ ChaSetAddressBar {
 
 
 
-      <section id="animations" className="space-y-4 pt-6">
-        <DocText role="h2">{t('showcase.animations', 'Animations')}</DocText>
-        <DocText role="p">
-          {t('desktopComposite.addressBar.animationsDesc', 'Motion tokens and kinematic transitions for mode transitions and suggestions.')}
-        </DocText>
-        <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
-          <li>
-            {t('desktopComposite.addressBar.animHoverPrefix', 'Breadcrumb segment hover highlights transition over')}{' '}
-            <CopyableBadge size="sm" text="duration-quick" className="font-mono text-xs" /> {t('desktopComposite.addressBar.animHoverMid', '(100ms) with')}{' '}
-            <CopyableBadge size="sm" text="ease-standard" className="font-mono text-xs" /> {t('desktopComposite.addressBar.animHoverSuffix', 'curve (Qt counterpart:')}{' '}
-            <CopyableBadge size="sm" text="ThemeTokens.motionQuick" className="font-mono text-xs" />).
-          </li>
-          <li>
-            {t('desktopComposite.addressBar.animSuggest', 'Suggestions popover renders with an entry scale and fade animation over 120ms.')}
-          </li>
-          <li>
-            {t('desktopComposite.taskHud.animReducedPrefix', 'Respects')} <CopyableBadge size="sm" text="prefers-reduced-motion" className="font-mono text-xs" /> {t('desktopComposite.taskHud.animReducedMid', 'on Web and')}{' '}
-            <CopyableBadge size="sm" text="ThemeTokens.animationsEnabled" className="font-mono text-xs" /> {t('desktopComposite.taskHud.animReducedSuffix', 'in Qt.')}
-          </li>
-        </ul>
-      </section>
+      <DocMarkdown id="address-bar" section="animations" />
 
       <DocMarkdown id="address-bar" section="keyboard" />
 

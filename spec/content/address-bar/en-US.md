@@ -6,6 +6,14 @@ title: Address Bar
 description: Explorer and browser-style navigation bar with interactive breadcrumbs and inline path editing.
 ---
 
+## Animations {#animations}
+
+Motion tokens and kinematic transitions for mode transitions and suggestions.
+
+- Breadcrumb segment hover highlights transition over `duration-quick` (100ms) with `ease-standard` curve (Qt counterpart: `ThemeTokens.motionQuick`).
+- Suggestions popover renders with an entry scale and fade animation over 120ms.
+- Respects `prefers-reduced-motion` on Web and `ThemeTokens.animationsEnabled` in Qt.
+
 ## Keyboard Navigation {#keyboard}
 
 Keyboard operations supported by this component, matching its behaviour without a pointer.

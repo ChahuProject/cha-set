@@ -206,18 +206,10 @@ DocLayout {
         }
     }
 
-    // Animations
-    Column {
+    DocMarkdown {
         width: parent.width
-        spacing: 12
-
-        DocText { text: ChaSetI18n.tr("showcase.animations", "Animations"); color: root.cFg; font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold }
-
-        DocText { text: ChaSetI18n.tr("desktopComposite.dialog.animationsDescQt", "Motion behavior and timing driven by ThemeTokens for the overlay and content on open and close."); color: root.cMutedFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-
-        DocText { text: ChaSetI18n.tr("desktopComposite.dialog.animationsBullet1Qt", "The root overlay and the card cross-fade between open and closed, with the card scaling subtly to emphasize entry."); color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: ChaSetI18n.tr("desktopComposite.dialog.animationsBullet2Qt", "Transitions use ThemeTokens.motionShort with the easeEntrance curve."); color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
-        DocText { text: ChaSetI18n.tr("desktopComposite.dialog.animationsBullet3Qt", "All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."); color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
+        docId: "dialog"
+        section: "animations"
     }
 
     DocMarkdown {

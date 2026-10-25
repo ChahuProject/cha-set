@@ -6,6 +6,14 @@ title: Splitter
 description: Multi-pane resizable layout container with draggable gutters and collapse limits for IDEs and desktop toolkits.
 ---
 
+## Animations {#animations}
+
+Motion behavior and timing for divider dragging and state transitions.
+
+- Gutter indicator color and opacity transitions animate smoothly over `duration-quick` (150ms) using `ease-standard` curve.
+- Divider dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.
+- All transitions are guarded by `ThemeTokens.animationsEnabled` and `prefers-reduced-motion`.
+
 ## Keyboard Navigation {#keyboard}
 
 Keyboard operations supported by this component, matching its behaviour without a pointer.

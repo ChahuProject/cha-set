@@ -315,26 +315,10 @@ ChaSetHoverCopy {
         }
     }
 
-    Column {
-        property string sectionId: "animations"
-        property string sectionTitle: ChaSetI18n.tr("showcase.animations", "Animations")
+    DocMarkdown {
         width: parent.width
-        spacing: ThemeTokens.dp(8)
-
-        DocText {
-            text: ChaSetI18n.tr("showcase.animations", "Animations")
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-            color: ThemeTokens.text
-        }
-
-        DocText {
-            text: ChaSetI18n.tr("components.hover-copy.animationsDesc", "Overlay reveal and icon swap animate with ThemeTokens.motionQuick and ThemeTokens.motionShort using ThemeTokens.easeStandard. Setting ThemeTokens.animationsEnabled to false makes every transition instant; the restore timer is a logic timer and is never shortened.")
-            color: ThemeTokens.subduedText
-            font.pixelSize: Typography.sizeBody
-            wrapMode: TextEdit.WordWrap
-            width: parent.width
-        }
+        docId: "hover-copy"
+        section: "animations"
     }
 
     DocMarkdown {

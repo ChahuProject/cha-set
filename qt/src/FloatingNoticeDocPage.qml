@@ -229,29 +229,12 @@ ChaSetFloatingNotice {
 }`
     }
 
-    // 3. Animations Section
-    Column {
-        property string sectionId: "animations"
+    DocMarkdown {
         width: parent.width
-        spacing: ThemeTokens.dp(8)
-
-        DocText {
-            text: ChaSetI18n.tr("showcase.toc.animations", "Animations")
-            font.pixelSize: Typography.sizeTitleSm
-            font.bold: true
-            color: ThemeTokens.text
-        }
-
-        DocText {
-            width: parent.width
-            wrap: true
-            text: ChaSetI18n.tr("overlays.floatingNotice.animationsDesc", "Floating Notice utilizes shared motion tokens for micro-interactions: zoom-on-hover utilizes duration-short (120ms) ease-standard; notice cycling and indicator dots use duration-quick (90ms); dismiss transitions fade and slide out smoothly.")
-            color: ThemeTokens.subduedText
-            font.pixelSize: Typography.sizeSmall
-        }
+        docId: "floating-notice"
+        section: "animations"
     }
 
-    // 4. Keyboard Navigation Section
     DocMarkdown {
         width: parent.width
         docId: "floating-notice"

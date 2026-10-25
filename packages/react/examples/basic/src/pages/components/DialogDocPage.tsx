@@ -294,25 +294,7 @@ export function DialogDocPage() {
       </section>
 
       {/* Animations */}
-      <section id="animations" className="scroll-mt-20 my-10">
-        <DocText role="h2" className="mb-3">
-          {t('showcase.animations', 'Animations')}
-        </DocText>
-        <DocText role="p" className="mb-4">
-          {t('desktopComposite.dialog.animationsDesc', 'Motion behavior and timing for the overlay and content on open and close.')}
-        </DocText>
-        <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
-          <li>
-            {t('desktopComposite.dialog.animationsBullet1', 'The backdrop overlay fades in and out using animate-fade-in / animate-fade-out, over duration-short with the ease-entrance curve.')}
-          </li>
-          <li>
-            {t('desktopComposite.dialog.animationsBullet2', 'The content card cross-fades with opacity only (transform-positioned elements avoid scale animation to prevent conflicts), and exit uses useExitAnimation to delay unmounting.')}
-          </li>
-          <li>
-            {t('desktopComposite.dialog.animationsBullet3', 'Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).')}
-          </li>
-        </ul>
-      </section>
+      <DocMarkdown id="dialog" section="animations" />
 
             <DocMarkdown id="dialog" section="keyboard" />
 

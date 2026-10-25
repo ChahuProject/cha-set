@@ -74,20 +74,7 @@ ChaSetThemeSettings {
 
 
 
-      <section id="animations" className="space-y-4">
-        <DocText role="h2">{t('showcase.animations', 'Animations')}</DocText>
-        <DocText role="p" className="flex flex-wrap items-center gap-1.5">
-          <span>{t('desktopComposite.themeSettings.animDescPrefix', 'ThemeSettings uses unified motion tokens for smooth state transitions across buttons, segmented controls, color pickers, and override drawers. Transitions use')}</span>
-          <CopyableBadge size="sm" text="duration-quick" className="font-mono text-xs" />
-          <span>{t('common.and', 'and')}</span>
-          <CopyableBadge size="sm" text="ease-standard" className="font-mono text-xs" />.
-          <span>{t('desktopComposite.taskHud.animReducedPrefix', 'Respects')}</span>
-          <CopyableBadge size="sm" text="prefers-reduced-motion" className="font-mono text-xs" />
-          <span>{t('desktopComposite.themeSettings.animDescSuffix', 'and Qt')}</span>
-          <CopyableBadge size="sm" text="ThemeTokens.animationsEnabled" className="font-mono text-xs" />
-          <span>{t('desktopComposite.themeSettings.animDescEnd', 'as global kill switches.')}</span>
-        </DocText>
-      </section>
+      <DocMarkdown id="theme-settings" section="animations" />
 
             <DocMarkdown id="theme-settings" section="keyboard" />
 

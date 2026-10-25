@@ -226,17 +226,7 @@ ChaSetFloatingNotice {
 }`}
       />
 
-      <section id="animations" className="space-y-4">
-        <DocText role="h2">
-          {t('showcase.toc.animations', 'Animations')}
-        </DocText>
-        <DocText role="p">
-          {t(
-            'overlays.floatingNotice.animationsDesc',
-            'Floating Notice utilizes shared motion tokens for micro-interactions: zoom-on-hover utilizes duration-short (120ms) ease-standard; notice cycling and indicator dots use duration-quick (90ms); dismiss transitions fade and slide out smoothly.'
-          )}
-        </DocText>
-      </section>
+      <DocMarkdown id="floating-notice" section="animations" />
 
       <DocMarkdown id="floating-notice" section="keyboard" />
 

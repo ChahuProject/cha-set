@@ -229,25 +229,7 @@ export function CheckboxDocPage() {
       </section>
 
       {/* 5. Animations */}
-      <section id="animations" className="scroll-mt-20 my-10">
-        <DocText role="h2" className="mb-3">
-          {t('showcase.animations', 'Animations')}
-        </DocText>
-        <DocText role="p" className="mb-4">
-          {t('desktopComposite.checkbox.animationsDesc', 'Motion behavior and timing for the checked, indeterminate, and state transitions.')}
-        </DocText>
-        <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
-          <li>
-            {t('desktopComposite.checkbox.animationsBullet1', 'The check-mark SVG stays mounted and, when checked, fades in from opacity 0 to 1 while scaling from 0.5 to 1 over duration-quick with the ease-entrance curve.')}
-          </li>
-          <li>
-            {t('desktopComposite.checkbox.animationsBullet2', 'The box border color cross-fades on hover, focus, checked, and invalid state changes.')}
-          </li>
-          <li>
-            {t('desktopComposite.checkbox.animationsBullet3', 'Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).')}
-          </li>
-        </ul>
-      </section>
+      <DocMarkdown id="checkbox" section="animations" />
 
       {/* 5. Component Reference (Keyboard + Props) */}
             <DocMarkdown id="checkbox" section="keyboard" />

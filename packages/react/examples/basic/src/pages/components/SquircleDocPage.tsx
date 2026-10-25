@@ -278,30 +278,7 @@ export function PremiumCard({ children }: { children: React.ReactNode }) {
       </section>
 
       {/* 3. Animations, Keyboard Navigation, and Props Reference */}
-      <section id="animations" className="scroll-mt-20 my-10">
-        <DocText role="h2" className="mb-3">
-          {t('showcase.animations', 'Animations')}
-        </DocText>
-        <div>
-          <DocText role="p" className="mb-4">
-            {t('showcase.animationsDesc', 'Motion behavior and timing for interactive states aligned with ChaSet tokens.')}
-          </DocText>
-          <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
-            <li>
-              {t('showcase.animationsItem1', 'State changes (hover, press, focus) animate over duration-quick with the ease-standard curve.')}
-            </li>
-            <li>
-              {t('showcase.animationsItem2', 'Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).')}
-            </li>
-          </ul>
-          <div className="flex flex-wrap items-center gap-2 pt-3">
-            <CopyableBadge size="sm" text="duration-quick" className="font-mono text-xs" />
-            <CopyableBadge size="sm" text="ease-standard" className="font-mono text-xs" />
-            <CopyableBadge size="sm" text="prefers-reduced-motion" className="font-mono text-xs" />
-            <CopyableBadge size="sm" text="ThemeTokens.animationsEnabled" className="font-mono text-xs" />
-          </div>
-        </div>
-      </section>
+      <DocMarkdown id="squircle" section="animations" />
 
       <DocMarkdown id="squircle" section="keyboard" />
 

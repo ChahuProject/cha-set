@@ -6,6 +6,14 @@ title: Resizable
 description: 无障碍可调面板分组与布局分隔器。
 ---
 
+## 动效规范 {#animations}
+
+分栏尺寸调整行为遵循 ChaSet 令牌体系，拖拽调整过程严格禁用动效以保证实时跟手。
+
+- 分栏手柄的悬停与激活状态过渡在 `duration-quick` 时长内完成。
+- 面板拖拽调整过程严格无动效，保证确定性 60fps 实时指针跟踪。
+- 在 Web 端遵循 `prefers-reduced-motion`，在 Qt 端由 `ThemeTokens.animationsEnabled` 统一管控。
+
 ## 键盘导航 {#keyboard}
 
 本节列出该组件支持的键盘操作，与无鼠标操作时的行为一致。

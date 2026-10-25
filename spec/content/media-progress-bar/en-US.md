@@ -6,6 +6,13 @@ title: MediaProgressBar
 description: Universal media playback progress bar with drag scrubbing, click-to-seek, hover preview, position/total time readout, click-to-toggle elapsed/countdown and right-click format menu.
 ---
 
+## Animations {#animations}
+
+Motion behavior and timing for interactive states aligned with ChaSet tokens.
+
+- State changes (hover, press, focus) animate over `duration-quick` with the `ease-standard` curve.
+- Durations and easing resolve from theme tokens, so enabling the reduced-motion preference (`prefers-reduced-motion`) zeroes them automatically; on Qt the switch is governed by `ThemeTokens.animationsEnabled`.
+
 ## Keyboard Navigation {#keyboard}
 
 Keyboard operations supported by this component, matching its behaviour without a pointer.

@@ -6,6 +6,13 @@ title: Theme Settings
 description: Cross-stack theme settings controller managing mode, accent palette, decoration level, and UI density.
 ---
 
+## Animations {#animations}
+
+ThemeSettings uses unified motion tokens for smooth state transitions across buttons, segmented controls, color pickers, and override drawers.
+
+- Transitions use `duration-quick` and `ease-standard`.
+- Respects `prefers-reduced-motion` on Web and `ThemeTokens.animationsEnabled` in Qt as global kill switches.
+
 ## Keyboard Navigation {#keyboard}
 
 Keyboard operations supported by this component, matching its behaviour without a pointer.

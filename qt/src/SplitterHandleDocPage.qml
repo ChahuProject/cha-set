@@ -326,58 +326,13 @@ ChaSetSplitterHandle {
         }
     }
 
-    // Animations Section
-    Column {
+    DocMarkdown {
         width: parent.width
-        spacing: 12
-
-        DocText {
-            text: ChaSetI18n.tr("showcase.animations", "Animations")
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeTitleSm
-            font.bold: true
-        }
-
-        DocText {
-            text: ChaSetI18n.tr("desktopComposite.splitterHandle.animationsDesc", "Motion tokens and kinematic timing contracts for SplitterHandle edge indicators.")
-            color: ThemeTokens.subduedText
-            font.pixelSize: Typography.sizeBody
-            wrapMode: TextEdit.WordWrap
-            width: parent.width
-        }
-
-        DocText {
-            text: "• " + ChaSetI18n.tr("desktopComposite.splitterHandle.animationsBulletQt1", "Active indicator color and opacity transitions animate smoothly over ThemeTokens.motionQuick (150ms) using ThemeTokens.easeStandard curve.")
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeBody
-            wrapMode: TextEdit.WordWrap
-            width: parent.width
-        }
-        DocText {
-            text: "• " + ChaSetI18n.tr("desktopComposite.splitterHandle.dragStaticDesc", "Handle dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.")
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeBody
-            wrapMode: TextEdit.WordWrap
-            width: parent.width
-        }
-        DocText {
-            text: "• " + ChaSetI18n.tr("desktopComposite.splitterHandle.animationsBulletQt3", "All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop.")
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeBody
-            wrapMode: TextEdit.WordWrap
-            width: parent.width
-        }
+        docId: "splitter-handle"
+        section: "animations"
     }
 
-    // Keyboard Navigation
-    DocText {
-        text: ChaSetI18n.tr("showcase.keyboardNavigation", "Keyboard Navigation")
-        font.pixelSize: Typography.sizeTitleSm
-        font.bold: true
-        color: ThemeTokens.text
-    }
-
-        DocMarkdown {
+    DocMarkdown {
             width: parent.width
             docId: "splitter-handle"
             section: "keyboard"

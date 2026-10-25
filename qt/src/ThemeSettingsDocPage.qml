@@ -85,27 +85,10 @@ ChaSetThemeSettings {
 <ThemeSettings />`
     }
 
-
-
-    // Animations Section
-    Column {
+    DocMarkdown {
         width: parent.width
-        spacing: ThemeTokens.dp(8)
-
-        DocText {
-            text: ChaSetI18n.tr("showcase.animations", "Animations")
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeTitleSm
-            font.bold: true
-        }
-
-        DocText {
-            width: parent.width
-            text: ChaSetI18n.tr("desktopComposite.themeSettings.animFull", "ThemeSettings uses unified motion tokens for smooth state transitions across buttons, segmented controls, color pickers, and override drawers. Transitions use ThemeTokens.motionQuick and ThemeTokens.easeStandard. Respects ThemeTokens.animationsEnabled as global kill switch.")
-            color: ThemeTokens.subduedText
-            font.pixelSize: Typography.sizeBody
-            wrapMode: Text.Wrap
-        }
+        docId: "theme-settings"
+        section: "animations"
     }
 
     DocMarkdown {

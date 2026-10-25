@@ -245,26 +245,7 @@ ChaSetNotificationStack {
 }`}
       />
 
-      <section id="animations" className="space-y-4 pt-6">
-        <DocText role="h2">{t('showcase.animations', 'Animations')}</DocText>
-        <DocText role="p">
-          {t('desktopComposite.notificationStack.animationsDesc', 'Motion tokens and lifetime contracts shared with the activity stack.')}
-        </DocText>
-        <ul className="list-disc space-y-1.5 pl-5 text-sm text-foreground">
-          <li>
-            {t('desktopComposite.notificationStack.animationsBullet1', 'Notifications enter and exit over duration-medium (180ms) with the ease-standard curve, sliding through the anchored edge (Qt: ThemeTokens.motionMedium / ThemeTokens.easeStandard).')}
-          </li>
-          <li>
-            {t('desktopComposite.notificationStack.animationsBullet2', 'Expiry is a remaining-time budget, not a bare timer: hovering the stack freezes every countdown mid-flight and releases it from the same remainder when the pointer leaves.')}
-          </li>
-          <li>
-            {t('desktopComposite.notificationStack.animationsBullet3', 'A duration of 0 pins a notification on screen until it is dismissed, which is what action-bearing messages use.')}
-          </li>
-          <li>
-            {t('desktopComposite.notificationStack.animationsBullet4', 'Every transition respects prefers-reduced-motion on Web and ThemeTokens.animationsEnabled in Qt, resolving durations to zero when motion is disabled.')}
-          </li>
-        </ul>
-      </section>
+      <DocMarkdown id="notification-stack" section="animations" />
 
       <DocMarkdown id="notification-stack" section="keyboard" />
 

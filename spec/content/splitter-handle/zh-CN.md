@@ -6,6 +6,14 @@ title: Splitter Handle
 description: 边缘拖拽调整手柄，具备参考项坐标防抖与最小/最大尺寸钳制。
 ---
 
+## 动效规范 {#animations}
+
+分隔手柄状态切换与指示器动效规范。
+
+- 激活指示器颜色与不透明度在 `duration-quick`（150ms）内以 `ease-standard` 曲线平滑过渡。
+- 手柄拖拽过程严格无动效，保证确定性 60fps 实时指针跟踪。
+- 动效时长与缓动由 `ThemeTokens.animationsEnabled` 与 `prefers-reduced-motion` 集中管控。
+
 ## 键盘导航 {#keyboard}
 
 本节列出该组件支持的键盘操作，与无鼠标操作时的行为一致。

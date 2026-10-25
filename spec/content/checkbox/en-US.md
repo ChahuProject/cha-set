@@ -6,6 +6,14 @@ title: Checkbox
 description: A control that allows the user to toggle between checked and not-checked states, with support for indeterminate states, sizes, helper descriptions, and companion labels.
 ---
 
+## Animations {#animations}
+
+Motion behavior and timing for the checked, indeterminate, and state transitions.
+
+- The check-mark SVG stays mounted and, when checked, fades in from opacity 0 to 1 while scaling from 0.5 to 1 over `duration-quick` with the `ease-entrance` curve.
+- The box border color cross-fades on hover, focus, checked, and invalid state changes.
+- Durations and easing resolve from theme tokens, so `prefers-reduced-motion` zeroes them automatically (Qt: governed by `ThemeTokens.animationsEnabled`).
+
 ## Keyboard Navigation {#keyboard}
 
 Keyboard operations supported by this component, matching its behaviour without a pointer.

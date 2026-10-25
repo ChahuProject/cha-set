@@ -301,27 +301,7 @@ ChaSetHoverCopy {
         </ComponentPreview>
       </section>
 
-      <section id="animations" className="scroll-mt-20 my-10">
-        <DocText role="h2" className="mb-3">
-          {t('showcase.animations', 'Animations')}
-        </DocText>
-        <div>
-          <DocText role="p" className="mb-4">
-            {t('showcase.animationsDesc', 'Motion behavior and timing for interactive states aligned with ChaSet tokens.')}
-          </DocText>
-          <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
-            <li>
-              {t('components.hover-copy.animBullet1', 'Overlay reveal and leave animate over duration-quick with the ease-standard curve (Qt: ThemeTokens.motionQuick + easeStandard).')}
-            </li>
-            <li>
-              {t('components.hover-copy.animBullet2', 'The resting-to-success icon swap uses the duration-short token.')}
-            </li>
-            <li>
-              {t('components.hover-copy.animBullet3', 'Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled). The restore timer is logic timing and is never shortened.')}
-            </li>
-          </ul>
-        </div>
-      </section>
+      <DocMarkdown id="hover-copy" section="animations" />
 
             <DocMarkdown id="hover-copy" section="keyboard" />
 

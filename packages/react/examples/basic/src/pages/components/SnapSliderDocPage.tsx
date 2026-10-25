@@ -97,23 +97,7 @@ ChaSetSnapSlider {
 
 
 
-      <section id="animations" className="space-y-4 pt-6">
-        <DocText role="h2">{t('showcase.animations', 'Animations')}</DocText>
-        <DocText role="p">
-          {t('formsA.snapSlider.animationsDesc', 'Motion tokens and kinematic timing contracts for SnapSlider interaction.')}
-        </DocText>
-        <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
-          <li>
-            {t('desktopComposite.snapSlider.animationsBullet1', 'Thumb hover and scale micro-interactions animate smoothly over duration-quick (90ms) using ease-standard curve (Qt counterpart: ThemeTokens.motionQuick and ThemeTokens.easeStandard).')}
-          </li>
-          <li>
-            {t('desktopComposite.snapSlider.animationsBullet2', 'Thumb drag kinematics track pointer position in 60fps real-time without un-damped lag.')}
-          </li>
-          <li>
-            {t('desktopComposite.snapSlider.animationsBullet3', 'Respects prefers-reduced-motion on Web and ThemeTokens.animationsEnabled in Qt.')}
-          </li>
-        </ul>
-      </section>
+      <DocMarkdown id="snap-slider" section="animations" />
 
       <DocMarkdown id="snap-slider" section="keyboard" />
 

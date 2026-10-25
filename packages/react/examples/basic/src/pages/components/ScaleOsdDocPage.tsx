@@ -163,12 +163,7 @@ ChaSetScaleOsd {
 
 
 
-      <section id="animations" className="space-y-4 pt-6">
-        <DocText role="h2">{t('showcase.animations', 'Animations')}</DocText>
-        <DocText role="p">
-          {t('desktopComposite.scaleOsd.animationsDesc', 'OSD enter and exit transitions run over duration-short (120ms) with the ease-standard curve (Qt: ThemeTokens.motionShort / ThemeTokens.easeStandard). The 1400ms auto-hide countdown pauses deterministically on hover.')}
-        </DocText>
-      </section>
+      <DocMarkdown id="scale-osd" section="animations" />
 
       <DocMarkdown id="scale-osd" section="keyboard" />
 

@@ -172,25 +172,7 @@ ChaSetSplitter {
         </ComponentPreview>
       </section>
 
-      <section id="animations" className="scroll-mt-20 my-10">
-        <DocText role="h2" className="mb-3">
-          {t('showcase.animations', 'Animations')}
-        </DocText>
-        <DocText role="p" className="mb-4">
-          {t('desktopComposite.splitter.animationsDesc', 'Motion tokens and kinematic timing contracts for Splitter divider gutters.')}
-        </DocText>
-        <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
-          <li>
-            {t('desktopComposite.splitter.animationsBullet1', 'Gutter indicator color and opacity transitions animate smoothly over duration-quick (150ms) using ease-standard curve (Qt counterpart: ThemeTokens.motionQuick and ThemeTokens.easeStandard).')}
-          </li>
-          <li>
-            {t('desktopComposite.splitter.animationsBullet2', 'Divider dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.')}
-          </li>
-          <li>
-            {t('showcase.animationsItem2', 'Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).')}
-          </li>
-        </ul>
-      </section>
+      <DocMarkdown id="splitter" section="animations" />
 
                         <DocMarkdown id="splitter" section="keyboard" />
 

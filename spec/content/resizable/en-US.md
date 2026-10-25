@@ -6,6 +6,14 @@ title: Resizable
 description: Accessible resizable panel groups and layout splitters.
 ---
 
+## Animations {#animations}
+
+Motion behavior and timing for panel resizing and active states.
+
+- Resizing handle hover and active transitions animate over `duration-quick`.
+- Panel resizing kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.
+- Respects `prefers-reduced-motion` on Web and `ThemeTokens.animationsEnabled` in Qt.
+
 ## Keyboard Navigation {#keyboard}
 
 Keyboard operations supported by this component, matching its behaviour without a pointer.

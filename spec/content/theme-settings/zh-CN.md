@@ -6,6 +6,13 @@ title: Theme Settings
 description: 跨端主题配置面板，统一管控外观模式、强调色调色板、装饰圆角阴影级别与界面缩放密度。
 ---
 
+## 动效规范 {#animations}
+
+主题配置界面在按钮、分段控件、取色器与抽屉切换时使用统一动效令牌。
+
+- 状态过渡在 `duration-quick` 时长内以 `ease-standard` 缓动过渡。
+- 动效支持减弱动效偏好，由 Web 端的 `prefers-reduced-motion` 和 Qt 端的 `ThemeTokens.animationsEnabled` 作为全局开关。
+
 ## 键盘导航 {#keyboard}
 
 本节列出该组件支持的键盘操作，与无鼠标操作时的行为一致。

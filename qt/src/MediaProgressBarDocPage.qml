@@ -97,46 +97,10 @@ DocLayout {
         ]
     }
 
-    Column {
-        id: animationsSection
-        objectName: "animations"
-        property string sectionId: "animations"
-        property string sectionTitle: ChaSetI18n.tr("showcase.animations", "Animations")
+    DocMarkdown {
         width: parent.width
-        spacing: ThemeTokens.dp(8)
-
-        DocText {
-            text: ChaSetI18n.tr("showcase.animations", "Animations")
-            font.pixelSize: Typography.sizeTitleSm
-            font.weight: Typography.weightBold
-            color: ThemeTokens.text
-        }
-
-        DocText {
-            width: parent.width
-            wrap: true
-            text: ChaSetI18n.tr("showcase.animationsDescQml", "State changes (hover, press, focus) animate over duration-quick with standard easing curves. Durations and easing resolve from theme tokens; prefers-reduced-motion zeroes them automatically (governed by ThemeTokens.animationsEnabled).")
-            color: ThemeTokens.subduedText
-            font.pixelSize: Typography.sizeBody
-        }
-
-        Flow {
-            width: parent.width
-            spacing: ThemeTokens.dp(8)
-
-            ChaSetCopyableBadge {
-                text: "ThemeTokens.motionQuick"
-                size: "sm"
-            }
-            ChaSetCopyableBadge {
-                text: "ThemeTokens.easeStandard"
-                size: "sm"
-            }
-            ChaSetCopyableBadge {
-                text: "ThemeTokens.animationsEnabled"
-                size: "sm"
-            }
-        }
+        docId: "media-progress-bar"
+        section: "animations"
     }
 
     DocMarkdown {

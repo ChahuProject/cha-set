@@ -66,20 +66,7 @@ ChaSetLanguageSettings {
 
 
 
-      <section id="animations" className="space-y-4">
-        <DocText role="h2">{t('showcase.animations', 'Animations')}</DocText>
-        <DocText role="p" className="flex flex-wrap items-center gap-1.5">
-          <span>{t('desktopComposite.languageSettings.animDescPrefix', 'LanguageSettings utilizes smooth token transitions for card focus, active selection rings, and checkmark badge states. Transitions use')}</span>
-          <CopyableBadge size="sm" text="duration-quick" className="font-mono text-xs" />
-          <span>{t('common.and', 'and')}</span>
-          <CopyableBadge size="sm" text="ease-standard" className="font-mono text-xs" />.
-          <span>{t('desktopComposite.taskHud.animReducedPrefix', 'Respects')}</span>
-          <CopyableBadge size="sm" text="prefers-reduced-motion" className="font-mono text-xs" />
-          <span>{t('desktopComposite.languageSettings.animDescSuffix', 'and Qt')}</span>
-          <CopyableBadge size="sm" text="ThemeTokens.animationsEnabled" className="font-mono text-xs" />
-          <span>{t('desktopComposite.languageSettings.animDescEnd', 'as global kill switches.')}</span>
-        </DocText>
-      </section>
+      <DocMarkdown id="language-settings" section="animations" />
 
             <DocMarkdown id="language-settings" section="keyboard" />
 

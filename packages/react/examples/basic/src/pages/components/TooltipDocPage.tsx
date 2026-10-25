@@ -257,25 +257,7 @@ export function TooltipDocPage() {
       </section>
 
       {/* Animations */}
-      <section id="animations" className="scroll-mt-20 my-10">
-        <DocText role="h2" className="mb-3">
-          {t('showcase.animations', 'Animations')}
-        </DocText>
-        <DocText role="p" className="mb-4">
-          {t('desktopComposite.tooltip.animationsDesc', 'Motion behavior and timing for the tooltip bubble on open and close.')}
-        </DocText>
-        <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
-          <li>
-            {t('desktopComposite.tooltip.animationsBullet1', 'Opening fades and zooms in using animate-in with fade-in-0 and zoom-in-95, over duration-short with the ease-entrance curve.')}
-          </li>
-          <li>
-            {t('desktopComposite.tooltip.animationsBullet2', 'Closing fades and zooms out using animate-out with fade-out-0 and zoom-out-95, delaying unmount until the exit animation finishes.')}
-          </li>
-          <li>
-            {t('showcase.animationsItem2', 'Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).')}
-          </li>
-        </ul>
-      </section>
+      <DocMarkdown id="tooltip" section="animations" />
 
                         <DocMarkdown id="tooltip" section="keyboard" />
 

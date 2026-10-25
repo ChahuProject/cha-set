@@ -176,25 +176,7 @@ ChaSetCodeBlock {
         <CodeBlock files={MULTI_FILE_SAMPLE} showLineNumbers />
       </section>
 
-      <section id="animations" className="scroll-mt-20 my-10">
-        <DocText role="h2" className="mb-3">
-          {t('showcase.animations', 'Animations')}
-        </DocText>
-        <DocText role="p" className="mb-4">
-          {t('desktopComposite.codeBlock.animationsDesc', 'Motion behavior and timing for file switching and the header affordances.')}
-        </DocText>
-        <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
-          <li>
-            {t('desktopComposite.codeBlock.animationsBullet1', 'Switching the active file cross-fades the body in over animate-in fade-in-0 — the duration resolves to the short motion token with the entrance curve.')}
-          </li>
-          <li>
-            {t('desktopComposite.codeBlock.animationsBullet2', 'The header affordances inherit token motion from their primitives: tab triggers interpolate color and border over duration-quick with ease-standard, as do the copy button and the scroll bars.')}
-          </li>
-          <li>
-            {t('desktopComposite.codeBlock.animationsBullet3', 'Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).')}
-          </li>
-        </ul>
-      </section>
+      <DocMarkdown id="code-block" section="animations" />
 
                         <DocMarkdown id="code-block" section="keyboard" />
 

@@ -183,32 +183,10 @@ ChaSetAddressBar {
 />`
     }
 
-    // Animations Section
-    Item {
-        id: animationsSection
-        width: parent ? parent.width : 0
-        height: animCol.implicitHeight
-
-        Column {
-            id: animCol
-            width: parent.width
-            spacing: 8
-
-            DocText {
-                text: ChaSetI18n.tr("showcase.animations", "Animations")
-                font.pixelSize: Typography.sizeTitleSm
-                font.bold: true
-                color: ThemeTokens.text
-            }
-
-            DocText {
-                width: parent.width
-                wrap: true
-                text: ChaSetI18n.tr("desktopComposite.addressBar.animFull", "Breadcrumb segment hover highlights transition over ThemeTokens.motionQuick (100ms) with ThemeTokens.easeStandard curve. Suggestions popover renders with an entry scale and fade animation over 120ms.")
-                color: ThemeTokens.subduedText
-                font.pixelSize: Typography.sizeSmall
-            }
-        }
+    DocMarkdown {
+        width: parent.width
+        docId: "address-bar"
+        section: "animations"
     }
 
     DocMarkdown {

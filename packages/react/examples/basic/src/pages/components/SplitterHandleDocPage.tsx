@@ -164,32 +164,7 @@ ChaSetSplitterHandle {
         </Card>
       </section>
 
-      <section id="animations" className="space-y-4 pt-6">
-        <DocText role="h2">{t('showcase.animations', 'Animations')}</DocText>
-        <DocText role="p">
-          {t('desktopComposite.splitterHandle.animationsDesc', 'Motion tokens and kinematic timing contracts for SplitterHandle edge indicators.')}
-        </DocText>
-        <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
-          <li>
-            {t('desktopComposite.splitterHandle.animationsBullet1', 'Active indicator color and opacity transitions animate smoothly over duration-quick (150ms) using ease-standard curve (Qt counterpart: ThemeTokens.motionQuick and ThemeTokens.easeStandard).')}
-          </li>
-          <li>
-            {t('desktopComposite.splitterHandle.dragStaticDesc', 'Handle dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.')}
-          </li>
-          <li>
-            {t('desktopComposite.splitterHandle.reducedMotionPrefix', 'Respects')}{' '}
-            <CopyableBadge size="sm" text="prefers-reduced-motion" className="font-mono text-xs" /> on Web and{' '}
-            <CopyableBadge size="sm" text="ThemeTokens.animationsEnabled" className="font-mono text-xs" />{' '}
-            {t('desktopComposite.splitterHandle.reducedMotionSuffix', 'in Qt.')}
-          </li>
-        </ul>
-        <div className="flex flex-wrap items-center gap-2 pt-3">
-          <CopyableBadge size="sm" text="duration-quick" className="font-mono text-xs" />
-          <CopyableBadge size="sm" text="ease-standard" className="font-mono text-xs" />
-          <CopyableBadge size="sm" text="ThemeTokens.motionQuick" className="font-mono text-xs" />
-          <CopyableBadge size="sm" text="ThemeTokens.easeStandard" className="font-mono text-xs" />
-        </div>
-      </section>
+      <DocMarkdown id="splitter-handle" section="animations" />
 
             <DocMarkdown id="splitter-handle" section="keyboard" />
 

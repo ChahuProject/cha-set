@@ -6,6 +6,14 @@ title: Floating Notice
 description: 悬浮在视口顶上或底下的紧凑提示胶囊，支持优先级排序、卡片轮播排队与内容插槽扩展。
 ---
 
+## 动效规范 {#animations}
+
+浮动通知在悬停缩放与卡片切换时遵循 ChaSet 动效令牌规范。
+
+- 悬停缩放采用 `duration-short`（120ms）配合 `ease-standard` 缓动。
+- 通知轮播与指示点切换采用 `duration-quick`（90ms）。
+- 关闭与移除通知时平滑淡出并滑动退出。
+
 ## 键盘导航 {#keyboard}
 
 本节列出该组件支持的键盘操作，与无鼠标操作时的行为一致。

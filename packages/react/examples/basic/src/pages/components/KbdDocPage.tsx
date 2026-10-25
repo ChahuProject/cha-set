@@ -400,24 +400,7 @@ export function KbdDocPage() {
 
 
       {/* 7. Animations */}
-      <section id="animations" className="scroll-mt-20 my-10">
-        <DocText role="h2" className="mb-3">
-          {t('showcase.animations', 'Animations')}
-        </DocText>
-        <div>
-          <DocText role="p" className="mb-4">
-            {t('desktopComposite.kbd.animationsDesc', 'Interactive micro-interaction transitions aligned with ChaSet tokens.')}
-          </DocText>
-          <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
-            <li>
-              {t('showcase.animationsItem1', 'State changes (hover, press, focus) animate over duration-quick with the ease-standard curve.')}
-            </li>
-            <li>
-              {t('showcase.animationsItem2', 'Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).')}
-            </li>
-          </ul>
-        </div>
-      </section>
+      <DocMarkdown id="kbd" section="animations" />
 
       {/* 8. Component Reference */}
             <DocMarkdown id="kbd" section="keyboard" />
