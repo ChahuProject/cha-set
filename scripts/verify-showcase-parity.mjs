@@ -11,7 +11,6 @@ const __filename = fileURLToPath(import.meta.url);
 const repoRoot = resolve(dirname(__filename), '..');
 
 const navPath = resolve(repoRoot, 'spec', 'showcase', 'navigation.json');
-const kbPath = resolve(repoRoot, 'spec', 'showcase', 'keyboard-shortcuts.json');
 const contentDir = resolve(repoRoot, 'spec', 'content');
 const componentsDir = resolve(repoRoot, 'spec', 'components');
 const reactDocPagesDir = resolve(repoRoot, 'packages', 'react', 'examples', 'basic', 'src', 'pages', 'components');
@@ -46,13 +45,13 @@ function markdownSectionTitle(docId, sectionId) {
   return title;
 }
 
-if (!existsSync(navPath) || !existsSync(kbPath)) {
-  console.error('[showcase-parity] Missing navigation.json or keyboard-shortcuts.json');
+
+if (!existsSync(navPath)) {
+  console.error('[showcase-parity] Missing navigation.json');
   process.exit(1);
 }
 
 const navigation = JSON.parse(readFileSync(navPath, 'utf8'));
-const keyboardShortcuts = JSON.parse(readFileSync(kbPath, 'utf8'));
 
 // Build lookup table from navigation.json
 const navLookup = new Map();
@@ -193,7 +192,6 @@ export function extractReactDocMetadata(content) {
     description: '',
     tocItems: [],
     previewTitle: '',
-    keyboardComponentId: '',
   };
 
   const docLayoutMatch = content.match(/<DocLayout\b([^>]*?)>/s);
@@ -254,13 +252,6 @@ export function extractReactDocMetadata(content) {
       events.push({ index: sMatch.index, id, title });
     }
 
-    const dfsStarts = [...content.matchAll(/<DocFooterSections\b/g)];
-    for (const dfs of dfsStarts) {
-      events.push({ index: dfs.index, id: 'animations', title: 'Animations' });
-      events.push({ index: dfs.index + 1, id: 'keyboard', title: 'Keyboard Navigation' });
-      events.push({ index: dfs.index + 2, id: 'props', title: 'Props Reference' });
-    }
-
     // Markdown-driven sections: title comes from spec/content/, not from the page source.
     const mdStarts = [...content.matchAll(/<DocMarkdown\b([^>]*?)\/?>/gs)];
     for (const md of mdStarts) {
@@ -269,26 +260,6 @@ export function extractReactDocMetadata(content) {
       const sectionId = attrs.match(/\bsection=["']([^"']+)["']/)?.[1] ?? '';
       if (!sectionId) continue;
       events.push({ index: md.index, id: sectionId, title: markdownSectionTitle(docId, sectionId) || sectionId });
-    }
-
-    const crRegex = /<ComponentReference\b([^>]*?)(?:\/>|>)/gs;
-    let crMatch;
-    while ((crMatch = crRegex.exec(content)) !== null) {
-      const attrs = crMatch[1];
-      const compIdMatch = attrs.match(/componentId=["']([^"']+)["']/);
-      const nameMatch = attrs.match(/name=["']([^"']+)["']/);
-      const isSub = /isSubComponent/.test(attrs);
-      const compId = compIdMatch ? compIdMatch[1] : '';
-      const name = nameMatch ? nameMatch[1] : '';
-      const hasKb = compId && keyboardShortcuts[compId] && keyboardShortcuts[compId].length > 0;
-      if (hasKb) {
-        const kbId = isSub ? `${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-keyboard` : 'keyboard';
-        const kbTitle = isSub ? `${name} Keyboard Navigation & Shortcuts` : 'Keyboard Navigation';
-        events.push({ index: crMatch.index, id: kbId, title: kbTitle });
-      }
-      const propsId = isSub ? `${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-props` : 'props';
-      const propsTitle = isSub ? `${name} Properties` : 'Props Reference';
-      events.push({ index: crMatch.index + 1, id: propsId, title: propsTitle });
     }
 
     events.sort((a, b) => a.index - b.index);
@@ -365,8 +336,6 @@ export function extractReactDocMetadata(content) {
     });
   }
 
-  const kbMatch = content.match(/KeyboardShortcutsTable\s*\{?[^>]*?componentId[:=]\s*["']([^"']+)["']/);
-  if (kbMatch) meta.keyboardComponentId = kbMatch[1];
 
   return meta;
 }
@@ -378,7 +347,6 @@ export function extractQtDocMetadata(content) {
     description: '',
     tocItems: [],
     previewTitle: '',
-    keyboardComponentId: '',
     reactCode: '',
   };
 
@@ -471,13 +439,6 @@ export function extractQtDocMetadata(content) {
       events.push({ index: dtMatch.index, id, title: (id === 'states' ? 'Examples & States' : title) });
     }
 
-    const dfsStarts = [...content.matchAll(/\bDocFooterSections\s*\{/g)];
-    for (const dfs of dfsStarts) {
-      events.push({ index: dfs.index, id: 'animations', title: 'Animations' });
-      events.push({ index: dfs.index + 1, id: 'keyboard', title: 'Keyboard Navigation' });
-      events.push({ index: dfs.index + 2, id: 'props', title: 'Props Reference' });
-    }
-
     // Markdown-driven sections: title comes from spec/content/, not from the page source.
     const mdStarts = [...content.matchAll(/\bDocMarkdown\s*\{([^}]*)\}/g)];
     for (const md of mdStarts) {
@@ -486,35 +447,6 @@ export function extractQtDocMetadata(content) {
       const sectionId = body.match(/section\s*:\s*["']([^"']+)["']/)?.[1] ?? '';
       if (!sectionId) continue;
       events.push({ index: md.index, id: sectionId, title: markdownSectionTitle(docId, sectionId) || sectionId });
-    }
-
-    const crRegex = /\bComponentReference\s*\{([^}]*)\}/g;
-    let crMatch;
-    while ((crMatch = crRegex.exec(content)) !== null) {
-      const body = crMatch[1];
-      const compIdMatch = body.match(/componentId:\s*["']([^"']+)["']/);
-      const nameMatch = body.match(/name:\s*["']([^"']+)["']/);
-      const isSub = /isSubComponent:\s*true/.test(body);
-      const compId = compIdMatch ? compIdMatch[1] : '';
-      const name = nameMatch ? nameMatch[1] : '';
-      const hasKb = compId && keyboardShortcuts[compId] && keyboardShortcuts[compId].length > 0;
-      if (hasKb) {
-        const kbId = isSub ? `${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-keyboard` : 'keyboard';
-        const kbTitle = isSub ? `${name} Keyboard Navigation & Shortcuts` : 'Keyboard Navigation';
-        events.push({ index: crMatch.index, id: kbId, title: kbTitle });
-      }
-      const propsId = isSub ? `${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-props` : 'props';
-      const propsTitle = isSub ? `${name} Properties` : 'Props Reference';
-      events.push({ index: crMatch.index + 1, id: propsId, title: propsTitle });
-    }
-
-    const kbStarts = [...content.matchAll(/\bKeyboardShortcutsTable\s*\{/g)];
-    for (const kb of kbStarts) {
-      events.push({ index: kb.index, id: 'keyboard', title: 'Keyboard Navigation' });
-    }
-    const ptStarts = [...content.matchAll(/\bPropsTable\s*\{/g)];
-    for (const pt of ptStarts) {
-      events.push({ index: pt.index, id: 'props', title: 'Props Reference' });
     }
 
     events.sort((a, b) => a.index - b.index);
@@ -562,8 +494,6 @@ export function extractQtDocMetadata(content) {
     });
   }
 
-  const kbMatch = content.match(/KeyboardShortcutsTable\s*\{[^}]*?componentId:\s*["']([^"']+)["']/s);
-  if (kbMatch) meta.keyboardComponentId = kbMatch[1];
 
   return meta;
 }
@@ -622,17 +552,6 @@ export function verifyShowcaseParity(options = {}) {
     }
     if (qtMeta.category !== navItem.category) {
       errors.push(`[${base}] Qt category mismatch: got "${qtMeta.category}", expected "${navItem.category}" from navigation.json`);
-    }
-
-    // 2. Keyboard Shortcuts ComponentId Check
-    if (reactMeta.keyboardComponentId && !keyboardShortcuts[reactMeta.keyboardComponentId]) {
-      errors.push(`[${base}] React KeyboardShortcutsTable componentId "${reactMeta.keyboardComponentId}" not defined in spec/showcase/keyboard-shortcuts.json`);
-    }
-    if (qtMeta.keyboardComponentId && !keyboardShortcuts[qtMeta.keyboardComponentId]) {
-      errors.push(`[${base}] Qt KeyboardShortcutsTable componentId "${qtMeta.keyboardComponentId}" not defined in spec/showcase/keyboard-shortcuts.json`);
-    }
-    if (reactMeta.keyboardComponentId && qtMeta.keyboardComponentId && reactMeta.keyboardComponentId !== qtMeta.keyboardComponentId) {
-      errors.push(`[${base}] KeyboardShortcutsTable componentId mismatch: React="${reactMeta.keyboardComponentId}" vs Qt="${qtMeta.keyboardComponentId}"`);
     }
 
     // 3. TOC Parity Checks
