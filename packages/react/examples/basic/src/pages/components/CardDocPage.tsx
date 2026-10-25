@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function CardDocPage() {
   const { t } = useChaSetI18n();
@@ -61,12 +62,12 @@ export function CardDocPage() {
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.card.overviewHeading', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.card.overviewDesc', 'Test card variants with interactive subcomponents synchronized across Web and Desktop.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           title={t('desktopComposite.card.sandboxTitle', 'Card Sandbox')}
@@ -118,9 +119,9 @@ export function CardDocPage() {
               <CardDescription>{t('surfaces.card.heroDescription', 'Deploy your new project in one-click.')}</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">
+              <DocText role="p">
                 {t('surfaces.card.heroContent', 'Your project will be deployed to the edge network automatically.')}
-              </p>
+              </DocText>
             </CardContent>
             <CardFooter className="flex justify-between">
               <Button variant="outline" size="sm">{t('common.cancel', 'Cancel')}</Button>
@@ -140,12 +141,12 @@ export function CardDocPage() {
 
       {/* 4. Variants */}
       <section id="variants" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('surfaces.card.variantsTitle', 'Variants')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('surfaces.card.variantsDesc', 'Three semantic variants styled with design tokens for consistent elevation and contrast.')}
-        </p>
+        </DocText>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card variant="default">
             <CardHeader>
@@ -167,12 +168,12 @@ export function CardDocPage() {
           </Card>
         </div>
 
-        <h3 className="text-base font-semibold tracking-tight text-foreground mt-8 mb-3">
+        <DocText role="h3" className="mt-8 mb-3">
           {t('surfaces.card.feedbackDensityTitle', 'Interactive Feedback & Density')}
-        </h3>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('surfaces.card.feedbackDensityDesc', 'Enable interactive hover/press elevation feedback, or use compact density for constrained spaces.')}
-        </p>
+        </DocText>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card interactive>
             <CardHeader>

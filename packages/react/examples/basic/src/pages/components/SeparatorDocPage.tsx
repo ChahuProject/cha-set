@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { ComponentReference } from "../../components/ComponentReference";
+import { DocText } from '../../components/DocText';
 
 export function SeparatorDocPage() {
   const { t } = useChaSetI18n();
@@ -104,12 +105,12 @@ export function SeparatorDocPage() {
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.separator.overviewHeading', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('components.separator.overviewDesc', 'Test orientation, dashed/dotted line styles, and labeled section dividers across Web and Desktop.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           title={t('desktopComposite.separator.sandboxTitle', 'Separator Sandbox')}
@@ -197,10 +198,10 @@ export function SeparatorDocPage() {
               ) : (
                 <div className="w-full max-w-sm space-y-4">
                   <div className="space-y-1">
-                    <h4 className="text-sm font-medium leading-none text-foreground">{t('components.separator.chasetUi', 'ChaSet UI')}</h4>
-                    <p className="text-sm text-muted-foreground">
+                    <DocText role="h4">{t('components.separator.chasetUi', 'ChaSet UI')}</DocText>
+                    <DocText role="p">
                       {t('components.separator.systemDesc', 'Cross-stack React & Qt Quick Design System.')}
-                    </p>
+                    </DocText>
                   </div>
                   <Separator orientation="horizontal" variant={variant} decorative={decorative} />
                   <div className="flex h-5 items-center space-x-4 text-sm text-muted-foreground">
@@ -234,12 +235,12 @@ export function SeparatorDocPage() {
 
       {/* 4. Examples & States */}
       <section id="states" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title={t('components.separator.examplesTitle', 'Examples & States')}>
+        <DocText role="h2" data-toc-title={t('components.separator.examplesTitle', 'Examples & States')} className="mb-3">
           {t('components.separator.examplesTitle', 'Examples & States')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('components.separator.examplesDesc', 'Common layout patterns using horizontal, vertical, dashed, dotted, and labeled separators.')}
-        </p>
+        </DocText>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Card Content Segmentation */}
           <Card className="flex flex-col">
@@ -267,10 +268,10 @@ export function SeparatorDocPage() {
           {/* Labeled Section & Form Dividers */}
           <Card className="flex flex-col justify-between p-6">
             <div>
-              <h3 className="font-semibold text-foreground mb-1">{t('components.separator.labeledDividers', 'Labeled Dividers')}</h3>
-              <p className="text-sm text-muted-foreground mb-4">
+              <DocText role="h3" className="mb-1">{t('components.separator.labeledDividers', 'Labeled Dividers')}</DocText>
+              <DocText role="p" className="mb-4">
                 {t('components.separator.labeledDividersDesc', 'Embed clear section titles or auth splits with left, center, or right alignment.')}
-              </p>
+              </DocText>
             </div>
             <div className="space-y-4">
               <Separator label={t('components.separator.sectionStart', 'Section Start')} labelPosition="left" />
@@ -282,10 +283,10 @@ export function SeparatorDocPage() {
           {/* Border Styles (Solid, Dashed, Dotted) */}
           <Card className="flex flex-col justify-between p-6">
             <div>
-              <h3 className="font-semibold text-foreground mb-1">{t('components.separator.borderStyles', 'Border Styles')}</h3>
-              <p className="text-sm text-muted-foreground mb-4">
+              <DocText role="h3" className="mb-1">{t('components.separator.borderStyles', 'Border Styles')}</DocText>
+              <DocText role="p" className="mb-4">
                 {t('components.separator.borderStylesDesc', 'Choose between solid, dashed, or dotted dividers to distinguish hierarchy.')}
-              </p>
+              </DocText>
             </div>
             <div className="space-y-4">
               <div>
@@ -306,10 +307,10 @@ export function SeparatorDocPage() {
           {/* Inline Navigation & Metadata Bar */}
           <Card className="flex flex-col justify-between p-6">
             <div>
-              <h3 className="font-semibold text-foreground mb-1">{t('components.separator.navDivider', 'Navigation Divider')}</h3>
-              <p className="text-sm text-muted-foreground mb-4">
+              <DocText role="h3" className="mb-1">{t('components.separator.navDivider', 'Navigation Divider')}</DocText>
+              <DocText role="p" className="mb-4">
                 {t('components.separator.navDividerDesc', 'Vertical dividers between inline list items or metadata tags.')}
-              </p>
+              </DocText>
             </div>
             <div className="flex h-5 items-center space-x-4 text-xs text-muted-foreground border border-border p-3 rounded-lg bg-muted/20">
               <span className="font-medium text-foreground">v0.2.0</span>
@@ -324,13 +325,13 @@ export function SeparatorDocPage() {
 
             {/* Animations */}
       <section id="animations" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.animations', 'Animations')}
-        </h2>
+        </DocText>
         <div>
-          <p className="text-sm text-muted-foreground mb-4">
+          <DocText role="p" className="mb-4">
             {t('showcase.animationsDesc', 'Motion behavior and timing for interactive states aligned with ChaSet tokens.')}
-          </p>
+          </DocText>
           <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
             <li>
               {t('showcase.animationsItem1', 'State changes (hover, press, focus) animate over duration-quick with the ease-standard curve.')}

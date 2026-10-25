@@ -2,6 +2,7 @@ import React from 'react';
 import { ScrollArea, Badge, useChaSetI18n } from '@chahu/cha-set';
 import { NAVIGATION_CONFIG } from '../types/navigation';
 import { useResponsive } from './useResponsive';
+import { DocText } from '../components/DocText';
 
 export interface SidebarProps {
   currentHash: string;
@@ -19,9 +20,9 @@ export function NavigationContent({ currentHash, onItemClick }: NavigationConten
     <nav className="flex flex-col gap-6" aria-label={t('desktopComposite.sidebar.docsNav', 'Documentation Navigation')}>
       {NAVIGATION_CONFIG.map((cat) => (
         <div key={cat.title} className="flex flex-col gap-1.5">
-          <h4 className="px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">
+          <DocText role="overline" tone="muted" className="px-2">
             {t('categories.' + cat.title, t('showcase.categories.' + cat.title, cat.title))}
-          </h4>
+          </DocText>
           <div className="flex flex-col gap-0.5">
             {cat.items.map((item) => {
               const isActive = currentHash === item.href || (currentHash === '#/' && item.href === '#/get-started/introduction');

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Card, CodeBlock, SegmentedControl, useChaSetI18n } from '@chahu/cha-set';
+import { DocText } from './DocText';
 
 export interface DocAnatomyProps {
   id?: string;
@@ -25,7 +26,7 @@ export function DocAnatomy({
   return (
     <section id={id} className="scroll-mt-20 my-8">
       <div className="flex flex-col gap-1 mb-3">
-        <h2 className="text-xl font-bold tracking-tight text-foreground">{localizedTitle}</h2>
+        <DocText role="h2">{localizedTitle}</DocText>
         {localizedDesc && <p className="text-sm text-muted-foreground">{localizedDesc}</p>}
       </div>
 

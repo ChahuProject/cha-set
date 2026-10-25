@@ -22,6 +22,7 @@ import {
   type IconName,
 } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { DocText } from '../../components/DocText';
 
 const CONFIG_SNIPPET = `{
   "icons": {
@@ -128,7 +129,7 @@ export function IconsPage() {
       <div className="space-y-12">
         {/* 1. Active specification */}
         <section className="block" id="specification">
-          <h2>{t('getStarted.icons.specification.title', 'Active Specification')}</h2>
+          <DocText role="h2">{t('getStarted.icons.specification.title', 'Active Specification')}</DocText>
           <p className="desc">
             {t('getStarted.icons.specification.desc', 'Icons are declared once in spec/icons/registry.json and code-generated into both stacks. React renders the element vocabulary natively; Qt receives the same shapes compiled to path data. Neither stack owns artwork of its own, which is what makes the two platforms agree by construction rather than by review.')}
           </p>
@@ -162,7 +163,7 @@ export function IconsPage() {
 
         {/* 2. Rules */}
         <section className="block" id="rules">
-          <h2>{t('getStarted.icons.rules.title', 'Governance Rules')}</h2>
+          <DocText role="h2">{t('getStarted.icons.rules.title', 'Governance Rules')}</DocText>
           <p className="desc">
             {t('getStarted.icons.rules.desc', 'Each rule below is enforced by pnpm check:icons, which also runs inside pnpm gate. A rule that is not machine-checked would only be a slogan, so the enforcement column names the assertion that fails.')}
           </p>
@@ -183,7 +184,7 @@ export function IconsPage() {
 
         {/* 3. Grids, weight and size */}
         <section className="block" id="grids">
-          <h2>{t('getStarted.icons.grids.title', 'Grids, Weight & Size')}</h2>
+          <DocText role="h2">{t('getStarted.icons.grids.title', 'Grids, Weight & Size')}</DocText>
           <p className="desc">
             {t('getStarted.icons.grids.desc', 'A grid pairs a drawing box with the stroke width that box expects, and states the render size it was drawn for. Two grids are declared: the default 24-unit grid for UI icons, drawn for a 16px render, and a dense 10-unit chrome grid whose 1-unit stroke stays hairline on window captions instead of collapsing to a sub-pixel smear.')}
           </p>
@@ -305,7 +306,7 @@ export function IconsPage() {
 
         {/* 4. Optical centring */}
         <section className="block" id="centering">
-          <h2>{t('getStarted.icons.centering.title', 'Optical Centring')}</h2>
+          <DocText role="h2">{t('getStarted.icons.centering.title', 'Optical Centring')}</DocText>
           <p className="desc">
             {t('getStarted.icons.centering.desc', 'Centring is a property of the geometry, not something a component fixes afterwards. The gate measures the painted bounding box (artwork plus half the stroke) and fails when its centre drifts more than {{tolerance}} units from the grid centre. Anchors offsets and padding are deliberately not an accepted fix: they centre a box, not the ink inside it.', { tolerance: metrics.opticalCenterTolerance })}
           </p>
@@ -355,7 +356,7 @@ export function IconsPage() {
 
         {/* 5. Gallery */}
         <section className="block" id="gallery">
-          <h2>{t('getStarted.icons.gallery.title', 'Icon Gallery')}</h2>
+          <DocText role="h2">{t('getStarted.icons.gallery.title', 'Icon Gallery')}</DocText>
           <p className="desc">
             {t('getStarted.icons.gallery.desc', 'Every icon of the active specification, rendered by name from the generated registry. Adding an icon to the registry makes it appear here on both stacks at once, and the gate refuses a name that has no geometry behind it.')}
           </p>
@@ -388,7 +389,7 @@ export function IconsPage() {
 
         {/* 6. Configuration */}
         <section className="block" id="configuration">
-          <h2>{t('getStarted.icons.configuration.title', 'External Configuration')}</h2>
+          <DocText role="h2">{t('getStarted.icons.configuration.title', 'External Configuration')}</DocText>
           <p className="desc">
             {t('getStarted.icons.configuration.desc', 'A host that wants the whole of ChaSet pinned to one specification does not edit the library. It declares the id externally; the generator bakes the resolved id into both artifacts, so the choice is observable at runtime through ICON_SPEC_ID (web) and ChaSetIcons.specId (desktop).')}
           </p>
@@ -449,7 +450,7 @@ export function IconsPage() {
 
         {/* 7. Extensibility */}
         <section className="block" id="extensibility">
-          <h2>{t('getStarted.icons.extensibility.title', 'Extending the Specification')}</h2>
+          <DocText role="h2">{t('getStarted.icons.extensibility.title', 'Extending the Specification')}</DocText>
           <p className="desc">
             {t('getStarted.icons.extensibility.desc', 'The registry holds a list of specifications, not a single hard-coded one. A new specification is a new entry with its own grid, stroke and artwork; nothing in either stack needs to change, because both consume whichever entry the configuration selects.')}
           </p>

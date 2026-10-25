@@ -11,6 +11,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 const SAMPLE_LOGS: Record<string, string[]> = {
   'job-1': [
@@ -96,12 +97,12 @@ export function PipelineViewDocPage() {
       description={t('components.pipelineView.description', 'Multi-stage execution view and pipeline center with job tracking, step timelines, and virtualized auto-scrolling log console.')}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.pipelineView.overviewHeading', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.pipelineView.overviewDesc', 'A high-performance execution inspector assembling job tracking, vertical step timelines, and virtualized auto-scrolling log consoles. All subcomponents can also be consumed independently.')}
-        </p>
+        </DocText>
 
         <ComponentPreview title={t('desktopComposite.pipelineView.sandboxTitle', 'Pipeline View Sandbox')} reactCode={reactCode} qtCode={qtCode}>
           <div className="w-full h-[28rem] flex flex-col">
@@ -135,12 +136,12 @@ ChaSetPipelineView {
 
 
       <section id="animations" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.animations', 'Animations')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-3">
+        </DocText>
+        <DocText role="p" className="mb-3">
           {t('desktopComposite.pipelineView.animationsDesc', 'Execution transitions and status node states are governed by shared motion tokens:')}
-        </p>
+        </DocText>
         <ul className="list-disc pl-5 text-xs text-muted-foreground space-y-1.5 leading-relaxed">
           <li>
             {t('desktopComposite.pipelineView.animationsBullet1', 'Active execution nodes (running, compiling, retrying) display continuous rotation using animate-spin.')}

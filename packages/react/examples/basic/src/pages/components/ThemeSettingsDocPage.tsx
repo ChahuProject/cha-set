@@ -5,6 +5,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export interface ThemeSettingsDocPageProps {
   config?: ThemeConfig;
@@ -42,7 +43,7 @@ export function ThemeSettingsDocPage({
       description={t('components.theme-settings.description', 'Cross-stack theme settings controller managing mode, accent palette, decoration level, and UI density.')}
     >
       <section id="overview" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">{t('showcase.interactiveOverview', 'Interactive Overview')}</h2>
+        <DocText role="h2">{t('showcase.interactiveOverview', 'Interactive Overview')}</DocText>
         <ComponentPreview
           title={t('desktopComposite.themeSettings.sandboxTitle', 'Interactive Theme Settings')}
           reactCode={heroReactCode}
@@ -74,8 +75,8 @@ ChaSetThemeSettings {
 
 
       <section id="animations" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">{t('showcase.animations', 'Animations')}</h2>
-        <p className="text-sm text-muted-foreground leading-relaxed flex flex-wrap items-center gap-1.5">
+        <DocText role="h2">{t('showcase.animations', 'Animations')}</DocText>
+        <DocText role="p" className="flex flex-wrap items-center gap-1.5">
           <span>{t('desktopComposite.themeSettings.animDescPrefix', 'ThemeSettings uses unified motion tokens for smooth state transitions across buttons, segmented controls, color pickers, and override drawers. Transitions use')}</span>
           <CopyableBadge size="sm" text="duration-quick" className="font-mono text-xs" />
           <span>{t('common.and', 'and')}</span>
@@ -85,7 +86,7 @@ ChaSetThemeSettings {
           <span>{t('desktopComposite.themeSettings.animDescSuffix', 'and Qt')}</span>
           <CopyableBadge size="sm" text="ThemeTokens.animationsEnabled" className="font-mono text-xs" />
           <span>{t('desktopComposite.themeSettings.animDescEnd', 'as global kill switches.')}</span>
-        </p>
+        </DocText>
       </section>
 
       <ComponentReference

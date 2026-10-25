@@ -3,6 +3,7 @@ import { MediaProgressBar, type MediaProgressBarTimingMode, type MediaProgressBa
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocFooterSections } from '../../components/DocFooterSections';
+import { DocText } from '../../components/DocText';
 
 export function MediaProgressBarDocPage() {
   const { t } = useChaSetI18n();
@@ -42,7 +43,7 @@ export function MediaProgressBarDocPage() {
       description={t('components.mediaProgressBar.description', 'Universal media playback progress bar supporting drag-scrubbing, click-to-seek, hover preview, elapsed/remaining time display, click to toggle countdown, and context format menu.')}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold mb-4 text-foreground">{t('desktopComposite.mediaProgressBar.overviewHeading', 'Interactive Overview')}</h2>
+        <DocText role="h2" className="mb-4">{t('desktopComposite.mediaProgressBar.overviewHeading', 'Interactive Overview')}</DocText>
         <ComponentPreview
           title={t('desktopComposite.mediaProgressBar.sandboxTitle', 'MediaProgressBar Sandbox')}
           reactCode={heroReactCode}

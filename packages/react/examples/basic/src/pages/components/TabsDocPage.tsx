@@ -5,6 +5,7 @@ import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocText } from '../../components/DocText';
 
 export function TabsDocPage() {
   const { t } = useChaSetI18n();
@@ -77,12 +78,12 @@ export function TabsDocPage() {
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.interactiveOverview', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.tabs.overviewDesc', 'Test interactive tab switching, pill vs line underline styles, size scaling, and keyboard arrow navigation.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           title={t('desktopComposite.tabs.sandboxTitle', 'Tabs Sandbox')}
@@ -153,15 +154,15 @@ export function TabsDocPage() {
 
               <div className="mt-4 p-4 rounded-lg bg-muted/30 border border-border/50 min-h-24">
                 <TabsContent value="account" className="mt-0">
-                  <h4 className="font-semibold text-sm text-foreground mb-1">{t('surfaces.tabs.accountTitle', 'Account Information')}</h4>
+                  <DocText role="h4" className="mb-1">{t('surfaces.tabs.accountTitle', 'Account Information')}</DocText>
                   <p className="text-xs text-muted-foreground">{t('surfaces.tabs.accountDesc', "Make changes to your account here. Click save when you're done.")}</p>
                 </TabsContent>
                 <TabsContent value="password" className="mt-0">
-                  <h4 className="font-semibold text-sm text-foreground mb-1">{t('surfaces.tabs.passwordTitle', 'Security Credentials')}</h4>
+                  <DocText role="h4" className="mb-1">{t('surfaces.tabs.passwordTitle', 'Security Credentials')}</DocText>
                   <p className="text-xs text-muted-foreground">{t('surfaces.tabs.passwordDesc', "Change your password here. After saving, you'll be logged out.")}</p>
                 </TabsContent>
                 <TabsContent value="settings" className="mt-0">
-                  <h4 className="font-semibold text-sm text-foreground mb-1">{t('surfaces.tabs.settingsTitle', 'App Settings')}</h4>
+                  <DocText role="h4" className="mb-1">{t('surfaces.tabs.settingsTitle', 'App Settings')}</DocText>
                   <p className="text-xs text-muted-foreground">{t('surfaces.tabs.settingsDesc', 'Manage your notification frequency and display preferences.')}</p>
                 </TabsContent>
               </div>
@@ -172,20 +173,20 @@ export function TabsDocPage() {
 
       {/* Keyboard Navigation */}
       <section id="keyboard" className="mt-12 scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.keyboardNavigation', 'Keyboard Navigation')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.tabs.keyboardDesc', 'Tabs support standard horizontal and vertical arrow navigation with automatic selection or manual Space/Enter commit.')}
-        </p>
+        </DocText>
         <KeyboardShortcutsTable componentId="tabs" />
       </section>
 
       {/* 2. Installation */}
       <section id="installation" className="mt-12 scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.installation', 'Installation')}
-        </h2>
+        </DocText>
         <CodeBlock language="bash" code="pnpm add @chahu/cha-set" />
       </section>
 
@@ -198,12 +199,12 @@ export function TabsDocPage() {
 
       {/* 4. Examples & Variants */}
       <section id="examples" className="mt-12 scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.examplesVariants', 'Examples & Variants')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.tabs.examplesDesc', 'Visual matrix of tab variants, sizes, badges, and disabled states.')}
-        </p>
+        </DocText>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="p-5">
             <div className="flex flex-col gap-3">
@@ -274,9 +275,9 @@ export function TabsDocPage() {
 
       {/* 5. Props Reference */}
       <section id="props" className="mt-12 scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.propsReference', 'Props Reference')}
-        </h2>
+        </DocText>
         <PropsTable
           props={[
             {

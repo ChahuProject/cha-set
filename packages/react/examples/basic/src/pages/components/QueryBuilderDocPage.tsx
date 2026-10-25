@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function QueryBuilderDocPage() {
   const { t } = useChaSetI18n();
@@ -37,12 +38,12 @@ export function QueryBuilderDocPage() {
       description={t('components.query-builder.description', 'Visual rule tree builder for structured search query generation with nested logic groups (AND/OR), operator filters, and JSON serialization.')}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.interactiveOverview', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.queryBuilder.overviewDesc', 'Add rules and nested groups dynamically to construct complex query predicates.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           qtCode={`ChaSetQueryBuilder {

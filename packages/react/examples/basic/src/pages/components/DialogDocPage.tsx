@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function DialogDocPage() {
   const { t } = useChaSetI18n();
@@ -95,12 +96,12 @@ export function DialogDocPage() {
     >
       {/* 1. Interactive Overview */}
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.interactiveOverview', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.dialog.overviewDesc', 'Experience full modal behavior with backdrop blur, keyboard ESC dismissal, and focus containment across Web and Desktop.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           title={t('desktopComposite.dialog.sandboxTitle', 'Dialog Sandbox')}
@@ -170,12 +171,12 @@ export function DialogDocPage() {
 
       {/* 4. Examples & States */}
       <section id="examples" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.examplesAndStates', 'Examples & States')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.dialog.examplesDesc', 'Common modal dialog patterns: desktop draggable windows, confirmation dialogs, and alert notices.')}
-        </p>
+        </DocText>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Desktop Draggable Modal */}
@@ -294,12 +295,12 @@ export function DialogDocPage() {
 
       {/* Animations */}
       <section id="animations" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.animations', 'Animations')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.dialog.animationsDesc', 'Motion behavior and timing for the overlay and content on open and close.')}
-        </p>
+        </DocText>
         <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
           <li>
             {t('desktopComposite.dialog.animationsBullet1', 'The backdrop overlay fades in and out using animate-fade-in / animate-fade-out, over duration-short with the ease-entrance curve.')}

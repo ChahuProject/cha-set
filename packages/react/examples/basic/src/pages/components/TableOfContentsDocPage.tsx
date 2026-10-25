@@ -15,6 +15,7 @@ import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentReference } from "../../components/ComponentReference";
 import type { PropItem } from '../../components/PropsTable';
+import { DocText } from '../../components/DocText';
 
 export function TableOfContentsDocPage() {
   const { t } = useChaSetI18n();
@@ -107,7 +108,7 @@ export function TableOfContentsDocPage() {
     >
       {/* 1. Interactive Overview */}
       <section id="overview" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.tableOfContents.overviewHeading', 'Interactive Overview')}</h2>
+        <DocText role="h2">{t('desktopComposite.tableOfContents.overviewHeading', 'Interactive Overview')}</DocText>
         <ComponentPreview
           title={t('desktopComposite.tableOfContents.sandboxTitle', 'Table of Contents Sandbox')}
           reactCode={heroReactCode}
@@ -193,7 +194,7 @@ export function TableOfContentsDocPage() {
               <div className="p-6 flex flex-col md:flex-row gap-8 items-start">
                 <div className="flex-1 space-y-3">
                   <div className="p-4 rounded-md border border-border/80 bg-background/50 space-y-2">
-                    <h3 className="text-sm font-semibold text-foreground">{t('surfaces.tableOfContents.readingPaneTitle')}</h3>
+                    <DocText role="h3">{t('surfaces.tableOfContents.readingPaneTitle')}</DocText>
                     <p className="text-xs text-muted-foreground leading-relaxed">
                       {t('surfaces.tableOfContents.activeOutlineTarget', { target: activeId })}
                     </p>

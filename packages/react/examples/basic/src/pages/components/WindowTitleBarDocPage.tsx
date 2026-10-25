@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function WindowTitleBarDocPage() {
   const { t } = useChaSetI18n();
@@ -24,12 +25,12 @@ export function WindowTitleBarDocPage() {
       description={t('components.windowTitleBar.description', 'Desktop window frame header with title, drag region, and minimize/maximize/close control buttons for frameless native windows.')}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.interactiveOverview', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.windowTitleBar.overviewDesc', 'Frameless window title bar with native-style action buttons.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           qtCode={`ChaSetWindowTitleBar {

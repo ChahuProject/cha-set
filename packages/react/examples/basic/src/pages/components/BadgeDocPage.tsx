@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { ComponentReference } from "../../components/ComponentReference";
+import { DocText } from '../../components/DocText';
 
 export function BadgeDocPage() {
   const { t } = useChaSetI18n();
@@ -34,12 +35,12 @@ export function BadgeDocPage() {
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.badge.overviewHeading', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('components.badge.overviewDesc', 'Adjust variant, size, and interactive status options in real time with synchronized previews for Web and Desktop.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           title={t('showcase.previewTitles.Badge Sandbox', 'Badge Sandbox')}
@@ -127,12 +128,12 @@ export function BadgeDocPage() {
 
       {/* 3. Variants */}
       <section id="variants" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title={t('components.badge.variantsTitle', 'Variants')}>
+        <DocText role="h2" data-toc-title={t('components.badge.variantsTitle', 'Variants')} className="mb-3">
           {t('components.badge.variantsTitle', 'Variants')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('components.badge.variantsDesc', 'All six standard semantic variants aligned with the ChaSet design token system.')}
-        </p>
+        </DocText>
         <Card className="flex flex-wrap items-center gap-3 p-6">
           <Badge variant="default">{t('common.default', 'Default')}</Badge>
           <Badge variant="secondary">{t('common.secondary', 'Secondary')}</Badge>
@@ -145,12 +146,12 @@ export function BadgeDocPage() {
 
       {/* 4. Sizes */}
       <section id="sizes" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title={t('components.badge.sizesTitle', 'Sizes')}>
+        <DocText role="h2" data-toc-title={t('components.badge.sizesTitle', 'Sizes')} className="mb-3">
           {t('components.badge.sizesTitle', 'Sizes')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('components.badge.sizesDesc', 'Choose between standard pill scale (default) and compact micro badge (sm).')}
-        </p>
+        </DocText>
         <Card className="flex flex-wrap items-center gap-4 p-6">
           <div className="flex items-center gap-2">
             <span className="text-xs text-muted-foreground">{t('components.badge.defaultLabel', 'Default:')}</span>
@@ -165,12 +166,12 @@ export function BadgeDocPage() {
 
       {/* 5. Status & Removable Badges */}
       <section id="status-removable-tags" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title={t('components.badge.statusTitle', 'Status & Removable Tags')}>
+        <DocText role="h2" data-toc-title={t('components.badge.statusTitle', 'Status & Removable Tags')} className="mb-3">
           {t('components.badge.statusTitle', 'Status & Removable Tags')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('components.badge.statusDesc', 'Badges support live status indicator dots and dismissible action buttons for filter tags.')}
-        </p>
+        </DocText>
         <Card className="flex flex-wrap items-center gap-4 p-6">
           <Badge dot dotColor="bg-emerald-500" variant="outline">{t('components.badge.online', 'Online')}</Badge>
           <Badge dot dotColor="bg-amber-500" variant="outline">{t('components.badge.away', 'Away')}</Badge>
@@ -182,13 +183,13 @@ export function BadgeDocPage() {
 
             {/* Animations */}
       <section id="animations" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.animations', 'Animations')}
-        </h2>
+        </DocText>
         <div>
-          <p className="text-sm text-muted-foreground mb-4">
+          <DocText role="p" className="mb-4">
             {t('showcase.animationsDesc', 'Motion behavior and timing for interactive states aligned with ChaSet tokens.')}
-          </p>
+          </DocText>
           <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
             <li>
               {t('showcase.animationsItem1', 'State changes (hover, press, focus) animate over duration-quick with the ease-standard curve.')}

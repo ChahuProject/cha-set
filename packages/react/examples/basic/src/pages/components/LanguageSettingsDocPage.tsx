@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function LanguageSettingsDocPage() {
   const i18n = useChaSetI18n();
@@ -31,7 +32,7 @@ export function LanguageSettingsDocPage() {
       description={t('components.language-settings.description', 'Cross-stack language configuration card with system detection and cultural poetry quotes.')}
     >
       <section id="overview" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">{t('showcase.interactiveOverview', 'Interactive Overview')}</h2>
+        <DocText role="h2">{t('showcase.interactiveOverview', 'Interactive Overview')}</DocText>
         <ComponentPreview
           title={t('desktopComposite.languageSettings.sandboxTitle', 'Interactive Language Settings')}
           reactCode={heroReactCode}
@@ -66,8 +67,8 @@ ChaSetLanguageSettings {
 
 
       <section id="animations" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">{t('showcase.animations', 'Animations')}</h2>
-        <p className="text-sm text-muted-foreground leading-relaxed flex flex-wrap items-center gap-1.5">
+        <DocText role="h2">{t('showcase.animations', 'Animations')}</DocText>
+        <DocText role="p" className="flex flex-wrap items-center gap-1.5">
           <span>{t('desktopComposite.languageSettings.animDescPrefix', 'LanguageSettings utilizes smooth token transitions for card focus, active selection rings, and checkmark badge states. Transitions use')}</span>
           <CopyableBadge size="sm" text="duration-quick" className="font-mono text-xs" />
           <span>{t('common.and', 'and')}</span>
@@ -77,7 +78,7 @@ ChaSetLanguageSettings {
           <span>{t('desktopComposite.languageSettings.animDescSuffix', 'and Qt')}</span>
           <CopyableBadge size="sm" text="ThemeTokens.animationsEnabled" className="font-mono text-xs" />
           <span>{t('desktopComposite.languageSettings.animDescEnd', 'as global kill switches.')}</span>
-        </p>
+        </DocText>
       </section>
 
       <ComponentReference

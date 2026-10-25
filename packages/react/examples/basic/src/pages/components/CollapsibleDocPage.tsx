@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function CollapsibleDocPage() {
   const { t } = useChaSetI18n();
@@ -84,12 +85,12 @@ export function CollapsibleDocPage() {
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.collapsible.overviewHeading', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.collapsible.overviewDesc', 'Toggle the collapsible open/closed state or disable user interaction with live controls.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           title={t('desktopComposite.collapsible.sandboxTitle', 'Collapsible Sandbox')}
@@ -142,9 +143,9 @@ export function CollapsibleDocPage() {
           <div className="w-full max-w-sm p-4">
             <Collapsible open={open} onOpenChange={setOpen} disabled={disabled} variant={variant}>
               <div className="flex items-center justify-between space-x-4 px-4 py-2 border border-border rounded-md bg-card">
-                <h4 className="text-sm font-semibold text-foreground">
+                <DocText role="h4">
                   {t('surfaces.collapsible.starredRepos', '@peduarte starred 3 repositories')}
-                </h4>
+                </DocText>
                 <CollapsibleTrigger asChild>
                   <Button variant="ghost" size="sm" className="w-8 h-8 p-0" disabled={disabled}>
                     <span className={`text-xs transition-transform duration-200 ${open ? 'rotate-180' : ''}`}>
@@ -197,13 +198,13 @@ ChaSetCollapsible {
       {/* 2. Installation */}
       {/* 3. Default Open */}
       <section id="default-open" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.collapsible.defaultOpenHeading', 'Default Open')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4 flex items-center gap-1.5 flex-wrap">
+        </DocText>
+        <DocText role="p" className="mb-4 flex items-center gap-1.5 flex-wrap">
           <span>{t('desktopComposite.collapsible.defaultOpenDesc', 'Render an uncontrolled collapsible with initial expanded state via')}</span>
           <CopyableBadge size="sm" text="defaultOpen" />
-        </p>
+        </DocText>
         <Card className="p-6">
           <CardContent className="space-y-4 p-0 max-w-sm">
             <Collapsible defaultOpen>
@@ -230,12 +231,12 @@ ChaSetCollapsible {
 
       {/* 4. Disabled State */}
       <section id="disabled" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.collapsible.disabledHeading', 'Disabled State')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.collapsible.disabledDesc', 'Disables trigger interaction and dims opacity to prevent user expansion.')}
-        </p>
+        </DocText>
         <Card className="p-6">
           <CardContent className="space-y-4 p-0 max-w-sm">
             <Collapsible disabled>

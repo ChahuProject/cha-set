@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function ViewportConstrainedContainerDocPage() {
   const { t } = useChaSetI18n();
@@ -40,12 +41,12 @@ export function ViewportConstrainedContainerDocPage() {
       description={t('components.viewportConstrainedContainer.description', 'Container that dynamically bounds max-height based on available viewport space below the anchor rect, supporting custom upper limit overrides and smooth vertical scrolling.')}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.viewport.overviewHeading', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.viewport.overviewDesc', 'The container dynamically measures the distance from its anchor to the bottom of the window (window.innerHeight - rect.top - margin) and clamps content height to prevent overflowing outside the viewport.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           qtCode={`ChaSetViewportConstrainedContainer {
@@ -142,12 +143,12 @@ ChaSetViewportConstrainedContainer {
 
 
       <section id="variants" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.viewport.variantsTitle', 'Variants & Limits')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.viewport.variantsDesc', 'Configure custom numeric overrides, string-based bounds, or custom margin offsets.')}
-        </p>
+        </DocText>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="p-4 rounded-lg border border-border bg-card flex flex-col gap-2">

@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function TooltipDocPage() {
   const { t } = useChaSetI18n();
@@ -40,15 +41,15 @@ export function TooltipDocPage() {
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.tooltip.overviewHeading', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t(
             'desktopComposite.tooltip.overviewDesc',
             'Test interactive hover delays, side positioning, keyboard shortcut badges, directional arrows, and disabled behavior across Web and Qt Quick Desktop. Placement policy: dense vertical lists (menu items, select options, sidebar nav, virtual rows) default to right so bubbles never cover the prev/next sibling; top-docked chrome defaults to bottom; bottom-docked chrome to top; modal close buttons to bottom; everything else to top.',
           )}
-        </p>
+        </DocText>
 
         <ComponentPreview
           title={t('desktopComposite.tooltip.sandboxTitle', 'Tooltip Sandbox')}
@@ -152,12 +153,12 @@ export function TooltipDocPage() {
 
       {/* 4. Examples & States */}
       <section id="examples" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.examplesAndStates', 'Examples & States')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.tooltip.examplesDesc', 'Visual matrix of common Tooltip configurations across all 4 directional placements and interaction states.')}
-        </p>
+        </DocText>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Top Placement */}
@@ -257,12 +258,12 @@ export function TooltipDocPage() {
 
       {/* Animations */}
       <section id="animations" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.animations', 'Animations')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.tooltip.animationsDesc', 'Motion behavior and timing for the tooltip bubble on open and close.')}
-        </p>
+        </DocText>
         <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
           <li>
             {t('desktopComposite.tooltip.animationsBullet1', 'Opening fades and zooms in using animate-in with fade-in-0 and zoom-in-95, over duration-short with the ease-entrance curve.')}

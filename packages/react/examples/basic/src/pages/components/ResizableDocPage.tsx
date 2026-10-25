@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function ResizableDocPage() {
   const { t } = useChaSetI18n();
@@ -138,12 +139,12 @@ export function ResizableDocPage() {
     >
       {/* 1. Horizontal Split Overview */}
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.resizable.horizontalTitle', 'Horizontal Split')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.resizable.horizontalDesc', 'Panels automatically adapt to available width and provide interactive drag handles with boundary limits.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           title={t('desktopComposite.resizable.horizontalSandboxTitle', 'Horizontal Resizable Group')}
@@ -203,12 +204,12 @@ ChaSetResizable {
 
       {/* 2. Nested Splitters */}
       <section id="nested" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.resizable.nestedTitle', 'Nested Resizable Layout')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.resizable.nestedDesc', 'Embed vertical panel groups inside horizontal panels to construct multi-pane IDE workbenches and docking surfaces.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           title={t('desktopComposite.resizable.nestedTitle', 'Nested Resizable Layout')}
@@ -267,12 +268,12 @@ ChaSetResizable {
 
       {/* 3. Variants Playground */}
       <section id="playground" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.resizable.playgroundTitle', 'Interactive Playground')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.resizable.playgroundDesc', 'Toggle between horizontal and vertical orientations and test visual grip handle styles dynamically.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           title={t('desktopComposite.resizable.playgroundTitle', 'Interactive Playground')}
@@ -344,12 +345,12 @@ ChaSetResizable {
       {/* 4. Installation */}
       {/* 5. Animations */}
       <section id="animations" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.animations', 'Animations')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.resizable.animationsDesc', 'Motion tokens and kinematic timing contracts for Resizable dividers and handles.')}
-        </p>
+        </DocText>
         <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
           <li>
             {t('desktopComposite.resizable.animationsBullet1', 'Separator grip indicator border and hover highlight color transitions animate smoothly over duration-quick (150ms) using ease-standard curve (Qt: ThemeTokens.motionQuick / ThemeTokens.easeStandard).')}

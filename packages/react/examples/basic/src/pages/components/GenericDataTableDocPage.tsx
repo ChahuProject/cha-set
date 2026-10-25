@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 interface UserRecord {
   id: string;
@@ -97,12 +98,12 @@ export function GenericDataTableDocPage() {
       description={t('components.genericDataTable.description', 'Full-featured desktop-grade data table powered by TanStack Table, with column sorting, filtering, selection, and pagination.')}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.interactiveOverview', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.genericDataTable.overviewDesc', 'Click column headers to sort ascending and descending.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           title={t('desktopComposite.genericDataTable.sandboxTitle', 'Generic Data Table Sandbox')}

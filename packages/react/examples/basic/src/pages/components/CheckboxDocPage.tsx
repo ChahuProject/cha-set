@@ -5,6 +5,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { ComponentReference } from '../../components/ComponentReference';
+import { DocText } from '../../components/DocText';
 
 export function CheckboxDocPage() {
   const { t } = useChaSetI18n();
@@ -49,12 +50,12 @@ export function CheckboxDocPage() {
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.checkbox.overviewHeading', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('formsA.checkbox.overviewDesc', 'Test interactive checkbox toggling, indeterminate states, helper descriptions, error states, and sizes across Web and Qt Desktop.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           title={t('desktopComposite.checkbox.sandboxTitle', 'Checkbox Sandbox')}
@@ -154,12 +155,12 @@ export function CheckboxDocPage() {
 
       {/* 4. Examples & States */}
       <section id="states" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.examplesAndStates', 'Examples & States')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('formsA.checkbox.examplesSubtitle', 'Visual matrix of common checkbox configurations, sizes, descriptions, and states.')}
-        </p>
+        </DocText>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="flex flex-col gap-2 p-5">
             <span className="text-xs font-semibold text-foreground">{t('formsA.checkbox.uncheckedCheckedTitle', 'Unchecked & Checked')}</span>
@@ -229,12 +230,12 @@ export function CheckboxDocPage() {
 
       {/* 5. Animations */}
       <section id="animations" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.animations', 'Animations')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.checkbox.animationsDesc', 'Motion behavior and timing for the checked, indeterminate, and state transitions.')}
-        </p>
+        </DocText>
         <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
           <li>
             {t('desktopComposite.checkbox.animationsBullet1', 'The check-mark SVG stays mounted and, when checked, fades in from opacity 0 to 1 while scaling from 0.5 to 1 over duration-quick with the ease-entrance curve.')}

@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function DropdownMenuDocPage() {
   const { t } = useChaSetI18n();
@@ -43,12 +44,12 @@ export function DropdownMenuDocPage() {
       description={t('components.dropdownMenu.description', 'Displays a menu to the user triggered by a button, supporting items, labels, separators, shortcuts, and destructive actions.')}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.interactiveOverview', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.dropdownMenu.overviewDesc', 'Click the trigger below to open the dropdown menu. Keyboard navigation and shortcuts are fully supported.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           qtCode={`ChaSetDropdownMenu {

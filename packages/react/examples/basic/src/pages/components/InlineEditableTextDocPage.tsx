@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function InlineEditableTextDocPage() {
   const { t } = useChaSetI18n();
@@ -22,12 +23,12 @@ export function InlineEditableTextDocPage() {
       description={t('components.inline-editable-text.description', 'Text element that switches seamlessly to an input field on double-click or edit trigger, supporting Enter to save and Escape to cancel.')}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.interactiveOverview', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.inlineEditableText.overviewDesc', 'Click or double-click on the text below to modify it. Press Enter to confirm or Esc to cancel.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           qtCode={`ChaSetInlineEditableText {
@@ -66,12 +67,12 @@ ChaSetInlineEditableText {
 
 
       <section id="variants" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('components.inlineEditableText.sizesAndTriggers', 'Sizes & Interaction Triggers')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('components.inlineEditableText.sizesAndTriggersDesc', 'Configure single-click vs double-click activations and high-density sizing tiers.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           qtCode={`ChaSetInlineEditableText { value: "Project Architecture Doc"; trigger: "click"; size: "default" }

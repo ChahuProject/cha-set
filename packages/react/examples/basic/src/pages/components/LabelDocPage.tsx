@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function LabelDocPage() {
   const { t } = useChaSetI18n();
@@ -58,12 +59,12 @@ export function LabelDocPage() {
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.label.overviewHeading', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('components.label.overviewDesc', 'Adjust size, required markers, optional indicators, validation states, and disabled appearance in real time.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           title={t('desktopComposite.label.sandboxTitle', 'Label Sandbox')}
@@ -152,12 +153,12 @@ ChaSetLabel {
 
       {/* 3. Sizes */}
       <section id="sizes" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title={t('components.label.sizesTitle', 'Sizes')}>
+        <DocText role="h2" data-toc-title={t('components.label.sizesTitle', 'Sizes')} className="mb-3">
           {t('components.label.sizesTitle', 'Sizes')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('components.label.sizesDesc', 'Choose between standard text size and compact high-density size for toolbars or dense forms.')}
-        </p>
+        </DocText>
         <Card className="p-6">
           <CardContent className="space-y-4 p-0">
             <div className="flex items-center gap-4">
@@ -174,12 +175,12 @@ ChaSetLabel {
 
       {/* 4. States */}
       <section id="states" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title={t('components.label.statesTitle', 'States & Variants')}>
+        <DocText role="h2" data-toc-title={t('components.label.statesTitle', 'States & Variants')} className="mb-3">
           {t('components.label.statesTitle', 'States & Variants')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('components.label.statesDesc', 'Visual matrix of label states including required asterisk, optional tag, validation error, helper description, and tooltips.')}
-        </p>
+        </DocText>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="p-5">
             <div className="flex flex-col gap-2">
@@ -247,12 +248,12 @@ ChaSetLabel {
 
       {/* 5. Form Association */}
       <section id="form-control" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title={t('components.label.formControlTitle', 'Form Association')}>
+        <DocText role="h2" data-toc-title={t('components.label.formControlTitle', 'Form Association')} className="mb-3">
           {t('components.label.formControlTitle', 'Form Association')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('components.label.formControlDesc', 'Clicking the label activates or toggles the linked input element via htmlFor.')}
-        </p>
+        </DocText>
         <Card className="p-6">
           <CardHeader className="p-0 pb-4">
             <CardTitle className="text-base">{t('components.label.termsTitle', 'Terms and Conditions')}</CardTitle>

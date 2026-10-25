@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardTitle, CardDescription, CodeBlock, Table, type TableColumn, ScrollArea, CheckIcon, ZapIcon, LockIcon, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { DocText } from '../../components/DocText';
 
 export function IntroductionPage() {
   const { t } = useChaSetI18n();
@@ -30,12 +31,12 @@ export function IntroductionPage() {
       ]}
     >
       <section id="philosophy" className="my-6">
-        <h2 className="text-xl font-bold tracking-tight mb-3">
+        <DocText role="h2" className="mb-3">
           {t('getStarted.intro.philosophy.title', 'Design Philosophy')}
-        </h2>
-        <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('getStarted.intro.philosophy.desc', 'ChaSet is part of the ChahuProject ecosystem. In traditional multi-platform apps, Web and Desktop design systems drift apart quickly. ChaSet solves this by establishing a neutral, machine-readable specification and token shard layer that drives both React and Qt simultaneously with pixel-perfect and behavioral parity.')}
-        </p>
+        </DocText>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-6">
           <Card className="p-4 flex flex-col items-start gap-2">
@@ -82,9 +83,9 @@ export function IntroductionPage() {
       </section>
 
       <section id="architecture" className="my-10">
-        <h2 className="text-xl font-bold tracking-tight mb-3">
+        <DocText role="h2" className="mb-3">
           {t('getStarted.intro.architecture.title', 'How It Works')}
-        </h2>
+        </DocText>
         <ScrollArea
           showVerticalScrollBar={false}
           showHorizontalScrollBar={true}
@@ -103,9 +104,9 @@ qt/                       Qt 6 / QML implementation (QtChaSetDemo)`}
       </section>
 
       <section id="quickstart" className="my-10">
-        <h2 className="text-xl font-bold tracking-tight mb-3">
+        <DocText role="h2" className="mb-3">
           {t('getStarted.intro.quickstart.titleReact', 'Quick Start (React)')}
-        </h2>
+        </DocText>
         <p className="text-xs text-muted-foreground mb-3">
           {t('getStarted.intro.quickstart.installDesc', 'Install the package and peer dependencies:')}
         </p>
@@ -131,9 +132,9 @@ export function MyView() {
       </section>
 
       <section id="packages" className="my-10">
-        <h2 className="text-xl font-bold tracking-tight mb-3">
+        <DocText role="h2" className="mb-3">
           {t('getStarted.intro.packages.title', 'Packages')}
-        </h2>
+        </DocText>
         <Table columns={packageColumns} data={packageRows} bordered containerClassName="w-full max-w-full overflow-x-auto" />
       </section>
     </DocLayout>

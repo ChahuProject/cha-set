@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function SkeletonDocPage() {
   const { t } = useChaSetI18n();
@@ -24,12 +25,12 @@ export function SkeletonDocPage() {
       description={t('components.skeleton.description', 'Used to show a placeholder while content is loading, with smooth CSS pulse and wave shimmer animations.')}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.interactiveOverview', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('components.skeleton.overviewDesc', 'Visual placeholder skeleton cards for progressive loading states. Switch between pulse, wave shimmer, or static modes.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           qtCode={`Row {
@@ -102,12 +103,12 @@ Column {
 
 
       <section id="animations" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.animations', 'Animations')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.skeleton.animationsDesc', 'Motion behavior and timing for the placeholder loading effects.')}
-        </p>
+        </DocText>
         <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
           <li>
             {t('desktopComposite.skeleton.animationsBullet1', 'pulse uses the default animate-pulse keyframes for a soft opacity fade.')}

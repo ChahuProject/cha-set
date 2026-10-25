@@ -3,6 +3,7 @@ import { useChaSetI18n } from '@chahu/cha-set';
 import { KeyboardShortcutsTable } from './KeyboardShortcutsTable';
 import { PropsTable, type PropItem } from './PropsTable';
 import { KEYBOARD_SHORTCUTS_DATA, type KeyboardShortcutItem } from '../data/showcaseData.generated';
+import { DocText } from './DocText';
 
 export interface ComponentReferenceProps {
   name: string;
@@ -48,12 +49,12 @@ export function ComponentReference({
       {/* 1. Keyboard Navigation Section (Top) */}
       {hasShortcuts && (
         <section id={kbSectionId} data-toc-title={kbTitle} className="scroll-mt-20">
-          <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          <DocText role="h2" className="mb-3">
             {kbTitle}
-          </h2>
-          <p className="text-sm text-muted-foreground mb-4">
+          </DocText>
+          <DocText role="p" className="mb-4">
             {t('showcase.keyboardDesc', 'Keyboard shortcuts and interaction patterns for this component.')}
-          </p>
+          </DocText>
           <KeyboardShortcutsTable
             title=""
             componentId={componentId}
@@ -69,12 +70,12 @@ export function ComponentReference({
         className="scroll-mt-20"
       >
         {!isSubComponent && (
-          <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+          <DocText role="h2" className="mb-3">
             {t('showcase.propsReference', 'Props Reference')}
-          </h2>
+          </DocText>
         )}
         {description && (
-          <p className="text-sm text-muted-foreground mb-4">{description}</p>
+          <DocText role="p" className="mb-4">{description}</DocText>
         )}
         <PropsTable
           title={propsTitle}

@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function ReadOnlyInputDocPage() {
   const { t } = useChaSetI18n();
@@ -21,12 +22,12 @@ export function ReadOnlyInputDocPage() {
       description={t('components.readOnlyInput.description', 'Protected input field for API keys, tokens, and IDs with built-in copy-to-clipboard action and masking toggle.')}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.readOnlyInput.overviewHeading', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.readOnlyInput.overviewDesc', 'Safely expose secret credentials with optional masking, reveal toggle, and one-click copy.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           qtCode={`ChaSetReadOnlyInput {
@@ -71,12 +72,12 @@ ChaSetReadOnlyInput {
 
 
       <section id="variants" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.readOnlyInput.variantsTitle', 'Sizes & Status Variants')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.readOnlyInput.variantsDesc', 'Available in default and sm sizing tiers with semantic status color schemes.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           qtCode={`ChaSetReadOnlyInput { value: "chaset_default_token_preview"; size: "default" }

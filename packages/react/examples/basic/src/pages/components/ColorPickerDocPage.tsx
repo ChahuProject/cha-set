@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { ComponentReference } from '../../components/ComponentReference';
+import { DocText } from '../../components/DocText';
 
 export function ColorPickerDocPage() {
   const { t } = useChaSetI18n();
@@ -50,12 +51,12 @@ export function ColorPickerDocPage() {
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.interactiveOverview', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.colorPicker.overviewDesc', 'Experiment with modes, sizes, swatches, and states across Web (React) and Desktop (Qt Quick).')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           title={t('desktopComposite.colorPicker.sandboxTitle', 'ColorPicker Sandbox')}
@@ -164,12 +165,12 @@ export function ColorPickerDocPage() {
 
       {/* 4. Examples & States */}
       <section id="states" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('components.colorPicker.examplesTitle', 'Examples & States')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('components.colorPicker.examplesDesc', 'Matrix of common color picker configurations, modes, and sizes.')}
-        </p>
+        </DocText>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Popover Swatch Trigger */}

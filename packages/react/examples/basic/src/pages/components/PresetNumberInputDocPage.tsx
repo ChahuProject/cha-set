@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function PresetNumberInputDocPage() {
   const { t } = useChaSetI18n();
@@ -26,12 +27,12 @@ export function PresetNumberInputDocPage() {
       description={t('components.preset-number-input.description', 'High-density numeric input field with a quick-select dropdown panel for common dimension presets, unit tags, and optional clear action.')}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.interactiveOverview', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.presetNumberInput.overviewDesc', 'Focus or click the input field to open the preset numbers list. Click an item to populate the field, or type custom numbers freely.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           qtCode={`ChaSetPresetNumberInput {
@@ -70,12 +71,12 @@ ChaSetPresetNumberInput {
 
 
       <section id="variants" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('components.presetNumberInput.variantsTitle', 'Variants & Configurations')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('components.presetNumberInput.variantsDesc', 'Configure custom numeric presets, disable the clear option, or place the control in disabled state.')}
-        </p>
+        </DocText>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="p-4 rounded-lg border border-border bg-card flex flex-col gap-2">

@@ -6,6 +6,7 @@ import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 import { PropsTable } from '../../components/PropsTable';
+import { DocText } from '../../components/DocText';
 
 export function AddressBarDocPage() {
   const { t } = useChaSetI18n();
@@ -76,7 +77,7 @@ export function AddressBarDocPage() {
       description={t('components.address-bar.description', 'Explorer and browser-style navigation bar with interactive breadcrumbs and inline path editing.')}
     >
       <section id="overview" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">{t('showcase.interactiveOverview', 'Interactive Overview')}</h2>
+        <DocText role="h2">{t('showcase.interactiveOverview', 'Interactive Overview')}</DocText>
         <ComponentPreview
           qtCode={`ChaSetAddressBar {
     width: parent.width
@@ -170,10 +171,10 @@ ChaSetAddressBar {
 
 
       <section id="animations" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">{t('showcase.animations', 'Animations')}</h2>
-        <p className="text-sm text-muted-foreground">
+        <DocText role="h2">{t('showcase.animations', 'Animations')}</DocText>
+        <DocText role="p">
           {t('desktopComposite.addressBar.animationsDesc', 'Motion tokens and kinematic transitions for mode transitions and suggestions.')}
-        </p>
+        </DocText>
         <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
           <li>
             {t('desktopComposite.addressBar.animHoverPrefix', 'Breadcrumb segment hover highlights transition over')}{' '}
@@ -192,15 +193,15 @@ ChaSetAddressBar {
       </section>
 
       <section id="keyboard" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">{t('showcase.keyboardNavigation', 'Keyboard Navigation')}</h2>
-        <p className="text-sm text-muted-foreground">
+        <DocText role="h2">{t('showcase.keyboardNavigation', 'Keyboard Navigation')}</DocText>
+        <DocText role="p">
           {t('desktopComposite.addressBar.keyboardDesc', 'Keyboard shortcuts and button activation patterns.')}
-        </p>
+        </DocText>
         <KeyboardShortcutsTable componentId="address-bar" />
       </section>
 
       <section id="props" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">{t('showcase.propsReference', 'Props Reference')}</h2>
+        <DocText role="h2">{t('showcase.propsReference', 'Props Reference')}</DocText>
         <PropsTable
           items={[
             {

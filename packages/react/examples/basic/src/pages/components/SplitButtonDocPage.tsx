@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { ComponentReference } from "../../components/ComponentReference";
+import { DocText } from '../../components/DocText';
 
 export function SplitButtonDocPage() {
   const { t } = useChaSetI18n();
@@ -35,12 +36,12 @@ export function SplitButtonDocPage() {
       description={t('components.split-button.description', 'Dual-action button with primary direct click and secondary attached dropdown menu.')}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.splitButton.overviewHeading', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('components.split-button.overviewDesc', 'Click the main button to trigger the primary action, or click the chevron to open the dropdown menu.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           title={t('desktopComposite.splitButton.sandboxTitle', 'Split Button Sandbox')}
@@ -108,13 +109,13 @@ export function SplitButtonDocPage() {
 
             {/* Animations */}
       <section id="animations" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.animations', 'Animations')}
-        </h2>
+        </DocText>
         <div>
-          <p className="text-sm text-muted-foreground mb-4">
+          <DocText role="p" className="mb-4">
             {t('showcase.animationsDesc', 'Motion behavior and timing for interactive states aligned with ChaSet tokens.')}
-          </p>
+          </DocText>
           <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
             <li>
               {t('showcase.animationsItem1', 'State changes (hover, press, focus) animate over duration-quick with the ease-standard curve.')}

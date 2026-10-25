@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function RangeSliderDocPage() {
   const { t } = useChaSetI18n();
@@ -24,12 +25,12 @@ export function RangeSliderDocPage() {
       description={t('components.rangeSlider.description', 'Dual-thumb slider for selecting numeric min-max intervals with collision prevention and keyboard accessibility.')}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.rangeSlider.overviewHeading', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('formsA.rangeSlider.overviewDesc', 'Drag either thumb to adjust minimum and maximum bounds.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           qtCode={`ChaSetRangeSlider {
@@ -76,12 +77,12 @@ ChaSetRangeSlider {
 
 
       <section id="variants" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.rangeSlider.sizesStatesTitle', 'Sizes & States')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('formsA.rangeSlider.sizesAndStatesSubtitle', 'Available in default and sm sizing tiers, with tooltips, read-only, and disabled states.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           qtCode={`ChaSetRangeSlider { size: "default"; firstValue: 20; secondValue: 80; showTooltip: true }

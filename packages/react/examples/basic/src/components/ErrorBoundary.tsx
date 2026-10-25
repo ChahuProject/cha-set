@@ -1,5 +1,6 @@
 import React, { Component, type ReactNode } from 'react';
 import { Button, registry } from '@chahu/cha-set';
+import { DocText } from './DocText';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -36,9 +37,9 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       return (
         <div className="p-6 m-4 rounded-lg border border-destructive/40 bg-destructive/10 text-foreground flex flex-col gap-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-destructive">
+            <DocText role="h3" tone="danger">
               {this.props.fallbackTitle || registry.t('components.errorBoundary.fallbackTitle', 'Component Rendering Error')}
-            </h3>
+            </DocText>
             <div className="flex items-center gap-2">
               <Button size="xs" variant="outline" onClick={this.handleReset}>
                 {registry.t('components.errorBoundary.tryAgain', 'Try Again')}

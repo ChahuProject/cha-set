@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function SmoothWheelHandlerDocPage() {
   const { t } = useChaSetI18n();
@@ -56,7 +57,7 @@ export function SmoothWheelHandlerDocPage() {
       description={t('components.smoothWheelHandler.description', 'Desktop kinematic scrolling helper providing continuous physical momentum damping, Shift+wheel horizontal conversion, and gesture mutex.')}
     >
       <section id="overview" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">{t('showcase.interactiveOverview', 'Interactive Overview')}</h2>
+        <DocText role="h2">{t('showcase.interactiveOverview', 'Interactive Overview')}</DocText>
         <ComponentPreview title={t('desktopComposite.smoothWheelHandler.sandboxTitle', 'Smooth Wheel Handler Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
@@ -133,30 +134,30 @@ ChaSetSmoothWheelHandler {
       />
 
       <section id="kinematics" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">
+        <DocText role="h2">
           {t('desktopComposite.smoothWheelHandler.kinematicsTitle', 'Kinematic Architecture')}
-        </h2>
+        </DocText>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card className="p-4 space-y-2">
-            <h3 className="text-sm font-semibold text-foreground">
+            <DocText role="h3">
               {t('desktopComposite.smoothWheelHandler.card1Title', 'Continuous Momentum Accumulation')}
-            </h3>
+            </DocText>
             <p className="text-xs text-muted-foreground leading-relaxed">
               {t('desktopComposite.smoothWheelHandler.card1Desc', 'When rapid successive wheel ticks occur, delta offsets are accumulated onto the existing target position rather than jerking backwards or stuttering.')}
             </p>
           </Card>
           <Card className="p-4 space-y-2">
-            <h3 className="text-sm font-semibold text-foreground">
+            <DocText role="h3">
               {t('desktopComposite.smoothWheelHandler.card2Title', 'Shift+Wheel Horizontal Translation')}
-            </h3>
+            </DocText>
             <p className="text-xs text-muted-foreground leading-relaxed">
               {t('desktopComposite.smoothWheelHandler.card2Desc', 'In horizontal viewports or long-scroll carousels, automatically intercepts vertical wheel actions while holding Shift and maps them to horizontal translation.')}
             </p>
           </Card>
           <Card className="p-4 space-y-2">
-            <h3 className="text-sm font-semibold text-foreground">
+            <DocText role="h3">
               {t('desktopComposite.smoothWheelHandler.card3Title', 'Gesture & Drag Decoupling')}
-            </h3>
+            </DocText>
             <p className="text-xs text-muted-foreground leading-relaxed">
               {t('desktopComposite.smoothWheelHandler.card3Desc', 'Instantly terminates smooth scroll interpolation when the user touches the thumb handle or flicks with touchpads, ensuring zero physical friction.')}
             </p>

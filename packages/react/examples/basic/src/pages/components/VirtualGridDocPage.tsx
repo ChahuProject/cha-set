@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function VirtualGridDocPage() {
   const { t } = useChaSetI18n();
@@ -47,12 +48,12 @@ gridRef.current?.scrollToIndex(20, 'center');
       description={t('components.virtualGrid.description', '2D responsive windowed grid virtualizer for massive cards, matrix data, and dynamic layouts.')}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.virtualGrid.overviewHeading', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.virtualGrid.overviewDesc', 'Virtualizing responsive card columns with automatic width calculation and row-based DOM recycling. Use controls below for programmatic navigation.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           qtCode={`ChaSetVirtualGrid {

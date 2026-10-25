@@ -18,6 +18,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { ComponentReference } from '../../components/ComponentReference';
+import { DocText } from '../../components/DocText';
 
 export function KbdDocPage() {
   const { t } = useChaSetI18n();
@@ -84,12 +85,12 @@ export function KbdDocPage() {
     >
       {/* 1. Interactive Sandbox Preview */}
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.kbd.overviewHeading', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('components.kbd.overviewDesc', 'Adjust variant, size, and compact symbol mode in real time with synchronized previews for Web and Desktop.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           title={t('desktopComposite.kbd.sandboxTitle', 'Kbd Sandbox')}
@@ -162,12 +163,12 @@ export function KbdDocPage() {
 
       {/* 3. Variants */}
       <section id="variants" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3" data-toc-title={t('components.kbd.variantsTitle', 'Variants')}>
+        <DocText role="h2" data-toc-title={t('components.kbd.variantsTitle', 'Variants')} className="mb-3">
           {t('components.kbd.variantsTitle', 'Variants')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('components.kbd.variantsDesc', 'Four distinct visual styles designed for menus, search fields, dialogs, and inverted tooltips.')}
-        </p>
+        </DocText>
         <Card className="flex flex-wrap items-center gap-6 p-6">
           <div className="flex flex-col items-center gap-2">
             <span className="text-xs text-muted-foreground">{t('desktopComposite.kbd.outlineDefault', 'Outline (Default)')}</span>
@@ -190,12 +191,12 @@ export function KbdDocPage() {
 
       {/* 4. Key Combinations & Symbols */}
       <section id="combinations" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.kbd.combinationsTitle', 'Key Combinations & Symbols')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.kbd.combinationsDesc', 'Support for multi-key combinations, alternative choices, and compact modifier symbols.')}
-        </p>
+        </DocText>
         <Card className="flex flex-col gap-4 p-6">
           <div className="flex items-center justify-between">
             <span className="text-sm text-foreground">{t('desktopComposite.kbd.compactSymbols', 'Compact Modifier Symbols:')}</span>
@@ -214,12 +215,12 @@ export function KbdDocPage() {
 
       {/* 5. Menu Trailing Shortcuts */}
       <section id="menu-shortcuts" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.kbd.menuTitle', 'Menu Trailing Shortcuts')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.kbd.menuDesc', 'Dedicated Shortcut component with built-in right-alignment and non-shrinking behavior for menu items.')}
-        </p>
+        </DocText>
         <Card className="max-w-xs p-2 space-y-1">
           <div className="flex items-center justify-between rounded px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors duration-quick ease-standard">
             <span>{t('desktopComposite.kbd.newFile', 'New File')}</span>
@@ -238,12 +239,12 @@ export function KbdDocPage() {
 
       {/* 6. Narrow Container Adaptation */}
       <section id="narrow-container" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.kbd.narrowTitle', 'Narrow Container Adaptation')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.kbd.narrowDesc', 'When the parent container is squeezed, the label is truncated while the shortcut stays intact or compresses into symbols.')}
-        </p>
+        </DocText>
         <div className="flex flex-col gap-6">
           <Card className="w-56 p-2 space-y-1 border-dashed">
             <div className="flex items-center justify-between rounded px-2 py-1.5 text-sm">
@@ -259,9 +260,9 @@ export function KbdDocPage() {
           {/* Interactive Multi-Stage Responsive Playground */}
           <div className="flex flex-col gap-3 rounded-lg border border-border bg-card p-4">
             <div className="flex flex-col gap-1">
-              <h3 className="text-sm font-semibold text-foreground">
+              <DocText role="h3">
                 {t('desktopComposite.kbd.playgroundTitle', 'Interactive Multi-Stage Responsive Playground')}
-              </h3>
+              </DocText>
               <p className="text-xs text-muted-foreground">
                 {t('desktopComposite.kbd.playgroundDesc', 'Drag the right handle or adjust the slider to observe how the shortcut bar progresses through 4 adaptive stages: Full scale → Squeezed micro-scale → Compact symbols → +N folded badge with floating popover.')}
               </p>
@@ -400,13 +401,13 @@ export function KbdDocPage() {
 
       {/* 7. Animations */}
       <section id="animations" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.animations', 'Animations')}
-        </h2>
+        </DocText>
         <div>
-          <p className="text-sm text-muted-foreground mb-4">
+          <DocText role="p" className="mb-4">
             {t('desktopComposite.kbd.animationsDesc', 'Interactive micro-interaction transitions aligned with ChaSet tokens.')}
-          </p>
+          </DocText>
           <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
             <li>
               {t('showcase.animationsItem1', 'State changes (hover, press, focus) animate over duration-quick with the ease-standard curve.')}

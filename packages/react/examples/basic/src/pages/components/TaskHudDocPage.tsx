@@ -15,6 +15,7 @@ import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 import { PropsTable } from '../../components/PropsTable';
+import { DocText } from '../../components/DocText';
 
 const TASK_DEFAULTS = {
   progress: -1,
@@ -149,7 +150,7 @@ export function TaskHudDocPage() {
       ]}
     >
       <section id="overview" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">{t('showcase.interactiveOverview', 'Interactive Overview')}</h2>
+        <DocText role="h2">{t('showcase.interactiveOverview', 'Interactive Overview')}</DocText>
         <ComponentPreview
           title={t('desktopComposite.taskHud.sandboxTitle', 'Task HUD Sandbox')}
           reactCode={sandboxReactCode}
@@ -184,9 +185,9 @@ export function TaskHudDocPage() {
           <div className="relative min-h-80 w-full overflow-hidden rounded-xl border border-dashed border-border bg-muted/20 p-6">
             {tasks.length === 0 ? (
               <div className="flex h-64 items-center justify-center">
-                <p className="text-sm text-muted-foreground">
+                <DocText role="p">
                   {t('overlays.taskHud.idleHidden', 'Task HUD is idle and hidden. Press "Add Running" to simulate background jobs.')}
-                </p>
+                </DocText>
               </div>
             ) : null}
             <TaskHud
@@ -201,7 +202,7 @@ export function TaskHudDocPage() {
         </ComponentPreview>
 
         <div className="space-y-4 pt-6">
-          <h3 className="text-lg font-semibold text-foreground">{t('showcase.collapseOverflow', 'Collapse & Overflow')}</h3>
+          <DocText role="h3">{t('showcase.collapseOverflow', 'Collapse & Overflow')}</DocText>
           <ComponentPreview
             title={t('desktopComposite.taskHud.overflowSandboxTitle', 'Collapsed & Overflow')}
             reactCode={overflowReactCode}
@@ -260,7 +261,7 @@ export function TaskHudDocPage() {
       </section>
 
       <section id="installation" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">{t('showcase.installation', 'Installation')}</h2>
+        <DocText role="h2">{t('showcase.installation', 'Installation')}</DocText>
         <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
       </section>
 
@@ -283,10 +284,10 @@ ChaSetTaskHud {
       />
 
       <section id="animations" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">{t('showcase.animations', 'Animations')}</h2>
-        <p className="text-sm text-muted-foreground">
+        <DocText role="h2">{t('showcase.animations', 'Animations')}</DocText>
+        <DocText role="p">
           {t('desktopComposite.taskHud.animationsDesc', 'Motion tokens and kinematic timing contracts for the activity stack and its cards.')}
-        </p>
+        </DocText>
         <ul className="list-disc space-y-1.5 pl-5 text-sm text-foreground">
           <li>
             {t('desktopComposite.taskHud.animEnterPrefix', 'New cards enter with')}{' '}
@@ -322,15 +323,15 @@ ChaSetTaskHud {
       </section>
 
       <section id="keyboard" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">{t('showcase.keyboardNavigation', 'Keyboard Navigation')}</h2>
-        <p className="text-sm text-muted-foreground">
+        <DocText role="h2">{t('showcase.keyboardNavigation', 'Keyboard Navigation')}</DocText>
+        <DocText role="p">
           {t('desktopComposite.taskHud.keyboardDesc', 'The stack is a single tab stop: cards are roving-focus entries inside it.')}
-        </p>
+        </DocText>
         <KeyboardShortcutsTable componentId="task-hud" />
       </section>
 
       <section id="props" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">{t('showcase.propsReference', 'Props Reference')}</h2>
+        <DocText role="h2">{t('showcase.propsReference', 'Props Reference')}</DocText>
         <PropsTable
           items={[
             {
@@ -401,9 +402,9 @@ ChaSetTaskHud {
             },
           ]}
         />
-        <p className="text-sm text-muted-foreground">
+        <DocText role="p">
           {t('components.taskHud.taskItemFooter', 'Each TaskItem carries id, title, an optional detail, a status of queued | running | success | warning | error | cancelled, a progress ratio (or indeterminate), a total/done step counter and elapsedMs.')}
-        </p>
+        </DocText>
       </section>
     </DocLayout>
   );

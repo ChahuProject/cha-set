@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { ComponentReference } from "../../components/ComponentReference";
+import { DocText } from '../../components/DocText';
 
 export function ElidedTextDocPage() {
   const { t } = useChaSetI18n();
@@ -41,10 +42,10 @@ export function ElidedTextDocPage() {
       description={t('components.elided-text.description', 'Smart text truncation with automatic overflow detection, click-to-copy, and contextual tooltip reveal.')}
     >
       <section id="overview" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.elidedText.overviewHeading', 'Interactive Overview')}</h2>
-        <p className="text-sm text-muted-foreground">
+        <DocText role="h2">{t('desktopComposite.elidedText.overviewHeading', 'Interactive Overview')}</DocText>
+        <DocText role="p">
           {t('components.elided-text.overviewDesc', 'Resize the container below using the slider. When the text is clipped with an ellipsis, hovering reveals the full path in a tooltip. Click to copy the full path when copyable is enabled.')}
-        </p>
+        </DocText>
 
         <ComponentPreview title={t('showcase.previewTitles.Elided Text Sandbox', 'Elided Text Sandbox')}
           reactCode={heroReactCode}
@@ -106,10 +107,10 @@ export function ElidedTextDocPage() {
       />
 
       <section id="multi-line-clamping" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground" data-toc-title={t('components.elided-text.multiLineTitle', 'Multi-Line Clamping')}>{t('components.elided-text.multiLineTitle', 'Multi-Line Clamping')}</h2>
-        <p className="text-sm text-muted-foreground">
+        <DocText role="h2" data-toc-title={t('components.elided-text.multiLineTitle', 'Multi-Line Clamping')}>{t('components.elided-text.multiLineTitle', 'Multi-Line Clamping')}</DocText>
+        <DocText role="p">
           {t('components.elided-text.multiLineDesc', 'Using maxLines={2}, text wraps up to two lines before truncating with an ellipsis.')}
-        </p>
+        </DocText>
         <Card className="p-4 max-w-sm">
           <ElidedText
             maxLines={2}
@@ -121,13 +122,13 @@ export function ElidedTextDocPage() {
 
             {/* Animations */}
       <section id="animations" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.animations', 'Animations')}
-        </h2>
+        </DocText>
         <div>
-          <p className="text-sm text-muted-foreground mb-4">
+          <DocText role="p" className="mb-4">
             {t('showcase.animationsDesc', 'Motion behavior and timing for interactive states aligned with ChaSet tokens.')}
-          </p>
+          </DocText>
           <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
             <li>
               {t('showcase.animationsItem1', 'State changes (hover, press, focus) animate over duration-quick with the ease-standard curve.')}

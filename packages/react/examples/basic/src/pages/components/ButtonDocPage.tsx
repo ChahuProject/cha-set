@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { ComponentReference } from "../../components/ComponentReference";
+import { DocText } from '../../components/DocText';
 
 export function ButtonDocPage() {
   const { t } = useChaSetI18n();
@@ -156,11 +157,11 @@ export function ButtonDocPage() {
 
       {/* 3. Examples */}
       <section id="states" className="my-10">
-        <h2 className="text-xl font-bold tracking-tight mb-4">{t('showcase.examplesAndStates', 'Examples & States')}</h2>
+        <DocText role="h2" className="mb-4">{t('showcase.examplesAndStates', 'Examples & States')}</DocText>
 
         {/* Variants */}
         <div id="variants" className="my-6">
-          <h3 className="text-base font-semibold mb-2">{t('components.button.variantsTitle', 'Variants')}</h3>
+          <DocText role="h3" className="mb-2">{t('components.button.variantsTitle', 'Variants')}</DocText>
           <p className="text-xs text-muted-foreground mb-3">
             {t('components.button.variantsDesc', 'Use the variant prop to change the visual hierarchy.')}
           </p>
@@ -182,7 +183,7 @@ export function ButtonDocPage() {
 
         {/* Sizes */}
         <div id="sizes" className="my-6">
-          <h3 className="text-base font-semibold mb-2">{t('components.button.sizesTitle', 'Sizes')}</h3>
+          <DocText role="h3" className="mb-2">{t('components.button.sizesTitle', 'Sizes')}</DocText>
           <p className="text-xs text-muted-foreground mb-3">
             {t('components.button.sizesDesc', 'Available in standardized sizes: xs, sm, default, lg, and icon variants.')}
           </p>
@@ -202,7 +203,7 @@ export function ButtonDocPage() {
 
         {/* States */}
         <div id="states" className="my-6">
-          <h3 className="text-base font-semibold mb-2">{t('components.button.statesTitle', 'States & Loading')}</h3>
+          <DocText role="h3" className="mb-2">{t('components.button.statesTitle', 'States & Loading')}</DocText>
           <p className="text-xs text-muted-foreground mb-3">
             {t('components.button.statesDesc', 'Buttons handle loading, pressed, and disabled states automatically, preserving width and blocking pointer events.')}
           </p>
@@ -220,7 +221,7 @@ export function ButtonDocPage() {
 
         {/* Button Group & Icons */}
         <div id="button-group" className="my-6">
-          <h3 className="text-base font-semibold mb-2">{t('components.button.groupTitle', 'Button Group & Icons')}</h3>
+          <DocText role="h3" className="mb-2">{t('components.button.groupTitle', 'Button Group & Icons')}</DocText>
           <p className="text-xs text-muted-foreground mb-3">
             {t('components.button.groupDesc', 'Group related buttons cohesively with ButtonGroup, and enrich buttons with leading or trailing icons.')}
           </p>
@@ -245,13 +246,13 @@ export function ButtonDocPage() {
       
             {/* Animations */}
       <section id="animations" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.animations', 'Animations')}
-        </h2>
+        </DocText>
         <div>
-          <p className="text-sm text-muted-foreground mb-4">
+          <DocText role="p" className="mb-4">
             {t('showcase.animationsDesc', 'Motion behavior and timing for interactive states aligned with ChaSet tokens.')}
-          </p>
+          </DocText>
           <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
             <li>
               {t('showcase.animationsItem1', 'State changes (hover, press, focus) animate over duration-quick with the ease-standard curve.')}

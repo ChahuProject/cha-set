@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function SplitterDocPage() {
   const { t } = useChaSetI18n();
@@ -59,12 +60,12 @@ export function SplitterDocPage() {
       description={t('components.splitter.description', 'Multi-pane resizable layout container with draggable gutters and collapse limits for IDEs and desktop toolkits.')}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.splitter.overviewHeading', 'Horizontal Splitter')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.splitter.horizontalDesc', 'Hover over the gutter between panes and drag horizontally to resize panels. Double-click to reset.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           title={t('desktopComposite.splitter.horizontalSandboxTitle', 'Horizontal Splitter Sandbox')}
@@ -127,12 +128,12 @@ ChaSetSplitter {
 
 
       <section id="vertical" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.splitter.verticalTitle', 'Vertical Splitter')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.splitter.verticalDesc', 'Top and bottom pane split with horizontal divider line. Drag vertically to resize console output.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           title={t('desktopComposite.splitter.verticalSandboxTitle', 'Vertical Splitter')}
@@ -172,12 +173,12 @@ ChaSetSplitter {
       </section>
 
       <section id="animations" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.animations', 'Animations')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.splitter.animationsDesc', 'Motion tokens and kinematic timing contracts for Splitter divider gutters.')}
-        </p>
+        </DocText>
         <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
           <li>
             {t('desktopComposite.splitter.animationsBullet1', 'Gutter indicator color and opacity transitions animate smoothly over duration-quick (150ms) using ease-standard curve (Qt counterpart: ThemeTokens.motionQuick and ThemeTokens.easeStandard).')}

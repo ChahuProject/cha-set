@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function SelectDocPage() {
   const { t } = useChaSetI18n();
@@ -32,12 +33,12 @@ export function SelectDocPage() {
       description={t('components.select.description', 'Displays a list of options for the user to pick from, triggered by a button with item indicators and scroll buttons.')}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.select.overviewHeading', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('formsA.select.overviewDesc', 'Select an item from the menu. Selected value: {{value}}', { value })}
-        </p>
+        </DocText>
 
         <ComponentPreview
           qtCode={`ChaSetSelect {

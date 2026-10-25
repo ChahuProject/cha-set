@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function KeybindingRecorderDocPage() {
   const { t } = useChaSetI18n();
@@ -22,12 +23,12 @@ export function KeybindingRecorderDocPage() {
       description={t('components.keybinding-recorder.description', 'Interactive keyboard sequence recorder that captures desktop accelerator combinations (Ctrl, Alt, Shift, Meta).')}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.keybindingRecorder.overviewHeading', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.keybindingRecorder.overviewDesc', 'Click the recorder box below and press any key combination (e.g. {{example}}).', { example: 'Ctrl+Alt+S' })}
-        </p>
+        </DocText>
 
         <ComponentPreview
           qtCode={`ChaSetKeybindingRecorder {
@@ -68,12 +69,12 @@ ChaSetKeybindingRecorder {
 
 
       <section id="variants" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('components.keybindingRecorder.sizesAndStates', 'Sizes & States')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('components.keybindingRecorder.sizesAndStatesDesc', 'Available in default and sm sizing tiers, with optional clearing and disabled states.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           qtCode={`ChaSetKeybindingRecorder { value: "Ctrl+K"; size: "default" }

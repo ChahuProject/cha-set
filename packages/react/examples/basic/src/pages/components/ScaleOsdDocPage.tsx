@@ -6,6 +6,7 @@ import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 import { PropsTable } from '../../components/PropsTable';
+import { DocText } from '../../components/DocText';
 
 export function ScaleOsdDocPage() {
   const { t } = useChaSetI18n();
@@ -35,7 +36,7 @@ export function ScaleOsdDocPage() {
       description={t('components.scaleOsd.description', 'Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide.')}
     >
       <section id="overview" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.scaleOsd.overviewHeading', 'Interactive Overview')}</h2>
+        <DocText role="h2">{t('desktopComposite.scaleOsd.overviewHeading', 'Interactive Overview')}</DocText>
         <ComponentPreview
           qtCode={`ChaSetScaleOsd {
     value: 1.0
@@ -165,22 +166,22 @@ ChaSetScaleOsd {
 
 
       <section id="animations" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">{t('showcase.animations', 'Animations')}</h2>
-        <p className="text-sm text-muted-foreground">
+        <DocText role="h2">{t('showcase.animations', 'Animations')}</DocText>
+        <DocText role="p">
           {t('desktopComposite.scaleOsd.animationsDesc', 'OSD enter and exit transitions run over duration-short (120ms) with the ease-standard curve (Qt: ThemeTokens.motionShort / ThemeTokens.easeStandard). The 1400ms auto-hide countdown pauses deterministically on hover.')}
-        </p>
+        </DocText>
       </section>
 
       <section id="keyboard" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">{t('showcase.keyboardNavigation', 'Keyboard Navigation')}</h2>
-        <p className="text-sm text-muted-foreground">
+        <DocText role="h2">{t('showcase.keyboardNavigation', 'Keyboard Navigation')}</DocText>
+        <DocText role="p">
           {t('showcase.keyboardDesc', 'Keyboard shortcuts and interaction patterns for this component.')}
-        </p>
+        </DocText>
         <KeyboardShortcutsTable componentId="scale-osd" />
       </section>
 
       <section id="props" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">{t('showcase.propsReference', 'Props Reference')}</h2>
+        <DocText role="h2">{t('showcase.propsReference', 'Props Reference')}</DocText>
         <PropsTable
           items={[
             {

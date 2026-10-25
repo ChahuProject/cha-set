@@ -3,6 +3,7 @@ import { Squircle, Button, Card, Badge, Input, CodeBlock, useChaSetI18n } from '
 import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocFooterSections } from '../../components/DocFooterSections';
+import { DocText } from '../../components/DocText';
 
 export function SquircleDocPage() {
   const { t } = useChaSetI18n();
@@ -96,7 +97,7 @@ export function PremiumCard({ children }: { children: React.ReactNode }) {
       ]}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold mb-4 text-foreground">{t('desktopComposite.squircle.overviewHeading', 'Interactive Overview')}</h2>
+        <DocText role="h2" className="mb-4">{t('desktopComposite.squircle.overviewHeading', 'Interactive Overview')}</DocText>
         <ComponentPreview
           title={t('desktopComposite.squircle.sandboxTitle', 'Squircle Sandbox & Curvature Comparison')}
           reactCode={heroReactCode}
@@ -193,28 +194,28 @@ export function PremiumCard({ children }: { children: React.ReactNode }) {
 
       {/* 2. Installation & Global Adoption Guide */}
       <section id="installation" className="mt-12 scroll-mt-20 space-y-6">
-        <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.squircle.installHeading', 'Installation')}
-        </h2>
+        </DocText>
         <CodeBlock code="pnpm add @chahu/cha-set" language="bash" />
 
         <div className="pt-4 space-y-6 border-t border-border">
           <div>
-            <h3 className="text-lg font-semibold tracking-tight text-foreground mb-1">
+            <DocText role="h3" className="mb-1">
               {t('desktopComposite.squircle.guideTitle', 'Global Adoption Guide for External Projects')}
-            </h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
+            </DocText>
+            <DocText role="p">
               {t('desktopComposite.squircle.guideDesc', 'External projects adopt the ChaSet iOS continuous-curvature system via two progressive enhancement strategies: the base layer accelerates all Tailwind utilities at zero cost through modern browser CSS features; legacy environments or high-precision bordered geometry fall back to guaranteed rendering through the primitive component.')}
-            </p>
+            </DocText>
           </div>
 
           {/* Section 1: Universal CSS Acceleration */}
           <Card className="p-5 space-y-3 bg-card text-card-foreground border border-border">
             <div className="flex items-center gap-2">
               <Badge variant="default">{t('desktopComposite.squircle.strategyBadge1', 'Strategy 1')}</Badge>
-              <h4 className="text-sm font-semibold text-foreground">
+              <DocText role="h4">
                 {t('desktopComposite.squircle.strategy1Title', 'Universal CSS Acceleration (Global CSS Continuous-Curvature Acceleration)')}
-              </h4>
+              </DocText>
             </div>
             <p className="text-xs text-muted-foreground leading-relaxed">
               {t('desktopComposite.squircle.strategy1Desc', 'Add a CSS feature query in the host project global stylesheet (e.g. globals.css or index.css). Every element based on Tailwind rounded-* utilities is instantly promoted to iOS continuous-curvature superellipses, smoothly eliminating harsh edge creases.')}
@@ -236,9 +237,9 @@ export function PremiumCard({ children }: { children: React.ReactNode }) {
           <Card className="p-5 space-y-3 bg-card text-card-foreground border border-border">
             <div className="flex items-center gap-2">
               <Badge variant="secondary">{t('desktopComposite.squircle.strategyBadge2', 'Strategy 2')}</Badge>
-              <h4 className="text-sm font-semibold text-foreground">
+              <DocText role="h4">
                 {t('desktopComposite.squircle.strategy2Title', 'Guaranteed Progressive Enhancement (Container Progressive Enhancement)')}
-              </h4>
+              </DocText>
             </div>
             <p className="text-xs text-muted-foreground leading-relaxed">
               {t('desktopComposite.squircle.strategy2Desc', 'For dialogs (Dialog/Sheet), highlight cards, or browser engines without CSS corner-shape support, wrap content with the ChaSet component. Internally it clips via SVG clipPath with ResizeObserver-driven geometry, guaranteeing 100% cross-platform pixel-smooth rendering.')}
@@ -260,9 +261,9 @@ export function PremiumCard({ children }: { children: React.ReactNode }) {
           <Card className="p-5 space-y-3 bg-card text-card-foreground border border-border">
             <div className="flex items-center gap-2">
               <Badge variant="outline">{t('desktopComposite.squircle.strategyBadge3', 'Strategy 3')}</Badge>
-              <h4 className="text-sm font-semibold text-foreground">
+              <DocText role="h4">
                 {t('desktopComposite.squircle.strategy3Title', 'Design Tokens Configuration (Global Design-Token Setup)')}
-              </h4>
+              </DocText>
             </div>
             <p className="text-xs text-muted-foreground leading-relaxed">
               {t('desktopComposite.squircle.strategy3Desc', 'ChaSet core design tokens ship built-in curvature variables. Host projects may define --cs-corner-shape and --cs-corner-smoothing at the root level, and the full component library automatically inherits the matching curvature.')}

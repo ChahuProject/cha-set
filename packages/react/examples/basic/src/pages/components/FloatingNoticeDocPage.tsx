@@ -13,6 +13,7 @@ import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 import { PropsTable } from '../../components/PropsTable';
+import { DocText } from '../../components/DocText';
 
 export function FloatingNoticeDocPage() {
   const { t } = useChaSetI18n();
@@ -99,15 +100,15 @@ export function FloatingNoticeDocPage() {
       )}
     >
       <section id="overview" className="space-y-4">
-        <h2 className="text-xl font-semibold tracking-tight">
+        <DocText role="h2">
           {t('showcase.toc.overview', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground">
+        </DocText>
+        <DocText role="p">
           {t(
             'overlays.floatingNotice.overviewLead',
             'Floating notice stacks multiple transient messages, showing highest-priority card in front with queued cards peeking behind. Hovering pauses expiry and smoothly zooms for enhanced visibility.'
           )}
-        </p>
+        </DocText>
 
         <ComponentPreview
           title={t('overlays.floatingNotice.previewTitle', 'Floating Notice Stack')}
@@ -227,28 +228,28 @@ ChaSetFloatingNotice {
       />
 
       <section id="animations" className="space-y-4">
-        <h2 className="text-xl font-semibold tracking-tight">
+        <DocText role="h2">
           {t('showcase.toc.animations', 'Animations')}
-        </h2>
-        <p className="text-sm text-muted-foreground">
+        </DocText>
+        <DocText role="p">
           {t(
             'overlays.floatingNotice.animationsDesc',
             'Floating Notice utilizes shared motion tokens for micro-interactions: zoom-on-hover utilizes duration-short (120ms) ease-standard; notice cycling and indicator dots use duration-quick (90ms); dismiss transitions fade and slide out smoothly.'
           )}
-        </p>
+        </DocText>
       </section>
 
       <section id="keyboard" className="space-y-4">
-        <h2 className="text-xl font-semibold tracking-tight">
+        <DocText role="h2">
           {t('showcase.toc.keyboard', 'Keyboard Navigation')}
-        </h2>
+        </DocText>
         <KeyboardShortcutsTable componentId="floating-notice" />
       </section>
 
       <section id="props" className="space-y-4">
-        <h2 className="text-xl font-semibold tracking-tight">
+        <DocText role="h2">
           {t('showcase.toc.props', 'Props Reference')}
-        </h2>
+        </DocText>
         <PropsTable
           items={[
             {

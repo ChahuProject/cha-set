@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Badge, Input, Checkbox, CopyButton, useChaSetI18n, type ButtonVariant, type ButtonSize } from '@chahu/cha-set';
+import { DocText } from './DocText';
 
 export const ComponentPlayground: React.FC = () => {
   const { t } = useChaSetI18n();
@@ -25,7 +26,7 @@ export const ComponentPlayground: React.FC = () => {
     <section className="block playground-block" id="playground">
       <div className="block-header">
         <div>
-          <h2>{t('getStarted.themeTuner.playground.title', 'Interactive Component Sandbox')}</h2>
+          <DocText role="h2">{t('getStarted.themeTuner.playground.title', 'Interactive Component Sandbox')}</DocText>
           <p className="desc">
             {t('getStarted.themeTuner.playground.desc', 'Adjust props live, interact with the component, and copy ready-to-use code directly into your app.')}
           </p>

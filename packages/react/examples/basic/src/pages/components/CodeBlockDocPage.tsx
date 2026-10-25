@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 const TSX_SAMPLE = `import { useState } from 'react';
 
@@ -80,12 +81,12 @@ export function CodeBlockDocPage() {
       description={t('components.code-block.description', 'Spec-driven syntax-highlighted code viewer composed from ChaSet scroll, copy, tab, and card primitives over a shared zero-dependency lexer — identical tokenization and colors on React and Qt.')}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.interactiveOverview', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.codeBlock.overviewDesc', 'A syntax-highlighted source viewer with a language label and one-click copy. Highlighting is produced by the shared spec lexer — no third-party highlighter is shipped on either stack.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           qtCode={`ChaSetCodeBlock {\n    language: "tsx"\n    showLineNumbers: true\n    code: source\n}`} title={t('desktopComposite.codeBlock.sandboxTitle', 'Code Block Sandbox')} reactCode={reactCode}>
@@ -119,12 +120,12 @@ ChaSetCodeBlock {
 
 
       <section id="variants" data-toc-title={t('desktopComposite.codeBlock.variantsTitle', 'Variants & Options')} className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.codeBlock.variantsTitle', 'Variants & Options')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.codeBlock.variantsDesc', 'Line numbers, soft wrapping, bounded height with vertical scrolling, monochrome mode, and chrome-less embedding for inline prose.')}
-        </p>
+        </DocText>
 
         <div className="flex flex-col gap-6">
           <div>
@@ -166,22 +167,22 @@ ChaSetCodeBlock {
       </section>
 
       <section id="multi-file" data-toc-title={t('desktopComposite.codeBlock.multiFileTitle', 'Multi-File Tabs')} className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.codeBlock.multiFileTitle', 'Multi-File Tabs')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.codeBlock.multiFileDesc', 'Pass a files array to render a tabbed group. Each tab carries its own language, and the copy button always targets the active file.')}
-        </p>
+        </DocText>
         <CodeBlock files={MULTI_FILE_SAMPLE} showLineNumbers />
       </section>
 
       <section id="animations" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.animations', 'Animations')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.codeBlock.animationsDesc', 'Motion behavior and timing for file switching and the header affordances.')}
-        </p>
+        </DocText>
         <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
           <li>
             {t('desktopComposite.codeBlock.animationsBullet1', 'Switching the active file cross-fades the body in over animate-in fade-in-0 — the duration resolves to the short motion token with the entrance curve.')}

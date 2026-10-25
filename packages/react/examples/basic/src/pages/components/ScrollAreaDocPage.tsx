@@ -7,6 +7,7 @@ import { ComponentReference } from "../../components/ComponentReference";
 import { PropsTable } from '../../components/PropsTable';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 import { CHANGELOG_DATA, FEATURE_CARDS_DATA } from '../../data/showcaseData.generated';
+import { DocText } from '../../components/DocText';
 
 const SAMPLE_TAGS = CHANGELOG_DATA.map((item) => ({
   version: item.version,
@@ -84,7 +85,7 @@ export function ScrollAreaDocPage() {
     {/* 2D Grid Content */}
   </div>`
       : `<div className="p-4">
-    <h4 className="mb-4 text-sm font-medium">Release Changelog</h4>
+    <DocText role="h4" className="mb-4">Release Changelog</DocText>
     {tags.map((tag) => (
       <div key={tag.version} className="text-sm py-2 border-b">
         {tag.version} — {tag.desc}
@@ -207,9 +208,9 @@ export function ScrollAreaDocPage() {
               >
                 <div className="p-4">
                   <div className="flex items-center justify-between mb-3">
-                    <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    <DocText role="overline" tone="muted">
                       {t('surfaces.scrollArea.releaseChangelog', 'Release Changelog & Tags (120 Items)')}
-                    </h4>
+                    </DocText>
                     <span className="text-[0.625rem] text-muted-foreground font-mono">{t('surfaces.scrollArea.entriesCount', '{{count}} entries', { count: 120 })}</span>
                   </div>
                   <div className="divide-y divide-border/50">
@@ -277,9 +278,9 @@ export function ScrollAreaDocPage() {
               >
                 <div className="p-4 w-[53.125rem]">
                   <div className="flex items-center justify-between mb-3">
-                    <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    <DocText role="overline" tone="muted">
                       {t('surfaces.scrollArea.matrixHeader', 'Dual-Axis Matrix (100 Rows × 6 Columns)')}
-                    </h4>
+                    </DocText>
                     <span className="text-[0.625rem] text-muted-foreground font-mono">{t('surfaces.scrollArea.itemsCount', '{{count}} items', { count: 100 })}</span>
                   </div>
                   <Table columns={MATRIX_COLUMNS} data={SAMPLE_MATRIX_ROWS} interactive />
@@ -302,7 +303,7 @@ export function ScrollAreaDocPage() {
       {/* 2. Installation */}
       {/* 3. Horizontal Example Card */}
       <section id="horizontal-example" data-toc-title={t('desktopComposite.scrollArea.horizontalTitle', 'Horizontal Example')} className="my-10">
-        <h2 className="text-xl font-bold tracking-tight mb-2">{t('desktopComposite.scrollArea.horizontalTitle', 'Horizontal Example')}</h2>
+        <DocText role="h2" className="mb-2">{t('desktopComposite.scrollArea.horizontalTitle', 'Horizontal Example')}</DocText>
         <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
           {t('desktopComposite.scrollArea.horizontalDesc', 'Hover over the bottom scrollbar to reveal the left and right stepper buttons.')}
         </p>
@@ -320,7 +321,7 @@ export function ScrollAreaDocPage() {
                   className="w-60 p-4 rounded-xl border border-border bg-card shadow-xs shrink-0"
                 >
                   <span className="text-[0.625rem] font-mono font-semibold text-primary uppercase">{card.tag}</span>
-                  <h4 className="text-sm font-bold mt-1 text-foreground">{card.title}</h4>
+                  <DocText role="h4" className="mt-1">{card.title}</DocText>
                   <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{card.desc}</p>
                 </div>
               ))}
@@ -346,7 +347,7 @@ export function ScrollAreaDocPage() {
 
       {/* 4. Dual-Axis Example */}
       <section id="dual-axis" data-toc-title={t('desktopComposite.scrollArea.dualAxisTitle', 'Dual-Axis')} className="my-10">
-        <h2 className="text-xl font-bold tracking-tight mb-2">{t('desktopComposite.scrollArea.dualAxisTitle', 'Dual-Axis')}</h2>
+        <DocText role="h2" className="mb-2">{t('desktopComposite.scrollArea.dualAxisTitle', 'Dual-Axis')}</DocText>
         <p className="text-xs text-muted-foreground mb-4">
           {t('desktopComposite.scrollArea.dualAxisDesc', 'When content exceeds both width and height, both scrollbars render with a synchronized corner piece.')}
         </p>
@@ -425,7 +426,7 @@ export const CrossStackSpecification = {
 
       {/* 5. Hot Zone & Dynamic Width Feature */}
       <section id="dual-box-hot-zone" data-toc-title={t('desktopComposite.scrollArea.hotZoneTitle', 'Dual-Box Hot Zone')} className="my-10">
-        <h2 className="text-xl font-bold tracking-tight mb-2">{t('desktopComposite.scrollArea.hotZoneTitle', 'Dual-Box Hot Zone')}</h2>
+        <DocText role="h2" className="mb-2">{t('desktopComposite.scrollArea.hotZoneTitle', 'Dual-Box Hot Zone')}</DocText>
         <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
           {t('desktopComposite.scrollArea.hotZoneDesc', 'Traditional narrow scrollbars are difficult to target with a mouse pointer. ChaSet introduces a compact 0.5rem transparent interaction hot-zone paired with an animated visual indicator that expands from 0.25rem (idle) to 0.5rem (hover) with 150ms cubic easing.')}
         </p>
@@ -450,13 +451,13 @@ export const CrossStackSpecification = {
 
       {/* 6. Stepper Navigation */}
       <section id="stepper-buttons" data-toc-title={t('desktopComposite.scrollArea.stepperTitle', 'Stepper Buttons')} className="my-10">
-        <h2 className="text-xl font-bold tracking-tight mb-2">{t('desktopComposite.scrollArea.stepperTitle', 'Stepper Buttons')}</h2>
+        <DocText role="h2" className="mb-2">{t('desktopComposite.scrollArea.stepperTitle', 'Stepper Buttons')}</DocText>
         <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
           {t('desktopComposite.scrollArea.stepperDesc', 'Hovering the scrollbar reveals two-end stepper action buttons:')}
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
           <div className="p-4 rounded-lg border border-border bg-card/40">
-            <h4 className="font-semibold mb-2">{t('desktopComposite.scrollArea.verticalClusterTitle', 'Vertical Cluster')}</h4>
+            <DocText role="h4" className="mb-2">{t('desktopComposite.scrollArea.verticalClusterTitle', 'Vertical Cluster')}</DocText>
             <ul className="space-y-1 text-muted-foreground list-disc pl-4">
               <li>{t('desktopComposite.scrollArea.verticalTop', 'Top: To Top (Home) & Page Up (85% viewport step)')}</li>
               <li>{t('desktopComposite.scrollArea.verticalBottom', 'Bottom: Page Down & To Bottom (End)')}</li>
@@ -464,7 +465,7 @@ export const CrossStackSpecification = {
             </ul>
           </div>
           <div className="p-4 rounded-lg border border-border bg-card/40">
-            <h4 className="font-semibold mb-2">{t('desktopComposite.scrollArea.horizontalClusterTitle', 'Horizontal Cluster')}</h4>
+            <DocText role="h4" className="mb-2">{t('desktopComposite.scrollArea.horizontalClusterTitle', 'Horizontal Cluster')}</DocText>
             <ul className="space-y-1 text-muted-foreground list-disc pl-4">
               <li>{t('desktopComposite.scrollArea.horizontalLeft', 'Left: To Start (Home) & Page Left')}</li>
               <li>{t('desktopComposite.scrollArea.horizontalRight', 'Right: Page Right & To End (End)')}</li>

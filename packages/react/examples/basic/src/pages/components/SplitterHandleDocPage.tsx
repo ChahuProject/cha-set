@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function SplitterHandleDocPage() {
   const { t } = useChaSetI18n();
@@ -66,10 +67,10 @@ export function SplitterHandleDocPage() {
       description={t('components.splitterHandle.description', 'Edge resize handle with reference item coordinate stabilization, min/max clamping, and keyboard navigation.')}
     >
       <section id="overview" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.splitterHandle.overviewHeading', 'Interactive Overview')}</h2>
-        <p className="text-sm text-muted-foreground">
+        <DocText role="h2">{t('desktopComposite.splitterHandle.overviewHeading', 'Interactive Overview')}</DocText>
+        <DocText role="p">
           {t('desktopComposite.splitterHandle.overviewDesc', 'Drag the right edge handle to resize the sidebar. Double click or press Enter to reset to 200.')}
-        </p>
+        </DocText>
 
         <ComponentPreview title={t('desktopComposite.splitterHandle.sandboxTitle', 'Splitter Handle Sandbox')}
           reactCode={heroReactCode}
@@ -132,14 +133,14 @@ ChaSetSplitterHandle {
 
 
       <section id="vertical-edge-handle" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.splitterHandle.verticalTitle', 'Vertical Edge Handle')}</h2>
-        <p className="text-sm text-muted-foreground flex items-center gap-1.5 flex-wrap">
+        <DocText role="h2">{t('desktopComposite.splitterHandle.verticalTitle', 'Vertical Edge Handle')}</DocText>
+        <DocText role="p" className="flex items-center gap-1.5 flex-wrap">
           <span>{t('desktopComposite.splitterHandle.horizontalPrefix', 'Handles can also be attached to horizontal edges (')}</span>
           <CopyableBadge size="sm" text="top" />
           <span>{t('common.or', 'or')}</span>
           <CopyableBadge size="sm" text="bottom" />
           <span>{t('desktopComposite.splitterHandle.horizontalSuffix', ') for bottom console or drawer resizing.')}</span>
-        </p>
+        </DocText>
         <Card className="w-full max-w-xl mx-auto h-64 flex flex-col overflow-hidden bg-card">
           <div className="flex-1 p-4 text-sm text-muted-foreground">
             {t('surfaces.splitterHandle.editorCanvasArea')}
@@ -164,10 +165,10 @@ ChaSetSplitterHandle {
       </section>
 
       <section id="animations" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">{t('showcase.animations', 'Animations')}</h2>
-        <p className="text-sm text-muted-foreground">
+        <DocText role="h2">{t('showcase.animations', 'Animations')}</DocText>
+        <DocText role="p">
           {t('desktopComposite.splitterHandle.animationsDesc', 'Motion tokens and kinematic timing contracts for SplitterHandle edge indicators.')}
-        </p>
+        </DocText>
         <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
           <li>
             {t('desktopComposite.splitterHandle.animationsBullet1', 'Active indicator color and opacity transitions animate smoothly over duration-quick (150ms) using ease-standard curve (Qt counterpart: ThemeTokens.motionQuick and ThemeTokens.easeStandard).')}

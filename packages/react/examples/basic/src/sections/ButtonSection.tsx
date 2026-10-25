@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Button, ScrollArea, SettingsIcon, useChaSetI18n } from '@chahu/cha-set';
+import { DocText } from '../components/DocText';
 
 const VARIANTS = ['default', 'secondary', 'outline', 'ghost', 'destructive', 'link'] as const;
 const SIZES = ['sm', 'default', 'lg', 'icon'] as const;
@@ -14,7 +15,7 @@ export default function ButtonSection() {
     <section className="block" id="button">
       <div className="block-header">
         <div>
-          <h2>{t('desktopComposite.buttonSection.title', 'Components · Button Matrix')}</h2>
+          <DocText role="h2">{t('desktopComposite.buttonSection.title', 'Components · Button Matrix')}</DocText>
           <p className="desc">
             {t('desktopComposite.buttonSection.desc', 'Neutral contract (spec/components/button.ts) implemented via @base-ui/react. Full variant × size matrix, polymorphic link rendering, and asynchronous loading states.')}
           </p>

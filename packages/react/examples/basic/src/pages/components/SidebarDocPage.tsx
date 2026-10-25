@@ -23,6 +23,7 @@ import { DocLayout } from "../../layout/DocLayout";
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from "../../components/ComponentPreview";
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function SidebarDocPage() {
   const { t } = useChaSetI18n();
@@ -67,9 +68,9 @@ export function SidebarDocPage() {
       description={t('components.sidebar.description', 'Composable, responsive and resizable desktop-grade sidebar navigation system supporting icon-collapse, offcanvas drawers, and custom rem sizing.')}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.sidebar.overviewHeading', 'Interactive Overview')}
-        </h2>
+        </DocText>
       <ComponentPreview
           qtCode={`ChaSetSidebar {
     id: sidebar
@@ -171,9 +172,9 @@ export function SidebarDocPage() {
                   {t('surfaces.sidebar.selectedView')} <Badge variant="outline">{activeItem}</Badge>
                 </span>
               </div>
-              <p className="text-sm text-muted-foreground">
+              <DocText role="p">
                 {t('surfaces.sidebar.dragHint')}
-              </p>
+              </DocText>
               <div className="flex items-center gap-3 mt-auto">
                 <span className="text-xs text-muted-foreground font-medium">{t('surfaces.sidebar.collapsibleMode')}</span>
                 <SegmentedControl

@@ -2,6 +2,7 @@ import React from 'react';
 import { useChaSetI18n, CopyableBadge } from '@chahu/cha-set';
 import { KeyboardShortcutsTable } from './KeyboardShortcutsTable';
 import { PropsTable, type PropItem } from './PropsTable';
+import { DocText } from './DocText';
 
 export interface SubComponentProps {
   title: string;
@@ -28,16 +29,16 @@ export function DocFooterSections({
     <div className="flex flex-col gap-10 mt-12 mb-8">
       {/* 1. Animations Section */}
       <section id="animations" className="scroll-mt-20">
-        <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.animations', 'Animations')}
-        </h2>
+        </DocText>
         {animations ? (
           animations
         ) : (
           <div>
-            <p className="text-sm text-muted-foreground mb-4">
+            <DocText role="p" className="mb-4">
               {t('showcase.animationsDesc', 'Motion behavior and timing for interactive states aligned with ChaSet tokens.')}
-            </p>
+            </DocText>
             <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
               <li>
                 {t('showcase.animationsItem1', 'State changes (hover, press, focus) animate over duration-quick with the ease-standard curve.')}
@@ -58,20 +59,20 @@ export function DocFooterSections({
 
       {/* 2. Keyboard Navigation Section */}
       <section id="keyboard" className="scroll-mt-20">
-        <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.keyboardNavigation', 'Keyboard Navigation')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('showcase.keyboardDesc', 'Keyboard shortcuts and interaction patterns for this component.')}
-        </p>
+        </DocText>
         <KeyboardShortcutsTable componentId={componentId} />
       </section>
 
       {/* 3. Props Reference Section */}
       <section id="props" className="scroll-mt-20">
-        <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.propsReference', 'Props Reference')}
-        </h2>
+        </DocText>
         {props && props.length > 0 && (
           <PropsTable props={props} componentId={componentId} />
         )}
@@ -80,7 +81,7 @@ export function DocFooterSections({
           <div className="space-y-6">
             {subComponents.map((sub) => (
               <div key={sub.title}>
-                <h3 className="text-sm font-semibold text-foreground mb-1">{sub.title}</h3>
+                <DocText role="h3" className="mb-1">{sub.title}</DocText>
                 {sub.description && (
                   <p className="text-xs text-muted-foreground mb-2">{sub.description}</p>
                 )}

@@ -13,6 +13,7 @@ import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 import { PropsTable } from '../../components/PropsTable';
+import { DocText } from '../../components/DocText';
 
 export function NotificationStackDocPage() {
   const { t } = useChaSetI18n();
@@ -142,7 +143,7 @@ export function NotificationStackDocPage() {
       description={t('components.notificationStack.description', 'Floating, severity-coded notification stack with per-item lifetimes and inline actions.')}
     >
       <section id="overview" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.notificationStack.overviewHeading', 'Interactive Overview')}</h2>
+        <DocText role="h2">{t('desktopComposite.notificationStack.overviewHeading', 'Interactive Overview')}</DocText>
         <ComponentPreview
           title={t('desktopComposite.notificationStack.sandboxTitle', 'Notification Stack Sandbox')}
           reactCode={feedReactCode}
@@ -168,9 +169,9 @@ export function NotificationStackDocPage() {
         >
           <div className="relative flex min-h-80 w-full items-start justify-center rounded-xl border border-dashed border-border bg-muted/20 p-6">
             {live.length === 0 ? (
-              <p className="text-sm text-muted-foreground">
+              <DocText role="p">
                 {t('overlays.notificationStack.noNotifications', 'No notifications queued. Push one to watch its lifetime countdown; hover the stack to suspend every countdown at once.')}
-              </p>
+              </DocText>
             ) : null}
             <NotificationStack
               notifications={live}
@@ -182,7 +183,7 @@ export function NotificationStackDocPage() {
       </section>
 
       <section id="levels" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.notificationStack.levelsTitle', 'Levels & Actions')}</h2>
+        <DocText role="h2">{t('desktopComposite.notificationStack.levelsTitle', 'Levels & Actions')}</DocText>
         <ComponentPreview
           title={t('desktopComposite.notificationStack.levelsTitle', 'Levels & Actions')}
           reactCode={levelsReactCode}
@@ -246,10 +247,10 @@ ChaSetNotificationStack {
       />
 
       <section id="animations" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">{t('showcase.animations', 'Animations')}</h2>
-        <p className="text-sm text-muted-foreground">
+        <DocText role="h2">{t('showcase.animations', 'Animations')}</DocText>
+        <DocText role="p">
           {t('desktopComposite.notificationStack.animationsDesc', 'Motion tokens and lifetime contracts shared with the activity stack.')}
-        </p>
+        </DocText>
         <ul className="list-disc space-y-1.5 pl-5 text-sm text-foreground">
           <li>
             {t('desktopComposite.notificationStack.animationsBullet1', 'Notifications enter and exit over duration-medium (180ms) with the ease-standard curve, sliding through the anchored edge (Qt: ThemeTokens.motionMedium / ThemeTokens.easeStandard).')}
@@ -267,15 +268,15 @@ ChaSetNotificationStack {
       </section>
 
       <section id="keyboard" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">{t('showcase.keyboardNavigation', 'Keyboard Navigation')}</h2>
-        <p className="text-sm text-muted-foreground">
+        <DocText role="h2">{t('showcase.keyboardNavigation', 'Keyboard Navigation')}</DocText>
+        <DocText role="p">
           {t('desktopComposite.notificationStack.keyboardDesc', 'The stack is a single tab stop: notification cards are roving-focus entries inside it.')}
-        </p>
+        </DocText>
         <KeyboardShortcutsTable componentId="notification-stack" />
       </section>
 
       <section id="props" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">{t('showcase.propsReference', 'Props Reference')}</h2>
+        <DocText role="h2">{t('showcase.propsReference', 'Props Reference')}</DocText>
         <PropsTable
           items={[
             {
@@ -346,9 +347,9 @@ ChaSetNotificationStack {
             },
           ]}
         />
-        <p className="text-sm text-muted-foreground">
+        <DocText role="p">
           {t('components.notificationStack.itemFooterDesc', 'Each notification carries id, title, an optional description, a level of info | success | warning | error, an optional duration, dismissible and a list of actions (id, label, variant).')}
-        </p>
+        </DocText>
       </section>
     </DocLayout>
   );

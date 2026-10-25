@@ -13,6 +13,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 const INITIAL_TREE: TreeNode[] = [
   {
@@ -314,12 +315,12 @@ export function VirtualTreeDocPage() {
       description={t('components.virtual-tree.description', 'Virtualized hierarchical tree view with node expansion, selection, and keyboard navigation.')}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.virtualTree.overviewHeading', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.virtualTree.overviewDesc', 'Hierarchical tree with multi-selection (Ctrl/Shift+Click), external dimmed cut state (Ctrl+X/V), copied state (Ctrl+C/V), Ctrl+Drag copy, and keyboard navigation.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           qtCode={`ChaSetVirtualTree {

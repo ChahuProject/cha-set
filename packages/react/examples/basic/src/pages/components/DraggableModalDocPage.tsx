@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function DraggableModalDocPage() {
   const { t } = useChaSetI18n();
@@ -18,7 +19,7 @@ export function DraggableModalDocPage() {
 
   const modalBody = (
     <div className="space-y-3 p-4 text-xs text-muted-foreground">
-      <h3 className="text-sm font-medium text-foreground">{t('overlays.draggableModal.diagnosticsTitle', 'Memory & Shader Diagnostics')}</h3>
+      <DocText role="h3">{t('overlays.draggableModal.diagnosticsTitle', 'Memory & Shader Diagnostics')}</DocText>
       <p>
         {t('overlays.draggableModal.diagnosticsDesc', 'Drag anywhere on the modal surface not occupied by controls to move; drag borders to resize.')}
       </p>
@@ -86,12 +87,12 @@ export function DraggableModalDocPage() {
       description={t('components.draggableModal.description', 'Desktop floating window with dragging title bar and bound viewport constraints.')}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.draggableModal.overviewHeading', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.draggableModal.overviewDesc', 'Click the button below to open the draggable modal window, supporting size presets, drag repositioning, and auto-fitting height.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           qtCode={`ChaSetDraggableModal {

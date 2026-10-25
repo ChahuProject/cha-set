@@ -6,6 +6,7 @@ import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 import { PropsTable } from '../../components/PropsTable';
+import { DocText } from '../../components/DocText';
 
 export function SnapSliderDocPage() {
   const { t } = useChaSetI18n();
@@ -28,7 +29,7 @@ export function SnapSliderDocPage() {
       description={t('components.snap-slider.description', 'Stepped discrete slider that snaps to defined stops with ticks and label row.')}
     >
       <section id="overview" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">{t('showcase.interactiveOverview', 'Interactive Overview')}</h2>
+        <DocText role="h2">{t('showcase.interactiveOverview', 'Interactive Overview')}</DocText>
         <ComponentPreview
           qtCode={`ChaSetSnapSlider {
     count: 5
@@ -99,10 +100,10 @@ ChaSetSnapSlider {
 
 
       <section id="animations" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">{t('showcase.animations', 'Animations')}</h2>
-        <p className="text-sm text-muted-foreground">
+        <DocText role="h2">{t('showcase.animations', 'Animations')}</DocText>
+        <DocText role="p">
           {t('formsA.snapSlider.animationsDesc', 'Motion tokens and kinematic timing contracts for SnapSlider interaction.')}
-        </p>
+        </DocText>
         <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
           <li>
             {t('desktopComposite.snapSlider.animationsBullet1', 'Thumb hover and scale micro-interactions animate smoothly over duration-quick (90ms) using ease-standard curve (Qt counterpart: ThemeTokens.motionQuick and ThemeTokens.easeStandard).')}
@@ -117,15 +118,15 @@ ChaSetSnapSlider {
       </section>
 
       <section id="keyboard" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">{t('showcase.keyboardNavigation', 'Keyboard Navigation')}</h2>
-        <p className="text-sm text-muted-foreground">
+        <DocText role="h2">{t('showcase.keyboardNavigation', 'Keyboard Navigation')}</DocText>
+        <DocText role="p">
           {t('desktopComposite.snapSlider.keyboardDesc', 'Keyboard shortcuts and discrete step navigation patterns.')}
-        </p>
+        </DocText>
         <KeyboardShortcutsTable componentId="snap-slider" />
       </section>
 
       <section id="props" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">{t('showcase.propsReference', 'Props Reference')}</h2>
+        <DocText role="h2">{t('showcase.propsReference', 'Props Reference')}</DocText>
         <PropsTable
           items={[
             {

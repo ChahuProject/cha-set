@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function SettingRowDocPage() {
   const { t } = useChaSetI18n();
@@ -49,7 +50,7 @@ export function SettingRowDocPage() {
       description={t('components.settingRow.description', 'Standardized preferences and settings item row layout with title, description, embedded control zone, and anchor flash highlight.')}
     >
       <section id="overview" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.settingRow.overviewHeading', 'Interactive Overview')}</h2>
+        <DocText role="h2">{t('desktopComposite.settingRow.overviewHeading', 'Interactive Overview')}</DocText>
         <ComponentPreview title={t('desktopComposite.settingRow.sandboxTitle', 'Setting Row Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
@@ -119,10 +120,10 @@ ChaSetSettingRow {
 
 
       <section id="anchor-jump-flash" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground" data-toc-title="Anchor Jump & Flash">{t('surfaces.settingRow.anchorJumpTitle')}</h2>
-        <p className="text-sm text-muted-foreground">
+        <DocText role="h2" data-toc-title="Anchor Jump & Flash">{t('surfaces.settingRow.anchorJumpTitle')}</DocText>
+        <DocText role="p">
           {t('surfaces.settingRow.anchorJumpDesc')}
-        </p>
+        </DocText>
         <Card className="p-4 flex gap-2">
           <Button
             size="sm"

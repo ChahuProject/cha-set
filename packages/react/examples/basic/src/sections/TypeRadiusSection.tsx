@@ -1,4 +1,5 @@
 import { useChaSetI18n } from '@chahu/cha-set';
+import { DocText } from '../components/DocText';
 
 const RADIUS_STEPS = [
   { id: 'sm', css: 'calc(var(--radius) - 0.25rem)' },
@@ -12,7 +13,7 @@ export default function TypeRadiusSection() {
 
   return (
     <section className="block" id="type">
-      <h2>{t('getStarted.tokens.typographyRadius.title', 'Typography / Radius / Charts')}</h2>
+      <DocText role="h2">{t('getStarted.tokens.typographyRadius.title', 'Typography / Radius / Charts')}</DocText>
       <p className="desc">
         {t('getStarted.tokens.typographyRadius.desc', 'Radii derived from --radius (same sm/md/lg/xl derivation as shadcn); font weights map to tokens.json primitives (500/600); chart five colors follow the accent.')}
       </p>
@@ -40,9 +41,9 @@ export default function TypeRadiusSection() {
         </p>
 
         <div className="space-y-1 text-foreground">
-          <p className="font-normal text-sm">
+          <DocText role="p">
             {t('getStarted.tokens.typographyRadius.sampleRegular', 'Regular 400 — ChaSet Component Library · Unified Cross-Stack Typography System (The quick brown fox jumps over the lazy dog 0123456789)')}
-          </p>
+          </DocText>
           <p className="font-medium text-sm">
             {t('getStarted.tokens.typographyRadius.sampleMedium', 'Medium 500 — ChaSet Component Library · Unified Cross-Stack Typography System (The quick brown fox jumps over the lazy dog 0123456789)')}
           </p>

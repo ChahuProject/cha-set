@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function VirtualListDocPage() {
   const { t } = useChaSetI18n();
@@ -42,12 +43,12 @@ listRef.current?.scrollToIndex(500, 'center');
       description={t('components.virtual-list.description', 'High-performance windowed 100k+ row list powered by TanStack Virtual, rendering only DOM nodes visible in the active viewport.')}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.virtualList.overviewHeading', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.virtualList.renderingHint', 'Rendering {{count}} virtual items smoothly at 60fps. Use the controls below to trigger programmatic scrolling or scroll rapidly to observe instant windowing.', { count: '10,000' })}
-        </p>
+        </DocText>
 
         <ComponentPreview
           qtCode={`ChaSetVirtualList {

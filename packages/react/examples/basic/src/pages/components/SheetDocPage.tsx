@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function SheetDocPage() {
   const { t } = useChaSetI18n();
@@ -54,12 +55,12 @@ export function SheetDocPage() {
       description={t('components.sheet.description', 'Extends the dialog component to display content that slides in from any screen edge (top, right, bottom, left).')}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.interactiveOverview', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.sheet.overviewDesc', 'Choose a slide edge and size preset, then trigger the drawer modal.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           qtCode={`ChaSetButton {
@@ -185,12 +186,12 @@ ChaSetSheet {
 
 
       <section id="animations" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.animations', 'Animations')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.sheet.animationsDesc', 'Motion behavior and timing for the backdrop and sliding panel.')}
-        </p>
+        </DocText>
         <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
           <li>
             {t('desktopComposite.sheet.animationsBullet1', 'The backdrop overlay cross-fades with animate-fade-in / animate-fade-out.')}

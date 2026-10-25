@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function PopoverDocPage() {
   const { t } = useChaSetI18n();
@@ -68,12 +69,12 @@ export function PopoverDocPage() {
       description={t('components.popover.description', 'Displays rich interactive content in a floating portal anchored to a trigger, with accessible focus management.')}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('desktopComposite.popover.overviewHeading', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.popover.overviewDesc', 'Click the button below to toggle the anchored popover card, test side alignment, directional arrows, and draggable move handles.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           title={t('desktopComposite.popover.sandboxTitle', 'Popover Sandbox')}
@@ -144,7 +145,7 @@ export function PopoverDocPage() {
               >
                 <div className="grid gap-4">
                   <div className="space-y-2">
-                    <h4 className="font-medium leading-none text-foreground text-sm">{t('overlays.popover.dimensionsTitle', 'Dimensions')}</h4>
+                    <DocText role="h4">{t('overlays.popover.dimensionsTitle', 'Dimensions')}</DocText>
                     <p className="text-xs text-muted-foreground">
                       {t('overlays.popover.dimensionsDesc', 'Set the dimensions for the layer.')}
                     </p>
@@ -190,12 +191,12 @@ ChaSetPopover {
 
       {/* Examples & States */}
       <section id="examples" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.examplesAndStates', 'Examples & States')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.popover.examplesDesc', 'Common interactive configurations including directional arrows and draggable repositioning.')}
-        </p>
+        </DocText>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Directional Arrow Example */}

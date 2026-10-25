@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { CheckIcon, useChaSetI18n } from '@chahu/cha-set';
+import { DocText } from '../components/DocText';
 
 const TOKENS = [
   'background',
@@ -47,7 +48,7 @@ export default function ColorsSection({ themeKey }: { themeKey: string }) {
     <section className="block" id="colors">
       <div className="block-header">
         <div>
-          <h2>{t('getStarted.tokens.palette.title', 'Palette · Semantic Core Tokens')}</h2>
+          <DocText role="h2">{t('getStarted.tokens.palette.title', 'Palette · Semantic Core Tokens')}</DocText>
           <p className="desc">
             {t('getStarted.tokens.palette.desc', 'All derived from spec/tokens.json. Click any swatch to copy its CSS variable expression.')}
           </p>

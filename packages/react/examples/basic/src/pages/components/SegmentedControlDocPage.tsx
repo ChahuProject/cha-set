@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function SegmentedControlDocPage() {
   const { t } = useChaSetI18n();
@@ -55,7 +56,7 @@ export function SegmentedControlDocPage() {
       description={t('components.segmentedControl.description', 'A compact pill-style segmented switch for toolbars, menus, and view toggles with icon and badge support.')}
     >
       <section id="overview" className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.segmentedControl.overviewHeading', 'Interactive Overview')}</h2>
+        <DocText role="h2">{t('desktopComposite.segmentedControl.overviewHeading', 'Interactive Overview')}</DocText>
         <ComponentPreview title={t('desktopComposite.segmentedControl.sandboxTitle', 'Segmented Control Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
@@ -123,7 +124,7 @@ ChaSetSegmentedControl {
 
 
       <section id="sizes-badges" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.segmentedControl.sizesBadgesTitle', 'Sizes & Badges')}</h2>
+        <DocText role="h2">{t('desktopComposite.segmentedControl.sizesBadgesTitle', 'Sizes & Badges')}</DocText>
         <Card className="p-6 space-y-6">
           <div className="space-y-2">
             <div className="text-xs font-semibold text-muted-foreground">{t('formsA.segmentedControl.smDesc', 'Small (sm - Menu & Toolbar dense)')}</div>
@@ -141,10 +142,10 @@ ChaSetSegmentedControl {
       </section>
 
       <section id="fixed-width-truncation" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.segmentedControl.fixedWidthTitle', 'Fixed Width & Truncation')}</h2>
-        <p className="text-sm text-muted-foreground">
+        <DocText role="h2">{t('desktopComposite.segmentedControl.fixedWidthTitle', 'Fixed Width & Truncation')}</DocText>
+        <DocText role="p">
           {t('formsA.segmentedControl.truncationSubtitle', 'By default, segments auto-adapt to their content length. When equalWidth, fullWidth, or itemWidth is configured, segments enforce equal or fixed dimensions and truncate overflowing text with an ellipsis.')}
-        </p>
+        </DocText>
         <Card className="p-6 space-y-6">
           <div className="space-y-2">
             <div className="text-xs font-semibold text-muted-foreground">{t('formsA.segmentedControl.autoAdaptiveTitle', 'Auto-Adaptive Content Width (Default)')}</div>
@@ -173,10 +174,10 @@ ChaSetSegmentedControl {
       </section>
 
       <section id="menu-inline-title" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.segmentedControl.menuInlineTitle', 'Menu & Inline Title')}</h2>
-        <p className="text-sm text-muted-foreground">
+        <DocText role="h2">{t('desktopComposite.segmentedControl.menuInlineTitle', 'Menu & Inline Title')}</DocText>
+        <DocText role="p">
           {t('formsA.segmentedControl.menuTitleSubtitle', 'Supports an optional prefix title to seamlessly embed within context menu rows and parameter settings panels.')}
-        </p>
+        </DocText>
         <Card className="p-6">
           <SegmentedControl
             title={t('formsA.segmentedControl.gridStyleTitle', 'Grid Style:')}
@@ -188,12 +189,12 @@ ChaSetSegmentedControl {
       </section>
 
       <section id="tooltips-custom-hints" className="space-y-4 pt-6">
-        <h2 className="text-xl font-semibold text-foreground">{t('desktopComposite.segmentedControl.tooltipsHintsTitle', 'Tooltips & Custom Hints')}</h2>
-        <p className="text-sm text-muted-foreground flex items-center gap-1.5 flex-wrap">
+        <DocText role="h2">{t('desktopComposite.segmentedControl.tooltipsHintsTitle', 'Tooltips & Custom Hints')}</DocText>
+        <DocText role="p" className="flex items-center gap-1.5 flex-wrap">
           <span>{t('desktopComposite.segmentedControl.tooltipsHintsDesc', 'Options support rich interactive tooltips. You can provide plain text, keyboard shortcut badges, custom placement, rich custom content, or a global')}</span>
           <CopyableBadge size="sm" text="renderTooltip" />
           <span>{t('desktopComposite.segmentedControl.functionSuffix', 'function.')}</span>
-        </p>
+        </DocText>
         <Card className="p-6 space-y-6">
           <div className="space-y-2">
             <div className="text-xs font-semibold text-muted-foreground">{t('desktopComposite.segmentedControl.perOptionTitle', 'Per-Option Tooltips with Shortcuts & Arrows')}</div>

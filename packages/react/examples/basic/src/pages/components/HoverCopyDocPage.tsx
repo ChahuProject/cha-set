@@ -14,6 +14,7 @@ import { ComponentPreview } from '../../components/ComponentPreview';
 import { ComponentReference } from '../../components/ComponentReference';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
+import { DocText } from '../../components/DocText';
 
 const RADIUS_OPTIONS: HoverCopyRadius[] = ['none', 'sm', 'md', 'lg', 'full'];
 
@@ -131,12 +132,12 @@ ChaSetHoverCopy {
       ]}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.interactiveOverview', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('components.hover-copy.overviewDesc', 'Hover the card to reveal a dimmed scrim with a centered copy button. Click anywhere on the overlay to copy the hidden payload to the clipboard.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           title={t('showcase.previewTitles.Hover to reveal', 'Hover to reveal')}
@@ -186,12 +187,12 @@ ChaSetHoverCopy {
       />
 
       <section id="preset" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('components.hover-copy.presetTitle', 'CopyableBadge Preset')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('components.hover-copy.presetDesc', 'CopyableBadge is a thin preset that wraps a secondary Badge in HoverCopy with a pill overlay. It adds no state or timing of its own.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           title={t('showcase.previewTitles.CopyableBadge preset', 'CopyableBadge preset')}
@@ -208,12 +209,12 @@ ChaSetHoverCopy {
       </section>
 
       <section id="playground" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('components.hover-copy.playgroundTitle', 'Timing & Dim Controls')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('components.hover-copy.playgroundDesc', 'Tune the overlay radius, restore interval, scrim density, and disabled state. The sandbox below mirrors the desktop layout exactly.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           title={t('showcase.previewTitles.Timing & Dim Controls', 'Timing & Dim Controls')}
@@ -278,12 +279,12 @@ ChaSetHoverCopy {
       </section>
 
       <section id="truncate" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('components.hover-copy.truncateTitle', 'Truncated display, full copy')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('components.hover-copy.truncateDesc', 'The visible label may be truncated while the copied payload stays the full string.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           title={t('showcase.previewTitles.Truncated display full copy', 'Truncated display, full copy')}
@@ -302,13 +303,13 @@ ChaSetHoverCopy {
       </section>
 
       <section id="animations" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.animations', 'Animations')}
-        </h2>
+        </DocText>
         <div>
-          <p className="text-sm text-muted-foreground mb-4">
+          <DocText role="p" className="mb-4">
             {t('showcase.animationsDesc', 'Motion behavior and timing for interactive states aligned with ChaSet tokens.')}
-          </p>
+          </DocText>
           <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
             <li>
               {t('components.hover-copy.animBullet1', 'Overlay reveal and leave animate over duration-quick with the ease-standard curve (Qt: ThemeTokens.motionQuick + easeStandard).')}
@@ -324,12 +325,12 @@ ChaSetHoverCopy {
       </section>
 
       <section id="keyboard" className="scroll-mt-20 my-10">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.keyboardNavigation', 'Keyboard Navigation')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('components.hover-copy.keyboardDesc', 'Tab focuses the centered button, Enter or Space copies, clicking anywhere on the overlay also copies, and leaving focus dismisses the overlay.')}
-        </p>
+        </DocText>
         <KeyboardShortcutsTable componentId="hover-copy" />
       </section>
 

@@ -4,6 +4,7 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
+import { DocText } from '../../components/DocText';
 
 export function ContextMenuDocPage() {
   const { t } = useChaSetI18n();
@@ -37,12 +38,12 @@ export function ContextMenuDocPage() {
       description={t('components.contextMenu.description', 'Displays a menu located at the pointer coordinates on right-click or desktop context gesture.')}
     >
       <section id="overview" className="scroll-mt-20">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3">
+        <DocText role="h2" className="mb-3">
           {t('showcase.interactiveOverview', 'Interactive Overview')}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
+        </DocText>
+        <DocText role="p" className="mb-4">
           {t('desktopComposite.contextMenu.overviewDesc', 'Right-click (or long press) inside the dashed container below to reveal the context menu.')}
-        </p>
+        </DocText>
 
         <ComponentPreview
           qtCode={`ChaSetContextMenu {
