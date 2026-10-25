@@ -1,5 +1,5 @@
 pragma Singleton
-import QtQuick 6.10
+import QtQuick
 
 // GENERATED FILE - DO NOT EDIT.
 // Source: spec/icons/registry.json -> active specification "stroke-monoline"

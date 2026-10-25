@@ -1,5 +1,5 @@
 // ChaSetScaleOsd.qml — Cross-Stack Scale OSD Component
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Item {

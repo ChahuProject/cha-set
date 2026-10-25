@@ -27,6 +27,8 @@
     "check:derived-parity": "node scripts/check-derived-parity.mjs",
     "check:scaling": "node scripts/check-qt-scaling.mjs",
     "check:no-emoji": "node scripts/check-no-emoji.mjs",
+    "check:qml-imports": "node scripts/strip-qml-import-versions.mjs --check",
+    "fix:qml-imports": "node scripts/strip-qml-import-versions.mjs",
     "check:icons": "node scripts/check-icon-spec.mjs",
     "check:concentric": "node scripts/check-concentric-radii.mjs",
     "check:i18n": "node scripts/check-i18n-coverage.mjs",

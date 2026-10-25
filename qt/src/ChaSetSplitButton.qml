@@ -1,6 +1,6 @@
 // ChaSetSplitButton.qml — Cross-Stack Split Button Component
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 Item {

@@ -1,5 +1,5 @@
 // ChaSetFloatingNotice.qml — Compact floating notice pill with queue and priority (Qt Quick).
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Item {

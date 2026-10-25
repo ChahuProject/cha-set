@@ -1,6 +1,6 @@
 // ChaSetTabsList.qml — Container for Tab Triggers
 // Matching shadcn: inline-flex items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 ChaSetSquircle {

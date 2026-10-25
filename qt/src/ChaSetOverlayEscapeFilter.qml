@@ -9,7 +9,7 @@
 // Use a Shortcut (not Keys) on purpose: Shortcut is dispatched by the window's
 // shortcut map and does not require focus, which is the whole point — the
 // failing overlays are exactly the ones that never take focus.
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Item {

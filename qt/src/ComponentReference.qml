@@ -1,7 +1,7 @@
 // ComponentReference.qml — Standard Showcase Component Reference Container for Qt Quick
 // Encapsulates Keyboard Navigation on top and Properties on bottom, matching React ComponentReference.tsx 1:1
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 Column {

@@ -1,5 +1,5 @@
-import QtQuick 2.15
-import ChaSet 1.0
+import QtQuick
+import ChaSet
 
 ChaSetSquircleBase {
     id: root

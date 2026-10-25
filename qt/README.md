@@ -23,9 +23,13 @@ pnpm showcase:qt
 ```
 
 ### Manual Build via CMake
+Set QTDIR to your own Qt kit — the version is detected at build time, so this never
+needs updating when Qt is upgraded (`scripts/lib/qt-install.mjs` also probes
+`<root>/current` and the newest `<root>/<version>` when QTDIR is unset):
 ```bat
-set PATH=D:\pengj\qt\6.10.1\msvc2022_64\bin;%PATH%
-cmake -S qt -B qt/build -G Ninja -DCMAKE_PREFIX_PATH=D:\pengj\qt\6.10.1\msvc2022_64
+set QTDIR=D:\pengj\qt\current\msvc2022_64
+set PATH=%QTDIR%\bin;%PATH%
+cmake -S qt -B qt/build -G Ninja -DCMAKE_PREFIX_PATH=%QTDIR%
 cmake --build qt/build
 qt\build\QtChaSetDemo.exe
 ```

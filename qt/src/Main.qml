@@ -1,7 +1,7 @@
 // ChaSet Qt Studio — Cross-Stack Theme & Component Workbench
 // 100% Pixel-Perfect and Behavioral Parity with React Studio (packages/react/examples/basic).
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import QtQuick.Shapes
 import ChaSet
 
@@ -718,7 +718,7 @@ ApplicationWindow {
             contentScroll.flickableItem.contentY = 0;
 
             // 1. Direct pass-through test: an unscrollable inner scroll area (contentHeight <= height)
-            var unscrollableInner = Qt.createQmlObject('import QtQuick 6.10; import ChaSet; ChaSetScrollArea { width: 300; height: 300; contentWidth: 300; contentHeight: 200 }', contentScroll.contentItem, "dynamicUnscrollableArea");
+            var unscrollableInner = Qt.createQmlObject('import QtQuick; import ChaSet; ChaSetScrollArea { width: 300; height: 300; contentWidth: 300; contentHeight: 200 }', contentScroll.contentItem, "dynamicUnscrollableArea");
             if (unscrollableInner) {
                 var initialOuterY = contentScroll.flickableItem.contentY;
                 var handled = unscrollableInner.handleVerticalWheel(-120);
@@ -733,7 +733,7 @@ ApplicationWindow {
             }
 
             // 2. Scroll chaining test: a scrollable inner scroll area (contentHeight: 500, height: 200)
-            var scrollableInner = Qt.createQmlObject('import QtQuick 6.10; import ChaSet; ChaSetScrollArea { width: 300; height: 200; contentWidth: 300; contentHeight: 500 }', contentScroll.contentItem, "dynamicScrollableArea");
+            var scrollableInner = Qt.createQmlObject('import QtQuick; import ChaSet; ChaSetScrollArea { width: 300; height: 200; contentWidth: 300; contentHeight: 500 }', contentScroll.contentItem, "dynamicScrollableArea");
             if (scrollableInner) {
                 contentScroll.flickableItem.contentY = 100;
                 var outerBeforeInnerScroll = contentScroll.flickableItem.contentY;
@@ -912,7 +912,7 @@ ApplicationWindow {
 
             // 4b. Test ChaSetScaleOsd delayedCommit feature
             var testDelayedOsd = Qt.createQmlObject(
-                'import QtQuick 6.10; import ChaSet; ChaSetScaleOsd { delayedCommit: true; debounceDuration: 200; value: 1.0; step: 0.1 }',
+                'import QtQuick; import ChaSet; ChaSetScaleOsd { delayedCommit: true; debounceDuration: 200; value: 1.0; step: 0.1 }',
                 win.contentItem,
                 "scaleTestDelayedOsd"
             );
@@ -938,12 +938,12 @@ ApplicationWindow {
 
             // 5. Test Component Scale Linearity & Double-Scaling Prevention
             var testSegmented = Qt.createQmlObject(
-                'import QtQuick 6.10; import ChaSet; ChaSetSegmentedControl { itemWidth: 100; options: ["Tab 1", "Tab 2"] }',
+                'import QtQuick; import ChaSet; ChaSetSegmentedControl { itemWidth: 100; options: ["Tab 1", "Tab 2"] }',
                 win.contentItem,
                 "scaleTestSegmented"
             );
             var testCard = Qt.createQmlObject(
-                'import QtQuick 6.10; import ChaSet; ChaSetCard { customRadius: 16 }',
+                'import QtQuick; import ChaSet; ChaSetCard { customRadius: 16 }',
                 win.contentItem,
                 "scaleTestCard"
             );
@@ -979,7 +979,7 @@ ApplicationWindow {
             // 6. Test Tooltip positioning under high UI zoom (300% scale parity & off-screen clamp immunity)
             ThemeTokens.uiScale = 3.0;
             var testTooltipHolder = Qt.createQmlObject(
-                'import QtQuick 6.10; import ChaSet; Item { x: 100; y: 1500; width: 200; height: 100; ChaSetTooltip { id: tt; text: ChaSetI18n.tr("common.test", "Test"); side: "top"; forceHover: true } }',
+                'import QtQuick; import ChaSet; Item { x: 100; y: 1500; width: 200; height: 100; ChaSetTooltip { id: tt; text: ChaSetI18n.tr("common.test", "Test"); side: "top"; forceHover: true } }',
                 win.contentItem,
                 "scaleTestTooltip"
             );
@@ -1477,7 +1477,7 @@ ApplicationWindow {
             var dndFailures = 0;
 
             var testTree = Qt.createQmlObject(
-                'import QtQuick 6.10; import ChaSet; ChaSetVirtualTree { width: 300; height: 200; enableDnd: true; nodes: [{ id: "src", label: "src", children: [{ id: "file1", label: "file1" }] }, { id: "dst", label: "dst", children: [] }] }',
+                'import QtQuick; import ChaSet; ChaSetVirtualTree { width: 300; height: 200; enableDnd: true; nodes: [{ id: "src", label: "src", children: [{ id: "file1", label: "file1" }] }, { id: "dst", label: "dst", children: [] }] }',
                 win.contentItem,
                 "dynamicTestTree"
             );
@@ -1635,7 +1635,7 @@ ApplicationWindow {
             var abFailures = 0;
 
             var testBar = Qt.createQmlObject(
-                'import QtQuick 6.10; import ChaSet; ChaSetAddressBar { width: 500; height: 36; path: "C:/Users/Development" }',
+                'import QtQuick; import ChaSet; ChaSetAddressBar { width: 500; height: 36; path: "C:/Users/Development" }',
                 win.contentItem,
                 "dynamicTestAddressBar"
             );
@@ -1680,7 +1680,7 @@ ApplicationWindow {
             var vlFailures = 0;
 
             var testVList = Qt.createQmlObject(
-                'import QtQuick 6.10; import ChaSet; ChaSetVirtualList { width: 360; height: 240; model: 1000; itemHeight: 36; delegate: Item { width: 360; height: 36 } }',
+                'import QtQuick; import ChaSet; ChaSetVirtualList { width: 360; height: 240; model: 1000; itemHeight: 36; delegate: Item { width: 360; height: 36 } }',
                 win.contentItem,
                 "dynamicTestVirtualList"
             );

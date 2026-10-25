@@ -7,10 +7,10 @@
 // 5. Two-end stepper navigation buttons with autoRepeat and boundary clamping
 // 6. Automatic auto-hide when content fits without overflow
 
-import QtQuick 6.10
-import QtQuick.Controls 6.10
-import QtQuick.Templates 6.10 as T
-import ChaSet 1.0
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Templates as T
+import ChaSet
 
 T.ScrollBar {
     id: control

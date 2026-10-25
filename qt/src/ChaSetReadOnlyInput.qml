@@ -1,5 +1,5 @@
 // ChaSetReadOnlyInput.qml — Cross-Stack Read-Only Input Component
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Item {

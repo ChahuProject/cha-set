@@ -12,7 +12,7 @@
 // Order matters: declare this BEFORE the DocText sibling so the text paints on top. That also
 // keeps hit-testing intact — the layer has no MouseArea, so presses, drag-selection and the
 // native selection highlight all still belong to the text item.
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Item {

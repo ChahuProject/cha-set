@@ -89,7 +89,7 @@ fs.writeFileSync(path.join(reactOutDir, 'showcaseData.generated.ts'), reactCode,
 // Qt QML Singleton Output
 const qtOutDir = path.resolve(repoRoot, 'qt', 'src');
 const qtQml = `pragma Singleton
-import QtQuick 6.10
+import QtQuick
 
 // GENERATED FILE - DO NOT EDIT.
 // Source: spec/showcase/*.json via spec/generators/generate-showcase-data.mjs

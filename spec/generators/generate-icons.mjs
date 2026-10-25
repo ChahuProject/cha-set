@@ -468,7 +468,7 @@ emit(reactOut, reactCode);
  * ------------------------------------------------------------------ */
 
 const qmlCode = `pragma Singleton
-import QtQuick 6.10
+import QtQuick
 
 ${header('//')}
 QtObject {

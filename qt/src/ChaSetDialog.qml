@@ -1,7 +1,7 @@
 // ChaSetDialog.qml — Cross-Stack Modal Dialog Component
 // 100% Behavioral and Visual Parity with React Dialog.tsx
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 Rectangle {

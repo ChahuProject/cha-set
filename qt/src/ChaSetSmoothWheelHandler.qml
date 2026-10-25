@@ -1,6 +1,6 @@
 // ChaSetSmoothWheelHandler.qml — Cross-Stack Kinematic Wheel Physics
 // Provides smooth continuous damped scrolling with Shift+wheel horizontal mapping and drag/flick mutex.
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Item {

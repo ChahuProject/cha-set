@@ -14,8 +14,8 @@
 // Tokens (exact, do NOT change — host measuredSize agreement depends on them):
 // bubble padding dp(16)/dp(8), floor dp(24), radius dp(4), kbd size xs,
 // icon 14, desc max width dp(280), arrow 8x4.
-import QtQuick 6.10
-import QtQuick.Shapes 6.10
+import QtQuick
+import QtQuick.Shapes
 import ChaSet
 
 Item {

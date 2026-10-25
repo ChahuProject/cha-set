@@ -1,6 +1,6 @@
 // ChaSetCardTitle.qml — Card Title Text
 // Matching React: font-semibold leading-none tracking-tight text-base text-card-foreground
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 TextEdit {

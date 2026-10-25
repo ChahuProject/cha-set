@@ -440,7 +440,19 @@ if (!existsSync(qtExe)) {
   console.log('[gate] SKIP — Qt runtime behavioral scenario assertions skipped via --skip-qt');
 } else {
   const { spawnSync } = await import('node:child_process');
-  const testRes = spawnSync(qtExe, ['--test-scenario', 'all'], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  const { detectQtBin } = await import('../scripts/lib/qt-install.mjs');
+  // The demo links against Qt DLLs that live in the kit's bin dir; without it on
+  // PATH the process dies with a loader error instead of a scenario failure.
+  const qtBin = detectQtBin({ onWarn: (msg) => console.warn(`[gate] ${msg}`) });
+  const qtEnv = { ...process.env };
+  if (qtBin) {
+    qtEnv.PATH = `${qtBin}${process.platform === 'win32' ? ';' : ':'}${process.env.PATH ?? ''}`;
+  }
+  const testRes = spawnSync(qtExe, ['--test-scenario', 'all'], {
+    encoding: 'utf8',
+    maxBuffer: 64 * 1024 * 1024,
+    env: qtEnv,
+  });
   if (testRes.status !== 0 || testRes.error) {
     console.error('[gate] FAIL: Qt runtime behavioral scenario assertions failed');
     if (testRes.error) console.error('[gate] Process error:', testRes.error);
@@ -548,6 +560,28 @@ if (existsSync(paletteParityTest)) {
     console.log('[gate] OK — Spec-layer token & accent palette invariant tests passed');
   } catch (err) {
     console.error('[gate] FAIL: Spec-layer token & accent palette invariant tests failed');
+    if (err.stdout) console.error(err.stdout);
+    if (err.stderr) console.error(err.stderr);
+    process.exit(1);
+  }
+}
+
+// 5.7 Versionless QML Import Gate
+// Qt 6 resolves `import QtQuick` to the newest version the toolchain offers, so a
+// pinned `import QtQuick <major>.<minor>` only buys a guaranteed breakage on the
+// next Qt upgrade. Fail the gate instead of letting versions creep back in via a
+// generator template or a copy-pasted doc page.
+{
+  const { execSync } = await import('node:child_process');
+  try {
+    execSync('node scripts/strip-qml-import-versions.mjs --check', {
+      cwd: root,
+      stdio: 'pipe',
+      encoding: 'utf8',
+    });
+    console.log('[gate] OK — all QML imports are versionless (Qt-version agnostic)');
+  } catch (err) {
+    console.error('[gate] FAIL: versioned QML imports detected — run `pnpm fix:qml-imports`');
     if (err.stdout) console.error(err.stdout);
     if (err.stderr) console.error(err.stderr);
     process.exit(1);

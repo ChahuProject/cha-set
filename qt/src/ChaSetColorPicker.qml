@@ -1,7 +1,7 @@
 // ChaSetColorPicker.qml — Cross-Stack ColorPicker Component
 // 100% Feature Parity with React ColorPicker.tsx & chahu-render-debugger
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 Item {

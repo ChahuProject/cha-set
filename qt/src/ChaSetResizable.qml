@@ -1,6 +1,6 @@
 // ChaSetResizable.qml — Cross-Stack Resizable Panel Group Component
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 SplitView {

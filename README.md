@@ -83,10 +83,12 @@ One-command automatic build and launch:
 pnpm showcase:qt
 ```
 
-Or manual build via CMake (Windows / Qt 6 MSVC):
+Or manual build via CMake (Windows / Qt 6 MSVC) — set QTDIR to your own Qt kit, the
+version is detected at build time so this never needs updating on a Qt upgrade:
 ```bat
-set PATH=D:\pengj\qt\6.10.1\msvc2022_64\bin;%PATH%
-cmake -S qt -B qt/build -G Ninja -DCMAKE_PREFIX_PATH=D:\pengj\qt\6.10.1\msvc2022_64
+set QTDIR=D:\pengj\qt\current\msvc2022_64
+set PATH=%QTDIR%\bin;%PATH%
+cmake -S qt -B qt/build -G Ninja -DCMAKE_PREFIX_PATH=%QTDIR%
 cmake --build qt/build
 qt\build\QtChaSetDemo.exe
 ```

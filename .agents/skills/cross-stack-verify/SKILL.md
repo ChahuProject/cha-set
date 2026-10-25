@@ -171,8 +171,9 @@ pnpm check:scaling
 #
 #   Import-Module 'C:\Program Files\Microsoft Visual Studio\18\Community\Common7\Tools\Microsoft.VisualStudio.DevShell.dll'
 #   Enter-VsDevShell -VsInstallPath 'C:\Program Files\Microsoft Visual Studio\18\Community' -SkipAutomaticLocation -DevCmdArguments '-arch=x64 -host_arch=x64'
-#   $env:PATH = 'D:\pengj\qt\6.10.1\msvc2022_64\bin;' + $env:PATH
-#   cmake -S qt -B qt/build -G Ninja -DCMAKE_PREFIX_PATH='D:\pengj\qt\6.10.1\msvc2022_64' -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl *> $env:TEMP\chaset-qt-build.log
+#   $env:QTDIR = 'D:\pengj\qt\current\msvc2022_64'   # any installed kit; never a pinned version
+#   $env:PATH = "$env:QTDIR\bin;" + $env:PATH
+#   cmake -S qt -B qt/build -G Ninja -DCMAKE_PREFIX_PATH="$env:QTDIR" -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl *> $env:TEMP\chaset-qt-build.log
 #   cmake --build qt/build *>> $env:TEMP\chaset-qt-build.log
 #
 #   An incremental rebuild of one ChaSet*.qml is ~10-20s (qmlcache recompile +
@@ -207,16 +208,25 @@ pnpm gate:pixel
 
 ### Known-red check: `--test-scenario all` pointer raycasting
 
-On this machine the *Pointer Raycasting* scenario inside `QtChaSetDemo.exe --test-scenario all`
-fails with ~12-14 cursor discrepancies (pages `color-picker`, `theme-tuner`,
-`splitter-handle`, `sidebar`), each reporting `got window cursor 0`. It also
-varies run to run (776/777 controls, 12/14 discrepancies), so it is environment-
-dependent rather than deterministic — the window cursor is never updated for
-those items.
+The *Pointer Raycasting* scenario inside `QtChaSetDemo.exe --test-scenario all` is
+environment-dependent: the window cursor is sometimes never updated for an item
+that sits under `QQuickOverlay`, so it reports `expected cursor <n>, got 0`.
+
+Observed magnitudes on this machine: 12-14 discrepancies (pages `color-picker`,
+`theme-tuner`, `splitter-handle`, `sidebar`) on Qt 6.10, and 0-1 discrepancies
+(pages vary — `draggable-modal`, `floating-notice`) after the Qt 6.12 upgrade. A
+clean run and a 1-discrepancy run from the same binary is normal, so **re-run
+before calling it a regression**. Separately, the Ctrl+C clipboard step fails
+intermittently with `OleSetClipboard ... COM error 0x800401d0` when another
+process owns the clipboard — also not a code regression.
 
 `pnpm gate` runs this scenario as step 3 and `process.exit(1)`s there, which
 means gate steps 4 and 5 (React showcase pages, cursor conformance) **never run**.
 Do not treat a red `pnpm gate` as your regression until you have ruled this out:
+
+0. Fastest triage: re-run the scenario, then run the tail of the gate directly —
+   `pnpm gate --skip-qt` executes every non-runtime step (including the
+   versionless-import check) and is deterministic.
 
 1. Run the failing suite directly and compare against a pristine build — back your
    files up first, since `git checkout --` / `git stash` are the destructive part:

@@ -1,5 +1,5 @@
 pragma Singleton
-import QtQuick 6.10
+import QtQuick
 
 // GENERATED FILE - DO NOT EDIT.
 // Source: spec/i18n/* via spec/generators/generate-i18n.mjs

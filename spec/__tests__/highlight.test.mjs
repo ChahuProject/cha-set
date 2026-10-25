@@ -39,7 +39,7 @@ const SAMPLES = {
     '}',
   ].join('\n'),
   qml: [
-    'import QtQuick 6.10',
+    'import QtQuick',
     'import ChaSet',
     '',
     'ChaSetButton {',

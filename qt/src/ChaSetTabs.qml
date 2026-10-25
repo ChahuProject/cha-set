@@ -1,6 +1,6 @@
 // ChaSetTabs.qml — Cross-Stack Tabs Component
 // 100% Pixel-Perfect & Behavioral Parity with React (@chahu/cha-set).
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Item {

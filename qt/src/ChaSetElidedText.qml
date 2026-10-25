@@ -1,6 +1,6 @@
 // ChaSetElidedText.qml — Cross-stack ElidedText component for Qt Quick Desktop matching React ElidedText 1:1
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 Item {

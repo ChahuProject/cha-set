@@ -109,7 +109,7 @@ export function ActionPanel() {
     const primaryColor = overrides.primary || (mode === 'dark' ? '#30a0ff' : '#1d7ae0');
     return `// ChaSet Qt / QML Integration
 // 1. Import ThemeTokens and ChaSet components
-import QtQuick 6.10
+import QtQuick
 import chaSet
 
 ApplicationWindow {

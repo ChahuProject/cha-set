@@ -1,6 +1,6 @@
 // KbdDocPage.qml — Living Documentation and Interactive Sandbox for ChaSetKbd & ChaSetShortcut
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 DocLayout {

@@ -1,6 +1,6 @@
 // ChaSetSheet.qml — Cross-Stack Sliding Sheet Component
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 Rectangle {

@@ -10,7 +10,7 @@
 // Exposing `sectionId` / `sectionTitle` registers the header as an outline
 // entry in DocLayout (case 4 of its scanner), so a page can drop a header in
 // and get its TOC row for free.
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Column {

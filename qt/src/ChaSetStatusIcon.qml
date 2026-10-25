@@ -1,5 +1,5 @@
 // ChaSetStatusIcon.qml — Cross-stack vector status icon for pipeline states
-import QtQuick 6.10
+import QtQuick
 import QtQuick.Shapes
 import ChaSet
 

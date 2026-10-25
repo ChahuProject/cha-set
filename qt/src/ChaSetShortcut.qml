@@ -1,6 +1,6 @@
 // ChaSetShortcut.qml — Cross-Stack Menu & Layout Shortcut Item
 // Semantic shortcut presenter for DropdownMenu, ContextMenu, and command search
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 ChaSetKbd {

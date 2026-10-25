@@ -1,6 +1,6 @@
 // SquircleDocPage.qml — Documentation and interactive sandbox for ChaSetSquircle
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 DocLayout {
@@ -388,7 +388,7 @@ DocLayout {
                         width: parent.width
                         language: "qml"
                         filename: "ContinuousCard.qml"
-                        code: "import QtQuick 6.10\nimport ChaSet 1.0\n\nChaSetSquircle {\n    width: ThemeTokens.dp(320)\n    height: ThemeTokens.dp(180)\n    radius: ThemeTokens.dp(16)\n    // cornerSmoothing 默认继承 ThemeTokens.cornerSmoothing (0.6)\n    color: ThemeTokens.panel\n    border.color: ThemeTokens.border\n    border.width: 1\n\n    // 支持独立单边圆角 (常用于分栏或停靠面板)\n    roundLeft: true\n    roundRight: false\n\n    Text {\n        anchors.centerIn: parent\n        text: \"Continuous Curvature Panel\"\n        color: ThemeTokens.text\n    }\n}"
+                        code: "import QtQuick\nimport ChaSet\n\nChaSetSquircle {\n    width: ThemeTokens.dp(320)\n    height: ThemeTokens.dp(180)\n    radius: ThemeTokens.dp(16)\n    // cornerSmoothing 默认继承 ThemeTokens.cornerSmoothing (0.6)\n    color: ThemeTokens.panel\n    border.color: ThemeTokens.border\n    border.width: 1\n\n    // 支持独立单边圆角 (常用于分栏或停靠面板)\n    roundLeft: true\n    roundRight: false\n\n    Text {\n        anchors.centerIn: parent\n        text: \"Continuous Curvature Panel\"\n        color: ThemeTokens.text\n    }\n}"
                     }
                 }
             }

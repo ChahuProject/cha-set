@@ -1,6 +1,6 @@
 // ChaSetCardDescription.qml — Card Description Text
 // Matching React: text-sm text-muted-foreground
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 TextEdit {

@@ -1,5 +1,5 @@
 // ChaSetCopyButton.qml — Cross-Stack Copy Button Component
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Item {

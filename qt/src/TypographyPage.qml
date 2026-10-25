@@ -1,5 +1,5 @@
 // TypographyPage.qml — Text rasterizer policy and cross-script size ramp matching React 1:1
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 DocLayout {

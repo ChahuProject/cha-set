@@ -1,6 +1,6 @@
 // ChaSetSettingRow.qml — Standardized Settings Row Component
 // Provides structured label, description, control zone, and 3-cycle anchor flash animation.
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Item {

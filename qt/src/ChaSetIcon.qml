@@ -6,7 +6,7 @@
 //    Subpixel grayscale anti-aliasing eliminates all aliasing and jagged triangle edges.
 // 2. Variable-axis support: fill (0..1), weight (100..700), grade (-25..200), opsz.
 // 3. Vector Shape fallback (PathSvg) if a custom or unmapped icon is requested.
-import QtQuick 6.10
+import QtQuick
 import QtQuick.Shapes
 import ChaSet
 

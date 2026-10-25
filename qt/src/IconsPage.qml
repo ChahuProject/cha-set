@@ -1,6 +1,6 @@
 // IconsPage.qml — Icon specification contract for both stacks (React & Qt 1:1)
 // Geometry lives in spec/icons/registry.json; this page only presents the resolved contract.
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 DocLayout {

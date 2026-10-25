@@ -111,8 +111,8 @@ target_link_libraries(my_desktop_app PRIVATE ChaSetPlugin)
 #### Step 2: Use `ChaSetSquircle` in Place of `Rectangle`
 `ChaSetSquircle` is an API drop-in replacement for `Rectangle`. Replace container and control backgrounds with `ChaSetSquircle`:
 ```qml
-import QtQuick 6.10
-import ChaSet 1.0
+import QtQuick
+import ChaSet
 
 ChaSetSquircle {
     width: 320

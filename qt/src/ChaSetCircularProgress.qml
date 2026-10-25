@@ -1,5 +1,5 @@
 // ChaSetCircularProgress.qml — Cross-Platform Vector Circular Progress / Countdown Indicator
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Item {

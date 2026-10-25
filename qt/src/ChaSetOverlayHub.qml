@@ -11,7 +11,7 @@
 // lets Escape fall through to a product action. Registration is explicit and
 // therefore reliable regardless of focus.
 pragma Singleton
-import QtQuick 6.10
+import QtQuick
 
 QtObject {
     id: hub

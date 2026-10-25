@@ -1,6 +1,6 @@
 // ChaSetCardFooter.qml — Card Footer Container
 // Matching React: flex items-center p-6 pt-0 gap-2
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Item {

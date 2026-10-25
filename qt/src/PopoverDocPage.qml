@@ -1,6 +1,6 @@
 // PopoverDocPage.qml — Living Documentation for ChaSetPopover
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 DocLayout {

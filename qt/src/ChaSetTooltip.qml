@@ -1,7 +1,7 @@
 // ChaSetTooltip.qml — Cross-stack Tooltip component for Qt Quick Desktop matching React Tooltip 1:1
-import QtQuick 6.10
-import QtQuick.Controls 6.10
-import QtQuick.Shapes 6.10
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Shapes
 import ChaSet
 
 Item {

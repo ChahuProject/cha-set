@@ -1,5 +1,5 @@
 // ChaSetPanelCard.qml — Cross-Stack Panel Card Component
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Rectangle {

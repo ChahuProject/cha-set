@@ -1,5 +1,5 @@
 // ChaSetDraggableModal.qml — Cross-Stack Draggable Modal Component
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Rectangle {

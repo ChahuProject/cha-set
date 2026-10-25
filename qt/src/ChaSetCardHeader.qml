@@ -1,6 +1,6 @@
 // ChaSetCardHeader.qml — Header container for Card
 // Matching React: flex flex-col space-y-1.5 p-6
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Item {

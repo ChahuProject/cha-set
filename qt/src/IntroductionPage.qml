@@ -1,6 +1,6 @@
 // IntroductionPage.qml — Getting Started & Architecture Overview matching React 1:1
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 DocLayout {
@@ -190,7 +190,7 @@ DocLayout {
         ChaSetCodeBlock {
             width: parent.width
             language: "qml"
-            code: "import QtQuick 6.10\nimport ChaSet\n\nChaSetScrollArea {\n    width: 400\n    height: 300\n    showButtons: true\n\n    ChaSetButton {\n        variant: \"default\"\n        size: \"default\"\n        text: \"" + ChaSetI18n.tr("getStarted.intro.quickstart.buttonText", "Launch Workspace") + "\"\n        onClicked: console.log(\"Clicked!\")\n    }\n}"
+            code: "import QtQuick\nimport ChaSet\n\nChaSetScrollArea {\n    width: 400\n    height: 300\n    showButtons: true\n\n    ChaSetButton {\n        variant: \"default\"\n        size: \"default\"\n        text: \"" + ChaSetI18n.tr("getStarted.intro.quickstart.buttonText", "Launch Workspace") + "\"\n        onClicked: console.log(\"Clicked!\")\n    }\n}"
         }
     }
 

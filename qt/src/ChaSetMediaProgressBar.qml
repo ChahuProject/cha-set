@@ -1,8 +1,8 @@
 // ChaSetMediaProgressBar.qml — Cross-Stack Media Progress Bar Component
 // 支持拖拽擦洗、点击 seek、悬停预览、左下方「位置 / 总长」时间显示、
 // 点击翻转正/倒计时、状态 Tooltip 与右键格式/计时菜单。
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 Item {

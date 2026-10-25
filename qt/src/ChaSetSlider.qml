@@ -1,7 +1,7 @@
 // ChaSetSlider.qml — Cross-Stack Slider Component
 // 100% Pixel-Perfect & Behavioral Parity with React Slider.tsx
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 Item {

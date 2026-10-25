@@ -3,7 +3,7 @@
 // Mirrors packages/react/src/activity-stack/ActivityCard.tsx 1:1. It is NOT a spec
 // component: it owns no timers, no placement and no state, so the Task HUD and the
 // Notification Stack can be written as thin adapters over the same box.
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Item {

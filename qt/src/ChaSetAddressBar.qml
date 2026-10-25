@@ -1,9 +1,9 @@
 // qt/src/ChaSetAddressBar.qml
 // ChaSet AddressBar for Qt (QML) — Explorer and browser-style navigation bar
 // with interactive breadcrumbs, subfolder enumeration, inline editing, and typed path history.
-import QtQuick 6.10
-import QtQuick.Controls 6.10
-import QtQuick.Layouts 6.10
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 import ChaSet
 
 Item {

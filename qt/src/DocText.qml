@@ -11,7 +11,7 @@
 // wrap and a default tone. What it does NOT carry: margins — Qt resolves block
 // spacing through Column.spacing, the web through utilities, so a role with a
 // built-in margin would drift between the stacks immediately.
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 TextEdit {

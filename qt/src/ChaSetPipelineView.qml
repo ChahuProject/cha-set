@@ -1,6 +1,6 @@
 // ChaSetPipelineView.qml — Cross-stack Pipeline Execution View in Qt Quick
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import QtQuick.Shapes
 import ChaSet
 

@@ -1,6 +1,6 @@
 // ChaSetCard.qml — Cross-Stack Card Container Component
 // 100% Pixel-Perfect & Behavioral Parity with React Card.tsx
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 ChaSetSquircle {

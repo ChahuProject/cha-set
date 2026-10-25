@@ -1,6 +1,6 @@
 // ChaSetKbd.qml — Cross-Stack Keyboard Shortcut & Keycap Primitive
 // Single source of truth parity with spec/components/kbd.ts and React Kbd.tsx
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Item {

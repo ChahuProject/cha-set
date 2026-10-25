@@ -1,5 +1,5 @@
 // ChaSetWindowTitleBar.qml — Cross-Stack Window Title Bar Component
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Rectangle {

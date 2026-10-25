@@ -2,7 +2,7 @@
 // Fixed params: pill radius (full), Badge variant secondary; everything else
 // forwards to ChaSetHoverCopy. No logic, no new state, no new timing.
 // Contract: docs/architecture/hover-copy.md section 7.
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Item {

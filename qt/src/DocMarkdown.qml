@@ -8,7 +8,7 @@
 //
 // This file owns typography only: every node resolves through DocText / Typography / dp, never
 // through MarkdownText (which would bypass ThemeTokens.sp scaling).
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 import "vendor/docAst.mjs" as DocAst
 

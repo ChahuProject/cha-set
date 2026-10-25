@@ -6,7 +6,7 @@
 // Implements docs/architecture/hover-copy.md sections 3-4 exactly.
 // Zero assumptions about wrapped content: arbitrary children are hosted in
 // contentHost via the default property alias; the root hugs them.
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Item {

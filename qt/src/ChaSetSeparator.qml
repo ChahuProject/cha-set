@@ -1,6 +1,6 @@
 // ChaSetSeparator.qml — Cross-Stack Separator / Divider Component
 // 100% Pixel-Perfect & Behavioral Parity with React Separator.tsx
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Item {

@@ -1,6 +1,6 @@
 // ChaSetTable.qml — Cross-Stack Table Component for Qt Quick
 // Pixel-Perfect & Behavioral Parity with React Table.tsx
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Rectangle {

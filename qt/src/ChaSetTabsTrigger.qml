@@ -1,6 +1,6 @@
 // ChaSetTabsTrigger.qml — Individual Tab Trigger Button
 // Matching shadcn: inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 ChaSetSquircle {

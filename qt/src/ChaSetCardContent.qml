@@ -1,6 +1,6 @@
 // ChaSetCardContent.qml — Card Body Container
 // Matching React: p-6 pt-0
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Item {

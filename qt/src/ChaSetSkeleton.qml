@@ -1,5 +1,5 @@
 // ChaSetSkeleton.qml — Cross-Stack Skeleton Component
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Rectangle {

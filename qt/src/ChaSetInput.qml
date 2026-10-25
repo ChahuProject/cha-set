@@ -1,7 +1,7 @@
 // ChaSetInput.qml — Cross-Stack Text Input Component
 // 100% Pixel-Perfect & Behavioral Parity with React Input.tsx
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 ChaSetSquircle {

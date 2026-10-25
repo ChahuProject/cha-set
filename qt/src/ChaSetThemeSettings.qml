@@ -1,7 +1,7 @@
 // ChaSetThemeSettings.qml — Cross-Stack Theme Settings Component
 // 100% Feature & API Parity with React ThemeSettings.tsx & spec/schemas/theme-config.schema.json
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 Item {

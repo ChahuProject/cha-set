@@ -1,7 +1,7 @@
 // DocAnatomy.qml — Cross-Stack Component Anatomy / Import Viewer
 // Standardized Dual-Tab Anatomy viewer matching React DocAnatomy.tsx
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 Column {

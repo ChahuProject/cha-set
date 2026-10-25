@@ -1,5 +1,5 @@
 pragma Singleton
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 // ChaSetI18n.qml — Process-Global Internationalization Manager for ChaSet QML

@@ -5,7 +5,7 @@
 // holds the one piece of state the stack does not — the grace period an emptied HUD
 // lingers for, so the last card fades out instead of vanishing the moment the final
 // job reports success.
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 ChaSetActivityStack {

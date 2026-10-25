@@ -1,7 +1,7 @@
 // ChaSetCheckbox.qml — Cross-Stack Checkbox Component
 // 100% Pixel-Perfect & Behavioral Parity with React Checkbox.tsx
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 Item {

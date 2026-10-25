@@ -7,7 +7,7 @@
 // hover reporting and keyboard traversal.
 //
 // It is NOT a spec component. Entries are read as "tail is newest".
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Item {

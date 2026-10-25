@@ -1,5 +1,5 @@
 // ChaSetSplitter.qml — Cross-Stack Splitter Component
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Item {

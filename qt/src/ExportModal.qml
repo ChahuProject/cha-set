@@ -1,6 +1,6 @@
 // ExportModal.qml — Multi-Stack Config Exporter
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 ChaSetDialog {
@@ -99,7 +99,7 @@ ChaSetDialog {
         var pri = root.overridePrimary !== "" ? root.overridePrimary : (ThemeTokens.dark ? "#30a0ff" : "#1d7ae0");
         return "// ChaSet Qt / QML Integration\n" +
                "// 1. Import ThemeTokens and ChaSet components\n" +
-               "import QtQuick 6.10\n" +
+               "import QtQuick\n" +
                "import ChaSet\n\n" +
                "ApplicationWindow {\n" +
                "    visible: true\n" +

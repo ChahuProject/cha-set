@@ -5,7 +5,7 @@
 // The lexer itself lives in Highlighter.generated.qml (emitted from
 // spec/highlight/*), and the palette in CodeTokens.generated.qml; this file only
 // owns layout (line gutter, wrapping) and the token -> color bridge.
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Item {

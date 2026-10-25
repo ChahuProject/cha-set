@@ -1,7 +1,7 @@
 // ChaSetViewportConstrainedContainer.qml — Cross-Stack Viewport Constrained Container Component
 // Dynamically bounds max-height based on available viewport space below the anchor.
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 Rectangle {

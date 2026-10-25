@@ -6,7 +6,7 @@
 // task does not — a lifetime. Expiry is tracked as a remaining-time budget rather than a
 // bare timer, so hovering a stack of toasts freezes each one mid-count instead of
 // letting them expire underneath the user's cursor.
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 ChaSetActivityStack {

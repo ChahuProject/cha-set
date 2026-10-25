@@ -1,7 +1,7 @@
 // DocFooterSections.qml — Standardized Showcase Footer Container for Qt Quick
 // Encapsulates Animations, Keyboard Navigation, and Props Reference matching React DocFooterSections.tsx
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 Column {

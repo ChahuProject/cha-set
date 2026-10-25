@@ -1,8 +1,8 @@
 // ChaSet ScrollArea for Qt (QML)
 // Native Flickable viewport with integrated ChaSetScrollBar,
 // precision mouse wheel handling, smooth animated kinematics, and automatic childrenRect bounds.
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 Flickable {

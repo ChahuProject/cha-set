@@ -5,8 +5,8 @@
 // React's CodeBlock.tsx 1:1. Supports: syntax highlighting, copy, language/file
 // label, line numbers, wrapping, bounded height, embedded (chrome-less) mode and
 // multi-file tabs.
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 ChaSetSquircle {

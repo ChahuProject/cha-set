@@ -1,6 +1,6 @@
 // LabelDocPage.qml — Documentation and interactive sandbox for ChaSetLabel
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 DocLayout {

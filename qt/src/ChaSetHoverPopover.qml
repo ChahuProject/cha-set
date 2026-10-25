@@ -1,7 +1,7 @@
 // ChaSetHoverPopover.qml — Cross-Stack Hover Popover / Flyout Component
 // Designed for seamless hover-triggered interactive popover cards with zero leakage.
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 Item {

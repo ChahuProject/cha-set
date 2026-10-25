@@ -1,6 +1,6 @@
 // ChaSetTabsContent.qml — Tab Panel Container
 // Matching shadcn: mt-2 ring-offset-background focus-visible:outline-none
-import QtQuick 6.10
+import QtQuick
 import ChaSet
 
 Item {

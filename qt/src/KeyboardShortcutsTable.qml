@@ -1,6 +1,6 @@
 // KeyboardShortcutsTable.qml — Keyboard Navigation & Shortcut Reference Table for ChaSet DocPages
-import QtQuick 6.10
-import QtQuick.Controls 6.10
+import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 Column {
