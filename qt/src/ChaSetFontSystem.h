@@ -20,7 +20,7 @@ namespace ChaSet {
 class FontSystem {
 public:
     /// Environment variable selecting the global text rasterization path.
-    /// Accepted values: "qt" (default), "native", "curve".
+    /// Accepted values: "native" (default), "qt", "curve".
     static const char* textRenderEnvVar();
 
     /**
@@ -29,18 +29,19 @@ public:
      *
      * Must be called before the first QQuickWindow is instantiated.
      *
-     * - "qt"     (default) -> QQuickWindow::QtTextRendering. Qt's own glyph
-     *                         rasterizer; smooth outline coverage without the
-     *                         operating system's grid-fitting.
-     * - "native"           -> QQuickWindow::NativeTextRendering. DirectWrite /
-     *                         CoreText; crispest small upright text, but curves
-     *                         are fitted to the pixel grid.
+     * - "native" (default) -> QQuickWindow::NativeTextRendering. DirectWrite /
+     *                         CoreText. Grid-fits glyphs, so 12–14px CJK stems
+     *                         stay solid instead of dissolving into a grey
+     *                         fringe. Locked-in default because the showcase is
+     *                         read side by side with a browser.
+     * - "qt"               -> QQuickWindow::QtTextRendering. Qt's own rasterizer;
+     *                         position-independent outlines, but soft at UI sizes.
      * - "curve"            -> QQuickWindow::CurveTextRendering. Curve rasterizer
      *                         running on the graphics hardware; requires a
      *                         hardware RHI backend and falls back to "qt" when a
      *                         software rasterizer is active.
      *
-     * Unknown values log a warning and fall back to the default ("qt").
+     * Unknown values log a warning and fall back to the default ("native").
      */
     static void applyTextRenderType();
 

@@ -251,11 +251,12 @@ Even with identical font metrics and tokens, visual discrepancy ("像素感" / b
 
      | Value | `QQuickWindow::TextRenderType` | Rasterizer | Trade-off |
      | :--- | :--- | :--- | :--- |
-     | `qt` **(default)** | `QtTextRendering` | Qt's own glyph-outline rasterizer | Smooth grayscale outline coverage; outlines are not fitted to the pixel grid, so curves stay smooth as the UI scale grows. |
-     | `native` | `NativeTextRendering` | Operating-system rasterizer (DirectWrite / CoreText) | Crispest stems for small upright text, but hinting fits the outlines to the pixel grid, which produces visible staircases on rounded strokes (CJK, `S`, `e`, `g`) once the UI scale enlarges the glyphs. |
+     | `native` **(default)** | `NativeTextRendering` | Operating-system rasterizer (DirectWrite / CoreText) | Grid-fits stems, so 12–14px CJK strokes stay solid. Glyph positions are no longer sub-pixel independent (advance widths can shift by 1px between scales), which is unacceptable for text that is transformed or animated, and irrelevant for static prose. |
+     | `qt` | `QtTextRendering` | Qt's own glyph-outline rasterizer | Position-independent outlines, but at UI sizes most of a stroke ends up as half-lit fringe: measured on 200% CJK body text, the ratio of solid-core to fringe pixels is **0.86 vs 1.88** for the platform rasterizer, i.e. the page reads dim and out of focus next to a browser. |
      | `curve` | `CurveTextRendering` | Hardware curve rasterizer (Qt 6.7+) | Glyph outlines are rasterized as curves on the GPU; scale-invariant smoothness and the lowest texture memory. Requires a hardware RHI backend. |
 
-   - Unknown values log a warning and resolve to `qt`. `curve` degrades to `qt` when a software rasterizer is active (`QT_QUICK_BACKEND=software`, `QSG_RHI_BACKEND=software`, or `QSG_RHI_PREFER_SOFTWARE_RENDERER`), because the curve rasterizer runs on the graphics hardware.
+   - **Why `native` is the default**: ChaSet's living documentation is read side by side with the React docs. Under `qt` rendering, identical 14px CJK body text peaked at 238.6 luminance with 62% of the marked pixels in the fringe band, versus 249.7 / 41% in Chromium; the difference reads as "the Qt text is lighter and blurrier" and is not a colour-token problem. The trade-off above only bites when text itself is animated or lives under a QML `scale` transform, which is why manual `renderType:` overrides are still forbidden — one policy, chosen here.
+   - Unknown values log a warning and resolve to `native`. `curve` degrades to `qt` when a software rasterizer is active (`QT_QUICK_BACKEND=software`, `QSG_RHI_BACKEND=software`, or `QSG_RHI_PREFER_SOFTWARE_RENDERER`), because the curve rasterizer runs on the graphics hardware.
    - The resolved policy is exposed to QML as the `textRenderPolicy` context property and asserted by the headless `typography` scenario in `qt/src/main.cpp`.
    - Manual `renderType:` overrides in QML components remain strictly forbidden and are mechanically checked by `scripts/check-typography-parity.mjs`.
 
@@ -288,7 +289,7 @@ Host applications linking against `ChaSet::ChaSet` initialize the entire font su
 #include <ChaSet/ChaSetFontSystem.h>
 
 int main(int argc, char* argv[]) {
-    // Must precede QGuiApplication: resolves CHASET_TEXT_RENDER (qt / native / curve).
+    // Must precede QGuiApplication: resolves CHASET_TEXT_RENDER (native / qt / curve).
     ChaSet::FontSystem::applyTextRenderType();
     QGuiApplication app(argc, argv);
     ChaSet::FontSystem::initialize(&app);
@@ -297,7 +298,7 @@ int main(int argc, char* argv[]) {
 ```
 
 Between the two calls they configure:
-- The global text rasterizer (`applyTextRenderType()`, see §9.3) — `qt` by default
+- The global text rasterizer (`applyTextRenderType()`, see §9.3) — `native` by default
 - Pure alpha grayscale antialiasing (`QFont::NoSubpixelAntialias`)
 - Vertical curve hinting (`QFont::PreferVerticalHinting`)
 - DirectWrite CJK substitution tables (`Segoe UI`, `Consolas`, `sans-serif`, `monospace`)

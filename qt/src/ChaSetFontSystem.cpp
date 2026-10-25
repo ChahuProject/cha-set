@@ -27,7 +27,7 @@ bool isSoftwareRasterizerRequested()
 
 QStringList FontSystem::s_customSansFamilies;
 QStringList FontSystem::s_customMonoFamilies;
-QString FontSystem::s_textRenderPolicyName = QStringLiteral("qt");
+QString FontSystem::s_textRenderPolicyName = QStringLiteral("native");
 
 const char* FontSystem::textRenderEnvVar()
 {
@@ -85,26 +85,34 @@ void FontSystem::applyTextRenderType()
 {
     const QString requested = qEnvironmentVariable(textRenderEnvVar()).trimmed().toLower();
 
-    QQuickWindow::TextRenderType type = QQuickWindow::QtTextRendering;
-    QString resolved = QStringLiteral("qt");
+    // Default is the platform rasterizer, not Qt's. Measured on 2x CJK body text, Qt's own
+    // rasterizer leaves most of a stroke as half-lit fringe (core/edge 0.86) where DirectWrite
+    // gives solid stems (1.88); next to the browser the page reads dim and out of focus, and
+    // the earlier "smooth coverage" rationale only holds for large display text, not 14px CJK.
+    // Cost of the switch: glyphs grid-fit horizontally, so letterforms stop being
+    // position-independent. Documentation is static, so nothing animates through it.
+    QQuickWindow::TextRenderType type = QQuickWindow::NativeTextRendering;
+    QString resolved = QStringLiteral("native");
 
-    if (requested.isEmpty() || requested == QLatin1String("qt")) {
-        // Default: Qt's own rasterizer.
-    } else if (requested == QLatin1String("native")) {
-        type = QQuickWindow::NativeTextRendering;
-        resolved = QStringLiteral("native");
+    if (requested.isEmpty() || requested == QLatin1String("native")) {
+        // Default: the platform rasterizer (DirectWrite on Windows, CoreText on macOS).
+    } else if (requested == QLatin1String("qt")) {
+        type = QQuickWindow::QtTextRendering;
+        resolved = QStringLiteral("qt");
     } else if (requested == QLatin1String("curve")) {
         if (isSoftwareRasterizerRequested()) {
             qWarning() << "[ChaSet][FontSystem]" << textRenderEnvVar()
                        << "= curve requires a hardware RHI backend, but a software rasterizer is active;"
                        << "falling back to the Qt default (QtTextRendering).";
+            type = QQuickWindow::QtTextRendering;
+            resolved = QStringLiteral("qt");
         } else {
             type = QQuickWindow::CurveTextRendering;
             resolved = QStringLiteral("curve");
         }
     } else {
         qWarning() << "[ChaSet][FontSystem] Unknown" << textRenderEnvVar() << "value" << requested
-                   << "- expected one of {qt, native, curve}; falling back to the Qt default (QtTextRendering).";
+                   << "- expected one of {native, qt, curve}; falling back to the default (NativeTextRendering).";
     }
 
     QQuickWindow::setTextRenderType(type);
