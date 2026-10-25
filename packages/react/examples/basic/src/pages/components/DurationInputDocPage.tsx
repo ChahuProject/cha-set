@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { DurationInput, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -129,26 +129,9 @@ ChaSetDurationInput {
         </div>
       </section>
 
-            <ComponentReference
-        name="DurationInput"
-        componentId="duration-input"
-        props={[
-            { name: 'value', type: 'number', default: '0', description: t('components.durationInput.valueDesc', 'Total duration in seconds (controlled mode).') },
-            { name: 'defaultValue', type: 'number', default: '0', description: t('components.durationInput.defaultValueDesc', 'Initial duration in seconds (uncontrolled mode).') },
-            { name: 'onChange', type: '(seconds: number) => void', default: 'undefined', description: t('components.durationInput.onChangeDesc', 'Callback fired when the duration changes.') },
-            { name: 'maxHours', type: 'number', default: '99', description: t('components.durationInput.maxHoursDesc', 'Upper clamp limit for the hours segment.') },
-            { name: 'size', type: "'sm' | 'default' | 'lg'", default: "'default'", description: t('components.durationInput.sizeDesc', 'Visual density and size variant.') },
-            { name: 'disabled', type: 'boolean', default: 'false', description: t('components.durationInput.disabledDesc', 'Whether the inputs, buttons, and preset dropdown are disabled.') },
-            { name: 'showPresets', type: 'boolean', default: 'true', description: t('components.durationInput.showPresetsDesc', 'Whether to display the preset dropdown button.') },
-            { name: 'showLabels', type: 'boolean', default: 'true', description: t('components.durationInput.showLabelsDesc', 'Whether to display the segment unit labels underneath.') },
-            { name: 'presets', type: 'DurationPresetGroup[]', default: 'defaultDurationPresetGroups', description: t('components.durationInput.presetsDesc', 'Custom grouped duration presets for the dropdown.') },
-            { name: 'hoursLabel', type: 'string', default: "'Hours'", description: t('components.durationInput.hoursLabelDesc', 'Label text for hours segment.') },
-            { name: 'minutesLabel', type: 'string', default: "'Minutes'", description: t('components.durationInput.minutesLabelDesc', 'Label text for minutes segment.') },
-            { name: 'secondsLabel', type: 'string', default: "'Seconds'", description: t('components.durationInput.secondsLabelDesc', 'Label text for seconds segment.') },
-            { name: 'presetsLabel', type: 'string', default: "'Presets'", description: t('components.durationInput.presetsLabelDesc', 'Label text for the presets trigger button.') },
-            { name: 'className', type: 'string', default: 'undefined', description: t('components.durationInput.classNameDesc', 'Custom CSS classes for outer container.') },
-          ]}
-      />
+                        <DocMarkdown id="duration-input" section="keyboard" />
+
+            <DocMarkdown id="duration-input" section="props" />
     </DocLayout>
   );
 }

@@ -166,19 +166,15 @@ ChaSetSettingRow {
     }
 
     // Keyboard Navigation
-        ComponentReference {
-        name: "SettingRow"
-        componentId: "setting-row"
-        propsModel: [
-            { name: "name", type: "string", default: "''", description: ChaSetI18n.tr("components.settingRow.nameDesc", "Primary title label for the setting item.") },
-            { name: "description", type: "string", default: "''", description: ChaSetI18n.tr("components.settingRow.descriptionDesc", "Secondary explanatory subtitle text.") },
-            { name: "icon", type: "string", default: "''", description: ChaSetI18n.tr("components.settingRow.iconDesc", "Optional leading icon or badge avatar.") },
-            { name: "badge", type: "string", default: "''", description: ChaSetI18n.tr("components.settingRow.badgeDesc", "Optional trailing badge tag next to title.") },
-            { name: "size", type: "string", default: "'default'", description: ChaSetI18n.tr("components.settingRow.sizeDesc", "Density size variant ('default' or 'sm').") },
-            { name: "highlightId", type: "string", default: "''", description: ChaSetI18n.tr("components.settingRow.highlightIdDesc", "Unique identifier used for anchor jump targeting.") },
-            { name: "highlightTarget", type: "string", default: "''", description: ChaSetI18n.tr("components.settingRow.highlightTargetDesc", "Active target identifier. When matching highlightId, triggers pulse.") },
-            { name: "highlight", type: "bool", default: "false", description: ChaSetI18n.tr("components.settingRow.highlightDesc", "Direct boolean override to force active highlight animation.") },
-            { name: "disabled", type: "bool", default: "false", description: ChaSetI18n.tr("components.settingRow.disabledDesc", "Whether the setting row and controls are dimmed and disabled.") }
-        ]
-    }
+        DocMarkdown {
+            width: parent.width
+            docId: "setting-row"
+            section: "keyboard"
+        }
+
+        DocMarkdown {
+            width: parent.width
+            docId: "setting-row"
+            section: "props"
+        }
 }

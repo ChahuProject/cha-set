@@ -327,21 +327,15 @@ DocLayout {
     }
 
     // Section 5: Component Reference (Keyboard + Props)
-    ComponentReference {
-        name: "Checkbox"
-        componentId: "checkbox"
-        propsModel: [
-            { name: "checked", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.checkbox.checkedDesc", "The controlled checked state of the checkbox.") },
-            { name: "indeterminate", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.checkbox.indeterminateDesc", "Whether the checkbox is in an indeterminate state (takes visual precedence over checked).") },
-            { name: "disabled", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.checkbox.disabledDesc", "Disables user interactions and applies 50% opacity.") },
-            { name: "readOnly", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.checkbox.readOnlyDesc", "Prevents toggling state while retaining focusability and full opacity.") },
-            { name: "invalid", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.checkbox.invalidDesc", "Applies destructive error styling and aria-invalid attribute.") },
-            { name: "size", type: "'default' | 'sm'", defaultValue: "'default'", description: ChaSetI18n.tr("components.checkbox.sizeDesc", "The size variant: default or sm.") },
-            { name: "label", type: "string", defaultValue: "''", description: ChaSetI18n.tr("components.checkbox.labelDesc", "Optional companion label rendered alongside the checkbox.") },
-            { name: "description", type: "string", defaultValue: "''", description: ChaSetI18n.tr("components.checkbox.helperDesc", "Optional helper text rendered below the label.") },
-            { name: "customRadius", type: "int", defaultValue: "-1", description: ChaSetI18n.tr("components.checkbox.customRadiusDesc", "Optional custom corner radius for the checkbox box (-1 uses default).") },
-            { name: "forceHover", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.checkbox.forceHoverDesc", "Visual testing aid to force hover state styles.") },
-            { name: "forceFocus", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.checkbox.forceFocusDesc", "Visual testing aid to force focus ring styles.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "checkbox"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "checkbox"
+        section: "props"
     }
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SplitterHandle, Card, Button, Badge, CopyableBadge, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -191,81 +191,9 @@ ChaSetSplitterHandle {
         </div>
       </section>
 
-      <ComponentReference
-        name="SplitterHandle"
-        componentId="splitter-handle"
-        props={[
-          {
-            name: 'edge',
-            type: "'left' | 'right' | 'top' | 'bottom'",
-            default: "'left'",
-            required: false,
-            description: t('components.splitterHandle.edgeDesc', 'Which edge of the target panel the resize handle controls.'),
-          },
-          {
-            name: 'targetSize',
-            type: 'number',
-            default: '200',
-            required: false,
-            description: t('components.splitterHandle.targetSizeDesc', 'Current size (width or height) of the target element being resized.'),
-          },
-          {
-            name: 'minSize',
-            type: 'number',
-            default: '100',
-            required: false,
-            description: t('components.splitterHandle.minSizeDesc', 'Minimum allowed size bound.'),
-          },
-          {
-            name: 'maxSize',
-            type: 'number',
-            default: '1000',
-            required: false,
-            description: t('components.splitterHandle.maxSizeDesc', 'Maximum allowed size bound.'),
-          },
-          {
-            name: 'defaultSize',
-            type: 'number',
-            required: false,
-            description: t('components.splitterHandle.defaultSizeDesc', 'Size restored when double-clicked or Enter is pressed.'),
-          },
-          {
-            name: 'liveUpdate',
-            type: 'boolean',
-            default: 'true',
-            required: false,
-            description: t('components.splitterHandle.liveUpdateDesc', 'Whether size updates fire continuously during drag.'),
-          },
-          {
-            name: 'hitThickness',
-            type: 'number',
-            default: '6',
-            required: false,
-            description: t('components.splitterHandle.hitThicknessDesc', 'Interactive mouse hit test zone thickness.'),
-          },
-          {
-            name: 'visualThickness',
-            type: 'number',
-            default: '1',
-            required: false,
-            description: t('components.splitterHandle.visualThicknessDesc', 'Resting visible hairline thickness.'),
-          },
-          {
-            name: 'activeVisualThickness',
-            type: 'number',
-            default: '2',
-            required: false,
-            description: t('components.splitterHandle.activeVisualThicknessDesc', 'Highlighted visible hairline thickness when hovered or dragged.'),
-          },
-          {
-            name: 'disabled',
-            type: 'boolean',
-            default: 'false',
-            required: false,
-            description: t('components.splitterHandle.disabledDesc', 'Whether handle resizing is disabled.'),
-          },
-        ]}
-      />
+            <DocMarkdown id="splitter-handle" section="keyboard" />
+
+      <DocMarkdown id="splitter-handle" section="props" />
     </DocLayout>
   );
 }

@@ -134,14 +134,15 @@ Column {
         DocText { text: ChaSetI18n.tr("desktopComposite.skeleton.animationsBulletQt2", "All animations stop when ThemeTokens.animationsEnabled is false, keeping the skeleton static."); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
     }
 
-    ComponentReference {
-        name: "Skeleton"
-        componentId: "skeleton"
-        propsModel: [
-            { name: "animation", type: "string", default: "'pulse'", description: ChaSetI18n.tr("components.skeleton.animationDescQt", "Animation mode: 'pulse' | 'wave' | 'none'.") },
-            { name: "rounded", type: "string", default: "'md'", description: ChaSetI18n.tr("components.skeleton.roundedDescQt", "Corner radius preset: 'none' | 'sm' | 'md' | 'lg' | 'full'.") },
-            { name: "customRadius", type: "int", default: "-1", description: ChaSetI18n.tr("components.skeleton.customRadiusDesc", "Custom corner radius override.") },
-            { name: "animate", type: "bool", default: "true", description: ChaSetI18n.tr("components.skeleton.animateDesc", "Convenience flag to enable or disable animation.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "skeleton"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "skeleton"
+        section: "props"
     }
 }

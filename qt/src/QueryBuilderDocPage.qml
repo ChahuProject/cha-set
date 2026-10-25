@@ -103,14 +103,15 @@ ChaSetQueryBuilder {
     }
 
     
-    ComponentReference {
-        name: "QueryBuilder"
-        componentId: "query-builder"
-        propsModel: [
-            { name: "connector", type: "string", default: "'AND'", description: ChaSetI18n.tr("components.queryBuilder.connectorDesc", "Root boolean combinator logic ('AND' | 'OR').") },
-            { name: "fields", type: "var[]", default: "[]", description: ChaSetI18n.tr("components.queryBuilder.fieldsListDesc", "Array of queryable field definitions.") },
-            { name: "rules", type: "var[]", default: "[]", description: ChaSetI18n.tr("components.queryBuilder.rulesDesc", "Array of active condition rules.") },
-            { name: "customRadius", type: "int", default: "8", description: ChaSetI18n.tr("components.queryBuilder.customRadiusDesc", "Corner radius of the rule builder container.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "query-builder"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "query-builder"
+        section: "props"
     }
 }

@@ -225,25 +225,15 @@ ChaSetScaleOsd {
         }
     }
 
-    ComponentReference {
-        name: "ScaleOsd"
-        componentId: "scale-osd"
-        propsModel: [
-            { name: "value", type: "real", defaultVal: "1.0", description: ChaSetI18n.tr("components.scaleOsd.valueDesc", "Current scale ratio (e.g. 1.0 represents 100%).") },
-            { name: "step", type: "real", defaultVal: "0.1", description: ChaSetI18n.tr("components.scaleOsd.stepDesc", "Step increment applied on +/- button click.") },
-            { name: "min", type: "real", defaultVal: "0.2", description: ChaSetI18n.tr("components.scaleOsd.minDesc", "Minimum allowed zoom scale ratio.") },
-            { name: "max", type: "real", defaultVal: "3.0", description: ChaSetI18n.tr("components.scaleOsd.maxDesc", "Maximum allowed zoom scale ratio.") },
-            { name: "steps", type: "var", defaultVal: "[]", description: ChaSetI18n.tr("components.scaleOsd.stepsDesc", "Discrete scale steps array (e.g. CANONICAL_SCALE_STEPS).") },
-            { name: "size", type: "string", defaultVal: "\"default\"", description: ChaSetI18n.tr("components.scaleOsd.sizeDesc", "Visual scale variant (desktop launcher 42px or standard 40px).") },
-            { name: "ignoreUiScale", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.scaleOsd.ignoreUiScaleDesc", "Locks physical pixel size and renders invariant regardless of interface scaling.") },
-            { name: "autoHideDuration", type: "int", defaultVal: "1400", description: ChaSetI18n.tr("components.scaleOsd.autoHideDurationDesc", "Duration in ms before auto-hiding (pauses on hover).") },
-            { name: "showControls", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.scaleOsd.showControlsDesc", "Whether to display +/- and reset buttons.") },
-            { name: "showTooltips", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.scaleOsd.showTooltipsDesc", "Whether to display hover tooltip hints for control buttons.") },
-            { name: "contained", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.scaleOsd.containedDesc", "Whether to position OSD absolutely within its parent container instead of fixed to the global viewport.") },
-            { name: "disabled", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.scaleOsd.disabledDesc", "Disables all controls and user interaction.") },
-            { name: "delayedCommit", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.scaleOsd.delayedCommitDesc", "是否开启防抖延迟生效，暂停调节后再触发提交。") },
-            { name: "debounceDuration", type: "int", defaultVal: "500", description: ChaSetI18n.tr("components.scaleOsd.debounceDurationDesc", "开启延迟生效时的防抖等待时长（毫秒）。") },
-            { name: "changeCommitted", type: "signal", defaultVal: "real value", description: ChaSetI18n.tr("components.scaleOsd.changeCommittedDesc", "延迟生效防抖完成后触发的最终提交信号。") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "scale-osd"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "scale-osd"
+        section: "props"
     }
 }

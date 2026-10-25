@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { ColorPicker, type ColorPickerMode, type ColorPickerSize, SegmentedControl, Checkbox, Card, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { ComponentReference } from '../../components/ComponentReference';
 import { DocText } from '../../components/DocText';
 
 export function ColorPickerDocPage() {
@@ -223,90 +223,9 @@ export function ColorPickerDocPage() {
       </section>
 
       {/* 4. Component Reference */}
-      <ComponentReference
-        name="ColorPicker"
-        componentId="color-picker"
-        props={[
-          {
-            name: 'value',
-            type: 'string',
-            default: '—',
-            description: t('components.colorPicker.valueDesc', 'Controlled hex color value (e.g. #1D7AE0).'),
-          },
-          {
-            name: 'defaultValue',
-            type: 'string',
-            default: "'#1d7ae0'",
-            description: t('components.colorPicker.defaultValueDesc', 'Initial color value for uncontrolled usage.'),
-          },
-          {
-            name: 'mode',
-            type: "'inline' | 'popover'",
-            default: "'inline'",
-            description: t('components.colorPicker.modeDesc', 'Display mode: inline panel card or popover dropdown trigger.'),
-          },
-          {
-            name: 'size',
-            type: "'default' | 'sm'",
-            default: "'default'",
-            description: t('components.colorPicker.sizeDesc', 'Visual sizing scale for canvas, swatches, and inputs.'),
-          },
-          {
-            name: 'disabled',
-            type: 'boolean',
-            default: 'false',
-            description: t('components.colorPicker.disabledPropDesc', 'When true, prevents user interaction and applies muted opacity.'),
-          },
-          {
-            name: 'movable',
-            type: 'boolean',
-            default: 'false',
-            description: t('components.colorPicker.movableDesc', 'When true, allows dragging on empty background areas to reposition the component. Double-click resets position.'),
-          },
-          {
-            name: 'showPreview',
-            type: 'boolean',
-            default: 'true',
-            description: t('components.colorPicker.showPreviewDesc', 'Whether to show the top preview header swatch and hex label.'),
-          },
-          {
-            name: 'showHex',
-            type: 'boolean',
-            default: 'true',
-            description: t('components.colorPicker.showHexDesc', 'Whether to display the editable HEX text input row.'),
-          },
-          {
-            name: 'showSwatches',
-            type: 'boolean',
-            default: 'true',
-            description: t('components.colorPicker.showSwatchesDesc', 'Whether to show the quick preset color swatch row.'),
-          },
-          {
-            name: 'presetColors',
-            type: 'string[]',
-            default: '16 default colors',
-            description: t('components.colorPicker.presetColorsDesc', 'Array of preset hex color strings displayed in swatches panel.'),
-          },
-          {
-            name: 'onChange',
-            type: '(hex: string) => void',
-            default: '—',
-            description: t('components.colorPicker.onChangeDesc', 'Callback invoked whenever the selected color changes.'),
-          },
-          {
-            name: 'onValueChange',
-            type: '(hex: string) => void',
-            default: '—',
-            description: t('components.colorPicker.onValueChangeDesc', 'Alias callback for onChange for contract consistency.'),
-          },
-          {
-            name: 'title',
-            type: 'ReactNode',
-            default: "'Color'",
-            description: t('components.colorPicker.titleDesc', 'Custom label rendered in the preview header.'),
-          },
-        ]}
-      />
+            <DocMarkdown id="color-picker" section="keyboard" />
+
+      <DocMarkdown id="color-picker" section="props" />
     </DocLayout>
   );
 }

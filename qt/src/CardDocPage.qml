@@ -258,40 +258,15 @@ DocLayout {
         }
     }
 
-        ComponentReference {
-        name: "Card"
-        componentId: "card"
-        propsModel: [
-                {
-                    name: "variant",
-                    type: "\"default\" | \"secondary\" | \"outline\"",
-                    defaultValue: "\"default\"",
-                    description: ChaSetI18n.tr("components.card.variantDesc", "Visual presentation style of the card container.")
-                },
-                {
-                    name: "size",
-                    type: "\"default\" | \"sm\"",
-                    defaultValue: "\"default\"",
-                    description: ChaSetI18n.tr("components.card.sizeDesc", "Density and padding scale of the card and composite containers.")
-                },
-                {
-                    name: "interactive",
-                    type: "bool",
-                    defaultValue: "false",
-                    description: ChaSetI18n.tr("components.card.interactiveDesc", "Whether the card provides hover/active elevation styling and cursor pointer.")
-                },
-                {
-                    name: "customRadius",
-                    type: "int",
-                    defaultValue: "-1",
-                    description: ChaSetI18n.tr("components.card.customRadiusDesc", "Explicit corner radius override (defaults to ThemeTokens.radius).")
-                },
-                {
-                    name: "contentData",
-                    type: "list<QtObject>",
-                    defaultValue: "[]",
-                    description: ChaSetI18n.tr("components.card.childrenDesc", "Card composite subcomponents or custom elements.")
-                }
-            ]
-    }
+        DocMarkdown {
+            width: parent.width
+            docId: "card"
+            section: "keyboard"
+        }
+
+        DocMarkdown {
+            width: parent.width
+            docId: "card"
+            section: "props"
+        }
 }

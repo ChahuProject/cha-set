@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { SplitButton, DropdownMenuItem, DropdownMenuSeparator, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { ComponentReference } from "../../components/ComponentReference";
 import { DocText } from '../../components/DocText';
 
 export function SplitButtonDocPage() {
@@ -127,17 +127,9 @@ export function SplitButtonDocPage() {
         </div>
       </section>
 
-      <ComponentReference
-        name="SplitButton"
-        componentId="split-button"
-        props={[
-          { name: 'label', type: 'ReactNode', default: 'undefined', description: t('components.splitButton.labelDesc', 'Label on the primary action button.') },
-          { name: 'onClick', type: '() => void', default: 'undefined', description: t('components.splitButton.onClickDesc', 'Callback fired on clicking primary action.') },
-          { name: 'menuContent', type: 'ReactNode', default: 'undefined', description: t('components.splitButton.menuContentDesc', 'Dropdown menu items rendered on chevron click.') },
-          { name: 'variant', type: 'ButtonVariant', default: "'default'", description: t('components.splitButton.variantDesc', 'Button stylistic variant.') },
-          { name: 'size', type: 'ButtonSize', default: "'default'", description: t('components.splitButton.sizeDesc', 'Button size variant.') },
-        ]}
-      />
+            <DocMarkdown id="split-button" section="keyboard" />
+
+      <DocMarkdown id="split-button" section="props" />
     </DocLayout>
   );
 }

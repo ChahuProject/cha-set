@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SegmentedControl, type SegmentedControlOption, Card, Button, Checkbox, CodeBlock, CopyableBadge, GridIcon, ListIcon, TableIcon, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -231,96 +231,9 @@ ChaSetSegmentedControl {
         </Card>
       </section>
 
-      <ComponentReference
-        name="SegmentedControl"
-        componentId="segmented-control"
-        props={[
-          {
-            name: 'options',
-            type: 'SegmentedControlOption[]',
-            required: true,
-            description: t('components.segmentedControl.optionsDesc', 'Array of option objects ({ label, value, icon?, badge?, disabled?, tooltip? }).'),
-          },
-          {
-            name: 'value',
-            type: 'string | number',
-            required: false,
-            description: t('components.segmentedControl.valueDesc', 'Controlled active value.'),
-          },
-          {
-            name: 'defaultValue',
-            type: 'string | number',
-            required: false,
-            description: t('components.segmentedControl.defaultValueDesc', 'Initial value when uncontrolled.'),
-          },
-          {
-            name: 'onValueChange',
-            type: '(value: string | number) => void',
-            required: false,
-            description: t('components.segmentedControl.onValueChangeDesc', 'Callback invoked when a new segment is selected.'),
-          },
-          {
-            name: 'size',
-            type: "'sm' | 'default' | 'lg'",
-            default: "'default'",
-            required: false,
-            description: t("components.segmentedControl.sizeDesc", "Physical dimension variant ('sm', 'default', 'lg')."),
-          },
-          {
-            name: 'title',
-            type: 'string',
-            required: false,
-            description: t('components.segmentedControl.titleDesc', 'Optional prefix label displayed before the segments.'),
-          },
-          {
-            name: 'disabled',
-            type: 'boolean',
-            default: 'false',
-            required: false,
-            description: t('components.segmentedControl.disabledDesc', 'Whether the entire segmented control is disabled.'),
-          },
-          {
-            name: 'fullWidth',
-            type: 'boolean',
-            default: 'false',
-            required: false,
-            description: t('components.segmentedControl.fullWidthDesc', 'Whether segments expand equally to fill the parent container.'),
-          },
-          {
-            name: 'equalWidth',
-            type: 'boolean',
-            default: 'false',
-            required: false,
-            description: t('components.segmentedControl.equalWidthDesc', 'Whether all segments share an identical fixed width while hugging content.'),
-          },
-          {
-            name: 'itemWidth',
-            type: 'number',
-            required: false,
-            description: t('components.segmentedControl.itemWidthDesc', 'Explicit fixed width allocated to each segment option.'),
-          },
-          {
-            name: 'tooltipSide',
-            type: "'top' | 'bottom' | 'left' | 'right'",
-            default: "'top'",
-            required: false,
-            description: t('components.segmentedControl.tooltipSideDesc', 'Default side placement for option tooltips.'),
-          },
-          {
-            name: 'tooltipDelayDuration',
-            type: 'number',
-            default: '200',
-            required: false,
-            description: t('components.segmentedControl.tooltipDelayDesc', 'Default hover delay duration in ms before displaying option tooltips.'),
-          },
-          {
-            name: 'renderTooltip',
-            type: '(option: SegmentedControlOption) => React.ReactNode',
-            required: false,
-            description: t('components.segmentedControl.renderTooltipDesc', 'Custom render function for option tooltips, allowing full user customization.'),
-          },
-        ]}
-      />
+            <DocMarkdown id="segmented-control" section="keyboard" />
+
+      <DocMarkdown id="segmented-control" section="props" />
     </DocLayout>
   );
 }

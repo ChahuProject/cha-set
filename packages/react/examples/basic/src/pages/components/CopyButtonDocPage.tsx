@@ -1,7 +1,7 @@
 import React from 'react';
 import { CopyButton, Card, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -54,19 +54,9 @@ ChaSetCopyButton {
 
 
 
-            <ComponentReference
-        name="CopyButton"
-        componentId="copy-button"
-        props={[
-            { name: 'text', type: 'string | (() => string | Promise<string>)', default: "''", description: t('components.copyButton.textDesc', 'Text string written to clipboard on click.') },
-            { name: 'label', type: 'string', default: "''", description: t('components.copyButton.labelDesc', 'Optional companion label alongside the icon.') },
-            { name: 'copiedLabel', type: 'string', default: "'Copied!'", description: t('components.copyButton.copiedLabelDesc', 'Label text displayed after successful copy.') },
-            { name: 'timeout', type: 'number', default: '2000', description: t('components.copyButton.timeoutDesc', 'Duration in ms to show the copied checkmark state.') },
-            { name: 'variant', type: "'ghost' | 'outline' | 'default' | 'secondary'", default: "'ghost'", description: t('components.copyButton.variantDesc', 'Button visual variant.') },
-            { name: 'size', type: "'icon-xs' | 'icon-sm' | 'sm' | 'default'", default: "label ? 'sm' : 'icon-xs'", description: t('components.copyButton.sizeDesc', 'Button sizing preset.') },
-            { name: 'onCopy', type: '(copiedText: string) => void', default: 'undefined', description: t('components.copyButton.onCopyDesc', 'Callback fired when text is copied.') },
-          ]}
-      />
+                        <DocMarkdown id="copy-button" section="keyboard" />
+
+            <DocMarkdown id="copy-button" section="props" />
     </DocLayout>
   );
 }

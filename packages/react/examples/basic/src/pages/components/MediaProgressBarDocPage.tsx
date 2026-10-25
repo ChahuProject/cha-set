@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { MediaProgressBar, type MediaProgressBarTimingMode, type MediaProgressBarTimeFormat, useChaSetI18n } from '@chahu/cha-set';
+import { MediaProgressBar, type MediaProgressBarTimingMode, type MediaProgressBarTimeFormat, CopyableBadge, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { DocFooterSections } from '../../components/DocFooterSections';
 import { DocText } from '../../components/DocText';
 
 export function MediaProgressBarDocPage() {
@@ -69,21 +69,34 @@ export function MediaProgressBarDocPage() {
         </ComponentPreview>
       </section>
 
-      <DocFooterSections
-        componentId="media-progress-bar"
-        props={[
-          { name: 'ratio', type: 'number', defaultValue: '0', description: t('components.mediaProgressBar.ratioDesc', 'Playback progress ratio from 0.0 to 1.0.') },
-          { name: 'duration', type: 'number', defaultValue: '0', description: t('components.mediaProgressBar.durationDesc', 'Total duration of the media in milliseconds.') },
-          { name: 'position', type: 'number', defaultValue: '0', description: t('components.mediaProgressBar.positionDesc', 'Current playback position in milliseconds.') },
-          { name: 'frameRate', type: 'number', defaultValue: '30', description: t('components.mediaProgressBar.frameRateDesc', 'Frame rate for frame-based time formatting.') },
-          { name: 'timingMode', type: '"elapsed" | "remaining"', defaultValue: '"elapsed"', description: t('components.mediaProgressBar.timingModeDesc', 'Timing mode: elapsed time or remaining countdown.') },
-          { name: 'timeFormat', type: '"hms" | "seconds" | "frames"', defaultValue: '"hms"', description: t('components.mediaProgressBar.timeFormatDesc', 'Format to display timestamp.') },
-          { name: 'showTime', type: 'boolean', defaultValue: 'true', description: t('components.mediaProgressBar.showTimeDesc', 'Whether to show the time readout underneath.') },
-          { name: 'showThumb', type: 'boolean', defaultValue: 'true', description: t('components.mediaProgressBar.showThumbDesc', 'Whether to display the progress thumb handle.') },
-          { name: 'interactive', type: 'boolean', defaultValue: 'true', description: t('components.mediaProgressBar.interactiveDesc', 'Whether pointer seek/drag is enabled.') },
-          { name: 'disabled', type: 'boolean', defaultValue: 'false', description: t('components.mediaProgressBar.disabledDesc', 'Disabled state.') },
-        ]}
-      />
+      <section id="animations" className="scroll-mt-20 my-10">
+        <DocText role="h2" className="mb-3">
+          {t('showcase.animations', 'Animations')}
+        </DocText>
+        <div>
+          <DocText role="p" className="mb-4">
+            {t('showcase.animationsDesc', 'Motion behavior and timing for interactive states aligned with ChaSet tokens.')}
+          </DocText>
+          <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
+            <li>
+              {t('showcase.animationsItem1', 'State changes (hover, press, focus) animate over duration-quick with the ease-standard curve.')}
+            </li>
+            <li>
+              {t('showcase.animationsItem2', 'Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).')}
+            </li>
+          </ul>
+          <div className="flex flex-wrap items-center gap-2 pt-3">
+            <CopyableBadge size="sm" text="duration-quick" className="font-mono text-xs" />
+            <CopyableBadge size="sm" text="ease-standard" className="font-mono text-xs" />
+            <CopyableBadge size="sm" text="prefers-reduced-motion" className="font-mono text-xs" />
+            <CopyableBadge size="sm" text="ThemeTokens.animationsEnabled" className="font-mono text-xs" />
+          </div>
+        </div>
+      </section>
+
+      <DocMarkdown id="media-progress-bar" section="keyboard" />
+
+      <DocMarkdown id="media-progress-bar" section="props" />
     </DocLayout>
   );
 }

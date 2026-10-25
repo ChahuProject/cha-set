@@ -506,31 +506,21 @@ export const CrossStackSpecification = {
         }
     }
 
-        ComponentReference {
-        name: "ScrollArea"
-        componentId: "scroll-area"
-        propsModel: [
-            ["size", "string", "\"default\"", ChaSetI18n.tr("components.scrollArea.sizeDesc", "Scrollbar density and scale (\"default\" | \"sm\").")],
-            ["showVerticalScrollBar", "bool", "true", ChaSetI18n.tr("components.scrollArea.showVerticalDesc", "Whether to render vertical scrollbar.")],
-            ["showHorizontalScrollBar", "bool", "false", ChaSetI18n.tr("components.scrollArea.showHorizontalDesc", "Whether to render horizontal scrollbar.")],
-            ["showButtons", "bool", "true", ChaSetI18n.tr("components.scrollArea.showButtonsDesc", "Whether stepper navigation buttons appear on hover.")],
-            ["pageStepRatio", "real", "0.85", ChaSetI18n.tr("components.scrollArea.pageStepRatioDesc", "Viewport dimension ratio for page up / down.")],
-            ["smoothScroll", "bool", "true", ChaSetI18n.tr("components.scrollArea.smoothScrollDesc", "Whether stepper buttons trigger animated smooth scrolling.")],
-            ["floating", "bool", "true", ChaSetI18n.tr("components.scrollArea.floatingDesc", "Whether scrollbars float over content or occupy dedicated gutter space.")]
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "scroll-area"
+        section: "keyboard"
     }
 
-    ComponentReference {
-        name: "ScrollBar"
-        componentId: "scroll-bar"
-        isSubComponent: true
-        propsModel: [
-            ["orientation", "Qt::Orientation", "Qt.Vertical", ChaSetI18n.tr("components.scrollBar.orientationDesc", "Scrollbar orientation axis.")],
-            ["barSize", "string", "\"default\"", ChaSetI18n.tr("components.scrollBar.sizeDesc", "Scrollbar density and scale (\"default\" | \"sm\").")],
-            ["floating", "bool", "true", ChaSetI18n.tr("components.scrollBar.floatingDesc", "Whether the scrollbar floats over content or occupies dedicated gutter space.")],
-            ["collapsedSize", "int", "4", ChaSetI18n.tr("components.scrollBar.collapsedSizeDesc", "Thickness of the visual indicator when idle.")],
-            ["expandedSize", "int", "10", ChaSetI18n.tr("components.scrollBar.expandedSizeDesc", "Thickness of the visual indicator when hovered.")],
-            ["hitSize", "int", "14", ChaSetI18n.tr("components.scrollBar.hitSizeDesc", "Thickness of the pointer-capture hot-zone (preventing Win32 resize border conflict).")]
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "scroll-area"
+        section: "props"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "scroll-area"
+        section: "scroll-bar-props"
     }
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Label, type LabelSize, Input, Checkbox, SegmentedControl, Card, CardHeader, CardTitle, CardDescription, CardContent, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -271,66 +271,9 @@ ChaSetLabel {
       </section>
 
       {/* 6. Props Reference */}
-            <ComponentReference
-        name="Label"
-        componentId="label"
-        props={[
-            {
-              name: 'size',
-              type: "'default' | 'sm'",
-              default: "'default'",
-              description: t('components.label.sizeDesc', 'Text size variant (default or compact sm).'),
-            },
-            {
-              name: 'disabled',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.label.disabledDesc', 'Whether the label is displayed in a disabled dimmed state.'),
-            },
-            {
-              name: 'required',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.label.requiredDesc', 'Displays a destructive colored asterisk marker.'),
-            },
-            {
-              name: 'optional',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.label.optionalDesc', 'Displays a muted optional text indicator.'),
-            },
-            {
-              name: 'invalid',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.label.invalidDesc', 'Displays destructive text color indicating validation error.'),
-            },
-            {
-              name: 'description',
-              type: 'ReactNode',
-              default: 'undefined',
-              description: t('components.label.helperDesc', 'Supporting helper text rendered beneath the label.'),
-            },
-            {
-              name: 'tooltip',
-              type: 'ReactNode',
-              default: 'undefined',
-              description: t('components.label.tooltipDescNew', 'Contextual help tooltip text displayed with info icon.'),
-            },
-            {
-              name: 'htmlFor',
-              type: 'string',
-              default: 'undefined',
-              description: t('components.label.htmlForDesc', 'ID of the form element the label is bound to.'),
-            },
-            {
-              name: 'className',
-              type: 'string',
-              default: "''",
-              description: t('components.label.classNameDesc', 'Additional custom CSS classes.'),
-            },
-          ]}
-      />
+                        <DocMarkdown id="label" section="keyboard" />
+
+            <DocMarkdown id="label" section="props" />
     </DocLayout>
   );
 }

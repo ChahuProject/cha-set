@@ -1,7 +1,7 @@
 import React from 'react';
 import { PanelCard, Button, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -91,20 +91,9 @@ ChaSetPanelCard {
 
 
 
-            <ComponentReference
-        name="PanelCard"
-        componentId="panel-card"
-        props={[
-            { name: 'title', type: 'ReactNode', default: 'undefined', description: t('components.panelCard.titleDesc', 'Panel header title text or element.') },
-            { name: 'badgeText', type: 'string', default: 'undefined', description: t('components.panelCard.badgeTextDesc', 'Optional badge text displayed next to the title.') },
-            { name: 'collapsible', type: 'boolean', default: 'false', description: t('components.panelCard.collapsibleDesc', 'Whether the panel content can be toggled collapsed.') },
-            { name: 'collapsed', type: 'boolean', default: 'undefined', description: t('components.panelCard.collapsedDesc', 'Controlled collapsed state.') },
-            { name: 'defaultCollapsed', type: 'boolean', default: 'false', description: t('components.panelCard.defaultCollapsedDesc', 'Initial collapsed state for uncontrolled mode.') },
-            { name: 'onCollapsedChange', type: '(c: boolean) => void', default: 'undefined', description: t('components.panelCard.onCollapsedChangeDesc', 'Collapse change handler.') },
-            { name: 'actions', type: 'ReactNode', default: 'undefined', description: t('components.panelCard.actionsDesc', 'Right-aligned header action elements.') },
-            { name: 'size', type: "'default' | 'sm'", default: "'default'", description: t('components.panelCard.sizeDesc', 'Sizing scale of the card panel.') },
-          ]}
-      />
+                        <DocMarkdown id="panel-card" section="keyboard" />
+
+            <DocMarkdown id="panel-card" section="props" />
     </DocLayout>
   );
 }

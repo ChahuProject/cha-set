@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { DocMarkdown } from '../../components/DocMarkdown';
 import {
   SidebarProvider,
   Sidebar,
@@ -20,7 +21,6 @@ import {
   useChaSetI18n,
 } from "@chahu/cha-set";
 import { DocLayout } from "../../layout/DocLayout";
-import { ComponentReference } from '../../components/ComponentReference';
 import { ComponentPreview } from "../../components/ComponentPreview";
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -213,36 +213,9 @@ ChaSetSidebar {
 
 
 
-            <ComponentReference
-        name="Sidebar"
-        componentId="sidebar"
-        props={[
-          {
-            name: "collapsible",
-            type: "'offcanvas' | 'icon' | 'none'",
-            default: "'offcanvas'",
-            description: t('components.sidebar.collapsibleDesc', 'Collapsing behavior mode when closed on desktop.'),
-          },
-          {
-            name: "variant",
-            type: "'sidebar' | 'floating' | 'inset'",
-            default: "'sidebar'",
-            description: t('components.sidebar.variantDesc', 'Visual container styling variant.'),
-          },
-          {
-            name: "side",
-            type: "'left' | 'right'",
-            default: "'left'",
-            description: t('components.sidebar.sideDesc', 'Docking side for the sidebar layout.'),
-          },
-          {
-            name: "defaultOpen",
-            type: "boolean",
-            default: "true",
-            description: t('components.sidebar.defaultOpenDesc', 'Initial expanded state on SidebarProvider.'),
-          },
-        ]}
-      />
+                        <DocMarkdown id="sidebar" section="keyboard" />
+
+            <DocMarkdown id="sidebar" section="props" />
     </DocLayout>
   );
 }

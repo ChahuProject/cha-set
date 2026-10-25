@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { SnapSlider, Card, CodeBlock, Button, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
-import { PropsTable } from '../../components/PropsTable';
 import { DocText } from '../../components/DocText';
 
 export function SnapSliderDocPage() {
@@ -117,87 +115,9 @@ ChaSetSnapSlider {
         </ul>
       </section>
 
-      <section id="keyboard" className="space-y-4 pt-6">
-        <DocText role="h2">{t('showcase.keyboardNavigation', 'Keyboard Navigation')}</DocText>
-        <DocText role="p">
-          {t('desktopComposite.snapSlider.keyboardDesc', 'Keyboard shortcuts and discrete step navigation patterns.')}
-        </DocText>
-        <KeyboardShortcutsTable componentId="snap-slider" />
-      </section>
+      <DocMarkdown id="snap-slider" section="keyboard" />
 
-      <section id="props" className="space-y-4 pt-6">
-        <DocText role="h2">{t('showcase.propsReference', 'Props Reference')}</DocText>
-        <PropsTable
-          items={[
-            {
-              name: 'value',
-              type: 'number',
-              default: '0',
-              description: t('components.snapSlider.valueDesc', 'Controlled current snap stop index.'),
-            },
-            {
-              name: 'defaultValue',
-              type: 'number',
-              default: '0',
-              description: t('components.snapSlider.defaultValueDesc', 'Default initial snap stop index in uncontrolled mode.'),
-            },
-            {
-              name: 'count',
-              type: 'number',
-              default: '5',
-              description: t('components.snapSlider.countDesc', 'Total number of discrete stops (defaults to labels.length if provided).'),
-            },
-            {
-              name: 'labels',
-              type: 'string[]',
-              default: '[]',
-              description: t('components.snapSlider.labelsDesc', 'Array of labels for each stop shown at the active center position.'),
-            },
-            {
-              name: 'leftLabel',
-              type: 'string',
-              default: '""',
-              description: t('components.snapSlider.leftLabelDesc', 'Boundary label on the bottom-left edge.'),
-            },
-            {
-              name: 'rightLabel',
-              type: 'string',
-              default: '""',
-              description: t('components.snapSlider.rightLabelDesc', 'Boundary label on the bottom-right edge.'),
-            },
-            {
-              name: 'showTicks',
-              type: 'boolean',
-              default: 'true',
-              description: t('components.snapSlider.showTicksDesc', 'Whether to display tick marks on the slider track.'),
-            },
-            {
-              name: 'size',
-              type: '"default" | "sm"',
-              default: '"default"',
-              description: t('components.snapSlider.sizeDesc', 'Visual sizing variant.'),
-            },
-            {
-              name: 'disabled',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.snapSlider.disabledDesc', 'Whether the slider is disabled.'),
-            },
-            {
-              name: 'readOnly',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.snapSlider.readOnlyDesc', 'Whether the slider is read-only.'),
-            },
-            {
-              name: 'onChange',
-              type: '(index: number) => void',
-              default: 'undefined',
-              description: t('components.snapSlider.onChangeDesc', 'Callback fired when the selected stop index changes.'),
-            },
-          ]}
-        />
-      </section>
+      <DocMarkdown id="snap-slider" section="props" />
     </DocLayout>
   );
 }

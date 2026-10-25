@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { AddressBar, CopyableBadge, Card, CodeBlock, Button, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
-import { PropsTable } from '../../components/PropsTable';
 import { DocText } from '../../components/DocText';
 
 export function AddressBarDocPage() {
@@ -192,93 +190,9 @@ ChaSetAddressBar {
         </ul>
       </section>
 
-      <section id="keyboard" className="space-y-4 pt-6">
-        <DocText role="h2">{t('showcase.keyboardNavigation', 'Keyboard Navigation')}</DocText>
-        <DocText role="p">
-          {t('desktopComposite.addressBar.keyboardDesc', 'Keyboard shortcuts and button activation patterns.')}
-        </DocText>
-        <KeyboardShortcutsTable componentId="address-bar" />
-      </section>
+      <DocMarkdown id="address-bar" section="keyboard" />
 
-      <section id="props" className="space-y-4 pt-6">
-        <DocText role="h2">{t('showcase.propsReference', 'Props Reference')}</DocText>
-        <PropsTable
-          items={[
-            {
-              name: 'path',
-              type: 'string',
-              default: "''",
-              description: t('components.addressBar.pathDesc', 'Current path string rendered in breadcrumb and edit modes.'),
-            },
-            {
-              name: 'defaultValue',
-              type: 'string',
-              default: "''",
-              description: t('components.addressBar.defaultValueDesc', 'Initial path string for uncontrolled usage.'),
-            },
-            {
-              name: 'onNavigate',
-              type: '(path: string) => void',
-              default: 'undefined',
-              description: t('components.addressBar.onNavigateDesc', 'Callback invoked when a new path is committed via segment click or Enter.'),
-            },
-            {
-              name: 'showNavButtons',
-              type: 'boolean',
-              default: 'true',
-              description: t('components.addressBar.showNavButtonsDesc', 'Whether to show back, forward, up, and refresh navigation buttons.'),
-            },
-            {
-              name: 'canGoBack',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.addressBar.canGoBackDesc', 'Enables the backward history navigation button.'),
-            },
-            {
-              name: 'canGoForward',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.addressBar.canGoForwardDesc', 'Enables the forward history navigation button.'),
-            },
-            {
-              name: 'suggestions',
-              type: 'string[]',
-              default: '[]',
-              description: t('components.addressBar.suggestionsDesc', 'List of auto-complete path strings in the dropdown popover.'),
-            },
-            {
-              name: 'history',
-              type: 'string[]',
-              default: '[]',
-              description: t('components.addressBar.historyDesc', 'Recent typed path history for dropdown display.'),
-            },
-            {
-              name: 'showSearch',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.addressBar.showSearchDesc', 'Whether to show the integrated search/filter input on the right side.'),
-            },
-            {
-              name: 'fileSystemAdapter',
-              type: 'AddressBarFileSystemAdapter',
-              default: 'defaultVirtualFileSystemAdapter',
-              description: t('components.addressBar.fileSystemAdapterDesc', 'File system adapter providing subfolder enumeration and suggestion querying.'),
-            },
-            {
-              name: 'onNavigateWithSelection',
-              type: '(path: string, selectionPath: string) => void',
-              default: 'undefined',
-              description: t('components.addressBar.onNavigateWithSelectionDesc', 'Callback when navigating with a specific file item selected.'),
-            },
-            {
-              name: 'disabled',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.addressBar.disabledDesc', 'Disables all interactions and input editing.'),
-            },
-          ]}
-        />
-      </section>
+      <DocMarkdown id="address-bar" section="props" />
     </DocLayout>
   );
 }

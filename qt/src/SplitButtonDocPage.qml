@@ -95,15 +95,15 @@ DocLayout {
         }
     }
 
-    ComponentReference {
-        name: "SplitButton"
-        componentId: "split-button"
-        propsModel: [
-            { name: "text", type: "string", default: "'Action'", description: ChaSetI18n.tr("components.splitButton.labelDesc", "Label on the primary action button.") },
-            { name: "variant", type: "string", default: "'default'", description: ChaSetI18n.tr("components.splitButton.variantDesc", "Button stylistic variant.") },
-            { name: "size", type: "string", default: "'default'", description: ChaSetI18n.tr("components.splitButton.sizeDesc", "Button size variant.") },
-            { name: "menuItems", type: "var[]", default: "[]", description: ChaSetI18n.tr("components.splitButton.menuContentDesc", "Dropdown menu items rendered on chevron click.") },
-            { name: "disabled", type: "bool", default: "false", description: ChaSetI18n.tr("components.splitButton.disabledDesc", "Whether the split button is disabled.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "split-button"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "split-button"
+        section: "props"
     }
     }

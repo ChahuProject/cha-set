@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { ScaleOsd, Card, CodeBlock, Button, Checkbox, Badge, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
-import { PropsTable } from '../../components/PropsTable';
 import { DocText } from '../../components/DocText';
 
 export function ScaleOsdDocPage() {
@@ -172,153 +170,9 @@ ChaSetScaleOsd {
         </DocText>
       </section>
 
-      <section id="keyboard" className="space-y-4 pt-6">
-        <DocText role="h2">{t('showcase.keyboardNavigation', 'Keyboard Navigation')}</DocText>
-        <DocText role="p">
-          {t('showcase.keyboardDesc', 'Keyboard shortcuts and interaction patterns for this component.')}
-        </DocText>
-        <KeyboardShortcutsTable componentId="scale-osd" />
-      </section>
+      <DocMarkdown id="scale-osd" section="keyboard" />
 
-      <section id="props" className="space-y-4 pt-6">
-        <DocText role="h2">{t('showcase.propsReference', 'Props Reference')}</DocText>
-        <PropsTable
-          items={[
-            {
-              name: 'value',
-              type: 'number',
-              default: '1.0',
-              description: t('components.scaleOsd.valueDesc', 'Current scale ratio (e.g. 1.0 represents 100%).'),
-            },
-            {
-              name: 'defaultValue',
-              type: 'number',
-              default: '1.0',
-              description: t('components.scaleOsd.defaultValueDesc', 'Initial scale ratio in uncontrolled mode.'),
-            },
-            {
-              name: 'step',
-              type: 'number',
-              default: '0.1',
-              description: t('components.scaleOsd.stepDesc', 'Step increment applied on +/- button click.'),
-            },
-            {
-              name: 'min',
-              type: 'number',
-              default: '0.2',
-              description: t('components.scaleOsd.minDesc', 'Minimum allowed zoom scale ratio.'),
-            },
-            {
-              name: 'max',
-              type: 'number',
-              default: '3.0',
-              description: t('components.scaleOsd.maxDesc', 'Maximum allowed zoom scale ratio.'),
-            },
-            {
-              name: 'steps',
-              type: 'number[]',
-              default: 'undefined',
-              description: t('components.scaleOsd.stepsDesc', 'Discrete scale steps array (e.g. CANONICAL_SCALE_STEPS).'),
-            },
-            {
-              name: 'size',
-              type: '"default" | "lg"',
-              default: '"default"',
-              description: t('components.scaleOsd.sizeDesc', 'Visual scale variant (desktop launcher 42px or standard 40px).'),
-            },
-            {
-              name: 'ignoreUiScale',
-              type: 'boolean',
-              default: 'true',
-              description: t('components.scaleOsd.ignoreUiScaleDesc', 'Locks physical pixel size and renders invariant regardless of interface scaling.'),
-            },
-            {
-              name: 'visible',
-              type: 'boolean',
-              default: 'undefined',
-              description: t('components.scaleOsd.visibleDesc', 'Controlled visibility state.'),
-            },
-            {
-              name: 'autoHideDuration',
-              type: 'number',
-              default: '1400',
-              description: t('components.scaleOsd.autoHideDurationDesc', 'Duration in ms before auto-hiding (pauses on hover).'),
-            },
-            {
-              name: 'showControls',
-              type: 'boolean',
-              default: 'true',
-              description: t('components.scaleOsd.showControlsDesc', 'Whether to display +/- and reset buttons.'),
-            },
-            {
-              name: 'showTooltips',
-              type: 'boolean',
-              default: 'true',
-              description: t('components.scaleOsd.showTooltipsDesc', 'Whether to display hover tooltip hints for control buttons.'),
-            },
-            {
-              name: 'placement',
-              type: '"bottom-center" | "top-center" | "bottom-right" | "top-right"',
-              default: '"bottom-center"',
-              description: t('components.scaleOsd.placementDesc', 'Fixed viewport anchor position.'),
-            },
-            {
-              name: 'contained',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.scaleOsd.containedDesc', 'Whether to position OSD absolutely within its parent container instead of fixed to the global viewport.'),
-            },
-            {
-              name: 'disabled',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.scaleOsd.disabledDesc', 'Disables all controls and user interaction.'),
-            },
-            {
-              name: 'delayedCommit',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.scaleOsd.delayedCommitDesc', 'Whether to enable debounced delayed commit, firing callbacks only after user interaction pauses.'),
-            },
-            {
-              name: 'debounceMs',
-              type: 'number',
-              default: '500',
-              description: t('components.scaleOsd.debounceMsDesc', 'Debounce delay in milliseconds before committing when delayedCommit is enabled.'),
-            },
-            {
-              name: 'onChange',
-              type: '(value: number) => void',
-              default: 'undefined',
-              description: t('components.scaleOsd.onChangeDesc', 'Callback fired when scale value changes.'),
-            },
-            {
-              name: 'onImmediateChange',
-              type: '(value: number) => void',
-              default: 'undefined',
-              description: t('components.scaleOsd.onImmediateChangeDesc', 'Callback fired immediately during adjustments before debounced commit.'),
-            },
-            {
-              name: 'onCommit',
-              type: '(value: number) => void',
-              default: 'undefined',
-              description: t('components.scaleOsd.onCommitDesc', 'Callback fired when the debounced scale change is committed.'),
-            },
-            {
-              name: 'onStep',
-              type: '(delta: number) => void',
-              default: 'undefined',
-              description: t('components.scaleOsd.onStepDesc', 'Callback fired on step adjustments.'),
-            },
-            {
-              name: 'onReset',
-              type: '() => void',
-              default: 'undefined',
-              description: t('components.scaleOsd.onResetDesc', 'Callback fired when resetting to 100%.'),
-            },
-          ]}
-        />
-      </section>
+      <DocMarkdown id="scale-osd" section="props" />
     </DocLayout>
   );
 }

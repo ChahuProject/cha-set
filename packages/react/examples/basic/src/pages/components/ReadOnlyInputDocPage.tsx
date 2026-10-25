@@ -1,7 +1,7 @@
 import React from 'react';
 import { ReadOnlyInput, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -102,21 +102,9 @@ ChaSetReadOnlyInput { value: "chaset_success_verified"; colorScheme: "success" }
         </ComponentPreview>
       </section>
 
-            <ComponentReference
-        name="ReadOnlyInput"
-        componentId="read-only-input"
-        props={[
-            { name: 'value', type: 'string', default: "''", description: t('components.readOnlyInput.valueDesc', 'Protected value displayed in the input.') },
-            { name: 'showCopy', type: 'boolean', default: 'true', description: t('components.readOnlyInput.showCopyDesc', 'Whether to show the attached copy button.') },
-            { name: 'masked', type: 'boolean', default: 'false', description: t('components.readOnlyInput.maskedDesc', 'Whether to mask characters with bullets.') },
-            { name: 'maskChar', type: 'string', default: "'•'", description: t('components.readOnlyInput.maskCharDesc', 'Character used for masking.') },
-            { name: 'showMaskToggle', type: 'boolean', default: 'true', description: t('components.readOnlyInput.showMaskToggleDesc', 'Whether to show the reveal/hide toggle button when masked.') },
-            { name: 'size', type: '"default" | "sm"', default: '"default"', description: t('components.readOnlyInput.sizeDesc', 'Density and sizing variant.') },
-            { name: 'colorScheme', type: '"default" | "destructive" | "warning" | "success"', default: '"default"', description: t('components.readOnlyInput.colorSchemeDesc', 'Color theme variant.') },
-            { name: 'disabled', type: 'boolean', default: 'false', description: t('components.readOnlyInput.disabledDesc', 'Whether the input field is disabled.') },
-            { name: 'placeholder', type: 'string', default: "''", description: t('components.readOnlyInput.placeholderDesc', 'Placeholder displayed when value is empty.') },
-          ]}
-      />
+                        <DocMarkdown id="read-only-input" section="keyboard" />
+
+            <DocMarkdown id="read-only-input" section="props" />
     </DocLayout>
   );
 }

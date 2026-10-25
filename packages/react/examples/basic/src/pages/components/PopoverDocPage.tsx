@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Popover, PopoverTrigger, PopoverContent, Button, Input, SegmentedControl, Checkbox, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -233,23 +233,9 @@ ChaSetPopover {
         </div>
       </section>
       
-            <ComponentReference
-        name="Popover"
-        componentId="popover"
-        props={[
-            { name: 'open', type: 'boolean', default: 'undefined', description: t('components.popover.openDesc', 'Controlled open state.') },
-            { name: 'defaultOpen', type: 'boolean', default: 'false', description: t('components.popover.defaultOpenDesc', 'Default open state when uncontrolled.') },
-            { name: 'onOpenChange', type: '(open: boolean) => void', default: 'undefined', description: t('components.popover.onOpenChangeDesc', 'Open state change handler.') },
-            { name: 'modal', type: 'boolean', default: 'false', description: t('components.popover.modalDesc', 'Whether the popover is rendered as modal with backdrop.') },
-            { name: 'side', type: "'top' | 'bottom' | 'left' | 'right'", default: "'bottom'", description: t('components.popover.sideDesc', 'Placement side relative to trigger.') },
-            { name: 'align', type: "'start' | 'center' | 'end'", default: "'start'", description: t('components.popover.alignDesc', 'Alignment along the anchor edge.') },
-            { name: 'sideOffset', type: 'number', default: '8', description: t('components.popover.sideOffsetDesc', 'Distance offset from trigger.') },
-            { name: 'alignOffset', type: 'number', default: '0', description: t('components.popover.alignOffsetDesc', 'Offset distance along alignment edge.') },
-            { name: 'arrow', type: 'boolean', default: 'false', description: t('components.popover.arrowDesc', 'Whether to render an anchored directional arrow.') },
-            { name: 'movable', type: 'boolean', default: 'false', description: t('components.popover.movableDesc', 'Enables interactive drag repositioning via handle.') },
-            { name: 'moveLabel', type: 'string', default: "'Drag to move'", description: t('components.popover.moveLabelDesc', 'Accessible label for the drag handle button.') },
-          ]}
-      />
+                        <DocMarkdown id="popover" section="keyboard" />
+
+            <DocMarkdown id="popover" section="props" />
     </DocLayout>
   );
 }

@@ -8,7 +8,7 @@ import {
   useChaSetI18n,
 } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -155,24 +155,9 @@ ChaSetPipelineView {
         </ul>
       </section>
 
-            <ComponentReference
-        name="PipelineView"
-        componentId="pipeline-view"
-        props={[
-            { name: 'status', type: 'PipelineStatus', default: "'running'", description: t('components.pipelineView.statusDesc', 'Overall execution status for summary header badge.') },
-            { name: 'startMs', type: 'number', default: '0', description: t('components.pipelineView.startMsDesc', 'Execution start timestamp in epoch milliseconds.') },
-            { name: 'endMs', type: 'number | null', default: 'null', description: t('components.pipelineView.endMsDesc', 'Execution completion timestamp; displays formatted duration when non-null.') },
-            { name: 'jobs', type: 'PipelineJob[]', default: '[]', description: t('components.pipelineView.jobsDesc', 'Array of jobs belonging to the current execution run.') },
-            { name: 'activeJobId', type: 'string | null', default: 'null', description: t('components.pipelineView.activeJobIdDesc', 'Currently selected job id displaying step timeline and logs.') },
-            { name: 'onSelectJob', type: '(id: string) => void', default: 'undefined', description: t('components.pipelineView.onSelectJobDesc', 'Callback invoked when a job is selected.') },
-            { name: 'onCancel', type: '() => void', default: 'undefined', description: t('components.pipelineView.onCancelDesc', 'Callback invoked when the cancel button is clicked.') },
-            { name: 'cancelDisabled', type: 'boolean', default: 'false', description: t('components.pipelineView.cancelDisabledDesc', 'Disables the cancel button.') },
-            { name: 'getLogs', type: '(jobId: string) => string[]', default: 'undefined', description: t('components.pipelineView.getLogsDesc', 'Function supplying log lines array for a given job id.') },
-            { name: 'jobsTitle', type: 'string', default: "'Jobs'", description: t('components.pipelineView.jobsTitleDesc', 'Title text for the job list sidebar.') },
-            { name: 'emptyJobsText', type: 'string', default: "'No jobs'", description: t('components.pipelineView.emptyJobsTextDesc', 'Placeholder text displayed when the job list is empty.') },
-            { name: 'headerActionSlot', type: 'ReactNode', default: 'undefined', description: t('components.pipelineView.headerActionSlotDesc', 'Slot for custom actions in the header.') },
-          ]}
-      />
+                        <DocMarkdown id="pipeline-view" section="keyboard" />
+
+            <DocMarkdown id="pipeline-view" section="props" />
     </DocLayout>
   );
 }

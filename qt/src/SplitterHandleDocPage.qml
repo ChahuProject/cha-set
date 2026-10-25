@@ -377,20 +377,15 @@ ChaSetSplitterHandle {
         color: ThemeTokens.text
     }
 
-        ComponentReference {
-        name: "SplitterHandle"
-        componentId: "splitter-handle"
-        propsModel: [
-            { name: "edge", type: "string", default: "'left'", description: ChaSetI18n.tr("components.splitterHandle.edgeDesc", "Which edge of the target panel the resize handle controls.") },
-            { name: "targetSize", type: "real", default: "200", description: ChaSetI18n.tr("components.splitterHandle.targetSizeDesc", "Current size (width or height) of the target element being resized.") },
-            { name: "minSize", type: "real", default: "100", description: ChaSetI18n.tr("components.splitterHandle.minSizeDesc", "Minimum allowed size bound.") },
-            { name: "maxSize", type: "real", default: "1000", description: ChaSetI18n.tr("components.splitterHandle.maxSizeDesc", "Maximum allowed size bound.") },
-            { name: "defaultSize", type: "real", default: "minSize", description: ChaSetI18n.tr("components.splitterHandle.defaultSizeDesc", "Size restored when double-clicked or Enter is pressed.") },
-            { name: "liveUpdate", type: "bool", default: "true", description: ChaSetI18n.tr("components.splitterHandle.liveUpdateDesc", "Whether size updates fire continuously during drag.") },
-            { name: "hitThickness", type: "real", default: "6", description: ChaSetI18n.tr("components.splitterHandle.hitThicknessDesc", "Interactive mouse hit test zone thickness.") },
-            { name: "visualThickness", type: "real", default: "1", description: ChaSetI18n.tr("components.splitterHandle.visualThicknessDesc", "Resting visible hairline thickness.") },
-            { name: "activeVisualThickness", type: "real", default: "2", description: ChaSetI18n.tr("components.splitterHandle.activeVisualThicknessDesc", "Highlighted visible hairline thickness when hovered or dragged.") },
-            { name: "disabled", type: "bool", default: "false", description: ChaSetI18n.tr("components.splitterHandle.disabledDesc", "Whether handle resizing is disabled.") }
-        ]
-    }
+        DocMarkdown {
+            width: parent.width
+            docId: "splitter-handle"
+            section: "keyboard"
+        }
+
+        DocMarkdown {
+            width: parent.width
+            docId: "splitter-handle"
+            section: "props"
+        }
 }

@@ -106,15 +106,15 @@ ChaSetPanelCard {
     }
 
     
-    ComponentReference {
-        name: "PanelCard"
-        componentId: "panel-card"
-        propsModel: [
-            { name: "title", type: "string", default: "'Panel Title'", description: ChaSetI18n.tr("components.panelCard.titleDesc", "Panel header title text or element.") },
-            { name: "badgeText", type: "string", default: "''", description: ChaSetI18n.tr("components.panelCard.badgeTextDesc", "Optional badge text displayed next to the title.") },
-            { name: "collapsible", type: "bool", default: "false", description: ChaSetI18n.tr("components.panelCard.collapsibleDesc", "Whether the panel content can be toggled collapsed.") },
-            { name: "collapsed", type: "bool", default: "false", description: ChaSetI18n.tr("components.panelCard.collapsedDesc", "Controlled collapsed state.") },
-            { name: "customRadius", type: "int", default: "8", description: ChaSetI18n.tr("components.panelCard.radiusDesc", "Corner radius of the card surface.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "panel-card"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "panel-card"
+        section: "props"
     }
 }

@@ -602,16 +602,15 @@ ChaSetResizable {
         }
     }
 
-    ComponentReference {
-        name: "Resizable"
-        componentId: "resizable"
-        propsModel: [
-            { name: "orientation", type: "int", default: "Qt.Horizontal", description: ChaSetI18n.tr("components.resizable.orientationDesc", "Split layout orientation: Qt.Horizontal or Qt.Vertical.") },
-            { name: "withHandle", type: "bool", default: "false", description: ChaSetI18n.tr("components.resizable.withHandleDescQt", "Whether to render a tactile 6-dot visual grip indicator on the handle.") },
-            { name: "handleThickness", type: "int", default: "4 (or 8 with handle)", description: ChaSetI18n.tr("components.resizable.handleThicknessDesc", "Thickness of the divider separator bound.") },
-            { name: "handleColor", type: "color", default: "ThemeTokens.border", description: ChaSetI18n.tr("components.resizable.handleColorDesc", "Idle separator line background color.") },
-            { name: "handleHoverColor", type: "color", default: "ThemeTokens.accent", description: ChaSetI18n.tr("components.resizable.handleHoverColorDesc", "Hovered or active separator accent color.") },
-            { name: "handleGripColor", type: "color", default: "ThemeTokens.subduedText", description: ChaSetI18n.tr("components.resizable.handleGripColorDesc", "Grip dot indicator color.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "resizable"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "resizable"
+        section: "props"
     }
 }

@@ -11,10 +11,9 @@ import {
   useChaSetI18n,
 } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
-import { PropsTable } from '../../components/PropsTable';
 import { DocText } from '../../components/DocText';
 
 const TASK_DEFAULTS = {
@@ -322,90 +321,9 @@ ChaSetTaskHud {
         </ul>
       </section>
 
-      <section id="keyboard" className="space-y-4 pt-6">
-        <DocText role="h2">{t('showcase.keyboardNavigation', 'Keyboard Navigation')}</DocText>
-        <DocText role="p">
-          {t('desktopComposite.taskHud.keyboardDesc', 'The stack is a single tab stop: cards are roving-focus entries inside it.')}
-        </DocText>
-        <KeyboardShortcutsTable componentId="task-hud" />
-      </section>
+      <DocMarkdown id="task-hud" section="keyboard" />
 
-      <section id="props" className="space-y-4 pt-6">
-        <DocText role="h2">{t('showcase.propsReference', 'Props Reference')}</DocText>
-        <PropsTable
-          items={[
-            {
-              name: 'tasks',
-              type: 'TaskItem[]',
-              default: '[]',
-              description: t('components.taskHud.propTasks', 'Background executions to surface, oldest first; the newest card sits nearest the anchor.'),
-            },
-            {
-              name: 'onDismiss',
-              type: '(id: string) => void',
-              default: 'undefined',
-              description: t('components.taskHud.propOnDismiss', 'Renders the per-card dismiss control; omit to make cards non-dismissible.'),
-            },
-            {
-              name: 'onCancel',
-              type: '(id: string) => void',
-              default: 'undefined',
-              description: t('components.taskHud.propOnCancel', 'Renders a cancel control on running tasks flagged cancellable.'),
-            },
-            {
-              name: 'maxVisible',
-              type: 'number',
-              default: '3',
-              description: t('components.taskHud.propMaxVisible', 'Cards rendered before the stack overflows into its "show all" pill.'),
-            },
-            {
-              name: 'autoHideDelay',
-              type: 'number',
-              default: '600',
-              description: t('components.taskHud.propAutoHideDelay', 'Grace period in milliseconds an emptied HUD stays on screen before fading out.'),
-            },
-            {
-              name: 'placement',
-              type: '"top-left" | "top-center" | "top-right" | "left-center" | "right-center" | "bottom-left" | "bottom-center" | "bottom-right"',
-              default: "'bottom-right'",
-              description: t('components.taskHud.propPlacement', 'Viewport anchor. Cards enter and exit through the anchored edge.'),
-            },
-            {
-              name: 'offset',
-              type: 'number',
-              default: '16',
-              description: t('components.taskHud.propOffset', 'Inset from the anchored viewport edges, in logical units.'),
-            },
-            {
-              name: 'collapsible',
-              type: 'boolean',
-              default: 'true',
-              description: t('components.taskHud.propCollapsible', 'Offers the collapse-to-summary-row control.'),
-            },
-            {
-              name: 'defaultCollapsed',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.taskHud.propDefaultCollapsed', 'Renders the stack collapsed on first paint.'),
-            },
-            {
-              name: 'forceVisible',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.taskHud.propForceVisible', 'Keeps the HUD mounted while no task is running (used by static sandboxes).'),
-            },
-            {
-              name: 'label',
-              type: 'string',
-              default: "'Task Progress HUD'",
-              description: t('components.taskHud.propLabel', 'Accessible name of the HUD region.'),
-            },
-          ]}
-        />
-        <DocText role="p">
-          {t('components.taskHud.taskItemFooter', 'Each TaskItem carries id, title, an optional detail, a status of queued | running | success | warning | error | cancelled, a progress ratio (or indeterminate), a total/done step counter and elapsedMs.')}
-        </DocText>
-      </section>
+      <DocMarkdown id="task-hud" section="props" />
     </DocLayout>
   );
 }

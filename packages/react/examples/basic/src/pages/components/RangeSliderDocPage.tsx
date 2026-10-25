@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { RangeSlider, Card, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -116,23 +116,9 @@ ChaSetRangeSlider { size: "sm"; firstValue: 10; secondValue: 90; enabled: false 
         </ComponentPreview>
       </section>
 
-            <ComponentReference
-        name="RangeSlider"
-        componentId="range-slider"
-        props={[
-            { name: 'value', type: '[number, number]', default: '[0, 100]', description: t('components.rangeSlider.valueDesc', 'Current [min, max] interval value.') },
-            { name: 'onValueChange', type: '(val: [number, number]) => void', default: 'undefined', description: t('components.rangeSlider.onValueChangeDesc', 'Callback fired on thumb move.') },
-            { name: 'onChange', type: '(val: [number, number]) => void', default: 'undefined', description: t('components.rangeSlider.onChangeDesc', 'Alias for onValueChange.') },
-            { name: 'size', type: '"default" | "sm"', default: '"default"', description: t('components.rangeSlider.sizeDesc', 'Density and sizing variant.') },
-            { name: 'showTooltip', type: 'boolean', default: 'false', description: t('components.rangeSlider.showTooltipDesc', 'Displays value tooltip bubble on hover, drag, and focus.') },
-            { name: 'readOnly', type: 'boolean', default: 'false', description: t('components.rangeSlider.readOnlyDesc', 'Prevents user interaction while preserving contrast.') },
-            { name: 'disabled', type: 'boolean', default: 'false', description: t('components.rangeSlider.disabledDesc', 'Disables slider interaction and dims opacity.') },
-            { name: 'min', type: 'number', default: '0', description: t('components.rangeSlider.minDesc', 'Minimum allowed value.') },
-            { name: 'max', type: 'number', default: '100', description: t('components.rangeSlider.maxDesc', 'Maximum allowed value.') },
-            { name: 'step', type: 'number', default: '1', description: t('components.rangeSlider.stepDesc', 'Step increment.') },
-            { name: 'minStepsBetweenThumbs', type: 'number', default: '0', description: t('components.rangeSlider.minGapDesc', 'Minimum gap between the two thumbs.') },
-          ]}
-      />
+                        <DocMarkdown id="range-slider" section="keyboard" />
+
+            <DocMarkdown id="range-slider" section="props" />
     </DocLayout>
   );
 }

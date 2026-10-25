@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Input, type InputSize, Button, Badge, SegmentedControl, Checkbox, CodeBlock, MailIcon, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from "../../components/ComponentReference";
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -226,96 +226,9 @@ export function InputDocPage() {
       </section>
 
       {/* 5. Keyboard Navigation */}
-            <ComponentReference
-        name="Input"
-        componentId="input"
-        props={[
-            {
-              name: 'size',
-              type: "'default' | 'sm'",
-              default: "'default'",
-              description: t('components.input.sizeDesc', 'The height and padding scale of the input.'),
-            },
-            {
-              name: 'type',
-              type: 'string',
-              default: "'text'",
-              description: t('components.input.typeDesc', 'Standard HTML/Qt input type: "text" | "password" | "email" | "search" | "number".'),
-            },
-            {
-              name: 'placeholder',
-              type: 'string',
-              default: "''",
-              description: t('components.input.placeholderDesc', 'Placeholder hint text displayed when input is empty.'),
-            },
-            {
-              name: 'disabled',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.input.disabledDesc', 'Disables user interactions and applies 50% opacity.'),
-            },
-            {
-              name: 'readOnly',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.input.readOnlyDesc', 'Prevents editing value while keeping focusability.'),
-            },
-            {
-              name: 'invalid',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.input.invalidDesc', 'Applies destructive error styling and aria-invalid attribute.'),
-            },
-            {
-              name: 'clearable',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.input.clearableDesc', 'Renders a clear button when text is present to wipe content.'),
-            },
-            {
-              name: 'passwordToggle',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.input.passwordToggleDesc', 'Renders an eye toggle button to reveal or mask passwords.'),
-            },
-            {
-              name: 'leftIcon',
-              type: 'ReactNode',
-              default: 'undefined',
-              description: t('components.input.leftIconDesc', 'Icon element rendered on the leading side of the input.'),
-            },
-            {
-              name: 'rightIcon',
-              type: 'ReactNode',
-              default: 'undefined',
-              description: t('components.input.rightIconDesc', 'Icon element rendered on the trailing side of the input.'),
-            },
-            {
-              name: 'onClear',
-              type: '() => void',
-              default: 'undefined',
-              description: t('components.input.onClearDesc', 'Callback fired when the clear button is clicked.'),
-            },
-            {
-              name: 'forceHover',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.input.forceHoverDesc', 'Visual testing aid to force hover state styles.'),
-            },
-            {
-              name: 'forceFocus',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.input.forceFocusDesc', 'Visual testing aid to force focus ring styles.'),
-            },
-            {
-              name: 'className',
-              type: 'string',
-              default: "''",
-              description: t('components.input.classNameDesc', 'Additional CSS class names to apply to the input element.'),
-            },
-          ]}
-      />
+                        <DocMarkdown id="input" section="keyboard" />
+
+            <DocMarkdown id="input" section="props" />
     </DocLayout>
   );
 }

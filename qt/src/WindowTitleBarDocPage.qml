@@ -134,13 +134,15 @@ ChaSetWindowTitleBar {
     }
 
     
-    ComponentReference {
-        name: "WindowTitleBar"
-        componentId: "window-title-bar"
-        propsModel: [
-            { name: "title", type: "string", default: "'ChaSet Desktop Studio'", description: ChaSetI18n.tr("components.windowTitleBar.titleDesc", "Window title label or element.") },
-            { name: "icon", type: "string", default: "'logo'", description: ChaSetI18n.tr("components.windowTitleBar.iconDesc", "Application icon rendered at left edge.") },
-            { name: "maximized", type: "bool", default: "false", description: ChaSetI18n.tr("components.windowTitleBar.maximizedDesc", "Whether the window is in maximized state.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "window-title-bar"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "window-title-bar"
+        section: "props"
     }
 }

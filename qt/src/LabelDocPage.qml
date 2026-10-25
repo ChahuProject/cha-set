@@ -311,18 +311,15 @@ ChaSetLabel {
     }
 
     // Section 6: Props Reference
-    ComponentReference {
-        name: "Label"
-        componentId: "label"
-        props: [
-            { name: "size", type: "'default' | 'sm'", defaultValue: "'default'", description: ChaSetI18n.tr("components.label.sizeDesc", "Text size variant (default or compact sm).") },
-            { name: "disabled", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.label.disabledDesc", "Whether the label is displayed in a disabled dimmed state.") },
-            { name: "required", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.label.requiredDesc", "Displays a destructive colored asterisk marker.") },
-            { name: "optional", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.label.optionalDesc", "Displays a muted optional text indicator.") },
-            { name: "invalid", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.label.invalidDesc", "Displays destructive text color indicating validation error.") },
-            { name: "description", type: "string", defaultValue: "''", description: ChaSetI18n.tr("components.label.helperDesc", "Supporting helper text rendered beneath the label.") },
-            { name: "tooltip", type: "string", defaultValue: "''", description: ChaSetI18n.tr("components.label.tooltipDescNew", "Contextual help tooltip text displayed with info icon.") },
-            { name: "text", type: "string", defaultValue: "''", description: ChaSetI18n.tr("components.label.textDesc", "The label text to display.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "label"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "label"
+        section: "props"
     }
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Skeleton, Card, type SkeletonAnimation, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -122,16 +122,9 @@ Column {
         </ul>
       </section>
 
-            <ComponentReference
-        name="Skeleton"
-        componentId="skeleton"
-        props={[
-            { name: 'animation', type: "'pulse' | 'wave' | 'none'", default: "'pulse'", description: t('components.skeleton.animationDesc', 'Animation style for the placeholder loading effect.') },
-            { name: 'rounded', type: "'none' | 'sm' | 'md' | 'lg' | 'full'", default: "'md'", description: t('components.skeleton.roundedDesc', 'Corner radius preset for the placeholder shape.') },
-            { name: 'animate', type: 'boolean', default: 'true', description: t('components.skeleton.animateDesc', 'Convenience boolean flag to toggle animation on or off.') },
-            { name: 'className', type: 'string', default: "''", description: t('components.skeleton.classNameDesc', 'Custom CSS classes for height, width, and background styling.') },
-          ]}
-      />
+                        <DocMarkdown id="skeleton" section="keyboard" />
+
+            <DocMarkdown id="skeleton" section="props" />
     </DocLayout>
   );
 }

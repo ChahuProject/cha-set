@@ -284,21 +284,15 @@ DocLayout {
         }
     }
 
-    ComponentReference {
-        name: "Button"
-        componentId: "button"
-        propsModel: [
-            ["variant", "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' | 'overlay'", "'default'", ChaSetI18n.tr("components.button.variantDesc", "Visual appearance and semantic intent.")],
-            ["size", "'default' | 'sm' | 'lg' | 'icon' | 'xs' | 'icon-xs' | 'icon-sm' | 'icon-lg'", "'default'", ChaSetI18n.tr("components.button.sizeDesc", "Standardized dimensions scale.")],
-            ["loading", "bool", "false", ChaSetI18n.tr("components.button.loadingDesc", "Shows spinning indicator and disables user interaction.")],
-            ["loadingText", "string", "\"\"", ChaSetI18n.tr("components.button.loadingTextDesc", "Optional content displayed while in loading state.")],
-            ["pressed", "bool", "false", ChaSetI18n.tr("components.button.pressedDesc", "Toggle or selected state with active styling and aria-pressed.")],
-            ["fullWidth", "bool", "false", ChaSetI18n.tr("components.button.fullWidthDesc", "Stretches the button to 100% of the parent container width.")],
-            ["disabled", "bool", "false", ChaSetI18n.tr("components.button.disabledDesc", "Blocks clicks and applies muted disabled styling.")],
-            ["iconSource", "string", "\"\"", ChaSetI18n.tr("components.button.iconSourceDesc", "Optional icon image source URL.")],
-            ["iconPosition", "string", "\"left\"", ChaSetI18n.tr("components.button.iconPositionDesc", "Placement of iconSource: left or right.")],
-            ["iconSize", "int", "0", ChaSetI18n.tr("components.button.iconSizeDesc", "Logical unscaled icon size; enlarges or overrides icons rendered inside the button.")],
-            ["text", "string", "\"\"", ChaSetI18n.tr("components.button.textDesc", "Button label text content.")]
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "button"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "button"
+        section: "props"
     }
     }

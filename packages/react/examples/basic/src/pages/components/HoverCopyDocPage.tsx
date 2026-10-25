@@ -10,10 +10,9 @@ import {
   type HoverCopyRadius,
 } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { ComponentReference } from '../../components/ComponentReference';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 import { DocText } from '../../components/DocText';
 
 const RADIUS_OPTIONS: HoverCopyRadius[] = ['none', 'sm', 'md', 'lg', 'full'];
@@ -324,33 +323,9 @@ ChaSetHoverCopy {
         </div>
       </section>
 
-      <section id="keyboard" className="scroll-mt-20 my-10">
-        <DocText role="h2" className="mb-3">
-          {t('showcase.keyboardNavigation', 'Keyboard Navigation')}
-        </DocText>
-        <DocText role="p" className="mb-4">
-          {t('components.hover-copy.keyboardDesc', 'Tab focuses the centered button, Enter or Space copies, clicking anywhere on the overlay also copies, and leaving focus dismisses the overlay.')}
-        </DocText>
-        <KeyboardShortcutsTable componentId="hover-copy" />
-      </section>
+            <DocMarkdown id="hover-copy" section="keyboard" />
 
-      <ComponentReference
-        name="HoverCopy"
-        componentId="hover-copy"
-        shortcuts={[]}
-        props={[
-          { name: 'text', type: 'string', default: "''", description: t('components.hover-copy.textDesc', 'Payload copied to the clipboard; may differ from the displayed (possibly truncated) content.') },
-          { name: 'children', type: 'ReactNode', default: 'undefined', description: t('components.hover-copy.childrenDesc', 'Arbitrary wrapped content the overlay hugs; no assumptions are made about child tags.') },
-          { name: 'dim', type: 'number', default: '0.45', description: t('components.hover-copy.dimDesc', 'Black scrim alpha of the hover overlay, 0 to 1, default 0.45.') },
-          { name: 'radius', type: "'none' | 'sm' | 'md' | 'lg' | 'full'", default: "'md'", description: t('components.hover-copy.radiusDesc', 'Semantic radius of the overlay: none, sm, md, lg or full (pill).') },
-          { name: 'icon', type: "'copy' | 'check'", default: "'copy'", description: t('components.hover-copy.iconDesc', 'Resting overlay icon semantic name, default copy.') },
-          { name: 'copiedIcon', type: "'copy' | 'check'", default: "'check'", description: t('components.hover-copy.copiedIconDesc', 'Success icon semantic name, default check.') },
-          { name: 'resetTime', type: 'number', default: '2000', description: t('components.hover-copy.resetTimeDesc', 'Milliseconds before restoring after a successful copy, default 2000.') },
-          { name: 'disabled', type: 'boolean', default: 'false', description: t('components.hover-copy.disabledDesc', 'When disabled the overlay never appears and copy never fires.') },
-          { name: 'onCopy', type: '(text: string) => void', default: 'undefined', description: t('components.hover-copy.onCopyDesc', 'Fired on successful copy with the copied text.') },
-          { name: 'onError', type: '(error: unknown) => void', default: 'undefined', description: t('components.hover-copy.onErrorDesc', 'Fired when the clipboard write fails.') },
-        ]}
-      />
+      <DocMarkdown id="hover-copy" section="props" />
     </DocLayout>
   );
 }

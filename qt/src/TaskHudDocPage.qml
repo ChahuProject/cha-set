@@ -317,70 +317,16 @@ ChaSetTaskHud {
         }
     }
 
-    Column {
-        property string sectionId: "keyboard"
+    DocMarkdown {
         width: parent.width
-        spacing: ThemeTokens.dp(8)
-
-        DocText {
-            text: ChaSetI18n.tr("showcase.keyboardNavigation", "Keyboard Navigation")
-            font.pixelSize: Typography.sizeTitleSm
-            font.bold: true
-            color: ThemeTokens.text
-        }
-
-        DocText {
-            width: parent.width
-            wrap: true
-            text: ChaSetI18n.tr("desktopComposite.taskHud.keyboardDesc", "The stack is a single tab stop: cards are roving-focus entries inside it.")
-            color: ThemeTokens.subduedText
-            font.pixelSize: Typography.sizeSmall
-        }
-
-        KeyboardShortcutsTable {
-            width: parent.width
-            componentId: "task-hud"
-            title: ""
-        }
+        docId: "task-hud"
+        section: "keyboard"
     }
 
-    Column {
-        property string sectionId: "props"
+    DocMarkdown {
         width: parent.width
-        spacing: ThemeTokens.dp(12)
-
-        DocText {
-            text: ChaSetI18n.tr("showcase.propsReference", "Props Reference")
-            font.pixelSize: Typography.sizeTitleSm
-            font.bold: true
-            color: ThemeTokens.text
-        }
-
-        PropsTable {
-            width: parent.width
-            title: ""
-            propsModel: [
-                { name: "tasks", type: "var", default: "[]", description: ChaSetI18n.tr("components.taskHud.propTasks", "Background executions to surface, oldest first; the newest card sits nearest the anchor.") },
-                { name: "onDismissed", type: "(id: string) => void", default: "undefined", description: ChaSetI18n.tr("components.taskHud.propOnDismiss", "Renders the per-card dismiss control; omit to make cards non-dismissible.") },
-                { name: "onCancelled", type: "(id: string) => void", default: "undefined", description: ChaSetI18n.tr("components.taskHud.propOnCancel", "Renders a cancel control on running tasks flagged cancellable.") },
-                { name: "maxVisible", type: "int", default: "3", description: ChaSetI18n.tr("components.taskHud.propMaxVisible", "Cards rendered before the stack overflows into its \"show all\" pill.") },
-                { name: "autoHideDelay", type: "int", default: "600", description: ChaSetI18n.tr("components.taskHud.propAutoHideDelay", "Grace period in milliseconds an emptied HUD stays on screen before fading out.") },
-                { name: "placement", type: "string", default: "\"bottom-right\"", description: ChaSetI18n.tr("components.taskHud.propPlacement", "Viewport anchor. Cards enter and exit through the anchored edge.") },
-                { name: "offset", type: "int", default: "16", description: ChaSetI18n.tr("components.taskHud.propOffset", "Inset from the anchored viewport edges, in logical units.") },
-                { name: "collapsible", type: "bool", default: "true", description: ChaSetI18n.tr("components.taskHud.propCollapsible", "Offers the collapse-to-summary-row control.") },
-                { name: "defaultCollapsed", type: "bool", default: "false", description: ChaSetI18n.tr("components.taskHud.propDefaultCollapsed", "Renders the stack collapsed on first paint.") },
-                { name: "forceVisible", type: "bool", default: "false", description: ChaSetI18n.tr("components.taskHud.propForceVisible", "Keeps the HUD mounted while no task is running (used by static sandboxes).") },
-                { name: "label", type: "string", default: "\"Task Progress HUD\"", description: ChaSetI18n.tr("components.taskHud.propLabel", "Accessible name of the HUD region.") }
-            ]
-        }
-
-        DocText {
-            width: parent.width
-            wrap: true
-            text: ChaSetI18n.tr("components.taskHud.taskItemFooter", "Each TaskItem carries id, title, an optional detail, a status of queued | running | success | warning | error | cancelled, a progress ratio (or indeterminate), a total/done step counter and elapsedMs.")
-            color: ThemeTokens.subduedText
-            font.pixelSize: Typography.sizeSmall
-        }
+        docId: "task-hud"
+        section: "props"
     }
 
     // ---- Demo state -------------------------------------------------------

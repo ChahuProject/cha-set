@@ -76,14 +76,15 @@ ChaSetGenericDataTable {
     }
 
     
-    ComponentReference {
-        name: "DataTable"
-        componentId: "data-table"
-        propsModel: [
-            { name: "columns", type: "var[]", default: "[]", description: ChaSetI18n.tr("components.genericDataTable.columnsQtDesc", "Array of column specifications: { key, header, width }.") },
-            { name: "rows", type: "var[]", default: "[]", description: ChaSetI18n.tr("components.genericDataTable.rowsDesc", "Array of arbitrary records to display (alias: tableData).") },
-            { name: "pageSize", type: "int", default: "5", description: ChaSetI18n.tr("components.genericDataTable.pageSizeDesc", "Number of rows per page.") },
-            { name: "customRadius", type: "int", default: "6", description: ChaSetI18n.tr("components.genericDataTable.customRadiusDesc", "Corner radius of the table border frame.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "generic-data-table"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "generic-data-table"
+        section: "props"
     }
 }

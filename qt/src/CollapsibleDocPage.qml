@@ -232,16 +232,15 @@ ChaSetCollapsible {
     }
 
     // Section 5: Props Reference
-    ComponentReference {
-        name: "Collapsible"
-        componentId: "collapsible"
-        props: [
-            { name: "open", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.collapsible.openDescQt", "Whether the collapsible content is currently expanded.") },
-            { name: "defaultOpen", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.collapsible.defaultOpenDescQt", "Whether the collapsible is initially expanded on load.") },
-            { name: "disabled", type: "bool", defaultValue: "false", description: ChaSetI18n.tr("components.collapsible.disabledDescQt", "Whether user interaction and toggling are disabled.") },
-            { name: "variant", type: "string", defaultValue: "'default'", description: ChaSetI18n.tr("components.collapsible.variantDescQt", "Visual container styling variant: 'default' | 'card' | 'ghost'.") },
-            { name: "title", type: "string", defaultValue: "''", description: ChaSetI18n.tr("components.collapsible.titleDesc", "Title text displayed in the header trigger bar.") },
-            { name: "customRadius", type: "int", defaultValue: "6", description: ChaSetI18n.tr("components.collapsible.customRadiusDesc", "Corner radius of the header and container.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "collapsible"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "collapsible"
+        section: "props"
     }
 }

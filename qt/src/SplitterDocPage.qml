@@ -359,18 +359,15 @@ ChaSetSplitter {
         }
     }
 
-    ComponentReference {
-        name: "Splitter"
-        componentId: "splitter"
-        propsModel: [
-            { name: "orientation", type: "string", default: "'vertical'", description: ChaSetI18n.tr("components.splitter.orientationDesc", "Divider orientation: 'vertical' (separates left/right panes) or 'horizontal' (separates top/bottom panes).") },
-            { name: "size", type: "real", default: "50", description: ChaSetI18n.tr("components.splitter.sizeDesc", "Controlled percentage width/height (0-100).") },
-            { name: "initialSize", type: "int", default: "50", description: ChaSetI18n.tr("components.splitter.initialSizeDesc", "Initial size percentage for uncontrolled usage.") },
-            { name: "minSize", type: "int", default: "0", description: ChaSetI18n.tr("components.splitter.minSizeDesc", "Minimum allowed percentage bound.") },
-            { name: "maxSize", type: "int", default: "100", description: ChaSetI18n.tr("components.splitter.maxSizeDesc", "Maximum allowed percentage bound.") },
-            { name: "gutterSize", type: "int", default: "8", description: ChaSetI18n.tr("components.splitter.gutterSizeDesc", "Interactive divider gutter thickness.") },
-            { name: "leftItem", type: "Component", default: "null", description: ChaSetI18n.tr("components.splitter.leftItemDesc", "First pane content component.") },
-            { name: "rightItem", type: "Component", default: "null", description: ChaSetI18n.tr("components.splitter.rightItemDesc", "Second pane content component.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "splitter"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "splitter"
+        section: "props"
     }
 }

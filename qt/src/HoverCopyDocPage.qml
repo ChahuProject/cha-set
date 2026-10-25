@@ -337,24 +337,15 @@ ChaSetHoverCopy {
         }
     }
 
-    KeyboardShortcutsTable {
-        componentId: "hover-copy"
+    DocMarkdown {
+        width: parent.width
+        docId: "hover-copy"
+        section: "keyboard"
     }
 
-    ComponentReference {
-        name: "HoverCopy"
-        componentId: "hover-copy"
-        propsModel: [
-            { name: "text", type: "string", default: "''", description: ChaSetI18n.tr("components.hover-copy.textDesc", "Payload copied to the clipboard. Independent of the displayed content.") },
-            { name: "children", type: "var", default: "undefined", description: ChaSetI18n.tr("components.hover-copy.childrenDesc", "Arbitrary wrapped content. The overlay never assumes any child type.") },
-            { name: "dim", type: "real", default: "0.45", description: ChaSetI18n.tr("components.hover-copy.dimDesc", "Black scrim alpha over content while revealed, clamped 0 to 1.") },
-            { name: "radius", type: "string", default: "'md'", description: ChaSetI18n.tr("components.hover-copy.radiusDesc", "Corner radius of the dim overlay: 'none' | 'sm' | 'md' | 'lg' | 'full'.") },
-            { name: "icon", type: "string", default: "'copy'", description: ChaSetI18n.tr("components.hover-copy.iconDesc", "Resting overlay icon (semantic icon name).") },
-            { name: "copiedIcon", type: "string", default: "'check'", description: ChaSetI18n.tr("components.hover-copy.copiedIconDesc", "Success icon shown while in the copied state (semantic icon name).") },
-            { name: "resetTime", type: "int", default: "2000", description: ChaSetI18n.tr("components.hover-copy.resetTimeDesc", "Restore interval in milliseconds after a successful copy. Logic timer, unaffected by reduced motion.") },
-            { name: "disabled", type: "bool", default: "false", description: ChaSetI18n.tr("components.hover-copy.disabledDesc", "Blocks overlay reveal and copy activation.") },
-            { name: "copiedToClipboard", type: "signal(string)", default: "-", description: ChaSetI18n.tr("components.hover-copy.onCopyDesc", "Emitted with the payload after a successful copy (React: onCopy).") },
-            { name: "copyFailed", type: "signal(string)", default: "-", description: ChaSetI18n.tr("components.hover-copy.onErrorDesc", "Emitted when the clipboard write fails; state stays hovered (React: onError).") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "hover-copy"
+        section: "props"
     }
 }

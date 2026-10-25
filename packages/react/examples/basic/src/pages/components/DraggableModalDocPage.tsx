@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { DraggableModal, Button, Badge, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -159,28 +159,9 @@ ChaSetDraggableModal {
 
 
 
-            <ComponentReference
-        name="DraggableModal"
-        componentId="draggable-modal"
-        props={[
-            { name: 'children', type: 'ReactNode', default: 'undefined', description: t('components.draggableModal.childrenDesc', 'Scrollable main content body of the modal.')},
-            { name: 'initialPositionMode', type: "'center' | 'top' | '居中' | '顶部靠上'", default: "'center'", description: t('components.draggableModal.initialPositionModeDesc', 'Initial placement mode: centered or top-anchored.')},
-            { name: 'sizeOptions', type: 'DraggableModalSizeOption[]', default: 'undefined', description: t('components.draggableModal.sizeOptionsDesc', 'Preset size options for the top-right dropdown switcher.')},
-            { name: 'sizeMenuTooltip', type: 'string', default: "'调整弹窗尺寸'", description: t('components.draggableModal.sizeMenuTooltipDesc', 'Hover tooltip text for the size menu button.')},
-            { name: 'fixedFooter', type: 'ReactNode', default: 'undefined', description: t('components.draggableModal.fixedFooterDesc', 'Pinned bottom action area that does not scroll with content.')},
-            { name: 'topControls', type: 'ReactNode', default: 'undefined', description: t('components.draggableModal.topControlsDesc', 'Extra controls rendered in the top-right action bar (e.g. close button).')},
-            { name: 'rootExtra', type: 'ReactNode', default: 'undefined', description: t('components.draggableModal.rootExtraDesc', 'Extra content inside the root container (e.g. floating panels).')},
-            { name: 'autoFitHeight', type: 'boolean', default: 'true', description: t('components.draggableModal.autoFitHeightDesc', 'Whether to auto-fit height to natural content height.')},
-            { name: 'showEscBadge', type: 'boolean', default: 'false', description: t('components.draggableModal.showEscBadgeDesc', 'Whether to show the ESC hint badge in the top-right corner.')},
-            { name: 'bounds', type: 'string | Element', default: "'window'", description: t('components.draggableModal.boundsDesc', 'Drag bounds for the modal: window-level floating or parent-bounded canvas.')},
-            { name: 'defaultWidthRem', type: 'number', default: 'undefined', description: t('components.draggableModal.defaultWidthRemDesc', 'Initial width (in rem units).')},
-            { name: 'defaultHeightRem', type: 'number', default: 'undefined', description: t('components.draggableModal.defaultHeightRemDesc', 'Initial height (in rem units).')},
-            { name: 'defaultWidth', type: 'number', default: '500', description: t('components.draggableModal.defaultWidthDesc', 'Initial width.')},
-            { name: 'defaultHeight', type: 'number', default: '400', description: t('components.draggableModal.defaultHeightDesc', 'Initial height.')},
-            { name: 'topMarginRem', type: 'number', default: '4.5', description: t('components.draggableModal.topMarginRemDesc', 'Top margin in top-anchored mode (in rem units).')},
-            { name: 'remBase', type: 'number', default: '16', description: t('components.draggableModal.remBaseDesc', 'Base ratio for rem conversion.')},
-          ]}
-      />
+                        <DocMarkdown id="draggable-modal" section="keyboard" />
+
+            <DocMarkdown id="draggable-modal" section="props" />
     </DocLayout>
   );
 }

@@ -128,18 +128,15 @@ ChaSetInlineEditableText { value: "System Protected File"; disabled: true }`
     }
     }
 
-    ComponentReference {
-        name: "InlineEditableText"
-        componentId: "inline-editable-text"
-        propsModel: [
-            { name: "value", type: "string", default: "''", description: ChaSetI18n.tr("components.inlineEditableText.valueDescQt", "The active text value displayed and edited.") },
-            { name: "text", type: "string", default: "''", description: ChaSetI18n.tr("components.inlineEditableText.textDescQt", "Alias for value property.") },
-            { name: "placeholder", type: "string", default: "'Enter text...'", description: ChaSetI18n.tr("components.inlineEditableText.placeholderDescQt", "Fallback text when the value property is empty.") },
-            { name: "hint", type: "string", default: "''", description: ChaSetI18n.tr("components.inlineEditableText.hintDesc", "Hover tooltip hint.") },
-            { name: "trigger", type: "string", default: "'click'", description: ChaSetI18n.tr("components.inlineEditableText.triggerDescQt", "Activation trigger: 'click' or 'doubleClick'.") },
-            { name: "size", type: "string", default: "'default'", description: ChaSetI18n.tr("components.inlineEditableText.sizeDescQt", "Density and sizing variant: 'default' | 'sm'.") },
-            { name: "disabled", type: "bool", default: "false", description: ChaSetI18n.tr("components.inlineEditableText.disabledDescQt", "Whether inline editing interaction is disabled.") },
-            { name: "editing", type: "bool", default: "false", description: ChaSetI18n.tr("components.inlineEditableText.editingDesc", "Whether the component is currently in input edit mode.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "inline-editable-text"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "inline-editable-text"
+        section: "props"
     }
 }

@@ -103,20 +103,15 @@ ChaSetReadOnlyInput { value: "chaset_success_verified"; colorScheme: "success" }
         }
     }
 
-    ComponentReference {
-        name: "ReadOnlyInput"
-        componentId: "read-only-input"
-        propsModel: [
-            { name: "value", type: "string", default: "''", description: ChaSetI18n.tr("components.readOnlyInput.valueDesc", "Protected value displayed in the input.") },
-            { name: "placeholder", type: "string", default: "''", description: ChaSetI18n.tr("components.readOnlyInput.placeholderDesc", "Placeholder displayed when value is empty.") },
-            { name: "masked", type: "bool", default: "false", description: ChaSetI18n.tr("components.readOnlyInput.maskedDesc", "Whether to mask characters with bullets.") },
-            { name: "showMaskToggle", type: "bool", default: "true", description: ChaSetI18n.tr("components.readOnlyInput.showMaskToggleDesc", "Whether to show the reveal/hide toggle button when masked.") },
-            { name: "maskChar", type: "string", default: "'•'", description: ChaSetI18n.tr("components.readOnlyInput.maskCharDesc", "Character used for masking.") },
-            { name: "size", type: "string", default: "'default'", description: ChaSetI18n.tr("components.readOnlyInput.sizeDesc", "Density and sizing variant.") },
-            { name: "disabled", type: "bool", default: "false", description: ChaSetI18n.tr("components.readOnlyInput.disabledDesc", "Whether the input field is disabled.") },
-            { name: "showCopy", type: "bool", default: "true", description: ChaSetI18n.tr("components.readOnlyInput.showCopyDesc", "Whether to show the attached copy button.") },
-            { name: "colorScheme", type: "string", default: "'default'", description: ChaSetI18n.tr("components.readOnlyInput.colorSchemeDesc", "Color theme variant.") },
-            { name: "customRadius", type: "int", default: "6", description: ChaSetI18n.tr("components.readOnlyInput.customRadiusDesc", "Corner radius of the input container.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "read-only-input"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "read-only-input"
+        section: "props"
     }
 }

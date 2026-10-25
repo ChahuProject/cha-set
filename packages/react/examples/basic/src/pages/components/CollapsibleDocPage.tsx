@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Collapsible, CollapsibleTrigger, CollapsibleContent, Button, Card, CardHeader, CardTitle, CardDescription, CardContent, CopyableBadge, SegmentedControl, type CollapsibleVariant, CodeBlock, LockIcon, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -255,48 +255,9 @@ ChaSetCollapsible {
 
       {/* 5. Props Reference */}
       
-            <ComponentReference
-        name="Collapsible"
-        componentId="collapsible"
-        props={[
-            {
-              name: 'open',
-              type: 'boolean',
-              default: 'undefined',
-              description: t('components.collapsible.openDesc', 'Controlled open state of the collapsible panel.'),
-            },
-            {
-              name: 'defaultOpen',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.collapsible.defaultOpenDesc', 'Initial open state for uncontrolled usage.'),
-            },
-            {
-              name: 'onOpenChange',
-              type: '(open: boolean) => void',
-              default: 'undefined',
-              description: t('components.collapsible.onOpenChangeDesc', 'Callback invoked when open state changes.'),
-            },
-            {
-              name: 'variant',
-              type: "'default' | 'card' | 'ghost'",
-              default: "'default'",
-              description: t('components.collapsible.variantDesc', 'Visual container styling variant.'),
-            },
-            {
-              name: 'disabled',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.collapsible.disabledDesc', 'Whether user interaction is disabled.'),
-            },
-            {
-              name: 'className',
-              type: 'string',
-              default: "''",
-              description: t('components.collapsible.classNameDesc', 'Additional custom CSS classes.'),
-            },
-          ]}
-      />
+                        <DocMarkdown id="collapsible" section="keyboard" />
+
+            <DocMarkdown id="collapsible" section="props" />
     </DocLayout>
   );
 }

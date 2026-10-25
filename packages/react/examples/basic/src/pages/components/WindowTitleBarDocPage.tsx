@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { WindowTitleBar, Badge, CodeBlock, ChaSetLogoIcon, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -76,17 +76,9 @@ ChaSetWindowTitleBar {
 
 
 
-            <ComponentReference
-        name="WindowTitleBar"
-        componentId="window-title-bar"
-        props={[
-            { name: 'title', type: 'ReactNode', default: 'undefined', description: t('components.windowTitleBar.titleDesc', 'Window title label or element.') },
-            { name: 'icon', type: 'ReactNode', default: 'undefined', description: t('components.windowTitleBar.iconDesc', 'Application icon rendered at left edge.') },
-            { name: 'onMinimize', type: '() => void', default: 'undefined', description: t('components.windowTitleBar.onMinimizeDesc', 'Minimize button click callback.') },
-            { name: 'onMaximize', type: '() => void', default: 'undefined', description: t('components.windowTitleBar.onMaximizeDesc', 'Maximize button click callback.') },
-            { name: 'onClose', type: '() => void', default: 'undefined', description: t('components.windowTitleBar.onCloseDesc', 'Close button click callback.') },
-          ]}
-      />
+                        <DocMarkdown id="window-title-bar" section="keyboard" />
+
+            <DocMarkdown id="window-title-bar" section="props" />
     </DocLayout>
   );
 }

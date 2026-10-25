@@ -95,19 +95,15 @@ ChaSetSnapSlider {
         }
     }
 
-    ComponentReference {
-        name: "SnapSlider"
-        componentId: "snap-slider"
-        props: [
-            { name: "currentIndex", type: "int", defaultVal: "0", description: ChaSetI18n.tr("components.snapSlider.currentIndexDesc", "Current selected stop index (aliased as value).") },
-            { name: "count", type: "int", defaultVal: "5", description: ChaSetI18n.tr("components.snapSlider.countDescQt", "Total number of discrete snap stops.") },
-            { name: "labels", type: "var", defaultVal: "[]", description: ChaSetI18n.tr("components.snapSlider.labelsDescQt", "List of labels for each stop.") },
-            { name: "leftLabel", type: "string", defaultVal: '""', description: ChaSetI18n.tr("components.snapSlider.leftLabelDescQt", "Boundary label on the bottom-left edge.") },
-            { name: "rightLabel", type: "string", defaultVal: '""', description: ChaSetI18n.tr("components.snapSlider.rightLabelDescQt", "Boundary label on the bottom-right edge.") },
-            { name: "showTicks", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.snapSlider.showTicksDescQt", "Displays tick mark indicators for stops.") },
-            { name: "disabled", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.snapSlider.disabledDescQt", "Disables interaction and dims opacity.") },
-            { name: "readOnly", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.snapSlider.readOnlyDescQt", "Prevents changes while maintaining contrast.") },
-            { name: "size", type: "string", defaultVal: '"default"', description: ChaSetI18n.tr("components.snapSlider.sizeDescQt", "Density variant (\"default\" | \"sm\").") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "snap-slider"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "snap-slider"
+        section: "props"
     }
 }

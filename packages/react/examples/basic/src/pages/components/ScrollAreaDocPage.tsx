@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { ScrollArea, Button, Checkbox, CodeBlock, Table, type TableColumn, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from "../../components/DocAnatomy";
-import { ComponentReference } from "../../components/ComponentReference";
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 import { CHANGELOG_DATA, FEATURE_CARDS_DATA } from '../../data/showcaseData.generated';
 import { DocText } from '../../components/DocText';
 
@@ -475,106 +473,13 @@ export const CrossStackSpecification = {
         </div>
       </section>
 
-      {/* 7. API Reference */}
-      
-            <ComponentReference
-        name="ScrollArea"
-        componentId="scroll-area"
-        props={[
-          {
-            name: "size",
-            type: "'default' | 'sm'",
-            default: "'default'",
-            description: t('components.scrollArea.sizeDesc', 'Scrollbar density and scale.'),
-          },
-          {
-            name: "showVerticalScrollBar",
-            type: "boolean",
-            default: "true",
-            description: t('components.scrollArea.showVerticalDesc', 'Whether to render the vertical scrollbar.'),
-          },
-          {
-            name: "showHorizontalScrollBar",
-            type: "boolean",
-            default: "false",
-            description: t('components.scrollArea.showHorizontalDesc', 'Whether to render the horizontal scrollbar.'),
-          },
-          {
-            name: "showButtons",
-            type: "boolean",
-            default: "true",
-            description: t('components.scrollArea.showButtonsDesc', 'Whether stepper navigation buttons appear on scrollbar hover.'),
-          },
-          {
-            name: "pageStepRatio",
-            type: "number",
-            default: "0.85",
-            description: t('components.scrollArea.pageStepRatioDesc', 'Viewport dimension ratio used when clicking page-up/page-down.'),
-          },
-          {
-            name: "smoothScroll",
-            type: "boolean",
-            default: "true",
-            description: t('components.scrollArea.smoothScrollDesc', 'Whether stepper buttons use smooth scrolling behavior.'),
-          },
-          {
-            name: "floating",
-            type: "boolean",
-            default: "true",
-            description: t('components.scrollArea.floatingDesc', 'Whether scrollbars float over viewport content or occupy dedicated gutter layout space.'),
-          },
-          {
-            name: "viewportClassName",
-            type: "string",
-            default: "undefined",
-            description: t('components.scrollArea.viewportClassNameDesc', 'Additional CSS classes for the internal scroll viewport element.'),
-          },
-        ]}
-      />
+      {/* 7. API Reference — prose is single-sourced from spec/content/scroll-area/ */}
+      <DocMarkdown id="scroll-area" section="keyboard" />
 
-      <ComponentReference
-        name="ScrollBar"
-        componentId="scroll-bar"
-        isSubComponent
-        props={[
-          {
-            name: "orientation",
-            type: "'vertical' | 'horizontal'",
-            default: "'vertical'",
-            description: t('components.scrollBar.orientationDesc', 'Scrollbar orientation axis.'),
-          },
-          {
-            name: "size",
-            type: "'default' | 'sm'",
-            default: "'default'",
-            description: t('components.scrollBar.sizeDesc', 'Scrollbar density and scale.'),
-          },
-          {
-            name: "floating",
-            type: "boolean",
-            default: "true",
-            description: t('components.scrollBar.floatingDesc', 'Whether the scrollbar floats over viewport content or occupies dedicated gutter layout space.'),
-          },
-          {
-            name: "hitSize",
-            type: "number | string",
-            default: "8",
-            description: t('components.scrollBar.hitSizeDesc', 'Thickness of the transparent pointer-capture hot-zone.'),
-          },
-          {
-            name: "collapsedSize",
-            type: "number | string",
-            default: "4",
-            description: t('components.scrollBar.collapsedSizeDesc', 'Thickness of the visual indicator when idle.'),
-          },
-          {
-            name: "expandedSize",
-            type: "number | string",
-            default: "8",
-            description: t('components.scrollBar.expandedSizeDesc', 'Thickness of the visual indicator when hovered.'),
-          },
-        ]}
-      />
+      <DocMarkdown id="scroll-area" section="props" />
+
+      <DocMarkdown id="scroll-area" section="scroll-bar-props" />
+
     </DocLayout>
   );
 }

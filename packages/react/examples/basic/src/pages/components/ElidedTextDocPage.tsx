@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { ElidedText, CopyableBadge, Card, Button, Slider, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { ComponentReference } from "../../components/ComponentReference";
 import { DocText } from '../../components/DocText';
 
 export function ElidedTextDocPage() {
@@ -146,60 +146,9 @@ export function ElidedTextDocPage() {
         </div>
       </section>
 
-      <ComponentReference
-        name="ElidedText"
-        componentId="elided-text"
-        props={[
-          {
-            name: 'text',
-            type: 'string',
-            default: "''",
-            description: t('components.elidedText.textDesc', 'The string content to display and measure for overflow.'),
-          },
-          {
-            name: 'tooltipText',
-            type: 'string',
-            default: "''",
-            description: t('components.elidedText.tooltipTextDesc', 'Custom tooltip text override if different from raw text.'),
-          },
-          {
-            name: 'tooltipPlacement',
-            type: "'top' | 'bottom' | 'left' | 'right' | 'auto'",
-            default: "'top'",
-            description: t('components.elidedText.tooltipPlacementDesc', 'Placement direction of the floating tooltip.'),
-          },
-          {
-            name: 'tooltipDelay',
-            type: 'number',
-            default: '400',
-            description: t('components.elidedText.tooltipDelayDesc', 'Delay in milliseconds before showing tooltip on hover.'),
-          },
-          {
-            name: 'alwaysShowTooltip',
-            type: 'boolean',
-            default: 'false',
-            description: t('components.elidedText.alwaysShowTooltipDesc', 'Force tooltip to appear on hover even if text is not elided.'),
-          },
-          {
-            name: 'showTooltipWhenElided',
-            type: 'boolean',
-            default: 'true',
-            description: t('components.elidedText.showTooltipWhenElidedDesc', 'Enable tooltip reveal whenever overflow truncation is detected.'),
-          },
-          {
-            name: 'maxLines',
-            type: 'number',
-            default: '1',
-            description: t('components.elidedText.maxLinesDesc', 'Maximum visible lines before truncating (1 = single line, >1 = clamp).'),
-          },
-          {
-            name: 'copyable',
-            type: 'boolean',
-            default: 'false',
-            description: t('components.elidedText.copyableDesc', 'Whether clicking the text copies it to clipboard with instant feedback.'),
-          },
-        ]}
-      />
+            <DocMarkdown id="elided-text" section="keyboard" />
+
+      <DocMarkdown id="elided-text" section="props" />
     </DocLayout>
   );
 }

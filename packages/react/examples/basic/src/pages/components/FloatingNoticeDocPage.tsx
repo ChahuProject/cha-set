@@ -9,10 +9,9 @@ import {
   useChaSetI18n,
 } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
-import { PropsTable } from '../../components/PropsTable';
 import { DocText } from '../../components/DocText';
 
 export function FloatingNoticeDocPage() {
@@ -239,76 +238,9 @@ ChaSetFloatingNotice {
         </DocText>
       </section>
 
-      <section id="keyboard" className="space-y-4">
-        <DocText role="h2">
-          {t('showcase.toc.keyboard', 'Keyboard Navigation')}
-        </DocText>
-        <KeyboardShortcutsTable componentId="floating-notice" />
-      </section>
+      <DocMarkdown id="floating-notice" section="keyboard" />
 
-      <section id="props" className="space-y-4">
-        <DocText role="h2">
-          {t('showcase.toc.props', 'Props Reference')}
-        </DocText>
-        <PropsTable
-          items={[
-            {
-              name: 'notices',
-              type: 'FloatingNoticeItem[]',
-              default: '[]',
-              description: t('components.floatingNotice.noticesDesc', 'Array of notice items to display and queue.'),
-            },
-            {
-              name: 'placement',
-              type: "'top' | 'bottom'",
-              default: "'top'",
-              description: t('components.floatingNotice.placementDesc', 'Anchoring edge for the floating notice container.'),
-            },
-            {
-              name: 'offset',
-              type: 'number',
-              default: '16',
-              description: t('components.floatingNotice.offsetDesc', 'Inset from anchored viewport edge in logical dp.'),
-            },
-            {
-              name: 'gap',
-              type: 'number',
-              default: 'undefined (adaptive: 12dp / 10dp / 7dp)',
-              description: t('components.floatingNotice.gapDesc', 'Joint spacing between stacked notice cards in logical dp. Omit for adaptive spacing based on notice count.'),
-            },
-            {
-              name: 'defaultDuration',
-              type: 'number',
-              default: '3000',
-              description: t('components.floatingNotice.defaultDurationDesc', 'Fallback lifetime in ms before auto-dismiss.'),
-            },
-            {
-              name: 'pauseOnHover',
-              type: 'boolean',
-              default: 'true',
-              description: t('components.floatingNotice.pauseOnHoverDesc', 'Whether mouse hovering suspends cycling and expiry timers.'),
-            },
-            {
-              name: 'zoomOnHover',
-              type: 'boolean',
-              default: 'true',
-              description: t('components.floatingNotice.zoomOnHoverDesc', 'Whether hovering smoothly magnifies the notice by 1.05x.'),
-            },
-            {
-              name: 'closable',
-              type: 'boolean',
-              default: 'true',
-              description: t('components.floatingNotice.closableDesc', 'Whether items reveal a close dismiss button on hover.'),
-            },
-            {
-              name: 'renderContent',
-              type: '(item: FloatingNoticeItem) => ReactNode',
-              default: 'undefined',
-              description: t('components.floatingNotice.renderContentDesc', 'Optional custom render callback for notice content slots.'),
-            },
-          ]}
-        />
-      </section>
+      <DocMarkdown id="floating-notice" section="props" />
     </DocLayout>
   );
 }

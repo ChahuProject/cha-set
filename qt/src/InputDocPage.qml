@@ -284,82 +284,15 @@ DocLayout {
         }
     }
 
-        ComponentReference {
-        name: "Input"
-        componentId: "input"
-        propsModel: [
-                {
-                    name: "size",
-                    type: "\"default\" | \"sm\"",
-                    defaultValue: "\"default\"",
-                    description: ChaSetI18n.tr("components.input.sizeDesc", "The height and padding scale of the input.")
-                },
-                {
-                    name: "type",
-                    type: "string",
-                    defaultValue: "\"text\"",
-                    description: ChaSetI18n.tr("components.input.typeDesc", "Standard HTML/Qt input type: \"text\" | \"password\" | \"email\" | \"search\" | \"number\".")
-                },
-                {
-                    name: "placeholderText",
-                    type: "string",
-                    defaultValue: "\"\"",
-                    description: ChaSetI18n.tr("components.input.placeholderDesc", "Placeholder hint text displayed when input is empty.")
-                },
-                {
-                    name: "disabled",
-                    type: "bool",
-                    defaultValue: "false",
-                    description: ChaSetI18n.tr("components.input.disabledDesc", "Disables user interactions and applies 50% opacity.")
-                },
-                {
-                    name: "readOnly",
-                    type: "bool",
-                    defaultValue: "false",
-                    description: ChaSetI18n.tr("components.input.readOnlyDesc", "Prevents editing value while keeping focusability.")
-                },
-                {
-                    name: "invalid",
-                    type: "bool",
-                    defaultValue: "false",
-                    description: ChaSetI18n.tr("components.input.invalidDesc", "Applies destructive error styling and aria-invalid attribute.")
-                },
-                {
-                    name: "clearable",
-                    type: "bool",
-                    defaultValue: "false",
-                    description: ChaSetI18n.tr("components.input.clearableDesc", "Renders a clear button when text is present to wipe content.")
-                },
-                {
-                    name: "passwordToggle",
-                    type: "bool",
-                    defaultValue: "false",
-                    description: ChaSetI18n.tr("components.input.passwordToggleDesc", "Renders an eye toggle button to reveal or mask passwords.")
-                },
-                {
-                    name: "leftIconSource",
-                    type: "string",
-                    defaultValue: "\"\"",
-                    description: ChaSetI18n.tr("components.input.leftIconDesc", "Icon element rendered on the leading side of the input.")
-                },
-                {
-                    name: "rightIconSource",
-                    type: "string",
-                    defaultValue: "\"\"",
-                    description: ChaSetI18n.tr("components.input.rightIconDesc", "Icon element rendered on the trailing side of the input.")
-                },
-                {
-                    name: "forceHover",
-                    type: "bool",
-                    defaultValue: "false",
-                    description: ChaSetI18n.tr("components.input.forceHoverDesc", "Visual testing aid to force hover state styles.")
-                },
-                {
-                    name: "forceFocus",
-                    type: "bool",
-                    defaultValue: "false",
-                    description: ChaSetI18n.tr("components.input.forceFocusDesc", "Visual testing aid to force focus ring styles.")
-                }
-            ]
-    }
+        DocMarkdown {
+            width: parent.width
+            docId: "input"
+            section: "keyboard"
+        }
+
+        DocMarkdown {
+            width: parent.width
+            docId: "input"
+            section: "props"
+        }
 }

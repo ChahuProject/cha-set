@@ -1,7 +1,7 @@
 import React from 'react';
 import { CodeBlock, CopyableBadge, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -196,25 +196,9 @@ ChaSetCodeBlock {
         </ul>
       </section>
 
-            <ComponentReference
-        name="CodeBlock"
-        componentId="code-block"
-        props={[
-            { name: 'code', type: 'string', default: "''", description: t('components.codeBlock.codeDesc', 'Source text; ignored when `files` is provided.') },
-            { name: 'language', type: 'string', default: "'tsx'", description: t('components.codeBlock.languageDesc', 'Language id or alias resolved by the shared lexer.') },
-            { name: 'filename', type: 'string', default: 'undefined', description: t('components.codeBlock.filenameDesc', 'Header title override; defaults to the resolved language label.') },
-            { name: 'files', type: 'CodeBlockFileProps[]', default: 'undefined', description: t('components.codeBlock.filesDesc', 'Multi-file tab group; when present it replaces the single-file body.') },
-            { name: 'highlight', type: 'boolean', default: 'true', description: t('components.codeBlock.highlightDesc', 'Enable spec-driven syntax highlighting.') },
-            { name: 'showLineNumbers', type: 'boolean', default: 'false', description: t('components.codeBlock.showLineNumbersDesc', 'Render a line-number gutter.') },
-            { name: 'showLanguage', type: 'boolean', default: 'true', description: t('components.codeBlock.showLanguageDesc', 'Render the language / filename label in the header.') },
-            { name: 'showCopy', type: 'boolean', default: 'true', description: t('components.codeBlock.showCopyDesc', 'Render the built-in copy button in the header.') },
-            { name: 'wrap', type: 'boolean', default: 'false', description: t('components.codeBlock.wrapDesc', 'Wrap long lines instead of scrolling horizontally.') },
-            { name: 'maxHeight', type: 'number | string', default: 'undefined', description: t('components.codeBlock.maxHeightDesc', 'Bound the content height (rem-equivalent number, or any CSS length string).') },
-            { name: 'embedded', type: 'boolean', default: 'false', description: t('components.codeBlock.embeddedDesc', 'Drop the card chrome (border / background / header) for inline prose embedding.') },
-            { name: 'copyLabel', type: 'string', default: 'undefined', description: t('components.codeBlock.copyLabelDesc', 'Accessible label for the copy button.') },
-            { name: 'className', type: 'string', default: 'undefined', description: t('components.codeBlock.classNameDesc', 'Additional class names for the outer container.') },
-          ]}
-      />
+                        <DocMarkdown id="code-block" section="keyboard" />
+
+            <DocMarkdown id="code-block" section="props" />
     </DocLayout>
   );
 }

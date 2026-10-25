@@ -141,20 +141,15 @@ ChaSetRangeSlider { size: "sm"; firstValue: 10; secondValue: 90; enabled: false 
         }
     }
 
-    ComponentReference {
-        name: "RangeSlider"
-        componentId: "range-slider"
-        propsModel: [
-            { name: "from", type: "real", default: "0.0", description: ChaSetI18n.tr("components.rangeSlider.fromDesc", "Minimum bounds value of the slider.") },
-            { name: "to", type: "real", default: "100.0", description: ChaSetI18n.tr("components.rangeSlider.toDesc", "Maximum bounds value of the slider.") },
-            { name: "firstValue", type: "real", default: "20.0", description: ChaSetI18n.tr("components.rangeSlider.firstValueDesc", "Value represented by the first thumb.") },
-            { name: "secondValue", type: "real", default: "80.0", description: ChaSetI18n.tr("components.rangeSlider.secondValueDesc", "Value represented by the second thumb.") },
-            { name: "stepSize", type: "real", default: "1.0", description: ChaSetI18n.tr("components.rangeSlider.stepSizeDesc", "Stepped granularity increment.") },
-            { name: "size", type: "string", default: "'default'", description: ChaSetI18n.tr("components.rangeSlider.sizeDesc", "Size variant: 'default' | 'sm'.") },
-            { name: "showTooltip", type: "bool", default: "false", description: ChaSetI18n.tr("components.rangeSlider.showTooltipDesc", "Displays value tooltip bubble on hover, drag, and focus.") },
-            { name: "readOnly", type: "bool", default: "false", description: ChaSetI18n.tr("components.rangeSlider.readOnlyDesc", "Prevents user interaction while preserving contrast.") },
-            { name: "disabled", type: "bool", default: "false", description: ChaSetI18n.tr("components.rangeSlider.disabledDesc", "Disables slider interaction and dims opacity.") },
-            { name: "minStepsBetweenThumbs", type: "real", default: "0.0", description: ChaSetI18n.tr("components.rangeSlider.minGapDesc", "Minimum gap between the two thumbs.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "range-slider"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "range-slider"
+        section: "props"
     }
 }

@@ -108,19 +108,15 @@ ChaSetThemeSettings {
         }
     }
 
-    ComponentReference {
-        name: "ThemeSettings"
-        componentId: "theme-settings"
-        propsModel: [
-            { name: "config", type: "var", defaultVal: "{}", description: ChaSetI18n.tr("components.themeSettings.configQtDesc", "Canonical theme configuration object matching ThemeConfig schema.") },
-            { name: "controlled", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.themeSettings.controlledDesc", "Controlled mode: the component never writes back to `config`; every edit is emitted through configModified only. Enable it when the host drives `config` from its own state (a declarative binding), so a local snapshot can never overwrite host-owned fields such as uiScale.") },
-            { name: "variant", type: "string", defaultVal: "\"card\"", description: ChaSetI18n.tr("components.themeSettings.variantQtDesc", "Container treatment: \"card\" wraps the rows in a panel, \"embedded\" renders them bare.") },
-            { name: "disabled", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.themeSettings.disabledDesc", "Disables all interactive controls and dims opacity.") },
-            { name: "showReset", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.themeSettings.showResetDesc", "Whether to display the reset button in header.") },
-            { name: "showExport", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.themeSettings.showExportDesc", "Whether to display the export JSON button in header.") },
-            { name: "showImport", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.themeSettings.showImportDesc", "Whether to display the import button in header.") },
-            { name: "showTypography", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.themeSettings.showTypographyQtDesc", "Whether to render typography selection rows.") },
-            { name: "textProvider", type: "var", defaultVal: "undefined", description: ChaSetI18n.tr("components.themeSettings.textProviderQtDesc", "Optional i18n string resolver function.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "theme-settings"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "theme-settings"
+        section: "props"
     }
 }

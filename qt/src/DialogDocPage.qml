@@ -220,113 +220,16 @@ DocLayout {
         DocText { text: ChaSetI18n.tr("desktopComposite.dialog.animationsBullet3Qt", "All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."); color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
     }
 
-    ComponentReference {
-        name: "Dialog"
-        componentId: "dialog"
-        propsModel: [
-            {
-                name: "open",
-                type: "bool",
-                defaultVal: "false",
-                description: ChaSetI18n.tr("components.dialog.openDescQt", "Controls the visible / open state of the modal dialog.")
-            },
-            {
-                name: "variant",
-                type: "string",
-                defaultVal: "\"default\"",
-                description: ChaSetI18n.tr("components.dialog.variantDescQt", "Visual and behavioral variant of the dialog ('default' or 'alert').")
-            },
-            {
-                name: "title",
-                type: "string",
-                defaultVal: "\"\"",
-                description: ChaSetI18n.tr("components.dialog.titleDescQt", "Header title text displayed in prominent bold styling.")
-            },
-            {
-                name: "description",
-                type: "string",
-                defaultVal: "\"\"",
-                description: ChaSetI18n.tr("components.dialog.headerDescQt", "Header descriptive text displayed beneath the title.")
-            },
-            {
-                name: "size",
-                type: "\"sm\" | \"default\" | \"lg\" | \"xl\" | \"full\"",
-                defaultVal: "\"default\"",
-                description: ChaSetI18n.tr("components.dialog.sizeDescQt", "Tiered size preset controlling modal card width.")
-            },
-            {
-                name: "customRadius",
-                type: "int",
-                defaultVal: "8",
-                description: ChaSetI18n.tr("components.dialog.customRadiusDesc", "Corner radius of the modal dialog card.")
-            },
-            {
-                name: "dialogWidth",
-                type: "int",
-                defaultVal: "500",
-                description: ChaSetI18n.tr("components.dialog.dialogWidthDesc", "Explicit width of the dialog card override.")
-            },
-            {
-                name: "showCloseButton",
-                type: "bool",
-                defaultVal: "true",
-                description: ChaSetI18n.tr("components.dialog.showCloseButtonDescQt", "Whether to render the close button in the top-right corner.")
-            },
-            {
-                name: "showEscBadge",
-                type: "bool",
-                defaultVal: "false",
-                description: ChaSetI18n.tr("components.dialog.showEscBadgeDescQt", "Whether to display the ESC keyboard badge in the top-right header.")
-            },
-            {
-                name: "closeOnOverlayClick",
-                type: "bool",
-                defaultVal: "true",
-                description: ChaSetI18n.tr("components.dialog.closeOnOverlayClickDescQt", "Whether clicking the backdrop overlay dismisses the dialog.")
-            },
-            {
-                name: "closeOnEscape",
-                type: "bool",
-                defaultVal: "true",
-                description: ChaSetI18n.tr("components.dialog.closeOnEscapeDescQt", "Whether pressing Escape key dismisses the dialog.")
-            },
-            {
-                name: "draggable",
-                type: "bool",
-                defaultVal: "true",
-                description: ChaSetI18n.tr("components.dialog.draggableDescQt", "Whether the dialog card can be dragged across the viewport.")
-            },
-            {
-                name: "contentData",
-                type: "list<QtObject>",
-                defaultVal: "[]",
-                description: ChaSetI18n.tr("components.dialog.contentDataDesc", "Default property alias for body content elements.")
-            },
-            {
-                name: "opened()",
-                type: "signal",
-                defaultVal: "—",
-                description: ChaSetI18n.tr("components.dialog.openedDesc", "Emitted when the modal has transitioned to open.")
-            },
-            {
-                name: "closed()",
-                type: "signal",
-                defaultVal: "—",
-                description: ChaSetI18n.tr("components.dialog.closedDesc", "Emitted when the modal has closed.")
-            },
-            {
-                name: "accepted()",
-                type: "signal",
-                defaultVal: "—",
-                description: ChaSetI18n.tr("components.dialog.acceptedDesc", "Emitted when the accept() function is invoked.")
-            },
-            {
-                name: "rejected()",
-                type: "signal",
-                defaultVal: "—",
-                description: ChaSetI18n.tr("components.dialog.rejectedDesc", "Emitted when the reject() function or scrim / close button is triggered.")
-            }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "dialog"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "dialog"
+        section: "props"
     }
 
     // Profile Dialog Instance

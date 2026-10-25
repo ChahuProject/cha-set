@@ -8,14 +8,6 @@ DocLayout {
     category: "Overlays & Feedback"
     pageTitle: "Notification Stack"
     description: ChaSetI18n.tr("components.notificationStack.description", "Floating, severity-coded notification stack with per-item lifetimes and inline actions.")
-    tocItems: [
-        { id: "overview", title: ChaSetI18n.tr("desktopComposite.notificationStack.overviewHeading", "Interactive Overview") },
-        { id: "levels", title: ChaSetI18n.tr("desktopComposite.notificationStack.levelsTitle", "Levels & Actions") },
-        { id: "anatomy", title: ChaSetI18n.tr("showcase.anatomy", "Anatomy") },
-        { id: "animations", title: ChaSetI18n.tr("showcase.animations", "Animations") },
-        { id: "keyboard", title: ChaSetI18n.tr("showcase.keyboardNavigation", "Keyboard Navigation") },
-        { id: "props", title: ChaSetI18n.tr("showcase.propsReference", "Props Reference") }
-    ]
 
     ComponentPreview {
         width: parent.width
@@ -260,70 +252,16 @@ ChaSetNotificationStack {
         }
     }
 
-    Column {
-        property string sectionId: "keyboard"
+    DocMarkdown {
         width: parent.width
-        spacing: ThemeTokens.dp(8)
-
-        DocText {
-            text: ChaSetI18n.tr("showcase.keyboardNavigation", "Keyboard Navigation")
-            font.pixelSize: Typography.sizeTitleSm
-            font.bold: true
-            color: ThemeTokens.text
-        }
-
-        DocText {
-            width: parent.width
-            wrap: true
-            text: ChaSetI18n.tr("desktopComposite.notificationStack.keyboardDesc", "The stack is a single tab stop: notification cards are roving-focus entries inside it.")
-            color: ThemeTokens.subduedText
-            font.pixelSize: Typography.sizeSmall
-        }
-
-        KeyboardShortcutsTable {
-            width: parent.width
-            componentId: "notification-stack"
-            title: ""
-        }
+        docId: "notification-stack"
+        section: "keyboard"
     }
 
-    Column {
-        property string sectionId: "props"
+    DocMarkdown {
         width: parent.width
-        spacing: ThemeTokens.dp(12)
-
-        DocText {
-            text: ChaSetI18n.tr("showcase.propsReference", "Props Reference")
-            font.pixelSize: Typography.sizeTitleSm
-            font.bold: true
-            color: ThemeTokens.text
-        }
-
-        PropsTable {
-            width: parent.width
-            title: ""
-            propsModel: [
-                { name: "notifications", type: "var", default: "[]", description: ChaSetI18n.tr("components.notificationStack.notificationsDesc", "Notifications to surface, oldest first; the newest card sits nearest the anchor.") },
-                { name: "onDismissed", type: "(id: string) => void", default: "undefined", description: ChaSetI18n.tr("components.notificationStack.onDismissDesc", "Renders the per-card dismiss control and receives every auto-expiry.") },
-                { name: "onActionTriggered", type: "(notificationId: string, actionId: string) => void", default: "undefined", description: ChaSetI18n.tr("components.notificationStack.onActionDesc", "Fired when an inline action button is pressed; the card stays until dismissed.") },
-                { name: "placement", type: "string", default: "\"bottom-right\"", description: ChaSetI18n.tr("components.notificationStack.placementDesc", "Viewport anchor. Cards enter and exit through the anchored edge.") },
-                { name: "offset", type: "int", default: "16", description: ChaSetI18n.tr("components.notificationStack.offsetDesc", "Inset from the anchored viewport edges, in logical units.") },
-                { name: "maxVisible", type: "int", default: "4", description: ChaSetI18n.tr("components.notificationStack.maxVisibleDesc", "Cards rendered before the stack overflows into its \"show all\" pill.") },
-                { name: "defaultDuration", type: "int", default: "5000", description: ChaSetI18n.tr("components.notificationStack.defaultDurationDesc", "Lifetime for items that do not state their own duration.") },
-                { name: "pauseOnHover", type: "bool", default: "true", description: ChaSetI18n.tr("components.notificationStack.pauseOnHoverDesc", "Suspends every expiry countdown while the pointer rests on the stack.") },
-                { name: "collapsible", type: "bool", default: "true", description: ChaSetI18n.tr("components.notificationStack.collapsibleDesc", "Offers the collapse-to-summary-row control.") },
-                { name: "defaultCollapsed", type: "bool", default: "false", description: ChaSetI18n.tr("components.notificationStack.defaultCollapsedDesc", "Renders the stack collapsed on first paint.") },
-                { name: "label", type: "string", default: "\"Notifications\"", description: ChaSetI18n.tr("components.notificationStack.labelDesc", "Accessible name of the live region.") }
-            ]
-        }
-
-        DocText {
-            width: parent.width
-            wrap: true
-            text: ChaSetI18n.tr("components.notificationStack.itemFooterDesc", "Each notification carries id, title, an optional description, a level of info | success | warning | error, an optional duration, dismissible and a list of actions (id, label, variant).")
-            color: ThemeTokens.subduedText
-            font.pixelSize: Typography.sizeSmall
-        }
+        docId: "notification-stack"
+        section: "props"
     }
 
     // ---- Demo state -------------------------------------------------------

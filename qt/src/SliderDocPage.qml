@@ -361,94 +361,15 @@ DocLayout {
         }
     }
 
-    ComponentReference {
-        name: "Slider"
-        componentId: "slider"
-        propsModel: [
-            {
-                name: "value",
-                type: "real",
-                defaultVal: "0",
-                description: ChaSetI18n.tr("components.slider.valueDesc", "The controlled numeric value of the slider.")
-            },
-            {
-                name: "min",
-                type: "real",
-                defaultVal: "0",
-                description: ChaSetI18n.tr("components.slider.minDesc", "The minimum allowable value.")
-            },
-            {
-                name: "max",
-                type: "real",
-                defaultVal: "100",
-                description: ChaSetI18n.tr("components.slider.maxDesc", "The maximum allowable value.")
-            },
-            {
-                name: "step",
-                type: "real",
-                defaultVal: "1",
-                description: ChaSetI18n.tr("components.slider.stepDesc", "The stepping granularity interval.")
-            },
-            {
-                name: "size",
-                type: "\"default\" | \"sm\"",
-                defaultVal: "\"default\"",
-                description: ChaSetI18n.tr("components.slider.sizeDesc", "The size scale of the slider track and thumb.")
-            },
-            {
-                name: "disabled",
-                type: "bool",
-                defaultVal: "false",
-                description: ChaSetI18n.tr("components.slider.disabledDesc", "When true, prevents user interaction and applies muted opacity.")
-            },
-            {
-                name: "readOnly",
-                type: "bool",
-                defaultVal: "false",
-                description: ChaSetI18n.tr("components.slider.readOnlyDesc", "When true, prevents value changes while maintaining full visual opacity.")
-            },
-            {
-                name: "showTooltip",
-                type: "bool",
-                defaultVal: "false",
-                description: ChaSetI18n.tr("components.slider.showTooltipDesc", "When true, shows an interactive floating value tooltip over the thumb on drag and hover.")
-            },
-            {
-                name: "formatValue",
-                type: "var",
-                defaultVal: "null",
-                description: ChaSetI18n.tr("components.slider.formatValueDesc", "Optional formatter function for the floating tooltip text.")
-            },
-            {
-                name: "showTicks",
-                type: "bool",
-                defaultVal: "false",
-                description: ChaSetI18n.tr("components.slider.showTicksDesc", "Displays tick mark indicators along the slider track.")
-            },
-            {
-                name: "marks",
-                type: "var",
-                defaultVal: "[]",
-                description: ChaSetI18n.tr("components.slider.marksDesc", "Optional array of label strings corresponding to discrete stop positions.")
-            },
-            {
-                name: "orientation",
-                type: "\"horizontal\" | \"vertical\"",
-                defaultVal: "\"horizontal\"",
-                description: ChaSetI18n.tr("components.slider.orientationDesc", "The orientation of the slider track.")
-            },
-            {
-                name: "forceHover",
-                type: "bool",
-                defaultVal: "false",
-                description: ChaSetI18n.tr("components.slider.forceHoverDesc", "Visual testing aid to programmatically force hover styling.")
-            },
-            {
-                name: "forceFocus",
-                type: "bool",
-                defaultVal: "false",
-                description: ChaSetI18n.tr("components.slider.forceFocusDesc", "Visual testing aid to programmatically force focus ring styling.")
-            }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "slider"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "slider"
+        section: "props"
     }
 }

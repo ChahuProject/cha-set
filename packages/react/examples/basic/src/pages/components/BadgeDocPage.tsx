@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Badge, CopyableBadge, type BadgeVariant, type BadgeSize, SegmentedControl, Checkbox, Card, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { ComponentReference } from "../../components/ComponentReference";
 import { DocText } from '../../components/DocText';
 
 export function BadgeDocPage() {
@@ -207,60 +207,9 @@ export function BadgeDocPage() {
         </div>
       </section>
 
-      <ComponentReference
-        name="Badge"
-        componentId="badge"
-        props={[
-          {
-            name: 'variant',
-            type: "'default' | 'secondary' | 'destructive' | 'outline' | 'ghost' | 'link'",
-            default: "'default'",
-            description: t('components.badge.variantDesc', 'Visual stylistic variant corresponding to core color tokens.'),
-          },
-          {
-            name: 'size',
-            type: "'default' | 'sm'",
-            default: "'default'",
-            description: t('components.badge.sizeDesc', 'Size variant determining pill height, padding, and font metrics scale.'),
-          },
-          {
-            name: 'dot',
-            type: 'boolean',
-            default: 'false',
-            description: t('components.badge.dotDesc', 'Whether to display a leading status indicator dot.'),
-          },
-          {
-            name: 'dotColor',
-            type: 'string',
-            default: 'undefined',
-            description: t('components.badge.dotColorDesc', 'Custom color class for the status dot (e.g. bg-emerald-500).'),
-          },
-          {
-            name: 'removable',
-            type: 'boolean',
-            default: 'false',
-            description: t('components.badge.removableDesc', 'Whether to display an inline dismiss/remove action button.'),
-          },
-          {
-            name: 'onRemove',
-            type: '() => void',
-            default: 'undefined',
-            description: t('components.badge.onRemoveDesc', 'Callback fired when the dismiss/remove action is triggered.'),
-          },
-          {
-            name: 'interactive',
-            type: 'boolean',
-            default: 'false',
-            description: t('components.badge.interactiveDesc', 'Whether the badge responds with interactive cursor and click effects.'),
-          },
-          {
-            name: 'className',
-            type: 'string',
-            default: "''",
-            description: t('components.badge.classNameDesc', 'Optional additional Tailwind CSS class names.'),
-          },
-        ]}
-      />
+            <DocMarkdown id="badge" section="keyboard" />
+
+      <DocMarkdown id="badge" section="props" />
     </DocLayout>
   );
 }

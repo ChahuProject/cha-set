@@ -401,82 +401,15 @@ DocLayout {
         DocText { text: ChaSetI18n.tr("desktopComposite.tooltip.animationsBulletQt3", "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."); color: root.cFg; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
     }
 
-        ComponentReference {
-        name: "Tooltip"
-        componentId: "tooltip"
-        propsModel: [
-                {
-                    name: "text",
-                    type: "string",
-                    default: "\"\"",
-                    description: ChaSetI18n.tr("components.tooltip.contentDesc", "The content rendered inside the floating tooltip bubble.")
-                },
-                {
-                    name: "shortcut",
-                    type: "string",
-                    default: "\"\"",
-                    description: ChaSetI18n.tr("components.tooltip.shortcutDesc", "Keyboard shortcut badge rendered inside the tooltip bubble.")
-                },
-                {
-                    name: "arrow",
-                    type: "bool",
-                    default: "false",
-                    description: ChaSetI18n.tr("components.tooltip.arrowDesc", "Whether to render a directional arrow pointing toward the trigger.")
-                },
-                {
-                    name: "side",
-                    type: "\"top\" | \"bottom\" | \"left\" | \"right\"",
-                    default: "\"top\"",
-                    description: ChaSetI18n.tr("components.tooltip.sideDesc", "The preferred placement relative to the trigger.")
-                },
-                {
-                    name: "avoidCollisions",
-                    type: "bool",
-                    default: "true",
-                    description: ChaSetI18n.tr("components.tooltip.avoidCollisionsDesc", "Whether to shift the bubble back inside the viewport on overflow; false pins exact side placement.")
-                },
-                {
-                    name: "sideOffset",
-                    type: "int",
-                    default: "4",
-                    description: ChaSetI18n.tr("components.tooltip.sideOffsetDesc", "Distance between target item and tooltip bubble.")
-                },
-                {
-                    name: "delay",
-                    type: "int",
-                    default: "200",
-                    description: ChaSetI18n.tr("components.tooltip.delayDesc", "Hover delay in milliseconds before the tooltip opens.")
-                },
-                {
-                    name: "active",
-                    type: "bool",
-                    default: "false",
-                    description: ChaSetI18n.tr("components.tooltip.activeDesc", "Whether the tooltip bubble is currently active and visible.")
-                },
-                {
-                    name: "disabled",
-                    type: "bool",
-                    default: "false",
-                    description: ChaSetI18n.tr("components.tooltip.disabledDesc", "Prevents the tooltip from opening when hovering or focusing.")
-                },
-                {
-                    name: "target",
-                    type: "Item",
-                    default: "null",
-                    description: ChaSetI18n.tr("components.tooltip.targetDesc", "Optional target item to attach the tooltip to when not wrapping children.")
-                },
-                {
-                    name: "forceHover",
-                    type: "bool",
-                    default: "false",
-                    description: ChaSetI18n.tr("components.tooltip.forceHoverDesc", "Visual testing hook to force active tooltip visibility.")
-                },
-                {
-                    name: "warm",
-                    type: "bool",
-                    default: "true",
-                    description: ChaSetI18n.tr("components.tooltip.warmDesc", "Whether to participate in global warm hover sessions; set to false for independent per-item timers.")
-                }
-            ]
-    }
+        DocMarkdown {
+            width: parent.width
+            docId: "tooltip"
+            section: "keyboard"
+        }
+
+        DocMarkdown {
+            width: parent.width
+            docId: "tooltip"
+            section: "props"
+        }
 }

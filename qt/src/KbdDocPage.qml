@@ -627,17 +627,15 @@ DocLayout {
     }
 
     // Section 8: Component Reference
-    ComponentReference {
-        name: "Kbd"
-        componentId: "kbd"
-        propsModel: [
-            { name: "variant", type: "'outline' | 'solid' | 'subtle' | 'inverted'", defaultValue: "'outline'", description: ChaSetI18n.tr("components.kbd.variantDesc", "Visual presentation variant matching container surfaces.") },
-            { name: "size", type: "'xs' | 'sm' | 'default' | 'md'", defaultValue: "'default'", description: ChaSetI18n.tr("components.kbd.sizeDesc", "Size scale controlling keycap height, padding, and font size.") },
-            { name: "compact", type: "'auto' | 'always' | 'never'", defaultValue: "'auto'", description: ChaSetI18n.tr("components.kbd.compactDesc", "Whether to convert verbose modifiers to compact symbols (Ctrl to ⌃).") },
-            { name: "overflow", type: "'collapse' | 'hide' | 'visible'", defaultValue: "'collapse'", description: ChaSetI18n.tr("components.kbd.overflowDesc", "Overflow strategy when space is constrained in narrow containers.") },
-            { name: "shortcut", type: "string", defaultValue: "''", description: ChaSetI18n.tr("components.kbd.shortcutDesc", "Serialized shortcut combination string to parse automatically.") },
-            { name: "separator", type: "string", defaultValue: "'+'", description: ChaSetI18n.tr("components.kbd.separatorDesc", "Custom separator character between combination keys.") },
-            { name: "text", type: "string", defaultValue: "''", description: ChaSetI18n.tr("components.kbd.textDesc", "Direct single key text to display.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "kbd"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "kbd"
+        section: "props"
     }
 }

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button, Input, Badge, Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose, DialogAction, DialogCancel, type DialogSizeOption, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -314,132 +314,9 @@ export function DialogDocPage() {
         </ul>
       </section>
 
-      <ComponentReference
-        name="Dialog"
-        componentId="dialog"
-        props={[
-            {
-              name: 'open',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.dialog.openDesc', 'The controlled open state of the dialog.'),
-            },
-            {
-              name: 'variant',
-              type: "'default' | 'alert'",
-              default: "'default'",
-              description: t('components.dialog.variantDesc', 'Visual and behavioral variant of the dialog (standard modal or alert confirmation).'),
-            },
-            {
-              name: 'defaultOpen',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.dialog.defaultOpenDesc', 'The default open state when uncontrolled.'),
-            },
-            {
-              name: 'onOpenChange',
-              type: '(open: boolean) => void',
-              default: '—',
-              description: t('components.dialog.onOpenChangeDesc', 'Event handler called when the open state changes.'),
-            },
-            {
-              name: 'size',
-              type: "'sm' | 'default' | 'lg' | 'xl' | 'full'",
-              default: "'default'",
-              description: t('components.dialog.sizeDesc', 'Tiered size preset controlling modal card width and containment.'),
-            },
-            {
-              name: 'closeOnOverlayClick',
-              type: 'boolean',
-              default: 'true',
-              description: t('components.dialog.closeOnOverlayClickDesc', 'Whether clicking the backdrop overlay dismisses the dialog.'),
-            },
-            {
-              name: 'closeOnEscape',
-              type: 'boolean',
-              default: 'true',
-              description: t('components.dialog.closeOnEscapeDesc', 'Whether pressing the Escape key dismisses the dialog.'),
-            },
-            {
-              name: 'draggable',
-              type: 'boolean',
-              default: 'true',
-              description: t('components.dialog.draggableDesc', 'Whether the dialog is rendered as a desktop draggable and resizable modal window.'),
-            },
-            {
-              name: 'showCloseButton',
-              type: 'boolean',
-              default: 'true',
-              description: t('components.dialog.showCloseButtonDesc', 'Whether to render the close button in the top-right controls.'),
-            },
-            {
-              name: 'showEscBadge',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.dialog.showEscBadgeDesc', 'Whether to render an ESC keyboard shortcut badge in the top-right controls.'),
-            },
-            {
-              name: 'defaultWidthRem',
-              type: 'number',
-              default: '—',
-              description: t('components.dialog.defaultWidthRemDesc', 'Initial modal width in rem units (e.g. 32).'),
-            },
-            {
-              name: 'defaultHeightRem',
-              type: 'number',
-              default: '—',
-              description: t('components.dialog.defaultHeightRemDesc', 'Initial modal height in rem units (e.g. 24).'),
-            },
-            {
-              name: 'initialPositionMode',
-              type: "'center' | 'top'",
-              default: "'center'",
-              description: t('components.dialog.initialPositionModeDesc', 'Initial positioning mode for the modal window.'),
-            },
-            {
-              name: 'topMarginRem',
-              type: 'number',
-              default: '4.5',
-              description: t('components.dialog.topMarginRemDesc', 'Top margin in rem when initialPositionMode is top.'),
-            },
-            {
-              name: 'autoFitHeight',
-              type: 'boolean',
-              default: 'true',
-              description: t('components.dialog.autoFitHeightDesc', 'Automatically adjust modal height to fit inner content.'),
-            },
-            {
-              name: 'sizeOptions',
-              type: 'DialogSizeOption[]',
-              default: '—',
-              description: t('components.dialog.sizeOptionsDesc', 'Preset sizing options for the top-right size switcher dropdown menu.'),
-            },
-            {
-              name: 'sizeMenuTooltip',
-              type: 'string',
-              default: "'Adjust Size'",
-              description: t('components.dialog.sizeMenuTooltipDesc', 'Tooltip text for the size switcher dropdown button.'),
-            },
-            {
-              name: 'dragHandleClassName',
-              type: 'string',
-              default: '—',
-              description: t('components.dialog.dragHandleClassNameDesc', 'CSS class selector for the drag handle area (e.g. dialog header).'),
-            },
-            {
-              name: 'contentClassName',
-              type: 'string',
-              default: '—',
-              description: t('components.dialog.contentClassNameDesc', 'Custom class name for the scrollable inner content container.'),
-            },
-            {
-              name: 'overlayClassName',
-              type: 'string',
-              default: "''",
-              description: t('components.dialog.overlayClassNameDesc', 'Additional CSS classes to customize the backdrop overlay.'),
-            },
-          ]}
-      />
+            <DocMarkdown id="dialog" section="keyboard" />
+
+      <DocMarkdown id="dialog" section="props" />
     </DocLayout>
   );
 }

@@ -90,40 +90,15 @@ ChaSetLanguageSettings {
     }
 
     // Section 4: Keyboard Navigation & Props Reference
-    ComponentReference {
-        name: "LanguageSettings"
-        componentId: "language-settings"
-        propsModel: [
-            {
-                name: "preference",
-                type: "string",
-                defaultValue: "\"system\"",
-                description: ChaSetI18n.tr("components.languageSettings.preferenceDesc", "Active language preference, either \"system\" or an explicit language code.")
-            },
-            {
-                name: "showFollowSystem",
-                type: "bool",
-                defaultValue: "true",
-                description: ChaSetI18n.tr("components.languageSettings.showFollowSystemDesc", "Whether to show the prominent Follow System option card with system detection.")
-            },
-            {
-                name: "variant",
-                type: "string",
-                defaultValue: "\"card\"",
-                description: ChaSetI18n.tr("components.languageSettings.variantDesc", "Visual container variant. \"card\" renders an outer bordered card with header; \"embedded\" renders inline content without outer frame.")
-            },
-            {
-                name: "disabled",
-                type: "bool",
-                defaultValue: "false",
-                description: ChaSetI18n.tr("components.languageSettings.disabledDesc", "Whether the language selection controls are disabled.")
-            },
-            {
-                name: "textProvider",
-                type: "var",
-                defaultValue: "null",
-                description: ChaSetI18n.tr("components.languageSettings.textProviderDesc", "Optional custom translation function for overriding component strings.")
-            }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "language-settings"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "language-settings"
+        section: "props"
     }
 }

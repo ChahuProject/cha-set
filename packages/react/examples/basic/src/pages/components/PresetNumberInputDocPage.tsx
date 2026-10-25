@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PresetNumberInput, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -108,21 +108,9 @@ ChaSetPresetNumberInput {
         </div>
       </section>
 
-            <ComponentReference
-        name="PresetNumberInput"
-        componentId="preset-number-input"
-        props={[
-            { name: 'value', type: 'string', default: "''", description: t('components.presetNumberInput.valueDesc', 'Current numeric value of the input.') },
-            { name: 'onChange', type: '(val: string) => void', default: 'undefined', description: t('components.presetNumberInput.onChangeDesc', 'Callback fired when the value changes.') },
-            { name: 'presets', type: 'number[]', default: '[64, 128, 256, 512, 1024, 2048, 4096, 8192]', description: t('components.presetNumberInput.presetsDesc', 'List of quick-select preset numbers.') },
-            { name: 'placeholder', type: 'string', default: 'undefined', description: t('components.presetNumberInput.placeholderDesc', 'Placeholder text displayed when empty.') },
-            { name: 'disabled', type: 'boolean', default: 'false', description: t('components.presetNumberInput.disabledDesc', 'Whether typing and dropdown interactions are disabled.') },
-            { name: 'allowClear', type: 'boolean', default: 'true', description: t('components.presetNumberInput.allowClearDesc', 'Whether to display the clear/reset option in dropdown.') },
-            { name: 'clearLabel', type: 'string', default: "'None'", description: t('components.presetNumberInput.clearLabelDesc', 'Label text for the clear option.') },
-            { name: 'inputClassName', type: 'string', default: 'undefined', description: t('components.presetNumberInput.inputClassNameDesc', 'Custom CSS classes for the inner input.') },
-            { name: 'className', type: 'string', default: 'undefined', description: t('components.presetNumberInput.classNameDesc', 'Custom CSS classes for the outer container.') },
-          ]}
-      />
+                        <DocMarkdown id="preset-number-input" section="keyboard" />
+
+            <DocMarkdown id="preset-number-input" section="props" />
     </DocLayout>
   );
 }

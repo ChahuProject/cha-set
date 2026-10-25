@@ -145,14 +145,15 @@ ChaSetDropdownMenu {
 
 
 
-    ComponentReference {
-        name: "DropdownMenu"
-        componentId: "dropdown-menu"
-        propsModel: [
-            { name: "open", type: "bool", default: "false", description: ChaSetI18n.tr("components.dropdownMenu.openDescQt", "Whether the menu popup is currently open.") },
-            { name: "items", type: "var[]", default: "[]", description: ChaSetI18n.tr("components.dropdownMenu.itemsDescQt", "Array of menu item descriptors: { id, label, icon, shortcut, destructive, disabled }.") },
-            { name: "menuWidth", type: "int", default: "180", description: ChaSetI18n.tr("components.dropdownMenu.menuWidthDesc", "Width dimension of the popup menu panel.") },
-            { name: "customRadius", type: "int", default: "6", description: ChaSetI18n.tr("components.dropdownMenu.customRadiusDesc", "Corner radius of the menu panel.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "dropdown-menu"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "dropdown-menu"
+        section: "props"
     }
 }

@@ -119,16 +119,15 @@ ChaSetCopyButton {
 <CopyButton text="pnpm add @chahu/cha-set" label="Copy Command" />`
     }
 
-    ComponentReference {
-        name: "CopyButton"
-        componentId: "copy-button"
-        propsModel: [
-            { name: "text", type: "string", default: "''", description: ChaSetI18n.tr("components.copyButton.textDescQt", "The string content sent to the clipboard when clicked (alias: textToCopy).") },
-            { name: "label", type: "string", default: "''", description: ChaSetI18n.tr("components.copyButton.labelDescQt", "Optional companion label text displayed next to the copy icon.") },
-            { name: "copiedLabel", type: "string", default: "'Copied!'", description: ChaSetI18n.tr("components.copyButton.copiedLabelDescQt", "Feedback label text displayed after successfully copying.") },
-            { name: "timeout", type: "int", default: "2000", description: ChaSetI18n.tr("components.copyButton.timeoutDescQt", "Duration in milliseconds that the success check icon persists.") },
-            { name: "variant", type: "string", default: "'outline'", description: ChaSetI18n.tr("components.copyButton.variantDescQt", "Visual variant style: 'outline' | 'ghost' | 'default' | 'secondary'.") },
-            { name: "size", type: "string", default: "'icon-xs'", description: ChaSetI18n.tr("components.copyButton.sizeDescQt", "Button sizing preset: 'icon-xs', 'icon-sm', 'sm', 'default'.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "copy-button"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "copy-button"
+        section: "props"
     }
 }

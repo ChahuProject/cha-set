@@ -1,7 +1,7 @@
 import React, { useRef, useMemo } from 'react';
 import { VirtualGrid, type VirtualGridHandle, Badge, Button, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -144,21 +144,9 @@ ChaSetVirtualGrid {
 
 
 
-            <ComponentReference
-        name="VirtualGrid"
-        componentId="virtual-grid"
-        props={[
-            { name: 'items', type: 'readonly T[]', default: '[]', description: t('components.virtualGrid.itemsDesc', 'Array of data items to layout into grid cards.') },
-            { name: 'renderCard', type: '(item: T, index: number) => ReactNode', default: 'undefined', description: t('components.virtualGrid.renderCardDesc', 'Callback rendering an individual grid card.') },
-            { name: 'renderItem', type: '(item: T, index: number) => ReactNode', default: 'undefined', description: t('components.virtualGrid.renderItemDesc', 'Alias for renderCard.') },
-            { name: 'minColumnWidthRem', type: 'number', default: '12', description: t('components.virtualGrid.minColumnWidthDesc', 'Minimum column width before responsive wrapping.') },
-            { name: 'gapRem', type: 'number', default: '0.75', description: t('components.virtualGrid.gapDesc', 'Grid gap spacing between cards.') },
-            { name: 'estimateSize', type: 'number', default: '180', description: t('components.virtualGrid.estimateSizeDesc', 'Estimated row height for virtual calculation.') },
-            { name: 'overscan', type: 'number', default: '4', description: t('components.virtualGrid.overscanDesc', 'Buffer row count rendered beyond viewport bounds.') },
-            { name: 'emptyNode', type: 'ReactNode', default: 'null', description: t('components.virtualGrid.emptyNodeDesc', 'Content rendered when items array is empty.') },
-            { name: 'ref', type: 'Ref<VirtualGridHandle>', default: 'undefined', description: t('components.virtualGrid.refDesc', 'Handle exposing scrollToIndex(index, align).') },
-          ]}
-      />
+                        <DocMarkdown id="virtual-grid" section="keyboard" />
+
+            <DocMarkdown id="virtual-grid" section="props" />
     </DocLayout>
   );
 }

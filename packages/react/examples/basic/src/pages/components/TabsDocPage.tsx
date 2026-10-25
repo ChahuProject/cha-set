@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent, type TabsVariant, type TabsSize, Card, SegmentedControl, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { PropsTable } from '../../components/PropsTable';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
 import { DocText } from '../../components/DocText';
 
 export function TabsDocPage() {
@@ -172,15 +171,7 @@ export function TabsDocPage() {
       </section>
 
       {/* Keyboard Navigation */}
-      <section id="keyboard" className="mt-12 scroll-mt-20">
-        <DocText role="h2" className="mb-3">
-          {t('showcase.keyboardNavigation', 'Keyboard Navigation')}
-        </DocText>
-        <DocText role="p" className="mb-4">
-          {t('desktopComposite.tabs.keyboardDesc', 'Tabs support standard horizontal and vertical arrow navigation with automatic selection or manual Space/Enter commit.')}
-        </DocText>
-        <KeyboardShortcutsTable componentId="tabs" />
-      </section>
+      <DocMarkdown id="tabs" section="keyboard" />
 
       {/* 2. Installation */}
       <section id="installation" className="mt-12 scroll-mt-20">
@@ -274,69 +265,7 @@ export function TabsDocPage() {
       </section>
 
       {/* 5. Props Reference */}
-      <section id="props" className="mt-12 scroll-mt-20">
-        <DocText role="h2" className="mb-3">
-          {t('showcase.propsReference', 'Props Reference')}
-        </DocText>
-        <PropsTable
-          props={[
-            {
-              name: 'defaultValue',
-              type: 'string',
-              default: 'undefined',
-              description: t('components.tabs.defaultValueDesc', 'The value of the tab that should be active when initially rendered (uncontrolled).'),
-            },
-            {
-              name: 'value',
-              type: 'string',
-              default: 'undefined',
-              description: t('components.tabs.valueDesc', 'The controlled value of the active tab.'),
-            },
-            {
-              name: 'onValueChange',
-              type: '(value: string) => void',
-              default: 'undefined',
-              description: t('components.tabs.onValueChangeDesc', 'Event handler called when the active tab changes.'),
-            },
-            {
-              name: 'variant',
-              type: "'default' | 'line'",
-              default: "'default'",
-              description: t('components.tabs.variantDesc', 'Visual presentation style: pill container (default) or underline tab bar (line).'),
-            },
-            {
-              name: 'size',
-              type: "'default' | 'sm'",
-              default: "'default'",
-              description: t('components.tabs.sizeDesc', 'Size scale of the tabs triggers and container.'),
-            },
-            {
-              name: 'orientation',
-              type: "'horizontal' | 'vertical'",
-              default: "'horizontal'",
-              description: t('components.tabs.orientationDesc', 'The orientation of the tabs (controls keyboard navigation axis).'),
-            },
-            {
-              name: 'disabled',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.tabs.disabledDesc', 'When true on TabsTrigger, prevents interaction on that tab.'),
-            },
-            {
-              name: 'badge',
-              type: 'ReactNode | string',
-              default: 'undefined',
-              description: t('components.tabs.badgeDesc', 'Optional count badge or text label rendered inside the trigger.'),
-            },
-            {
-              name: 'icon',
-              type: 'ReactNode',
-              default: 'undefined',
-              description: t('components.tabs.iconDesc', 'Optional leading icon element rendered inside the trigger.'),
-            },
-          ]}
-        />
-      </section>
+      <DocMarkdown id="tabs" section="props" />
     </DocLayout>
   );
 }

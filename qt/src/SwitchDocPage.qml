@@ -266,64 +266,15 @@ DocLayout {
         }
     }
 
-        ComponentReference {
-        name: "Switch"
-        componentId: "switch"
-        propsModel: [
-                {
-                    name: "checked",
-                    type: "bool",
-                    default: "false",
-                    description: ChaSetI18n.tr("components.switch.checkedDesc", "Whether the switch is toggled on (checked).")
-                },
-                {
-                    name: "size",
-                    type: "\"default\" | \"sm\"",
-                    default: "\"default\"",
-                    description: ChaSetI18n.tr("components.switch.sizeDesc", "The size scale of the switch track and thumb.")
-                },
-                {
-                    name: "disabled",
-                    type: "bool",
-                    default: "false",
-                    description: ChaSetI18n.tr("components.switch.disabledDesc", "Disables user interactions and applies muted opacity.")
-                },
-                {
-                    name: "readOnly",
-                    type: "bool",
-                    default: "false",
-                    description: ChaSetI18n.tr("components.switch.readOnlyDesc", "Whether the switch is read-only (prevents interaction without muted opacity).")
-                },
-                {
-                    name: "loading",
-                    type: "bool",
-                    default: "false",
-                    description: ChaSetI18n.tr("components.switch.loadingDesc", "Shows an animated spinner inside the thumb and prevents toggling.")
-                },
-                {
-                    name: "label",
-                    type: "string",
-                    default: "\"\"",
-                    description: ChaSetI18n.tr("components.switch.labelDesc", "Optional companion label rendered alongside the switch.")
-                },
-                {
-                    name: "description",
-                    type: "string",
-                    default: "\"\"",
-                    description: ChaSetI18n.tr("components.switch.helperDesc", "Optional helper text displayed below the label.")
-                },
-                {
-                    name: "forceHover",
-                    type: "bool",
-                    default: "false",
-                    description: ChaSetI18n.tr("components.switch.forceHoverDesc", "Visual testing aid to force hover state.")
-                },
-                {
-                    name: "forceFocus",
-                    type: "bool",
-                    default: "false",
-                    description: ChaSetI18n.tr("components.switch.forceFocusDesc", "Visual testing aid to force focus ring.")
-                }
-            ]
-    }
+        DocMarkdown {
+            width: parent.width
+            docId: "switch"
+            section: "keyboard"
+        }
+
+        DocMarkdown {
+            width: parent.width
+            docId: "switch"
+            section: "props"
+        }
 }

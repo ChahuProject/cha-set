@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ViewportConstrainedContainer, Button, Badge, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -192,18 +192,9 @@ ChaSetViewportConstrainedContainer {
         </div>
       </section>
 
-            <ComponentReference
-        name="ViewportConstrainedContainer"
-        componentId="viewport-constrained-container"
-        props={[
-            { name: 'maxHeight', type: 'number | string', default: 'undefined', description: t('components.viewportConstrainedContainer.maxHeightDesc', 'Optional upper limit on container max-height.') },
-            { name: 'minHeight', type: 'number | string', default: '80', description: t('components.viewportConstrainedContainer.minHeightDesc', 'Minimum allowable height lower bound.') },
-            { name: 'margin', type: 'number', default: '16', description: t('components.viewportConstrainedContainer.marginDesc', 'Reserved margin between container bottom and viewport bottom edge.') },
-            { name: 'overflow', type: "'auto' | 'scroll'", default: "'auto'", description: t('components.viewportConstrainedContainer.overflowDesc', 'Vertical overflow scrolling strategy.') },
-            { name: 'className', type: 'string', default: 'undefined', description: t('components.viewportConstrainedContainer.classNameDesc', 'Custom CSS class names for styling.') },
-            { name: 'children', type: 'React.ReactNode', default: 'undefined', description: t('components.viewportConstrainedContainer.childrenDesc', 'Elements rendered inside the container.') },
-          ]}
-      />
+                        <DocMarkdown id="viewport-constrained-container" section="keyboard" />
+
+            <DocMarkdown id="viewport-constrained-container" section="props" />
     </DocLayout>
   );
 }

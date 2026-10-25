@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SmoothWheelHandler, Card, Badge, SegmentedControl, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -165,54 +165,9 @@ ChaSetSmoothWheelHandler {
         </div>
       </section>
 
-      <ComponentReference
-        name="SmoothWheelHandler"
-        componentId="smooth-wheel-handler"
-        props={[
-          {
-            name: 'scrollOrientation',
-            type: "'vertical' | 'horizontal'",
-            default: "'vertical'",
-            required: false,
-            description: t('components.smoothWheelHandler.scrollOrientationDesc', 'Primary direction of scrolling for the target viewport.'),
-          },
-          {
-            name: 'mapVerticalToHorizontal',
-            type: 'boolean',
-            default: 'false',
-            required: false,
-            description: t('components.smoothWheelHandler.mapVerticalToHorizontalDesc', 'Whether to map vertical wheel ticks to horizontal axis movement.'),
-          },
-          {
-            name: 'speedMultiplier',
-            type: 'number',
-            default: '1.2',
-            required: false,
-            description: t('components.smoothWheelHandler.speedMultiplierDesc', 'Scroll speed multiplier applied to raw delta values.'),
-          },
-          {
-            name: 'duration',
-            type: 'number',
-            default: '200',
-            required: false,
-            description: t('components.smoothWheelHandler.durationDesc', 'Duration in milliseconds for the OutCubic damping transition.'),
-          },
-          {
-            name: 'fixedStepSize',
-            type: 'number',
-            default: '0',
-            required: false,
-            description: t('components.smoothWheelHandler.fixedStepSizeDesc', 'Optional quantized step increment per wheel notch (0 for dynamic).'),
-          },
-          {
-            name: 'consumeEvent',
-            type: 'boolean',
-            default: 'true',
-            required: false,
-            description: t('components.smoothWheelHandler.consumeEventDesc', 'Whether to prevent propagation of handled wheel events to parent windows.'),
-          },
-        ]}
-      />
+            <DocMarkdown id="smooth-wheel-handler" section="keyboard" />
+
+      <DocMarkdown id="smooth-wheel-handler" section="props" />
     </DocLayout>
   );
 }

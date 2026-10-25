@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter, SheetClose, Button, Input, Checkbox, type SheetSide, type SheetSize, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -205,19 +205,9 @@ ChaSetSheet {
         </ul>
       </section>
 
-            <ComponentReference
-        name="Sheet"
-        componentId="sheet"
-        props={[
-            { name: 'open', type: 'boolean', default: 'undefined', description: t('components.sheet.openDesc', 'Controlled open state.') },
-            { name: 'defaultOpen', type: 'boolean', default: 'false', description: t('components.sheet.defaultOpenDesc', 'Default open state for uncontrolled usage.') },
-            { name: 'onOpenChange', type: '(open: boolean) => void', default: 'undefined', description: t('components.sheet.onOpenChangeDesc', 'Callback fired when open state changes.') },
-            { name: 'side', type: "'top' | 'right' | 'bottom' | 'left'", default: "'right'", description: t('components.sheet.sideDesc', 'Edge of the viewport that the drawer slides in from.') },
-            { name: 'size', type: "'sm' | 'default' | 'lg' | 'xl' | 'full'", default: "'default'", description: t('components.sheet.sizeDesc', 'Preset drawer dimension sizing (width for left/right, height for top/bottom).') },
-            { name: 'showCloseButton', type: 'boolean', default: 'true', description: t('components.sheet.showCloseButtonDesc', 'Whether the top-right close icon button is rendered inside the drawer.') },
-            { name: 'closeOnOverlayClick', type: 'boolean', default: 'true', description: t('components.sheet.closeOnOverlayClickDesc', 'Whether clicking the backdrop automatically dismisses the sheet.') },
-          ]}
-      />
+                        <DocMarkdown id="sheet" section="keyboard" />
+
+            <DocMarkdown id="sheet" section="props" />
     </DocLayout>
   );
 }

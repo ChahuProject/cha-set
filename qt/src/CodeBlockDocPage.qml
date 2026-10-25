@@ -190,22 +190,15 @@ DocLayout {
         DocText { text: ChaSetI18n.tr("desktopComposite.codeBlock.animationsBullet3Qt", "All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
     }
 
-    ComponentReference {
-        name: "CodeBlock"
-        componentId: "code-block"
-        propsModel: [
-            { name: "code", type: "string", defaultVal: "''", description: ChaSetI18n.tr("components.codeBlock.codeDesc", "Source text; ignored when `files` is provided.") },
-            { name: "language", type: "string", defaultVal: "'tsx'", description: ChaSetI18n.tr("components.codeBlock.languageDesc", "Language id or alias resolved by the shared lexer.") },
-            { name: "filename", type: "string", defaultVal: "''", description: ChaSetI18n.tr("components.codeBlock.filenameDesc", "Header title override; defaults to the resolved language label (alias: title).") },
-            { name: "files", type: "var", defaultVal: "[]", description: ChaSetI18n.tr("components.codeBlock.filesDesc", "Multi-file tab group of { name, code, language }; replaces the single-file body.") },
-            { name: "highlight", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.codeBlock.highlightDesc", "Enable spec-driven syntax highlighting.") },
-            { name: "showLineNumbers", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.codeBlock.showLineNumbersDesc", "Render a line-number gutter.") },
-            { name: "showLanguage", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.codeBlock.showLanguageDesc", "Render the language / filename label in the header.") },
-            { name: "showCopy", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.codeBlock.showCopyDesc", "Render the built-in copy button in the header.") },
-            { name: "wrap", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.codeBlock.wrapDesc", "Wrap long lines instead of scrolling horizontally.") },
-            { name: "maxHeight", type: "real", defaultVal: "0", description: ChaSetI18n.tr("components.codeBlock.maxHeightDesc", "Bound the body height; 0 means grow to fit the content.") },
-            { name: "embedded", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.codeBlock.embeddedDesc", "Drop the card chrome and header for inline embedding.") },
-            { name: "copyLabel", type: "string", defaultVal: "''", description: ChaSetI18n.tr("components.codeBlock.copyLabelDesc", "Optional visible label for the copy button.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "code-block"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "code-block"
+        section: "props"
     }
 }

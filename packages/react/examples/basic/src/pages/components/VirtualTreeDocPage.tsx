@@ -10,7 +10,7 @@ import {
   useChaSetI18n,
 } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -534,35 +534,9 @@ ChaSetVirtualTree {
 
 
 
-            <ComponentReference
-        name="VirtualTree"
-        componentId="virtual-tree"
-        props={[
-            { name: 'rootNodes', type: 'readonly T[]', default: '[]', description: t('components.virtualTree.rootNodesDesc', 'Array of top-level hierarchy nodes.') },
-            { name: 'nodes', type: 'readonly T[]', default: '[]', description: t('components.virtualTree.nodesDesc', 'Alias for rootNodes.') },
-            { name: 'getChildren', type: '(node: T) => readonly T[]', default: '(node) => node.children', description: t('components.virtualTree.getChildrenDesc', 'Accessor returning child nodes of a node.') },
-            { name: 'getNodeKey', type: '(node: T) => string', default: '(node) => node.id', description: t('components.virtualTree.getKeyDesc', 'Unique identifier accessor for a node.') },
-            { name: 'selectionMode', type: "'single' | 'multiple' | 'none'", default: "'single'", description: t('components.virtualTree.selectionModeDesc', 'Active selection interaction mode.') },
-            { name: 'selectedId', type: 'string | null', default: 'null', description: t('components.virtualTree.selectedIdDesc', 'Identifier of the currently selected node (single mode).') },
-            { name: 'selectedIds', type: 'readonly string[]', default: '[]', description: t('components.virtualTree.selectedIdsDesc', 'Array of selected node identifiers (multiple mode).') },
-            { name: 'dimmedIds', type: 'readonly string[]', default: '[]', description: t('components.virtualTree.dimmedDesc', 'Array of node IDs rendered in dimmed/cut state.') },
-            { name: 'stickyItems', type: 'readonly VirtualTreeStickyItem[]', default: '[]', description: t('components.virtualTree.stickyDesc', 'Expanded ancestor chain of the open node, pinned above the scroll area so parents stay visible.') },
-            { name: 'onStickySelect', type: '(item: VirtualTreeStickyItem) => void', default: 'undefined', description: t('components.virtualTree.onStickySelectDesc', 'Callback fired when a pinned row is clicked (navigate only, never toggles expansion).') },
-            { name: 'onStickyToggle', type: '(item: VirtualTreeStickyItem) => void', default: 'undefined', description: t('components.virtualTree.onStickyToggleDesc', 'Callback fired when the chevron of a pinned row is activated.') },
-            { name: 'enableDnd', type: 'boolean', default: 'false', description: t('components.virtualTree.enableDndDesc', 'Enables drag-and-drop reordering and folder nesting.') },
-            { name: 'onSelectionChange', type: '(ids: string[], nodes: T[]) => void', default: 'undefined', description: t('components.virtualTree.onSelectDesc', 'Callback fired when selected nodes change.') },
-            { name: 'onDropNode', type: '(evt: VirtualTreeDropEvent<T>) => void', default: 'undefined', description: t('components.virtualTree.onDropDesc', 'Callback fired when nodes are dropped.') },
-            { name: 'onCut', type: '(nodes: T[], ids: string[]) => void', default: 'undefined', description: t('components.virtualTree.onCutDesc', 'Callback fired on Ctrl+X cut shortcut.') },
-            { name: 'onPaste', type: '(target: T | null, pos: string) => void', default: 'undefined', description: t('components.virtualTree.onPasteDesc', 'Callback fired on Ctrl+V paste shortcut.') },
-            { name: 'defaultExpandDepth', type: 'number', default: '0', description: t('components.virtualTree.defaultExpandDesc', 'Default level of expansion for child branches.') },
-            { name: 'estimateSize', type: 'number', default: '32', description: t('components.virtualTree.estimateDesc', 'Estimated row height for virtual calculation.') },
-            { name: 'gap', type: 'number', default: '0', description: t('components.virtualTree.gapDesc', 'Spacing between adjacent rows.') },
-            { name: 'overscan', type: 'number', default: '10', description: t('components.virtualTree.overscanDesc', 'Buffer nodes rendered outside visible bounds.') },
-            { name: 'renderRow', type: '(context: VirtualTreeRowContext<T>) => ReactNode', default: 'undefined', description: t('components.virtualTree.renderRowDesc', 'Custom row rendering function.') },
-            { name: 'emptyNode', type: 'ReactNode', default: 'null', description: t('components.virtualTree.emptyDesc', 'Content shown when tree is empty.') },
-            { name: 'ref', type: 'Ref<VirtualTreeHandle>', default: 'undefined', description: t('components.virtualTree.refDesc', 'Handle exposing expandAll(), collapseAll(), selectAll(), scrollToIndex().') },
-          ]}
-      />
+                        <DocMarkdown id="virtual-tree" section="keyboard" />
+
+            <DocMarkdown id="virtual-tree" section="props" />
     </DocLayout>
   );
 }

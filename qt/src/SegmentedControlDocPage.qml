@@ -316,22 +316,15 @@ ChaSetSegmentedControl {
         }
     }
 
-    ComponentReference {
-        name: "SegmentedControl"
-        componentId: "segmented-control"
-        propsModel: [
-            { name: "options", type: "array", default: "[]", description: ChaSetI18n.tr("components.segmentedControl.optionsDesc", "Array of option objects ({ label, value, icon?, badge?, disabled?, tooltip? }).") },
-            { name: "value", type: "var", default: "undefined", description: ChaSetI18n.tr("components.segmentedControl.valueDesc", "Controlled active value.") },
-            { name: "size", type: "string", default: "'default'", description: ChaSetI18n.tr("components.segmentedControl.sizeDesc", "Physical dimension variant ('sm', 'default', 'lg').") },
-            { name: "title", type: "string", default: "''", description: ChaSetI18n.tr("components.segmentedControl.titleDesc", "Optional prefix label displayed before the segments.") },
-            { name: "disabled", type: "bool", default: "false", description: ChaSetI18n.tr("components.segmentedControl.disabledDesc", "Whether the entire segmented control is disabled.") },
-            { name: "fullWidth", type: "bool", default: "false", description: ChaSetI18n.tr("components.segmentedControl.fullWidthDesc", "Whether segments expand equally to fill the parent container.") },
-            { name: "equalWidth", type: "bool", default: "false", description: ChaSetI18n.tr("components.segmentedControl.equalWidthDesc", "Whether all segments share an identical fixed width while hugging content.") },
-            { name: "itemWidth", type: "real", default: "undefined", description: ChaSetI18n.tr("components.segmentedControl.itemWidthDesc", "Explicit fixed width allocated to each segment option.") },
-            { name: "tooltipSide", type: "string", default: "'top'", description: ChaSetI18n.tr("components.segmentedControl.tooltipSideDesc", "Default side placement for option tooltips.") },
-            { name: "tooltipDelay", type: "int", default: "200", description: ChaSetI18n.tr("components.segmentedControl.tooltipDelayDesc", "Default hover delay duration in ms before displaying option tooltips.") },
-            { name: "tooltipFormatter", type: "var", default: "null", description: ChaSetI18n.tr("components.segmentedControl.tooltipFormatterDesc", "Custom formatting function (opt) => text|object for option tooltips") },
-            { name: "tooltipDelegate", type: "Component", default: "null", description: ChaSetI18n.tr("components.segmentedControl.tooltipDelegateDesc", "Custom QML Component delegate for rendering rich custom tooltips") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "segmented-control"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "segmented-control"
+        section: "props"
     }
 }

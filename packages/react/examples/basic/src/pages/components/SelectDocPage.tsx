@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem, SelectGroup, SelectLabel, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -93,16 +93,9 @@ ChaSetSelect {
 
 
 
-            <ComponentReference
-        name="Select"
-        componentId="select"
-        props={[
-            { name: 'value', type: 'string', default: 'undefined', description: t('components.select.valueDesc', 'Controlled selected value.') },
-            { name: 'defaultValue', type: 'string', default: 'undefined', description: t('components.select.defaultValueDesc', 'Initial value for uncontrolled usage.') },
-            { name: 'onValueChange', type: '(value: string) => void', default: 'undefined', description: t('components.select.onValueChangeDesc', 'Callback triggered when value changes.') },
-            { name: 'disabled', type: 'boolean', default: 'false', description: t('components.select.disabledDesc', 'Whether the select is disabled.') },
-          ]}
-      />
+                        <DocMarkdown id="select" section="keyboard" />
+
+            <DocMarkdown id="select" section="props" />
     </DocLayout>
   );
 }

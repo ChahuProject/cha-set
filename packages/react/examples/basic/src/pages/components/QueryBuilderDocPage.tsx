@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { QueryBuilder, Badge, type QueryRuleGroup, type QueryField, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -101,16 +101,9 @@ ChaSetQueryBuilder {
 
 
 
-            <ComponentReference
-        name="QueryBuilder"
-        componentId="query-builder"
-        props={[
-            { name: 'fields', type: 'QueryField[]', default: '[]', description: t('components.queryBuilder.fieldsDesc', 'Available queryable fields and data types.') },
-            { name: 'query', type: 'QueryRuleGroup', default: 'undefined', description: t('components.queryBuilder.queryDesc', 'Active query tree root group.') },
-            { name: 'onQueryChange', type: '(q: QueryRuleGroup) => void', default: 'undefined', description: t('components.queryBuilder.onQueryChangeDesc', 'Callback fired on rule addition, deletion, or editing.') },
-            { name: 'maxDepth', type: 'number', default: '3', description: t('components.queryBuilder.maxDepthDesc', 'Maximum nested rule group depth.') },
-          ]}
-      />
+                        <DocMarkdown id="query-builder" section="keyboard" />
+
+            <DocMarkdown id="query-builder" section="props" />
     </DocLayout>
   );
 }

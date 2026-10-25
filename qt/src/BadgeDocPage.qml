@@ -258,18 +258,15 @@ DocLayout {
         }
     }
 
-    ComponentReference {
-        name: "Badge"
-        componentId: "badge"
-        propsModel: [
-            { name: "variant", type: "'default' | 'secondary' | 'destructive' | 'outline' | 'ghost' | 'link'", defaultValue: "'default'", desc: "Visual stylistic variant corresponding to core color tokens." },
-            { name: "size", type: "'default' | 'sm'", defaultValue: "'default'", desc: "Size variant determining pill height, padding, and font metrics scale." },
-            { name: "dot", type: "bool", defaultValue: "false", desc: "Whether to display a leading status indicator dot." },
-            { name: "dotColor", type: "color", defaultValue: "accent", desc: "Custom color for the status indicator dot." },
-            { name: "removable", type: "bool", defaultValue: "false", desc: "Whether to display an inline dismiss/remove action button." },
-            { name: "interactive", type: "bool", defaultValue: "false", desc: "Whether the badge responds with interactive cursor and click effects." },
-            { name: "iconSource", type: "string", defaultValue: "''", desc: "Optional leading icon image source URL." },
-            { name: "text", type: "string", defaultValue: "''", desc: "The label text to display inside the badge." }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "badge"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "badge"
+        section: "props"
     }
     }

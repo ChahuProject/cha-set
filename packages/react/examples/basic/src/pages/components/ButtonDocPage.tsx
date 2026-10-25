@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Button, ButtonGroup, Icon, Input, Checkbox, SegmentedControl, type ButtonVariant, type ButtonSize, CodeBlock, SettingsIcon, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { ComponentReference } from "../../components/ComponentReference";
 import { DocText } from '../../components/DocText';
 
 export function ButtonDocPage() {
@@ -264,84 +264,9 @@ export function ButtonDocPage() {
         </div>
       </section>
 
-      <ComponentReference
-        name="Button"
-        componentId="button"
-        props={[
-          {
-            name: 'variant',
-            type: "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' | 'overlay'",
-            default: "'default'",
-            description: t('components.button.variantDesc', 'Visual appearance and semantic intent.'),
-          },
-          {
-            name: 'size',
-            type: "'default' | 'sm' | 'lg' | 'icon' | 'xs' | 'icon-xs' | 'icon-sm' | 'icon-lg'",
-            default: "'default'",
-            description: t('components.button.sizeDesc', 'Standardized dimensions scale.'),
-          },
-          {
-            name: 'loading',
-            type: 'boolean',
-            default: 'false',
-            description: t('components.button.loadingDesc', 'Shows spinning indicator and disables user interaction.'),
-          },
-          {
-            name: 'loadingText',
-            type: 'ReactNode',
-            default: 'undefined',
-            description: t('components.button.loadingTextDesc', 'Optional content displayed while in loading state.'),
-          },
-          {
-            name: 'pressed',
-            type: 'boolean',
-            default: 'false',
-            description: t('components.button.pressedDesc', 'Toggle or selected state with active styling and aria-pressed.'),
-          },
-          {
-            name: 'leftIcon',
-            type: 'ReactNode',
-            default: 'undefined',
-            description: t('components.button.leftIconDesc', 'Optional leading icon displayed before children.'),
-          },
-          {
-            name: 'rightIcon',
-            type: 'ReactNode',
-            default: 'undefined',
-            description: t('components.button.rightIconDesc', 'Optional trailing icon displayed after children.'),
-          },
-          {
-            name: 'iconSize',
-            type: 'number',
-            default: 'undefined',
-            description: t('components.button.iconSizeDesc', 'Logical unscaled icon size; enlarges or overrides icons rendered inside the button.'),
-          },
-          {
-            name: 'fullWidth',
-            type: 'boolean',
-            default: 'false',
-            description: t('components.button.fullWidthDesc', 'Stretches the button to 100% of the parent container width.'),
-          },
-          {
-            name: 'asChild',
-            type: 'boolean',
-            default: 'false',
-            description: t('components.button.asChildDesc', 'Passes props directly to the child element (polymorphism).'),
-          },
-          {
-            name: 'disabled',
-            type: 'boolean',
-            default: 'false',
-            description: t('components.button.disabledDesc', 'Blocks clicks and applies muted disabled styling.'),
-          },
-          {
-            name: 'type',
-            type: "'button' | 'submit' | 'reset'",
-            default: "'button'",
-            description: t('components.button.typeDesc', 'HTML button type attribute.'),
-          },
-        ]}
-      />
+            <DocMarkdown id="button" section="keyboard" />
+
+      <DocMarkdown id="button" section="props" />
     </DocLayout>
   );
 }

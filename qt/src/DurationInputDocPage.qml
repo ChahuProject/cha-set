@@ -164,21 +164,15 @@ ChaSetDurationInput {
         }
     }
 
-    ComponentReference {
-        name: "DurationInput"
-        componentId: "duration-input"
-        propsModel: [
-            { name: "value", type: "int", defaultVal: "0", description: ChaSetI18n.tr("components.durationInput.valueDesc", "Total duration in seconds (controlled mode).") },
-            { name: "maxHours", type: "int", defaultVal: "99", description: ChaSetI18n.tr("components.durationInput.maxHoursDesc", "Upper clamp limit for the hours segment.") },
-            { name: "size", type: "string", defaultVal: "'default'", description: ChaSetI18n.tr("components.durationInput.sizeDesc", "Visual density and size variant.") },
-            { name: "disabled", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.durationInput.disabledDesc", "Whether the inputs, buttons, and preset dropdown are disabled.") },
-            { name: "showPresets", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.durationInput.showPresetsDesc", "Whether to display the preset dropdown button.") },
-            { name: "showLabels", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.durationInput.showLabelsDesc", "Whether to display the segment unit labels underneath.") },
-            { name: "hoursLabel", type: "string", defaultVal: "'Hours'", description: ChaSetI18n.tr("components.durationInput.hoursLabelDesc", "Label text for hours segment.") },
-            { name: "minutesLabel", type: "string", defaultVal: "'Minutes'", description: ChaSetI18n.tr("components.durationInput.minutesLabelDesc", "Label text for minutes segment.") },
-            { name: "secondsLabel", type: "string", defaultVal: "'Seconds'", description: ChaSetI18n.tr("components.durationInput.secondsLabelDesc", "Label text for seconds segment.") },
-            { name: "presetsLabel", type: "string", defaultVal: "'Presets'", description: ChaSetI18n.tr("components.durationInput.presetsLabelDesc", "Label text for the presets trigger button.") },
-            { name: "customRadius", type: "int", defaultVal: "6", description: ChaSetI18n.tr("components.durationInput.customRadiusDesc", "Corner radius of segment boxes and popup.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "duration-input"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "duration-input"
+        section: "props"
     }
 }

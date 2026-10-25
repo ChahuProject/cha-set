@@ -252,52 +252,16 @@ ChaSetFloatingNotice {
     }
 
     // 4. Keyboard Navigation Section
-    Column {
-        property string sectionId: "keyboard"
+    DocMarkdown {
         width: parent.width
-        spacing: ThemeTokens.dp(12)
-
-        DocText {
-            text: ChaSetI18n.tr("showcase.toc.keyboard", "Keyboard Navigation")
-            font.pixelSize: Typography.sizeTitleSm
-            font.bold: true
-            color: ThemeTokens.text
-        }
-
-        KeyboardShortcutsTable {
-            width: parent.width
-            componentId: "floating-notice"
-            title: ""
-        }
+        docId: "floating-notice"
+        section: "keyboard"
     }
 
     // 5. Props Reference Section
-    Column {
-        property string sectionId: "props"
+    DocMarkdown {
         width: parent.width
-        spacing: ThemeTokens.dp(12)
-
-        DocText {
-            text: ChaSetI18n.tr("showcase.propsReference", "Props Reference")
-            font.pixelSize: Typography.sizeTitleSm
-            font.bold: true
-            color: ThemeTokens.text
-        }
-
-        PropsTable {
-            width: parent.width
-            title: ""
-            propsModel: [
-                { name: "notices", type: "var", default: "[]", description: ChaSetI18n.tr("components.floatingNotice.noticesDesc", "Array of notice items to display and queue.") },
-                { name: "placement", type: "string", default: "\"top\"", description: ChaSetI18n.tr("components.floatingNotice.placementDesc", "Anchoring edge for the floating notice container.") },
-                { name: "offset", type: "int", default: "16", description: ChaSetI18n.tr("components.floatingNotice.offsetDesc", "Inset from anchored viewport edge in logical dp.") },
-                { name: "gap", type: "real", default: "undefined (adaptive)", description: ChaSetI18n.tr("components.floatingNotice.gapDesc", "Joint spacing between stacked notice cards in logical dp. Omit for adaptive spacing based on notice count.") },
-                { name: "defaultDuration", type: "int", default: "3000", description: ChaSetI18n.tr("components.floatingNotice.defaultDurationDesc", "Fallback lifetime in ms before auto-dismiss.") },
-                { name: "pauseOnHover", type: "bool", default: "true", description: ChaSetI18n.tr("components.floatingNotice.pauseOnHoverDesc", "Whether mouse hovering suspends cycling and expiry timers.") },
-                { name: "zoomOnHover", type: "bool", default: "true", description: ChaSetI18n.tr("components.floatingNotice.zoomOnHoverDesc", "Whether hovering smoothly magnifies the notice by 1.05x.") },
-                { name: "closable", type: "bool", default: "true", description: ChaSetI18n.tr("components.floatingNotice.closableDesc", "Whether items reveal a close dismiss button on hover.") },
-                { name: "customDelegate", type: "Component", default: "null", description: ChaSetI18n.tr("components.floatingNotice.renderContentDesc", "Optional custom delegate component for notice content slots.") }
-            ]
-        }
+        docId: "floating-notice"
+        section: "props"
     }
 }

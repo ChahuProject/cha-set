@@ -1,7 +1,7 @@
 import React, { useMemo, useRef } from 'react';
 import { VirtualList, type VirtualListHandle, Badge, Button, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -132,21 +132,9 @@ ChaSetVirtualList {
 
 
 
-            <ComponentReference
-        name="VirtualList"
-        componentId="virtual-list"
-        props={[
-            { name: 'items', type: 'readonly T[]', default: '[]', description: t('components.virtualList.itemsDesc', 'Array of data items to virtualize.') },
-            { name: 'renderRow', type: '(item: T, index: number) => ReactNode', default: 'undefined', description: t('components.virtualList.renderRowDesc', 'Callback rendering an individual row.') },
-            { name: 'renderItem', type: '(item: T, index: number) => ReactNode', default: 'undefined', description: t('components.virtualList.renderItemDesc', 'Alias for renderRow.') },
-            { name: 'estimateSize', type: 'number | ((index: number) => number)', default: '36', description: t('components.virtualList.estimateSizeDesc', 'Estimated item height for measurement.') },
-            { name: 'gap', type: 'number', default: '0', description: t('components.virtualList.gapDesc', 'Vertical gap between adjacent items.') },
-            { name: 'overscan', type: 'number', default: '8', description: t('components.virtualList.overscanDesc', 'Number of buffer items rendered beyond viewport bounds.') },
-            { name: 'emptyNode', type: 'ReactNode', default: 'null', description: t('components.virtualList.emptyNodeDesc', 'Content rendered when items array is empty.') },
-            { name: 'onScroll', type: '(distanceToBottom: number) => void', default: 'undefined', description: t('components.virtualList.onScrollDesc', 'Scroll event callback receiving distance to bottom.') },
-            { name: 'ref', type: 'Ref<VirtualListHandle>', default: 'undefined', description: t('components.virtualList.refDesc', 'Handle exposing scrollToIndex(index, align).') },
-          ]}
-      />
+                        <DocMarkdown id="virtual-list" section="keyboard" />
+
+            <DocMarkdown id="virtual-list" section="props" />
     </DocLayout>
   );
 }

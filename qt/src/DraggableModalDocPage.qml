@@ -198,21 +198,15 @@ ChaSetDraggableModal {
 </DraggableModal>`
     }
 
-    ComponentReference {
-        name: "DraggableModal"
-        componentId: "draggable-modal"
-        propsModel: [
-            { name: "title", type: "string", default: "'Inspector Window'", description: ChaSetI18n.tr("components.draggableModal.titleDesc", "Headline text in the drag bar.") },
-            { name: "open", type: "bool", default: "true", description: ChaSetI18n.tr("components.draggableModal.openDesc", "Whether the floating window is currently visible.") },
-            { name: "customRadius", type: "int", default: "8", description: ChaSetI18n.tr("components.draggableModal.radiusDesc", "Corner radius of the floating window.") },
-            { name: "initialPositionMode", type: "string", default: "'center'", description: ChaSetI18n.tr("components.draggableModal.initialPositionModeDesc", "Initial placement mode: centered or top-anchored.") },
-            { name: "topMargin", type: "int", default: "72", description: ChaSetI18n.tr("components.draggableModal.topMarginDesc", "Top offset margin when in top position mode.") },
-            { name: "sizeOptions", type: "var", default: "[]", description: ChaSetI18n.tr("components.draggableModal.sizeOptionsDesc", "Preset size options for the top-right dropdown switcher.") },
-            { name: "sizeMenuTooltip", type: "string", default: "'Adjust Size'", description: ChaSetI18n.tr("components.draggableModal.sizeMenuTooltipDesc", "Hover tooltip text for the size menu button.") },
-            { name: "remBase", type: "real", default: "16", description: ChaSetI18n.tr("components.draggableModal.remBaseDesc", "Base ratio for rem conversion.") },
-            { name: "showEscBadge", type: "bool", default: "false", description: ChaSetI18n.tr("components.draggableModal.showEscBadgeDesc", "Whether to show the ESC hint badge in the top-right corner.") },
-            { name: "fixedFooter", type: "Item", default: "null", description: ChaSetI18n.tr("components.draggableModal.fixedFooterDesc", "Pinned bottom action area that does not scroll with content.") },
-            { name: "topControls", type: "Item", default: "null", description: ChaSetI18n.tr("components.draggableModal.topControlsDesc", "Extra controls rendered in the top-right action bar (e.g. close button).") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "draggable-modal"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "draggable-modal"
+        section: "props"
     }
 }

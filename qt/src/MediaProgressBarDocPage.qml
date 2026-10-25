@@ -97,20 +97,57 @@ DocLayout {
         ]
     }
 
-    DocFooterSections {
+    Column {
+        id: animationsSection
+        objectName: "animations"
+        property string sectionId: "animations"
+        property string sectionTitle: ChaSetI18n.tr("showcase.animations", "Animations")
         width: parent.width
-        componentId: "media-progress-bar"
-        propsModel: [
-            { "name": "ratio", "type": "real", "defaultValue": "0", "description": ChaSetI18n.tr("components.mediaProgressBar.ratioDesc", "Playback progress ratio from 0.0 to 1.0.") },
-            { "name": "duration", "type": "real", "defaultValue": "0", "description": ChaSetI18n.tr("components.mediaProgressBar.durationDesc", "Total duration of the media in milliseconds.") },
-            { "name": "position", "type": "real", "defaultValue": "0", "description": ChaSetI18n.tr("components.mediaProgressBar.positionDesc", "Current playback position in milliseconds.") },
-            { "name": "frameRate", "type": "real", "defaultValue": "30", "description": ChaSetI18n.tr("components.mediaProgressBar.frameRateDesc", "Frame rate for frame-based time formatting.") },
-            { "name": "timingMode", "type": "string", "defaultValue": "\"elapsed\"", "description": ChaSetI18n.tr("components.mediaProgressBar.timingModeDesc", "Timing mode: elapsed time or remaining countdown.") },
-            { "name": "timeFormat", "type": "string", "defaultValue": "\"hms\"", "description": ChaSetI18n.tr("components.mediaProgressBar.timeFormatDesc", "Format to display timestamp.") },
-            { "name": "showTime", "type": "bool", "defaultValue": "true", "description": ChaSetI18n.tr("components.mediaProgressBar.showTimeDesc", "Whether to show the time readout underneath.") },
-            { "name": "showThumb", "type": "bool", "defaultValue": "true", "description": ChaSetI18n.tr("components.mediaProgressBar.showThumbDesc", "Whether to display the progress thumb handle.") },
-            { "name": "interactive", "type": "bool", "defaultValue": "true", "description": ChaSetI18n.tr("components.mediaProgressBar.interactiveDesc", "Whether pointer seek/drag is enabled.") },
-            { "name": "disabled", "type": "bool", "defaultValue": "false", "description": ChaSetI18n.tr("components.mediaProgressBar.disabledDesc", "Disabled state.") }
-        ]
+        spacing: ThemeTokens.dp(8)
+
+        DocText {
+            text: ChaSetI18n.tr("showcase.animations", "Animations")
+            font.pixelSize: Typography.sizeTitleSm
+            font.weight: Typography.weightBold
+            color: ThemeTokens.text
+        }
+
+        DocText {
+            width: parent.width
+            wrap: true
+            text: ChaSetI18n.tr("showcase.animationsDescQml", "State changes (hover, press, focus) animate over duration-quick with standard easing curves. Durations and easing resolve from theme tokens; prefers-reduced-motion zeroes them automatically (governed by ThemeTokens.animationsEnabled).")
+            color: ThemeTokens.subduedText
+            font.pixelSize: Typography.sizeBody
+        }
+
+        Flow {
+            width: parent.width
+            spacing: ThemeTokens.dp(8)
+
+            ChaSetCopyableBadge {
+                text: "ThemeTokens.motionQuick"
+                size: "sm"
+            }
+            ChaSetCopyableBadge {
+                text: "ThemeTokens.easeStandard"
+                size: "sm"
+            }
+            ChaSetCopyableBadge {
+                text: "ThemeTokens.animationsEnabled"
+                size: "sm"
+            }
+        }
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "media-progress-bar"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "media-progress-bar"
+        section: "props"
     }
 }

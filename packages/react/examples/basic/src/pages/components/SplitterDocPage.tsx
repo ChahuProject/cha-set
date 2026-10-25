@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Splitter, Badge, Button, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -192,18 +192,9 @@ ChaSetSplitter {
         </ul>
       </section>
 
-            <ComponentReference
-        name="Splitter"
-        componentId="splitter"
-        props={[
-            { name: 'size', type: 'number', default: 'undefined', description: t('components.splitter.sizeDesc', 'Controlled percentage width/height (0-100).') },
-            { name: 'onChange', type: '(size: number) => void', default: 'undefined', description: t('components.splitter.onChangeDesc', 'Callback fired on drag with new percentage.') },
-            { name: 'initialSize', type: 'number', default: '50', description: t('components.splitter.initialSizeDesc', 'Initial size percentage for uncontrolled usage.') },
-            { name: 'minSize', type: 'number', default: '0', description: t('components.splitter.minSizeDesc', 'Minimum allowed percentage bound.') },
-            { name: 'maxSize', type: 'number', default: '100', description: t('components.splitter.maxSizeDesc', 'Maximum allowed percentage bound.') },
-            { name: 'orientation', type: "'vertical' | 'horizontal'", default: "'vertical'", description: t('components.splitter.orientationDesc', 'Orientation of the divider.') },
-          ]}
-      />
+                        <DocMarkdown id="splitter" section="keyboard" />
+
+            <DocMarkdown id="splitter" section="props" />
     </DocLayout>
   );
 }

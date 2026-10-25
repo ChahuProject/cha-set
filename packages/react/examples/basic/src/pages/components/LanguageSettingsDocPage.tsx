@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { LanguageSettings, CopyableBadge, CodeBlock, useChaSetI18n, type LocalePreference } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -81,46 +81,9 @@ ChaSetLanguageSettings {
         </DocText>
       </section>
 
-      <ComponentReference
-        name="LanguageSettings"
-        componentId="language-settings"
-        props={[
-          {
-            name: 'preference',
-            type: 'LocalePreference ("system" | string)',
-            default: '"system"',
-            description: t('components.languageSettings.preferenceDesc', 'Active language preference, either "system" or an explicit language code.'),
-          },
-          {
-            name: 'onPreferenceChange',
-            type: '(next: LocalePreference) => void',
-            description: t('components.languageSettings.onPreferenceChangeDesc', 'Callback triggered when user selects a different language or toggles system mode.'),
-          },
-          {
-            name: 'showFollowSystem',
-            type: 'boolean',
-            default: 'true',
-            description: t('components.languageSettings.showFollowSystemDesc', 'Whether to show the prominent Follow System option card with system detection.'),
-          },
-          {
-            name: 'variant',
-            type: '"card" | "embedded"',
-            default: '"card"',
-            description: t('components.languageSettings.variantDesc', 'Visual container variant. "card" renders an outer bordered card with header; "embedded" renders inline content without outer frame.'),
-          },
-          {
-            name: 'disabled',
-            type: 'boolean',
-            default: 'false',
-            description: t('components.languageSettings.disabledDesc', 'Whether the language selection controls are disabled.'),
-          },
-          {
-            name: 'textProvider',
-            type: '(key: string, defaultText?: string) => string',
-            description: t('components.languageSettings.textProviderDesc', 'Optional custom translation function for overriding component strings.'),
-          },
-        ]}
-      />
+            <DocMarkdown id="language-settings" section="keyboard" />
+
+      <DocMarkdown id="language-settings" section="props" />
     </DocLayout>
   );
 }

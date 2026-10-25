@@ -180,18 +180,16 @@ ChaSetViewportConstrainedContainer {
         }
     }
 
-    ComponentReference {
-        name: "ViewportConstrainedContainer"
-        componentId: "viewport-constrained-container"
-        propsModel: [
-            { name: "maxHeight", type: "var", default: "undefined", description: ChaSetI18n.tr("components.viewportConstrainedContainer.maxHeightDesc", "Optional upper limit on container max-height.") },
-            { name: "minHeight", type: "var", default: "80", description: ChaSetI18n.tr("components.viewportConstrainedContainer.minHeightDesc", "Minimum allowable height lower bound.") },
-            { name: "margin", type: "real", default: "16", description: ChaSetI18n.tr("components.viewportConstrainedContainer.marginDesc", "Reserved margin between container bottom and viewport bottom edge.") },
-            { name: "overflow", type: "string", default: "'auto'", description: ChaSetI18n.tr("components.viewportConstrainedContainer.overflowDesc", "Vertical overflow scrolling strategy.") },
-            { name: "customRadius", type: "int", default: "6", description: ChaSetI18n.tr("components.viewportConstrainedContainer.customRadiusDesc", "Corner radius of the container.") },
-            { name: "backgroundColor", type: "color", default: "ThemeTokens.panel", description: ChaSetI18n.tr("components.viewportConstrainedContainer.bgDesc", "Background surface fill color.") },
-            { name: "borderColor", type: "color", default: "ThemeTokens.border", description: ChaSetI18n.tr("components.viewportConstrainedContainer.borderDesc", "Border outline color.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "viewport-constrained-container"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "viewport-constrained-container"
+        section: "props"
     }
 }
 

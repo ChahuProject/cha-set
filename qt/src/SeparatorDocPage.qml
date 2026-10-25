@@ -461,46 +461,15 @@ DocLayout {
         }
     }
 
-    ComponentReference {
-        name: "Separator"
-        componentId: "separator"
-        propsModel: [
-            {
-                name: "orientation",
-                type: "\"horizontal\" | \"vertical\"",
-                default: "\"horizontal\"",
-                description: ChaSetI18n.tr("components.separator.orientationDesc", "The orientation of the separator line.")
-            },
-            {
-                name: "variant",
-                type: "\"solid\" | \"dashed\" | \"dotted\"",
-                default: "\"solid\"",
-                description: ChaSetI18n.tr("components.separator.variantDesc", "The stroke style of the separator line.")
-            },
-            {
-                name: "label",
-                type: "string",
-                default: "\"\"",
-                description: ChaSetI18n.tr("components.separator.labelDesc", "Optional label or annotation text embedded in the divider line.")
-            },
-            {
-                name: "labelPosition",
-                type: "\"left\" | \"center\" | \"right\"",
-                default: "\"center\"",
-                description: ChaSetI18n.tr("components.separator.labelPositionDesc", "Horizontal alignment for the embedded label.")
-            },
-            {
-                name: "decorative",
-                type: "bool",
-                default: "true",
-                description: ChaSetI18n.tr("components.separator.decorativeDesc", "Whether the element is purely decorative or conveys semantic structure.")
-            },
-            {
-                name: "customColor",
-                type: "color",
-                default: "\"transparent\"",
-                description: ChaSetI18n.tr("components.separator.customColorDesc", "Optional explicit override color for the divider line (defaults to ThemeTokens.border).")
-            }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "separator"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "separator"
+        section: "props"
     }
     }

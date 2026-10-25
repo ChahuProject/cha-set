@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Squircle, Button, Card, Badge, Input, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
+import { Squircle, Button, Card, Badge, Input, CodeBlock, CopyableBadge, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
-import { DocFooterSections } from '../../components/DocFooterSections';
 import { DocText } from '../../components/DocText';
 
 export function SquircleDocPage() {
@@ -278,28 +278,34 @@ export function PremiumCard({ children }: { children: React.ReactNode }) {
       </section>
 
       {/* 3. Animations, Keyboard Navigation, and Props Reference */}
-      <DocFooterSections
-        componentId="squircle"
-        props={[
-          { name: 'radius', type: 'number', defaultValue: '8', description: t('components.squircle.radiusDesc', 'Corner radius in logical units.') },
-          { name: 'smoothing', type: 'number', defaultValue: '0.6', description: t('components.squircle.smoothingDesc', 'Curvature smoothing factor from 0.0 (circle arc) to 1.0 (full squircle). 0.6 is the Apple iOS standard.') },
-          { name: 'cornerSmoothing', type: 'number', defaultValue: '0.6', description: t('components.squircle.cornerSmoothingDesc', 'Alias for smoothing conforming to the neutral schema.') },
-          { name: 'topLeftRadius', type: 'number', defaultValue: 'undefined', description: t('components.squircle.topLeftDesc', 'Explicit top-left corner radius override.') },
-          { name: 'topRightRadius', type: 'number', defaultValue: 'undefined', description: t('components.squircle.topRightDesc', 'Explicit top-right corner radius override.') },
-          { name: 'bottomLeftRadius', type: 'number', defaultValue: 'undefined', description: t('components.squircle.bottomLeftDesc', 'Explicit bottom-left corner radius override.') },
-          { name: 'bottomRightRadius', type: 'number', defaultValue: 'undefined', description: t('components.squircle.bottomRightDesc', 'Explicit bottom-right corner radius override.') },
-          { name: 'roundLeft', type: 'boolean', defaultValue: 'true', description: t('components.squircle.rlDesc', 'Whether left corners are rounded.') },
-          { name: 'roundRight', type: 'boolean', defaultValue: 'true', description: t('components.squircle.rrDesc', 'Whether right corners are rounded.') },
-          { name: 'roundTop', type: 'boolean', defaultValue: 'true', description: t('components.squircle.rtDesc', 'Whether top corners are rounded.') },
-          { name: 'roundBottom', type: 'boolean', defaultValue: 'true', description: t('components.squircle.rbDesc', 'Whether bottom corners are rounded.') },
-          { name: 'borderWidth', type: 'number', defaultValue: '0', description: t('components.squircle.borderWidthDesc', 'Border stroke width in logical units.') },
-          { name: 'borderColor', type: 'string', defaultValue: 'undefined', description: t('components.squircle.borderColorDesc', 'Border stroke color for continuous curvature outline.') },
-          { name: 'color', type: 'string', defaultValue: 'undefined', description: t('components.squircle.bgDesc', 'Background surface fill color.') },
-          { name: 'width', type: 'number', defaultValue: 'undefined', description: t('components.squircle.widthDesc', 'Explicit width in logical units (auto-measured via ResizeObserver if omitted).') },
-          { name: 'height', type: 'number', defaultValue: 'undefined', description: t('components.squircle.heightDesc', 'Explicit height in logical units (auto-measured via ResizeObserver if omitted).') },
-          { name: 'as', type: 'React.ElementType', defaultValue: "'div'", description: t('components.squircle.asDesc', 'Underlying HTML tag or component to render as.') },
-        ]}
-      />
+      <section id="animations" className="scroll-mt-20 my-10">
+        <DocText role="h2" className="mb-3">
+          {t('showcase.animations', 'Animations')}
+        </DocText>
+        <div>
+          <DocText role="p" className="mb-4">
+            {t('showcase.animationsDesc', 'Motion behavior and timing for interactive states aligned with ChaSet tokens.')}
+          </DocText>
+          <ul className="list-disc pl-5 space-y-1.5 text-sm text-foreground">
+            <li>
+              {t('showcase.animationsItem1', 'State changes (hover, press, focus) animate over duration-quick with the ease-standard curve.')}
+            </li>
+            <li>
+              {t('showcase.animationsItem2', 'Durations and easing resolve from theme tokens, so prefers-reduced-motion zeroes them automatically (Qt: governed by ThemeTokens.animationsEnabled).')}
+            </li>
+          </ul>
+          <div className="flex flex-wrap items-center gap-2 pt-3">
+            <CopyableBadge size="sm" text="duration-quick" className="font-mono text-xs" />
+            <CopyableBadge size="sm" text="ease-standard" className="font-mono text-xs" />
+            <CopyableBadge size="sm" text="prefers-reduced-motion" className="font-mono text-xs" />
+            <CopyableBadge size="sm" text="ThemeTokens.animationsEnabled" className="font-mono text-xs" />
+          </div>
+        </div>
+      </section>
+
+      <DocMarkdown id="squircle" section="keyboard" />
+
+      <DocMarkdown id="squircle" section="props" />
     </DocLayout>
   );
 }

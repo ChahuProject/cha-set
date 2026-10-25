@@ -204,19 +204,15 @@ ChaSetSheet {
         DocText { text: ChaSetI18n.tr("desktopComposite.sheet.animationsBullet3Qt", "All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop."); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: TextEdit.WordWrap; width: parent.width }
     }
 
-    ComponentReference {
-        name: "Sheet"
-        componentId: "sheet"
-        propsModel: [
-            { name: "open", type: "bool", default: "false", description: ChaSetI18n.tr("components.sheet.openDescQt", "Whether the sheet is currently open.") },
-            { name: "side", type: "string", default: "'right'", description: ChaSetI18n.tr("components.sheet.sideDescQt", "The edge from which the sheet enters: 'top' | 'bottom' | 'left' | 'right'.") },
-            { name: "size", type: "string", default: "'default'", description: ChaSetI18n.tr("components.sheet.sizeDescQt", "Preset drawer dimension sizing ('sm', 'default', 'lg', 'xl', 'full').") },
-            { name: "customSheetSize", type: "int", default: "0", description: ChaSetI18n.tr("components.sheet.customSheetSizeDesc", "Custom dimension override for width or height.") },
-            { name: "title", type: "string", default: "''", description: ChaSetI18n.tr("components.sheet.titleDesc", "Headline text in the sheet header.") },
-            { name: "description", type: "string", default: "''", description: ChaSetI18n.tr("components.sheet.descriptionDesc", "Subordinate description text in the header.") },
-            { name: "showCloseButton", type: "bool", default: "true", description: ChaSetI18n.tr("components.sheet.showCloseButtonDescQt", "Whether the header close button is displayed.") },
-            { name: "closeOnOverlayClick", type: "bool", default: "true", description: ChaSetI18n.tr("components.sheet.closeOnOverlayClickDescQt", "Whether clicking outside dismisses the sheet.") },
-            { name: "closeOnEscape", type: "bool", default: "true", description: ChaSetI18n.tr("components.sheet.closeOnEscapeDesc", "Whether pressing Escape dismisses the sheet.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "sheet"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "sheet"
+        section: "props"
     }
 }

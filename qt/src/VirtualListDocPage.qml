@@ -174,18 +174,15 @@ ChaSetVirtualList {
 <VirtualList count={10000} itemHeight={36} renderItem={(index) => <div>Row {index}</div>} />`
     }
 
-    ComponentReference {
-        name: "VirtualList"
-        componentId: "virtual-list"
-        propsModel: [
-            { name: "model", type: "var", default: "null", description: ChaSetI18n.tr("components.virtualList.modelDesc", "List model count or array for delegate generation.") },
-            { name: "delegate", type: "Component", default: "null", description: ChaSetI18n.tr("components.virtualList.delegateDesc", "Visual delegate instantiated for visible rows.") },
-            { name: "itemHeight", type: "int", default: "36", description: ChaSetI18n.tr("components.virtualList.rowHeightDesc", "Default estimated height of each row.") },
-            { name: "estimateSize", type: "int", default: "36", description: ChaSetI18n.tr("components.virtualList.estimateDesc", "Estimated height of each item for virtual measurement.") },
-            { name: "gap", type: "int", default: "0", description: ChaSetI18n.tr("components.virtualList.spacingDesc", "Vertical spacing between adjacent items.") },
-            { name: "overscan", type: "int", default: "8", description: ChaSetI18n.tr("components.virtualList.overscanDesc", "Number of buffer items rendered beyond viewport bounds.") },
-            { name: "customRadius", type: "int", default: "6", description: ChaSetI18n.tr("components.virtualList.radiusDesc", "Corner radius of the list viewport container.") },
-            { name: "scrollToIndex(index, align)", type: "function", default: "function", description: ChaSetI18n.tr("components.virtualList.scrollToDesc", "Programmatically scrolls to the target item index.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "virtual-list"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "virtual-list"
+        section: "props"
     }
 }

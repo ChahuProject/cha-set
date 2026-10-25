@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Separator, type SeparatorOrientation, type SeparatorVariant, type SeparatorLabelPosition, SegmentedControl, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Button, Checkbox, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { ComponentReference } from "../../components/ComponentReference";
 import { DocText } from '../../components/DocText';
 
 export function SeparatorDocPage() {
@@ -343,51 +343,9 @@ export function SeparatorDocPage() {
         </div>
       </section>
 
-      <ComponentReference
-        name="Separator"
-        componentId="separator"
-        props={[
-          {
-            name: 'orientation',
-            type: "'horizontal' | 'vertical'",
-            default: "'horizontal'",
-            description: t('components.separator.orientationDesc', 'The orientation of the separator line.'),
-          },
-          {
-            name: 'variant',
-            type: "'solid' | 'dashed' | 'dotted'",
-            default: "'solid'",
-            description: t('components.separator.variantDesc', 'The stroke style of the separator line.'),
-          },
-          {
-            name: 'label',
-            type: 'ReactNode',
-            default: 'undefined',
-            description: t('components.separator.labelDesc', 'Optional label or annotation text embedded in the divider line.'),
-          },
-          {
-            name: 'labelPosition',
-            type: "'left' | 'center' | 'right'",
-            default: "'center'",
-            description: t('components.separator.labelPositionDesc', 'Horizontal alignment for the embedded label.'),
-          },
-          {
-            name: 'decorative',
-            type: 'boolean',
-            default: 'true',
-            description: t(
-              'components.separator.decorativeDesc',
-              'Whether the component is purely decorative (role="none") or represents a structural semantic separator (role="separator").',
-            ),
-          },
-          {
-            name: 'className',
-            type: 'string',
-            default: "''",
-            description: t('components.separator.classNameDesc', 'Additional CSS classes for custom width, height, margin, or color overrides.'),
-          },
-        ]}
-      />
+            <DocMarkdown id="separator" section="keyboard" />
+
+      <DocMarkdown id="separator" section="props" />
     </DocLayout>
   );
 }

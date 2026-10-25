@@ -294,20 +294,15 @@ ChaSetPopover {
         }
     }
 
-    ComponentReference {
-        name: "Popover"
-        componentId: "popover"
-        propsModel: [
-            { name: "open", type: "bool", default: "false", description: ChaSetI18n.tr("components.popover.openDesc", "Controlled open state.") },
-            { name: "side", type: "string", default: "'bottom'", description: ChaSetI18n.tr("components.popover.sideDesc", "Placement side relative to trigger.") },
-            { name: "align", type: "string", default: "'start'", description: ChaSetI18n.tr("components.popover.alignDesc", "Alignment along the anchor edge.") },
-            { name: "sideOffset", type: "int", default: "8", description: ChaSetI18n.tr("components.popover.sideOffsetDesc", "Distance offset from trigger.") },
-            { name: "arrow", type: "bool", default: "false", description: ChaSetI18n.tr("components.popover.arrowDesc", "Whether to render an anchored directional arrow.") },
-            { name: "movable", type: "bool", default: "false", description: ChaSetI18n.tr("components.popover.movableDesc", "Enables interactive drag repositioning via handle.") },
-            { name: "modal", type: "bool", default: "false", description: ChaSetI18n.tr("components.popover.modalDesc", "Whether the popover is rendered as modal with backdrop.") },
-            { name: "popoverWidth", type: "int", default: "260", description: ChaSetI18n.tr("components.popover.popoverWidthDesc", "Width of the popover content.") },
-            { name: "popoverHeight", type: "int", default: "160", description: ChaSetI18n.tr("components.popover.popoverHeightDesc", "Height of the popover content.") },
-            { name: "customRadius", type: "int", default: "8", description: ChaSetI18n.tr("components.popover.customRadiusDesc", "Corner radius of the popover border.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "popover"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "popover"
+        section: "props"
     }
 }

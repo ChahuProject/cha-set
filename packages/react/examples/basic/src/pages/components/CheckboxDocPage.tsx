@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { SegmentedControl, Card, useChaSetI18n } from '@chahu/cha-set';
 import { Checkbox, type CheckboxSize } from '../../../../../src/checkbox';
 import { DocLayout } from '../../layout/DocLayout';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { ComponentReference } from '../../components/ComponentReference';
 import { DocText } from '../../components/DocText';
 
 export function CheckboxDocPage() {
@@ -250,90 +250,9 @@ export function CheckboxDocPage() {
       </section>
 
       {/* 5. Component Reference (Keyboard + Props) */}
-      <ComponentReference
-        name="Checkbox"
-        componentId="checkbox"
-        props={[
-          {
-            name: 'checked',
-            type: 'boolean',
-            default: 'false',
-            description: t('components.checkbox.checkedDesc', 'The controlled checked state of the checkbox.'),
-          },
-          {
-            name: 'defaultChecked',
-            type: 'boolean',
-            default: 'false',
-            description: t('components.checkbox.defaultCheckedDesc', 'The default checked state when uncontrolled.'),
-          },
-          {
-            name: 'indeterminate',
-            type: 'boolean',
-            default: 'false',
-            description: t('components.checkbox.indeterminateDesc', 'Whether the checkbox is in an indeterminate state (takes visual precedence over checked).'),
-          },
-          {
-            name: 'disabled',
-            type: 'boolean',
-            default: 'false',
-            description: t('components.checkbox.disabledDesc', 'Disables user interactions and applies 50% opacity.'),
-          },
-          {
-            name: 'readOnly',
-            type: 'boolean',
-            default: 'false',
-            description: t('components.checkbox.readOnlyDesc', 'Prevents toggling state while retaining focusability and full opacity.'),
-          },
-          {
-            name: 'invalid',
-            type: 'boolean',
-            default: 'false',
-            description: t('components.checkbox.invalidDesc', 'Applies destructive error styling and aria-invalid attribute.'),
-          },
-          {
-            name: 'size',
-            type: "'default' | 'sm'",
-            default: "'default'",
-            description: t('components.checkbox.sizeDesc', 'The size variant: default or sm.'),
-          },
-          {
-            name: 'label',
-            type: 'ReactNode',
-            default: 'undefined',
-            description: t('components.checkbox.labelDesc', 'Optional companion label rendered alongside the checkbox.'),
-          },
-          {
-            name: 'description',
-            type: 'ReactNode',
-            default: 'undefined',
-            description: t('components.checkbox.helperDesc', 'Optional helper text rendered below the label.'),
-          },
-          {
-            name: 'onCheckedChange',
-            type: '(checked: boolean) => void',
-            default: 'undefined',
-            description: t('components.checkbox.onCheckedChangeDesc', 'Callback invoked when checked state changes.'),
-          },
-          {
-            name: 'forceHover',
-            type: 'boolean',
-            default: 'false',
-            description: t('components.checkbox.forceHoverDesc', 'Visual testing aid to force hover state styles.'),
-          },
-          {
-            name: 'forceFocus',
-            type: 'boolean',
-            default: 'false',
-            description: t('components.checkbox.forceFocusDesc', 'Visual testing aid to force focus ring styles.'),
-          },
-          {
-            name: 'className',
-            type: 'string',
-            default: "''",
-            description: t('components.checkbox.classNameDesc', 'Additional CSS class names to apply to the checkbox button.'),
-          },
-        ]}
-      />
+            <DocMarkdown id="checkbox" section="keyboard" />
+
+      <DocMarkdown id="checkbox" section="props" />
     </DocLayout>
   );
 }

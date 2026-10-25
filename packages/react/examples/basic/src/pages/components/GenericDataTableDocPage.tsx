@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { GenericDataTable, Badge, type ColumnDef, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -139,17 +139,9 @@ ChaSetGenericDataTable {
 
 
 
-            <ComponentReference
-        name="DataTable"
-        componentId="data-table"
-        props={[
-            { name: 'data', type: 'TData[]', default: '[]', description: t('components.genericDataTable.dataDesc', 'Array of data records.') },
-            { name: 'columns', type: 'ColumnDef<TData, any>[]', default: '[]', description: t('components.genericDataTable.columnsDesc', 'TanStack Table column definitions.') },
-            { name: 'enableSorting', type: 'boolean', default: 'true', description: t('components.genericDataTable.enableSortingDesc', 'Whether column sorting is enabled.') },
-            { name: 'enablePagination', type: 'boolean', default: 'true', description: t('components.genericDataTable.enablePaginationDesc', 'Whether pagination controls are rendered.') },
-            { name: 'pageSize', type: 'number', default: '10', description: t('components.genericDataTable.pageSizeDesc', 'Number of rows per page.') },
-          ]}
-      />
+                        <DocMarkdown id="generic-data-table" section="keyboard" />
+
+            <DocMarkdown id="generic-data-table" section="props" />
     </DocLayout>
   );
 }

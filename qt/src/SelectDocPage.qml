@@ -111,15 +111,15 @@ ChaSetSelect {
 
 
 
-    ComponentReference {
-        name: "Select"
-        componentId: "select"
-        propsModel: [
-            { name: "value", type: "string", default: "''", description: ChaSetI18n.tr("components.select.valueQtDesc", "The currently selected option value.") },
-            { name: "placeholder", type: "string", default: "'Select an option...'", description: ChaSetI18n.tr("components.select.placeholderDesc", "Placeholder label displayed when no value is chosen.") },
-            { name: "options", type: "var[]", default: "[]", description: ChaSetI18n.tr("components.select.optionsDesc", "Array of selectable option objects: { value, label, disabled }.") },
-            { name: "disabled", type: "bool", default: "false", description: ChaSetI18n.tr("components.select.disabledDesc", "Whether the select is disabled.") },
-            { name: "customRadius", type: "int", default: "6", description: ChaSetI18n.tr("components.select.triggerRadiusDesc", "Corner radius of the select trigger.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "select"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "select"
+        section: "props"
     }
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { InlineEditableText, Card, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -106,20 +106,9 @@ ChaSetInlineEditableText { value: "System Protected File"; disabled: true }`}
         </ComponentPreview>
       </section>
 
-            <ComponentReference
-        name="InlineEditableText"
-        componentId="inline-editable-text"
-        props={[
-            { name: 'value', type: 'string', default: "''", description: t('components.inlineEditableText.valueDesc', 'Current text value.') },
-            { name: 'onValueChange', type: '(v: string) => void', default: 'undefined', description: t('components.inlineEditableText.onValueChangeDesc', 'Callback invoked upon confirming an edit.') },
-            { name: 'onSave', type: '(v: string) => void | boolean | Promise<...>', default: 'undefined', description: t('components.inlineEditableText.onSaveDesc', 'Async save handler; returning false keeps edit mode open.') },
-            { name: 'trigger', type: '"click" | "doubleClick"', default: '"click"', description: t('components.inlineEditableText.triggerDesc', 'Mouse gesture that opens the inline input.') },
-            { name: 'size', type: '"default" | "sm"', default: '"default"', description: t('components.inlineEditableText.sizeDesc', 'Density and sizing variant.') },
-            { name: 'placeholder', type: 'string', default: "''", description: t('components.inlineEditableText.placeholderDesc', 'Placeholder when value is empty.') },
-            { name: 'hint', type: 'string', default: "''", description: t('components.inlineEditableText.hintDesc', 'Hover tooltip hint.') },
-            { name: 'disabled', type: 'boolean', default: 'false', description: t('components.inlineEditableText.disabledDesc', 'Whether inline editing is disabled.') },
-          ]}
-      />
+                        <DocMarkdown id="inline-editable-text" section="keyboard" />
+
+            <DocMarkdown id="inline-editable-text" section="props" />
     </DocLayout>
   );
 }

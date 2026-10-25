@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, type CardVariant, Button, Badge, SegmentedControl, CodeBlock, Checkbox, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -197,42 +197,9 @@ export function CardDocPage() {
       </section>
 
       {/* 5. Keyboard Navigation */}
-            <ComponentReference
-        name="Card"
-        componentId="card"
-        props={[
-            {
-              name: 'variant',
-              type: "'default' | 'secondary' | 'outline'",
-              default: "'default'",
-              description: t('components.card.variantDesc', 'Visual presentation style of the card container.'),
-            },
-            {
-              name: 'size',
-              type: "'default' | 'sm'",
-              default: "'default'",
-              description: t('components.card.sizeDesc', 'Density and padding scale of the card and composite containers.'),
-            },
-            {
-              name: 'interactive',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.card.interactiveDesc', 'Whether the card provides hover/active elevation styling and cursor pointer.'),
-            },
-            {
-              name: 'className',
-              type: 'string',
-              default: "''",
-              description: t('components.card.classNameDesc', 'Additional CSS class names to apply to the container.'),
-            },
-            {
-              name: 'children',
-              type: 'React.ReactNode',
-              default: '—',
-              description: t('components.card.childrenDesc', 'Card composite subcomponents or custom elements.'),
-            },
-          ]}
-      />
+                        <DocMarkdown id="card" section="keyboard" />
+
+            <DocMarkdown id="card" section="props" />
     </DocLayout>
   );
 }

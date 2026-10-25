@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { KeybindingRecorder, formatKeybinding, Card, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -108,20 +108,9 @@ ChaSetKeybindingRecorder { value: "Ctrl+C"; enabled: false }`}
         </ComponentPreview>
       </section>
 
-            <ComponentReference
-        name="KeybindingRecorder"
-        componentId="keybinding-recorder"
-        props={[
-            { name: 'value', type: 'string | KeybindingValue', default: "''", description: t('components.keybindingRecorder.valueDesc', 'Active key combination (string or structured object).') },
-            { name: 'onValueChange', type: '(val: string | KeybindingValue) => void', default: 'undefined', description: t('components.keybindingRecorder.onValueChangeDesc', 'Callback fired when new combination recorded.') },
-            { name: 'onChange', type: '(value: KeybindingValue, str: string) => void', default: 'undefined', description: t('components.keybindingRecorder.onChangeDesc', 'Dual callback receiving both structured object and string.') },
-            { name: 'size', type: '"default" | "sm"', default: '"default"', description: t('components.keybindingRecorder.sizeDesc', 'Size preset variant for regular or compact density.') },
-            { name: 'clearable', type: 'boolean', default: 'true', description: t('components.keybindingRecorder.clearableDesc', 'Whether to display a clear button when a shortcut is set.') },
-            { name: 'disabled', type: 'boolean', default: 'false', description: t('components.keybindingRecorder.disabledDesc', 'Whether the recorder is disabled.') },
-            { name: 'placeholder', type: 'string', default: "'No keybinding set'", description: t('components.keybindingRecorder.placeholderDesc', 'Placeholder when no shortcut is defined.') },
-            { name: 'recordingText', type: 'string', default: "'Press key combination (Esc to cancel)...'", description: t('components.keybindingRecorder.recordingTextDesc', 'Prompt displayed during active recording.') },
-          ]}
-      />
+                        <DocMarkdown id="keybinding-recorder" section="keyboard" />
+
+            <DocMarkdown id="keybinding-recorder" section="props" />
     </DocLayout>
   );
 }

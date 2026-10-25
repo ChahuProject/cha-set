@@ -9,10 +9,9 @@ import {
   useChaSetI18n,
 } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { KeyboardShortcutsTable } from '../../components/KeyboardShortcutsTable';
-import { PropsTable } from '../../components/PropsTable';
 import { DocText } from '../../components/DocText';
 
 export function NotificationStackDocPage() {
@@ -267,90 +266,9 @@ ChaSetNotificationStack {
         </ul>
       </section>
 
-      <section id="keyboard" className="space-y-4 pt-6">
-        <DocText role="h2">{t('showcase.keyboardNavigation', 'Keyboard Navigation')}</DocText>
-        <DocText role="p">
-          {t('desktopComposite.notificationStack.keyboardDesc', 'The stack is a single tab stop: notification cards are roving-focus entries inside it.')}
-        </DocText>
-        <KeyboardShortcutsTable componentId="notification-stack" />
-      </section>
+      <DocMarkdown id="notification-stack" section="keyboard" />
 
-      <section id="props" className="space-y-4 pt-6">
-        <DocText role="h2">{t('showcase.propsReference', 'Props Reference')}</DocText>
-        <PropsTable
-          items={[
-            {
-              name: 'notifications',
-              type: 'NotificationItem[]',
-              default: '[]',
-              description: t('components.notificationStack.notificationsDesc', 'Notifications to surface, oldest first; the newest card sits nearest the anchor.'),
-            },
-            {
-              name: 'onDismiss',
-              type: '(id: string) => void',
-              default: 'undefined',
-              description: t('components.notificationStack.onDismissDesc', 'Renders the per-card dismiss control and receives every auto-expiry.'),
-            },
-            {
-              name: 'onAction',
-              type: '(notificationId: string, actionId: string) => void',
-              default: 'undefined',
-              description: t('components.notificationStack.onActionDesc', 'Fired when an inline action button is pressed; the card stays until dismissed.'),
-            },
-            {
-              name: 'placement',
-              type: '"top-left" | "top-center" | "top-right" | "left-center" | "right-center" | "bottom-left" | "bottom-center" | "bottom-right"',
-              default: "'bottom-right'",
-              description: t('components.notificationStack.placementDesc', 'Viewport anchor. Cards enter and exit through the anchored edge.'),
-            },
-            {
-              name: 'offset',
-              type: 'number',
-              default: '16',
-              description: t('components.notificationStack.offsetDesc', 'Inset from the anchored viewport edges, in logical units.'),
-            },
-            {
-              name: 'maxVisible',
-              type: 'number',
-              default: '4',
-              description: t('components.notificationStack.maxVisibleDesc', 'Cards rendered before the stack overflows into its "show all" pill.'),
-            },
-            {
-              name: 'defaultDuration',
-              type: 'number',
-              default: '5000',
-              description: t('components.notificationStack.defaultDurationDesc', 'Lifetime for items that do not state their own duration.'),
-            },
-            {
-              name: 'pauseOnHover',
-              type: 'boolean',
-              default: 'true',
-              description: t('components.notificationStack.pauseOnHoverDesc', 'Suspends every expiry countdown while the pointer rests on the stack.'),
-            },
-            {
-              name: 'collapsible',
-              type: 'boolean',
-              default: 'true',
-              description: t('components.notificationStack.collapsibleDesc', 'Offers the collapse-to-summary-row control.'),
-            },
-            {
-              name: 'defaultCollapsed',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.notificationStack.defaultCollapsedDesc', 'Renders the stack collapsed on first paint.'),
-            },
-            {
-              name: 'label',
-              type: 'string',
-              default: "'Notifications'",
-              description: t('components.notificationStack.labelDesc', 'Accessible name of the live region.'),
-            },
-          ]}
-        />
-        <DocText role="p">
-          {t('components.notificationStack.itemFooterDesc', 'Each notification carries id, title, an optional description, a level of info | success | warning | error, an optional duration, dismissible and a list of actions (id, label, variant).')}
-        </DocText>
-      </section>
+      <DocMarkdown id="notification-stack" section="props" />
     </DocLayout>
   );
 }

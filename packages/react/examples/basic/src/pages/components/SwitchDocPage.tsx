@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Switch, type SwitchSize, Checkbox, SegmentedControl, Card, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -195,84 +195,9 @@ export function SwitchDocPage() {
       </section>
 
       {/* 5. Keyboard Navigation */}
-            <ComponentReference
-        name="Switch"
-        componentId="switch"
-        props={[
-            {
-              name: 'checked',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.switch.checkedDesc', 'Whether the switch is toggled on (checked).'),
-            },
-            {
-              name: 'defaultChecked',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.switch.defaultCheckedDesc', 'The default checked state for uncontrolled usage.'),
-            },
-            {
-              name: 'onCheckedChange',
-              type: '(checked: boolean) => void',
-              default: '—',
-              description: t('components.switch.onCheckedChangeDesc', 'Event handler called when the checked state changes.'),
-            },
-            {
-              name: 'size',
-              type: "'default' | 'sm'",
-              default: "'default'",
-              description: t('components.switch.sizeDesc', 'The size scale of the switch track and thumb.'),
-            },
-            {
-              name: 'disabled',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.switch.disabledDesc', 'Disables user interactions and applies muted opacity.'),
-            },
-            {
-              name: 'readOnly',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.switch.readOnlyDesc', 'Whether the switch is read-only (prevents interaction without muted opacity).'),
-            },
-            {
-              name: 'loading',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.switch.loadingDesc', 'Shows an animated spinner inside the thumb and prevents toggling.'),
-            },
-            {
-              name: 'label',
-              type: 'React.ReactNode',
-              default: '—',
-              description: t('components.switch.labelDesc', 'Optional companion label rendered alongside the switch.'),
-            },
-            {
-              name: 'description',
-              type: 'React.ReactNode',
-              default: '—',
-              description: t('components.switch.helperDesc', 'Optional helper text displayed below the label.'),
-            },
-            {
-              name: 'forceHover',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.switch.forceHoverDesc', 'Visual testing aid to force hover state.'),
-            },
-            {
-              name: 'forceFocus',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.switch.forceFocusDesc', 'Visual testing aid to force focus ring.'),
-            },
-            {
-              name: 'className',
-              type: 'string',
-              default: "''",
-              description: t('components.switch.classNameDesc', 'Additional CSS class names to apply to the switch track element.'),
-            },
-          ]}
-      />
+                        <DocMarkdown id="switch" section="keyboard" />
+
+            <DocMarkdown id="switch" section="props" />
     </DocLayout>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Slider, type SliderOrientation, type SliderSize, SegmentedControl, Checkbox, Card, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -263,126 +263,9 @@ export function SliderDocPage() {
       </section>
 
       {/* 5. Props Reference */}
-            <ComponentReference
-        name="Slider"
-        componentId="slider"
-        props={[
-            {
-              name: 'value',
-              type: 'number',
-              default: '—',
-              description: t('components.slider.valueDesc', 'The controlled numeric value of the slider.'),
-            },
-            {
-              name: 'defaultValue',
-              type: 'number',
-              default: '0',
-              description: t('components.slider.defaultValueDesc', 'The default value for uncontrolled slider usage.'),
-            },
-            {
-              name: 'min',
-              type: 'number',
-              default: '0',
-              description: t('components.slider.minDesc', 'The minimum allowable value.'),
-            },
-            {
-              name: 'max',
-              type: 'number',
-              default: '100',
-              description: t('components.slider.maxDesc', 'The maximum allowable value.'),
-            },
-            {
-              name: 'step',
-              type: 'number',
-              default: '1',
-              description: t('components.slider.stepDesc', 'The stepping granularity interval.'),
-            },
-            {
-              name: 'size',
-              type: "'default' | 'sm'",
-              default: "'default'",
-              description: t('components.slider.sizeDesc', 'The size scale of the slider track and thumb.'),
-            },
-            {
-              name: 'disabled',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.slider.disabledDesc', 'When true, prevents user interaction and applies muted opacity.'),
-            },
-            {
-              name: 'readOnly',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.slider.readOnlyDesc', 'When true, prevents value changes while maintaining full visual opacity.'),
-            },
-            {
-              name: 'showTooltip',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.slider.showTooltipDesc', 'When true, shows an interactive floating value tooltip over the thumb on drag and hover.'),
-            },
-            {
-              name: 'formatValue',
-              type: '(value: number) => string',
-              default: '—',
-              description: t('components.slider.formatValueDesc', 'Optional formatter function for the floating tooltip text.'),
-            },
-            {
-              name: 'showTicks',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.slider.showTicksDesc', 'Displays tick mark indicators along the slider track.'),
-            },
-            {
-              name: 'marks',
-              type: 'string[]',
-              default: '—',
-              description: t('components.slider.marksDesc', 'Optional array of label strings corresponding to discrete stop positions.'),
-            },
-            {
-              name: 'orientation',
-              type: "'horizontal' | 'vertical'",
-              default: "'horizontal'",
-              description: t('components.slider.orientationDesc', 'The orientation of the slider track.'),
-            },
-            {
-              name: 'onValueChange',
-              type: '(value: number) => void',
-              default: '—',
-              description: t('components.slider.onValueChangeDesc', 'Event handler called when the slider value changes.'),
-            },
-            {
-              name: 'onChange',
-              type: '(value: number) => void',
-              default: '—',
-              description: t('components.slider.onChangeDesc', 'Standard event handler called when the slider value changes.'),
-            },
-            {
-              name: 'name',
-              type: 'string',
-              default: '—',
-              description: t('components.slider.nameDesc', 'Form submission name for an underlying hidden input.'),
-            },
-            {
-              name: 'forceHover',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.slider.forceHoverDesc', 'Visual testing aid to programmatically force hover styling.'),
-            },
-            {
-              name: 'forceFocus',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.slider.forceFocusDesc', 'Visual testing aid to programmatically force focus ring styling.'),
-            },
-            {
-              name: 'className',
-              type: 'string',
-              default: "''",
-              description: t('components.slider.classNameDesc', 'Additional CSS class names to apply to the slider root element.'),
-            },
-          ]}
-      />
+                        <DocMarkdown id="slider" section="keyboard" />
+
+            <DocMarkdown id="slider" section="props" />
     </DocLayout>
   );
 }

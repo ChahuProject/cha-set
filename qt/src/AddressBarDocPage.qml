@@ -211,19 +211,15 @@ ChaSetAddressBar {
         }
     }
 
-    ComponentReference {
-        name: "AddressBar"
-        componentId: "address-bar"
-        propsModel: [
-            { name: "path", type: "string", defaultVal: "''", description: ChaSetI18n.tr("components.addressBar.pathDesc", "Current path string rendered in breadcrumb and edit modes.") },
-            { name: "canGoBack", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.addressBar.canGoBackDesc", "Enables the backward history navigation button.") },
-            { name: "canGoForward", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.addressBar.canGoForwardDesc", "Enables the forward history navigation button.") },
-            { name: "showNavButtons", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.addressBar.showNavButtonsDesc", "Whether to show back, forward, up, and refresh navigation buttons.") },
-            { name: "showRefresh", type: "bool", defaultVal: "true", description: ChaSetI18n.tr("components.addressBar.showRefreshDesc", "Whether to show the refresh button.") },
-            { name: "showSearch", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.addressBar.showSearchDesc", "Whether to show the integrated search/filter input on the right side.") },
-            { name: "suggestions", type: "var", defaultVal: "[]", description: ChaSetI18n.tr("components.addressBar.suggestionsDesc", "List of auto-complete path strings in the dropdown popover.") },
-            { name: "history", type: "var", defaultVal: "[]", description: ChaSetI18n.tr("components.addressBar.historyDesc", "Recent typed path history for dropdown display.") },
-            { name: "disabled", type: "bool", defaultVal: "false", description: ChaSetI18n.tr("components.addressBar.disabledDesc", "Disables all interactions and input editing.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "address-bar"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "address-bar"
+        section: "props"
     }
 }

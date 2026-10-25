@@ -1,7 +1,7 @@
 import React from 'react';
 import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuShortcut, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -110,14 +110,9 @@ ChaSetContextMenu {
 
 
 
-            <ComponentReference
-        name="ContextMenu"
-        componentId="context-menu"
-        props={[
-            { name: 'modal', type: 'boolean', default: 'true', description: t('components.contextMenu.modalDesc', 'Whether the context menu is modal.') },
-            { name: 'onOpenChange', type: '(open: boolean) => void', default: 'undefined', description: t('components.contextMenu.onOpenChangeDesc', 'Callback fired on open state change.') },
-          ]}
-      />
+                        <DocMarkdown id="context-menu" section="keyboard" />
+
+            <DocMarkdown id="context-menu" section="props" />
     </DocLayout>
   );
 }

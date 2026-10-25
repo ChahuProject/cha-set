@@ -210,8 +210,10 @@ DocLayout {
         ]
     }
 
-    KeyboardShortcutsTable {
-        componentId: "tabs"
+    DocMarkdown {
+        width: parent.width
+        docId: "tabs"
+        section: "keyboard"
     }
 
     // 2. Installation
@@ -357,31 +359,9 @@ DocLayout {
     }
 
     // 5. Props Reference
-    Rectangle {
+    DocMarkdown {
         width: parent.width
-        implicitHeight: propsCol.implicitHeight + 20
-        color: "transparent"
-
-        Column {
-            id: propsCol
-            width: parent.width
-            spacing: 8
-
-            DocText { text: ChaSetI18n.tr("showcase.propsReference", "Props Reference"); font.pixelSize: Typography.sizeTitleSm; font.weight: Typography.weightBold; color: root.cFg }
-
-            PropsTable {
-                width: parent.width
-                propsModel: [
-                    { name: "currentValue", type: "string", defaultValue: "''", desc: "The controlled value of the currently active tab." },
-                    { name: "orientation", type: "'horizontal' | 'vertical'", defaultValue: "'horizontal'", desc: "Orientation layout for tab list and panels." },
-                    { name: "variant", type: "'default' | 'line'", defaultValue: "'default'", desc: "Visual presentation style: pill container (default) or underline tab bar (line)." },
-                    { name: "size", type: "'default' | 'sm'", defaultValue: "'default'", desc: "Size scale of the tabs triggers and container." },
-                    { name: "value", type: "string", defaultValue: "''", desc: "On ChaSetTabsTrigger and Content: identifier matching currentValue." },
-                    { name: "disabled", type: "bool", defaultValue: "false", desc: "When true on ChaSetTabsTrigger, prevents click and keyboard interaction." },
-                    { name: "badge", type: "string", defaultValue: "''", desc: "Optional count badge or status tag rendered inside the trigger." },
-                    { name: "iconSource", type: "string", defaultValue: "''", desc: "Optional leading icon source path rendered inside the trigger." }
-                ]
-            }
-        }
+        docId: "tabs"
+        section: "props"
     }
 }

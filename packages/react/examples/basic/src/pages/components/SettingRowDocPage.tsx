@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SettingRow, Switch, Card, Button, Separator, CodeBlock, ZapIcon, RotateCcwIcon, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -142,69 +142,9 @@ ChaSetSettingRow {
         </Card>
       </section>
 
-      <ComponentReference
-        name="SettingRow"
-        componentId="setting-row"
-        props={[
-          {
-            name: 'name',
-            type: 'ReactNode | string',
-            required: true,
-            description: t('components.settingRow.nameDesc', 'Primary title label for the setting item.'),
-          },
-          {
-            name: 'description',
-            type: 'ReactNode | string',
-            required: false,
-            description: t('components.settingRow.descriptionDesc', 'Secondary explanatory subtitle text.'),
-          },
-          {
-            name: 'icon',
-            type: 'ReactNode | string',
-            required: false,
-            description: t('components.settingRow.iconDesc', 'Optional leading icon or badge avatar.'),
-          },
-          {
-            name: 'badge',
-            type: 'ReactNode | string',
-            required: false,
-            description: t('components.settingRow.badgeDesc', 'Optional trailing badge tag next to title.'),
-          },
-          {
-            name: 'size',
-            type: "'default' | 'sm'",
-            default: "'default'",
-            required: false,
-            description: t('components.settingRow.sizeDesc', "Density size variant ('default' or 'sm')."),
-          },
-          {
-            name: 'highlightId',
-            type: 'string',
-            required: false,
-            description: t('components.settingRow.highlightIdDesc', 'Unique identifier used for anchor jump targeting.'),
-          },
-          {
-            name: 'highlightTarget',
-            type: 'string',
-            required: false,
-            description: t('components.settingRow.highlightTargetDesc', 'Active target identifier. When matching highlightId, triggers pulse.'),
-          },
-          {
-            name: 'highlight',
-            type: 'boolean',
-            default: 'false',
-            required: false,
-            description: t('components.settingRow.highlightDesc', 'Direct boolean override to force active highlight animation.'),
-          },
-          {
-            name: 'disabled',
-            type: 'boolean',
-            default: 'false',
-            required: false,
-            description: t('components.settingRow.disabledDesc', 'Whether the setting row and controls are dimmed and disabled.'),
-          },
-        ]}
-      />
+            <DocMarkdown id="setting-row" section="keyboard" />
+
+      <DocMarkdown id="setting-row" section="props" />
     </DocLayout>
   );
 }

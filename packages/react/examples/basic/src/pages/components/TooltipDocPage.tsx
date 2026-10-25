@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Card, SegmentedControl, Checkbox, Input, Tooltip, TooltipProvider, TooltipTrigger, TooltipContent, type TooltipSide, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -277,78 +277,9 @@ export function TooltipDocPage() {
         </ul>
       </section>
 
-            <ComponentReference
-        name="Tooltip"
-        componentId="tooltip"
-        props={[
-            {
-              name: 'content',
-              type: 'ReactNode | string',
-              default: "''",
-              description: t('components.tooltip.contentDesc', 'The content rendered inside the floating tooltip bubble.'),
-            },
-            {
-              name: 'shortcut',
-              type: 'string',
-              default: "''",
-              description: t('components.tooltip.shortcutDesc', 'Keyboard shortcut badge rendered inside the tooltip bubble.'),
-            },
-            {
-              name: 'arrow',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.tooltip.arrowDesc', 'Whether to render a directional arrow pointing toward the trigger.'),
-            },
-            {
-              name: 'side',
-              type: "'top' | 'bottom' | 'left' | 'right'",
-              default: "'top'",
-              description: t('components.tooltip.sideDesc', 'The preferred placement relative to the trigger.'),
-            },
-            {
-              name: 'avoidCollisions',
-              type: 'boolean',
-              default: 'true',
-              description: t('components.tooltip.avoidCollisionsDesc', 'Whether to shift the bubble back inside the viewport on overflow; false pins exact side placement.'),
-            },
-            {
-              name: 'delayDuration',
-              type: 'number',
-              default: '200',
-              description: t('components.tooltip.delayDesc', 'Hover delay in milliseconds before the tooltip opens.'),
-            },
-            {
-              name: 'disabled',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.tooltip.disabledDesc', 'Prevents the tooltip from opening when hovering or focusing.'),
-            },
-            {
-              name: 'asChild',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.tooltip.asChildDesc', 'Merges trigger props and event handlers directly onto the single child element.'),
-            },
-            {
-              name: 'open',
-              type: 'boolean',
-              default: 'undefined',
-              description: t('components.tooltip.openDesc', 'Controlled open state of the tooltip.'),
-            },
-            {
-              name: 'onOpenChange',
-              type: '(open: boolean) => void',
-              default: 'undefined',
-              description: t('components.tooltip.onOpenChangeDesc', 'Callback executed when the open state changes.'),
-            },
-            {
-              name: 'className',
-              type: 'string',
-              default: "''",
-              description: t('components.tooltip.classNameDesc', 'Additional CSS class names applied to the element.'),
-            },
-          ]}
-      />
+                        <DocMarkdown id="tooltip" section="keyboard" />
+
+            <DocMarkdown id="tooltip" section="props" />
     </DocLayout>
   );
 }

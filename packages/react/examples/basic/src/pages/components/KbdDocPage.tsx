@@ -15,9 +15,9 @@ import {
   useChaSetI18n,
 } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { ComponentReference } from '../../components/ComponentReference';
 import { DocText } from '../../components/DocText';
 
 export function KbdDocPage() {
@@ -420,54 +420,9 @@ export function KbdDocPage() {
       </section>
 
       {/* 8. Component Reference */}
-      <ComponentReference
-        name="Kbd"
-        componentId="kbd"
-        props={[
-          {
-            name: 'variant',
-            type: "'outline' | 'solid' | 'subtle' | 'inverted'",
-            default: "'outline'",
-            description: t('components.kbd.variantDesc', 'Visual presentation variant matching container surfaces.'),
-          },
-          {
-            name: 'size',
-            type: "'xs' | 'sm' | 'default' | 'md'",
-            default: "'default'",
-            description: t('components.kbd.sizeDesc', 'Size scale controlling keycap height, padding, and font size.'),
-          },
-          {
-            name: 'compact',
-            type: "'auto' | 'always' | 'never'",
-            default: "'auto'",
-            description: t('components.kbd.compactDesc', 'Whether to convert verbose modifiers to compact symbols (Ctrl to ⌃).'),
-          },
-          {
-            name: 'overflow',
-            type: "'collapse' | 'hide' | 'visible'",
-            default: "'collapse'",
-            description: t('components.kbd.overflowDesc', 'Overflow strategy when space is constrained in narrow containers.'),
-          },
-          {
-            name: 'shortcut',
-            type: 'string',
-            default: "''",
-            description: t('components.kbd.shortcutDesc', 'Serialized shortcut combination string to parse automatically.'),
-          },
-          {
-            name: 'separator',
-            type: 'string',
-            default: "'+'",
-            description: t('components.kbd.separatorDesc', 'Custom separator character between combination keys.'),
-          },
-          {
-            name: 'className',
-            type: 'string',
-            default: "''",
-            description: t('components.kbd.classNameDesc', 'Optional additional Tailwind CSS class names.'),
-          },
-        ]}
-      />
+            <DocMarkdown id="kbd" section="keyboard" />
+
+      <DocMarkdown id="kbd" section="props" />
     </DocLayout>
   );
 }

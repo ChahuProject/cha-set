@@ -121,19 +121,15 @@ ChaSetPipelineView {
         Text { text: ChaSetI18n.tr("desktopComposite.pipelineView.animationsBulletQt3", "• All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero."); color: ThemeTokens.text; font.pixelSize: Typography.sizeBody; wrapMode: Text.WordWrap; width: parent.width }
     }
 
-    ComponentReference {
-        name: "PipelineView"
-        componentId: "pipeline-view"
-        propsModel: [
-            { name: "status", type: "string", default: "'running'", description: ChaSetI18n.tr("components.pipelineView.statusDesc", "Overall execution status for summary header badge.") },
-            { name: "startMs", type: "real", default: "0", description: ChaSetI18n.tr("components.pipelineView.startMsDesc", "Execution start timestamp in epoch milliseconds.") },
-            { name: "endMs", type: "var", default: "null", description: ChaSetI18n.tr("components.pipelineView.endMsDesc", "Execution completion timestamp; displays formatted duration when non-null.") },
-            { name: "jobs", type: "var", default: "[]", description: ChaSetI18n.tr("components.pipelineView.jobsDesc", "Array of jobs belonging to the current execution run.") },
-            { name: "activeJobId", type: "string", default: "''", description: ChaSetI18n.tr("components.pipelineView.activeJobIdDesc", "Currently selected job id displaying step timeline and logs.") },
-            { name: "logsSupplier", type: "var", default: "null", description: ChaSetI18n.tr("components.pipelineView.getLogsDesc", "Function supplying log lines array for a given job id.") },
-            { name: "jobsTitle", type: "string", default: "'Jobs'", description: ChaSetI18n.tr("components.pipelineView.jobsTitleDesc", "Title text for the job list sidebar.") },
-            { name: "emptyJobsText", type: "string", default: "'No jobs'", description: ChaSetI18n.tr("components.pipelineView.emptyJobsTextDesc", "Placeholder text displayed when the job list is empty.") },
-            { name: "cancelDisabled", type: "bool", default: "false", description: ChaSetI18n.tr("components.pipelineView.cancelDisabledDesc", "Disables the cancel button.") }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "pipeline-view"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "pipeline-view"
+        section: "props"
     }
 }

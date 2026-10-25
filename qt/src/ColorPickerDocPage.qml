@@ -280,100 +280,15 @@ DocLayout {
     }
 
     // Section 4: Component Reference
-    ComponentReference {
-        name: "ColorPicker"
-        componentId: "color-picker"
-        propsModel: [
-            {
-                name: "value",
-                type: "color",
-                default: "\"#1d7ae0\"",
-                description: ChaSetI18n.tr("components.colorPicker.valueColorDesc", "The selected color value.")
-            },
-            {
-                name: "hex",
-                type: "string",
-                default: "\"#1D7AE0\"",
-                description: ChaSetI18n.tr("components.colorPicker.hexDesc", "The selected hex color string (e.g. #1D7AE0).")
-            },
-            {
-                name: "mode",
-                type: "\"inline\" | \"popover\"",
-                default: "\"inline\"",
-                description: ChaSetI18n.tr("components.colorPicker.modeDesc", "Display mode: inline panel card or popover dropdown trigger.")
-            },
-            {
-                name: "size",
-                type: "\"default\" | \"sm\"",
-                default: "\"default\"",
-                description: ChaSetI18n.tr("components.colorPicker.sizeDesc", "Visual sizing scale for canvas, swatches, and inputs.")
-            },
-            {
-                name: "disabled",
-                type: "bool",
-                default: "false",
-                description: ChaSetI18n.tr("components.colorPicker.disabledPropDesc", "When true, prevents user interaction and applies muted opacity.")
-            },
-            {
-                name: "movable",
-                type: "bool",
-                default: "false",
-                description: ChaSetI18n.tr("components.colorPicker.movableDesc", "When true, allows dragging on empty background areas to reposition the component. Double-click resets position.")
-            },
-            {
-                name: "showPreview",
-                type: "bool",
-                default: "true",
-                description: ChaSetI18n.tr("components.colorPicker.showPreviewDesc", "Whether to show the top preview header swatch and hex label.")
-            },
-            {
-                name: "showHex",
-                type: "bool",
-                default: "true",
-                description: ChaSetI18n.tr("components.colorPicker.showHexDesc", "Whether to display the editable HEX text input row.")
-            },
-            {
-                name: "showSwatches",
-                type: "bool",
-                default: "true",
-                description: ChaSetI18n.tr("components.colorPicker.showSwatchesDesc", "Whether to show the quick preset color swatch row.")
-            },
-            {
-                name: "presetColors",
-                type: "var (string[])",
-                default: "16 default colors",
-                description: ChaSetI18n.tr("components.colorPicker.presetColorsDesc", "Array of preset hex color strings displayed in swatches panel.")
-            },
-            {
-                name: "activePanel",
-                type: "\"square\" | \"circle\" | \"triangle\" | \"swatches\"",
-                default: "\"square\"",
-                description: ChaSetI18n.tr("components.colorPicker.activePanelDesc", "Active color selector panel mode.")
-            },
-            {
-                name: "showRgbSliders",
-                type: "bool",
-                default: "true",
-                description: ChaSetI18n.tr("components.colorPicker.showRgbSlidersDesc", "Whether RGB channel sliders and numeric inputs are visible.")
-            },
-            {
-                name: "showHsvSliders",
-                type: "bool",
-                default: "false",
-                description: ChaSetI18n.tr("components.colorPicker.showHsvSlidersDesc", "Whether HSV channel sliders and numeric inputs are visible.")
-            },
-            {
-                name: "showCmykSliders",
-                type: "bool",
-                default: "false",
-                description: ChaSetI18n.tr("components.colorPicker.showCmykSlidersDesc", "Whether CMYK channel sliders and numeric inputs are visible.")
-            },
-            {
-                name: "showLabSliders",
-                type: "bool",
-                default: "false",
-                description: ChaSetI18n.tr("components.colorPicker.showLabSlidersDesc", "Whether CIELAB channel sliders and numeric inputs are visible.")
-            }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "color-picker"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "color-picker"
+        section: "props"
     }
 }

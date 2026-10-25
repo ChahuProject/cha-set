@@ -207,58 +207,15 @@ DocLayout {
         }
     }
 
-        ComponentReference {
-        name: "Table"
-        componentId: "table"
-        propsModel: [
-                {
-                    name: "columns",
-                    type: "var (array)",
-                    default: "[]",
-                    description: ChaSetI18n.tr("components.table.columnsDesc", "Array of column definition objects with key, title, optional width, and align ('left' | 'center' | 'right').")
-                },
-                {
-                    name: "rows",
-                    type: "var (array)",
-                    default: "[]",
-                    description: ChaSetI18n.tr("components.table.rowsDesc", "Array of data objects containing keys matching the column definitions.")
-                },
-                {
-                    name: "caption",
-                    type: "string",
-                    default: "\"\"",
-                    description: ChaSetI18n.tr("components.table.captionDesc", "Optional caption text rendered at the bottom of the table.")
-                },
-                {
-                    name: "headerHeight",
-                    type: "int",
-                    default: "36",
-                    description: ChaSetI18n.tr("components.table.headerHeightDesc", "Height for the column header row.")
-                },
-                {
-                    name: "rowHeight",
-                    type: "int",
-                    default: "36",
-                    description: ChaSetI18n.tr("components.table.rowHeightDesc", "Height for each table data row.")
-                },
-                {
-                    name: "selectedIndex",
-                    type: "int",
-                    default: "-1",
-                    description: ChaSetI18n.tr("components.table.selectedIndexDesc", "Index of currently selected row, applying active selection token styling.")
-                },
-                {
-                    name: "customRadius",
-                    type: "int",
-                    default: "8",
-                    description: ChaSetI18n.tr("components.table.customRadiusDesc", "Corner radius for the table outer container.")
-                },
-                {
-                    name: "customBorderColor",
-                    type: "color",
-                    default: "ThemeTokens.border",
-                    description: ChaSetI18n.tr("components.table.customBorderColorDesc", "Border color for the table and row dividers.")
-                }
-            ]
-    }
+        DocMarkdown {
+            width: parent.width
+            docId: "table"
+            section: "keyboard"
+        }
+
+        DocMarkdown {
+            width: parent.width
+            docId: "table"
+            section: "props"
+        }
 }

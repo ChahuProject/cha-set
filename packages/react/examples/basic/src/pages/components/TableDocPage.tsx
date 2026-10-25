@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption, Badge, Input, SegmentedControl, Checkbox, Card, CardHeader, CardTitle, CardDescription, CardContent, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -302,24 +302,9 @@ export function TableDocPage() {
 
       {/* 5. Props Reference */}
       
-            <ComponentReference
-        name="Table"
-        componentId="table"
-        props={[
-                {
-                  name: 'className',
-                  type: 'string',
-                  default: "''",
-                  description: t('components.table.classNameDesc', 'Additional CSS classes for the table element.'),
-                },
-                {
-                  name: 'containerClassName',
-                  type: 'string',
-                  default: "''",
-                  description: t('components.table.containerClassNameDesc', 'Additional CSS classes for the overflow-auto wrapper container.'),
-                },
-              ]}
-      />
+                        <DocMarkdown id="table" section="keyboard" />
+
+            <DocMarkdown id="table" section="props" />
     </DocLayout>
   );
 }

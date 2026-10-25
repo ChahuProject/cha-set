@@ -1,7 +1,7 @@
 import React from 'react';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, Button, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -125,17 +125,9 @@ ChaSetDropdownMenu {
 
 
 
-            <ComponentReference
-        name="DropdownMenu"
-        componentId="dropdown-menu"
-        props={[
-            { name: 'open', type: 'boolean', default: 'undefined', description: t('components.dropdownMenu.openDesc', 'Controlled open state of the dropdown menu.') },
-            { name: 'onOpenChange', type: '(open: boolean) => void', default: 'undefined', description: t('components.dropdownMenu.onOpenChangeDesc', 'Event handler called when open state changes.') },
-            { name: 'modal', type: 'boolean', default: 'true', description: t('components.dropdownMenu.modalDesc', 'Whether to render as a modal trapping focus.') },
-            { name: 'sideOffset', type: 'number', default: '4', description: t('components.dropdownMenu.sideOffsetDesc', 'Distance offset from trigger to floating content.') },
-            { name: 'align', type: "'start' | 'center' | 'end'", default: "'start'", description: t('components.dropdownMenu.alignDesc', 'Alignment along trigger edge.') },
-          ]}
-      />
+                        <DocMarkdown id="dropdown-menu" section="keyboard" />
+
+            <DocMarkdown id="dropdown-menu" section="props" />
     </DocLayout>
   );
 }

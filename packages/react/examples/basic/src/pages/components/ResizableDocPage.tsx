@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle, Button, Badge, SegmentedControl, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
-import { ComponentReference } from '../../components/ComponentReference';
+import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
@@ -365,48 +365,9 @@ ChaSetResizable {
       </section>
 
       {/* 6. Keyboard Navigation */}
-            <ComponentReference
-        name="Resizable"
-        componentId="resizable"
-        props={[
-            {
-              name: 'direction',
-              type: "'horizontal' | 'vertical'",
-              default: "'horizontal'",
-              description: t('components.resizable.directionDesc', 'Direction of panel layout (also supports orientation prop).'),
-            },
-            {
-              name: 'defaultSize',
-              type: 'number',
-              default: 'undefined',
-              description: t('components.resizable.defaultSizeDesc', 'Initial percentage size allocated to the panel (0-100).'),
-            },
-            {
-              name: 'minSize',
-              type: 'number',
-              default: '0',
-              description: t('components.resizable.minSizeDesc', 'Minimum allowed percentage size constraint.'),
-            },
-            {
-              name: 'maxSize',
-              type: 'number',
-              default: '100',
-              description: t('components.resizable.maxSizeDesc', 'Maximum allowed percentage size constraint.'),
-            },
-            {
-              name: 'collapsible',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.resizable.collapsibleDesc', 'Whether the panel collapses completely past its minimum size.'),
-            },
-            {
-              name: 'withHandle',
-              type: 'boolean',
-              default: 'false',
-              description: t('components.resizable.withHandleDesc', 'Renders an accessible tactile visual grip handle on the separator divider.'),
-            },
-          ]}
-      />
+                        <DocMarkdown id="resizable" section="keyboard" />
+
+            <DocMarkdown id="resizable" section="props" />
     </DocLayout>
   );
 }
