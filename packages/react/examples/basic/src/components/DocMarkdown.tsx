@@ -1,5 +1,5 @@
 import React from 'react';
-import { useChaSetI18n, Kbd, CopyableBadge, Table } from '@chahu/cha-set';
+import { useChaSetI18n, Kbd, HoverCopy, Table } from '@chahu/cha-set';
 import type { TableColumn } from '@chahu/cha-set';
 import {
   buildDocAst,
@@ -85,17 +85,22 @@ function renderInline(nodes: DocInline[], keyPrefix: string): React.ReactNode[] 
         return <em key={key}>{renderInline(node.c, key)}</em>;
       case 'code':
         // Markdown code span rendered with the documented "token chip" feel: a small
-        // surface behind monospace text, inline with the sentence (never a trailing row).
-        // Typography comes from the `code` role; only the chip surface is local.
+        // surface behind monospace text with full-overlay hover-copy support.
         return (
-          <DocText
+          <HoverCopy
             key={key}
-            role="code"
-            as="code"
-            className="rounded-sm bg-secondary px-1.5 py-0.5 text-[0.85em]"
+            text={node.v}
+            radius="sm"
+            className="inline-flex align-baseline"
           >
-            {node.v}
-          </DocText>
+            <DocText
+              role="code"
+              as="code"
+              className="rounded bg-secondary px-1.5 py-0.5 text-[0.85em] font-mono text-foreground"
+            >
+              {node.v}
+            </DocText>
+          </HoverCopy>
         );
       case 'kbd':
         // `[[Ctrl+K]]` — the raw shortcut string goes straight to the Kbd primitive, which
@@ -111,9 +116,9 @@ function renderInline(nodes: DocInline[], keyPrefix: string): React.ReactNode[] 
 }
 
 /**
- * One table cell. Structured kinds (`code` / `copyable` / `kbd`) take plain text because the
- * column itself supplies the treatment — feeding them rich inline would fight the badge and
- * keycap chrome. `rich` cells keep the full inline vocabulary, chips included.
+ * One table cell. Structured kinds (`code` / `copyable` / `kbd`) take plain text.
+ * Both `code` and `copyable` render code chips with hover-copy (aligning with the
+ * 4px rounded background, no badges in Markdown).
  */
 function renderCell(cell: DocInline[], kind: DocTableCellKind, key: string): React.ReactNode {
   if (kind === 'rich') return <>{renderInline(cell, key)}</>;
@@ -121,12 +126,18 @@ function renderCell(cell: DocInline[], kind: DocTableCellKind, key: string): Rea
   const text = inlineText(cell);
   switch (kind) {
     case 'code':
-      return <span className="font-mono text-xs font-medium text-primary">{text}</span>;
     case 'copyable':
-      return text ? (
-        <CopyableBadge size="sm" text={text} className="font-mono text-[0.6875rem] text-foreground/80" />
+      return text && text !== '—' ? (
+        <HoverCopy
+          text={text}
+          radius="sm"
+          className="inline-flex max-w-full align-middle"
+        >
+          <code className="rounded bg-secondary px-1.5 py-0.5 font-mono text-xs text-foreground/90 max-w-full truncate block">
+            {text}
+          </code>
+        </HoverCopy>
       ) : (
-        // An empty default cell reads as "no default", exactly like PropsTable's em dash.
         <span className="opacity-40">—</span>
       );
     case 'kbd':

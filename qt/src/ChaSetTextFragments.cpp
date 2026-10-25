@@ -20,6 +20,7 @@ struct Run
     int end = 0;     // block-relative character index (exclusive)
     qreal ascent = 0;
     qreal descent = 0;
+    QString payload;
 };
 
 } // namespace
@@ -66,6 +67,8 @@ QVariantList ChaSetTextFragments::fragmentRects(QObject *document, const QString
             if (!format.isAnchor() || !format.anchorHref().startsWith(prefix))
                 continue;
 
+            const QString href = format.anchorHref();
+            const QString payload = href.startsWith(prefix) ? href.mid(prefix.length()) : QString();
             const QFontMetricsF metrics(format.font());
             const int start = fragment.position() - block.position();
             const int end = start + fragment.length();
@@ -79,8 +82,10 @@ QVariantList ChaSetTextFragments::fragmentRects(QObject *document, const QString
                     run.ascent = metrics.ascent();
                     run.descent = metrics.descent();
                 }
+                if (run.payload.isEmpty())
+                    run.payload = payload;
             } else {
-                runs.append(Run{start, end, metrics.ascent(), metrics.descent()});
+                runs.append(Run{start, end, metrics.ascent(), metrics.descent(), payload});
             }
         }
 
@@ -113,6 +118,7 @@ QVariantList ChaSetTextFragments::fragmentRects(QObject *document, const QString
                 rect.insert(QStringLiteral("y"), blockTop + baseline - run.ascent);
                 rect.insert(QStringLiteral("w"), qMax<qreal>(0, x1 - x0));
                 rect.insert(QStringLiteral("h"), run.ascent + run.descent);
+                rect.insert(QStringLiteral("payload"), run.payload);
                 out.append(rect);
 
                 position = to;

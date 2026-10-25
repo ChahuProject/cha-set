@@ -296,10 +296,63 @@ Rectangle {
                                 }
                             }
 
-                            // Standard Text / Code rendering
+                            // Code Chip with HoverCopy rendering
+                            Item {
+                                id: codeCellItem
+                                visible: Boolean(columnDef && columnDef.code && !columnDef.badge && !columnDef.copyableBadge)
+                                anchors.verticalCenter: parent ? parent.verticalCenter : undefined
+                                anchors.left: parent.left
+                                anchors.leftMargin: ThemeTokens.dp(12)
+                                implicitHeight: ThemeTokens.dp(20)
+                                implicitWidth: isDash ? dashText.implicitWidth : hoverCode.implicitWidth
+
+                                readonly property string rawVal: {
+                                    if (!rowRecord || !columnDef || columnDef.key === undefined) return "";
+                                    var val = rowRecord[columnDef.key];
+                                    return val !== undefined && val !== null ? String(val) : "";
+                                }
+                                readonly property bool isDash: rawVal === "—" || rawVal === ""
+
+                                Text {
+                                    id: dashText
+                                    visible: codeCellItem.isDash
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    text: "—"
+                                    color: ThemeTokens.subduedText
+                                    opacity: 0.4
+                                    font.pixelSize: Typography.sizeSmall
+                                }
+
+                                ChaSetHoverCopy {
+                                    id: hoverCode
+                                    visible: !codeCellItem.isDash
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    text: codeCellItem.rawVal
+                                    radius: "sm"
+
+                                    Rectangle {
+                                        id: codeBg
+                                        implicitHeight: ThemeTokens.dp(20)
+                                        implicitWidth: Math.max(ThemeTokens.dp(20), codeText.implicitWidth + ThemeTokens.dp(12))
+                                        radius: ThemeTokens.dp(4)
+                                        color: ThemeTokens.panelRaised
+
+                                        Text {
+                                            id: codeText
+                                            anchors.centerIn: parent
+                                            text: codeCellItem.rawVal
+                                            color: ThemeTokens.text
+                                            font.family: Typography.familyMono
+                                            font.pixelSize: Typography.sizeSmall
+                                        }
+                                    }
+                                }
+                            }
+
+                            // Standard Text rendering
                             TextEdit {
                                 id: bodyCellText
-                                visible: !Boolean(columnDef && (columnDef.badge || columnDef.kbd || columnDef.copyableBadge))
+                                visible: !Boolean(columnDef && (columnDef.badge || columnDef.kbd || columnDef.copyableBadge || columnDef.code))
                                 width: (columnDef && columnDef.wrap)
                                     ? (parent.width - ThemeTokens.dp(24))
                                     : Math.min(parent.width - ThemeTokens.dp(24), contentWidth)

@@ -213,8 +213,7 @@ Column {
             var column = {
                 key: "c" + i,
                 title: DocAst.inlineText(node.head[i]).toUpperCase(),
-                code: def.kind === "code",
-                copyableBadge: def.kind === "copyable",
+                code: def.kind === "code" || def.kind === "copyable",
                 kbd: def.kind === "kbd",
                 wrap: def.kind === "rich",
                 rich: def.kind === "rich"
@@ -236,9 +235,7 @@ Column {
                     record["c" + c] = inlineHtml(node.rows[r][c], true);
                 } else {
                     var text = DocAst.inlineText(node.rows[r][c]);
-                    // An authored empty default cell would render as an empty badge; the em
-                    // dash is what "no default" looks like everywhere else in the showcase.
-                    record["c" + c] = (def.kind === "copyable" && text === "") ? "—" : text;
+                    record["c" + c] = ((def.kind === "copyable" || def.kind === "code") && text === "") ? "—" : text;
                 }
             }
             rows.push(record);
@@ -291,6 +288,11 @@ Column {
                 text: visible ? root.inlineHtml(block.node.inlines) : ""
             }
 
+            DocChipOverlay {
+                target: textBlock
+                marker: root.chipMarker
+            }
+
             Column {
                 id: listColumn
                 visible: !!block.node && block.node.t === "list"
@@ -335,6 +337,11 @@ Column {
                             textFormat: TextEdit.RichText
                             color: ThemeTokens.text
                             text: root.inlineHtml(modelData)
+                        }
+
+                        DocChipOverlay {
+                            target: itemText
+                            marker: root.chipMarker
                         }
                     }
                 }

@@ -1094,6 +1094,10 @@ bool runRealTypographyVerification(QQuickWindow* window) {
 
 static bool runRealHoverCopyVerification(QQuickWindow* window) {
     qInfo("[qt-scenario] Running authentic C++ HoverCopy state machine verification...");
+    window->requestActivate();
+    window->raise();
+    QTest::qWaitForWindowActive(window, 1000);
+
     auto* testHoverCopy = window->findChild<QQuickItem*>("testHoverCopy");
     if (!testHoverCopy) {
         qCritical("[qt-scenario] FAIL: testHoverCopy item not found by objectName");
@@ -1189,6 +1193,7 @@ static bool runRealHoverCopyVerification(QQuickWindow* window) {
         return fail(QStringLiteral("invokeMethod second re-copy on testHoverCopy failed"));
     bool restoredHover = false;
     for (int poll = 0; poll < 30; ++poll) {
+        window->requestUpdate();
         QTest::qWait(200);
         if (hoverState() == QStringLiteral("hovered")) { restoredHover = true; break; }
     }
@@ -1207,6 +1212,7 @@ static bool runRealHoverCopyVerification(QQuickWindow* window) {
         return fail(QStringLiteral("invokeMethod copy() before idle-restore failed"));
     bool restoredIdle = false;
     for (int poll = 0; poll < 30; ++poll) {
+        window->requestUpdate();
         QTest::qWait(200);
         if (hoverState() == QStringLiteral("idle")) { restoredIdle = true; break; }
     }

@@ -233,7 +233,7 @@ export const HoverCopy = React.forwardRef<HTMLSpanElement, HoverCopyProps>(
         {...props}
       >
         {children}
-        <div
+        <span
           aria-hidden="true"
           className={cn(
             'pointer-events-none absolute inset-0 rounded-[inherit] transition-opacity duration-quick ease-standard',

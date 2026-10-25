@@ -288,6 +288,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/DocText.qml
             src/DocSectionHeader.qml
             src/DocChipLayer.qml
+            src/DocChipOverlay.qml
             src/DocMarkdown.qml
             src/DocAnatomy.qml
             src/ComponentPreview.qml
