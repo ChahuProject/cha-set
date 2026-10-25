@@ -1,12 +1,56 @@
 import React from 'react';
-import { CopyableBadge, useChaSetI18n } from '@chahu/cha-set';
-import {
-  docContent,
-  docContentDefaultLocale,
-  type DocBlock,
-  type DocInline,
-  type DocPage,
-} from '../data/docContent.generated';
+import { useChaSetI18n } from '@chahu/cha-set';
+import { buildDocAst, type DocBlock, type DocInline, type DocPage } from '../../../../../../spec/shared/docAst.mjs';
+
+/**
+ * Living-doc prose is authored once in spec/content/<docId>/<locale>.md and parsed at
+ * RUNTIME by the shared parser (spec/shared/docAst.mjs) — the same file the Qt renderer
+ * imports. Nothing is code-generated, so editing an .md reloads the page directly.
+ *
+ * This component owns typography only: Markdown syntax maps onto the design system
+ * (14px body, 20px h2, mono inline code) instead of raw HTML.
+ */
+const rawDocs = import.meta.glob('../../../../../../spec/content/*/*.md', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>;
+
+interface DocSource {
+  docs: Record<string, Record<string, string>>;
+}
+
+const docSources: DocSource = { docs: {} };
+for (const [path, source] of Object.entries(rawDocs)) {
+  const match = /spec[/\\]content[/\\]([^/\\]+)[/\\]([^/\\]+)\.md$/.exec(path);
+  const docId = match?.[1];
+  const locale = match?.[2];
+  if (!docId || !locale) continue;
+  docSources.docs[docId] = docSources.docs[docId] ?? {};
+  docSources.docs[docId][locale] = source;
+}
+
+const astCache = new Map<string, DocPage | null>();
+const reportedErrors = new Set<string>();
+
+function getPage(docId: string, locale: string): DocPage | null {
+  const key = `${docId}/${locale}`;
+  if (astCache.has(key)) return astCache.get(key) ?? null;
+
+  const source = docSources.docs[docId]?.[locale];
+  if (!source) {
+    astCache.set(key, null);
+    return null;
+  }
+
+  const { page, errors } = buildDocAst(source);
+  if (errors.length && !reportedErrors.has(key)) {
+    reportedErrors.add(key);
+    console.error(`[DocMarkdown] ${docId}/${locale}.md has dialect errors:\n  ${errors.join('\n  ')}`);
+  }
+  astCache.set(key, page);
+  return page;
+}
 
 export interface DocMarkdownProps {
   /** Doc id matching spec/content/<id>/. */
@@ -30,9 +74,13 @@ function renderInline(nodes: DocInline[], keyPrefix: string): React.ReactNode[] 
       case 'em':
         return <em key={key}>{renderInline(node.c, key)}</em>;
       case 'code':
-      case 'token':
+        // Markdown code span rendered with the documented "token chip" feel: a small
+        // surface behind monospace text, inline with the sentence (never a trailing row).
         return (
-          <code key={key} className="font-mono text-foreground">
+          <code
+            key={key}
+            className="rounded-sm bg-secondary px-1.5 py-0.5 font-mono text-[0.85em] text-foreground"
+          >
             {node.v}
           </code>
         );
@@ -80,14 +128,6 @@ function renderBlock(block: DocBlock, index: number, slots: DocMarkdownProps['sl
         </ListTag>
       );
     }
-    case 'chips':
-      return (
-        <div key={key} className="flex flex-wrap items-center gap-2 pt-3">
-          {block.tokens.map((token) => (
-            <CopyableBadge key={`${key}-${token}`} size="sm" text={token} className="font-mono text-xs" />
-          ))}
-        </div>
-      );
     case 'table':
       return (
         <div key={key} className="overflow-x-auto my-4">
@@ -122,25 +162,22 @@ function renderBlock(block: DocBlock, index: number, slots: DocMarkdownProps['sl
   }
 }
 
-/**
- * Renders the spec/content Markdown AST.
- *
- * This component owns typography and spacing only — the prose itself is single-sourced,
- * so the Qt renderer (DocMarkdown.qml) can never drift from it in wording or structure.
- */
 export function DocMarkdown({ id, section, slots }: DocMarkdownProps) {
   const { locale } = useChaSetI18n();
-  const byLocale = docContent[id];
-  const page: DocPage | undefined = byLocale?.[locale] ?? byLocale?.[docContentDefaultLocale];
+  const page = getPage(id, locale) ?? getPage(id, 'zh-CN');
 
   if (!page) {
-    return <div className="text-sm text-destructive">Missing spec/content for “{id}”.</div>;
+    return <div className="text-sm text-destructive">Missing spec/content/{id}/{locale}.md.</div>;
   }
 
   const sections = section ? page.sections.filter((entry) => entry.id === section) : page.sections;
 
   if (!sections.length) {
-    return <div className="text-sm text-destructive">Missing section “{section}” in {id}.md.</div>;
+    return (
+      <div className="text-sm text-destructive">
+        Missing section “{section}” in spec/content/{id}/{locale}.md.
+      </div>
+    );
   }
 
   if (section) {

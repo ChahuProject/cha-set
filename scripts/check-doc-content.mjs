@@ -1,20 +1,24 @@
 // scripts/check-doc-content.mjs
-// Gate: the Markdown-derived doc content must stay in lockstep across the two stacks.
+// Gate: the runtime-parsed living-doc prose must stay valid and in lockstep across stacks.
 //
-// spec/content/<docId>/<locale>.md is parsed at build time (generate-doc-content.mjs) into one
-// AST that both renderers consume. Two things can still rot, and neither is visible to the
-// source-scanning showcase parity gate because the prose no longer lives in the page files:
+// spec/content/<docId>/<locale>.md is parsed at RUNTIME by spec/shared/docAst.mjs — the exact
+// same file both renderers import. Nothing is generated, so this gate is the only thing standing
+// between a typo in prose and a silently blank section:
 //
-//   1. A page migrates to DocMarkdown on one stack but keeps hand-written prose on the other.
-//   2. A page declares a `demo` / `anatomy` / `props` slot that only one stack implements.
-//
-// This check asserts both stacks consume the exact same section set for every documented
-// component, and that every slot referenced by a section is provided by both pages.
-import { existsSync, readFileSync } from 'node:fs';
-import { dirname, join, resolve } from 'node:path';
+//   1. Every .md must parse with zero dialect errors (unknown syntax, missing front matter).
+//   2. Every locale of a doc must expose the same section id sequence.
+//   3. Both stacks must consume the same Markdown section set for that component.
+//   4. Every section authored in Markdown must be rendered by at least one stack.
+//   5. Every slot declared in Markdown must be implemented by both pages.
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { buildDocAst, sectionIds, slotNames } from '../spec/shared/docAst.mjs';
 
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const contentDir = join(rootDir, 'spec', 'content');
+const reactPagesDir = join(rootDir, 'packages', 'react', 'examples', 'basic', 'src', 'pages', 'components');
+const qtPagesDir = join(rootDir, 'qt', 'src');
 
 export const toPascal = (id) =>
   id
@@ -23,10 +27,9 @@ export const toPascal = (id) =>
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join('');
 
-/** Collect the section ids a page pulls from Markdown (empty set = page not migrated yet). */
+/** Section ids a page pulls from Markdown: section="x" (JSX/QML literal) or section={"x"}. */
 export function readSections(source) {
   const ids = new Set();
-  // Matches section="x" (QML/JSX literal) and section={"x"} (JSX expression).
   const re = /section[:=]\s*\{?\s*["']([\w-]+)["']\s*\}?/g;
   let match;
   while ((match = re.exec(source)) !== null) ids.add(match[1]);
@@ -44,23 +47,51 @@ export function readSlots(source) {
 }
 
 export function verifyDocContent({ quiet = false } = {}) {
-  const indexPath = join(rootDir, 'spec', 'content', '_index.json');
-  const reactPagesDir = join(rootDir, 'packages', 'react', 'examples', 'basic', 'src', 'pages', 'components');
-  const qtPagesDir = join(rootDir, 'qt', 'src');
-
-  if (!existsSync(indexPath)) {
-    return { ok: false, checked: 0, errors: ['spec/content/_index.json is missing — run `pnpm gen:docs`'] };
-  }
-
-  const index = JSON.parse(readFileSync(indexPath, 'utf8'));
   const errors = [];
   let checked = 0;
 
-  for (const [docId, byLocale] of Object.entries(index.docs)) {
+  if (!existsSync(contentDir)) {
+    return { ok: true, checked: 0, errors: [] };
+  }
+
+  const docIds = readdirSync(contentDir).filter((name) => {
+    const full = join(contentDir, name);
+    return existsSync(full) && readdirSync(full).some((f) => f.endsWith('.md'));
+  });
+
+  for (const docId of docIds) {
+    const dir = join(contentDir, docId);
+    const localeFiles = readdirSync(dir).filter((f) => f.endsWith('.md')).sort();
+    const pages = {};
+
+    for (const file of localeFiles) {
+      const full = join(dir, file);
+      const locale = file.replace(/\.md$/, '');
+      const { page, errors: parseErrors } = buildDocAst(readFileSync(full, 'utf8'));
+      const where = relative(rootDir, full).replace(/\\/g, '/');
+
+      for (const error of parseErrors) errors.push(`${where}: ${error}`);
+      if (!page) continue;
+      if (page.id !== docId) errors.push(`${where}: front matter id "${page.id}" does not match directory "${docId}"`);
+      pages[locale] = page;
+    }
+
+    const locales = Object.keys(pages);
+    if (locales.length === 0) continue;
+
+    // 2. Every locale must expose the same section sequence.
+    const reference = sectionIds(pages[locales[0]]).join(',');
+    for (const locale of locales.slice(1)) {
+      const actual = sectionIds(pages[locale]).join(',');
+      if (actual !== reference) {
+        errors.push(`[${docId}] ${locale} sections [${actual}] differ from ${locales[0]} [${reference}]`);
+      }
+    }
+
+    // 3-5. Both stacks must consume the same sections and implement the same slots.
     const pascal = toPascal(docId);
     const reactPath = join(reactPagesDir, `${pascal}DocPage.tsx`);
     const qtPath = join(qtPagesDir, `${pascal}DocPage.qml`);
-
     if (!existsSync(reactPath) || !existsSync(qtPath)) {
       const missing = [!existsSync(reactPath) && `${pascal}DocPage.tsx`, !existsSync(qtPath) && `${pascal}DocPage.qml`]
         .filter(Boolean)
@@ -74,23 +105,18 @@ export function verifyDocContent({ quiet = false } = {}) {
     const reactSections = readSections(reactSrc);
     const qtSections = readSections(qtSrc);
 
-    const sections = byLocale[index.defaultLocale] ?? Object.values(byLocale)[0] ?? [];
+    for (const id of reactSections) if (!qtSections.has(id)) errors.push(`[${docId}] Qt page is missing Markdown section "${id}"`);
+    for (const id of qtSections) if (!reactSections.has(id)) errors.push(`[${docId}] React page is missing Markdown section "${id}"`);
 
-    // 1. Both stacks must render the same Markdown sections.
-    const missingQt = [...reactSections].filter((id) => !qtSections.has(id));
-    const missingReact = [...qtSections].filter((id) => !reactSections.has(id));
-    if (missingQt.length) errors.push(`[${docId}] Qt page is missing Markdown section(s): ${missingQt.join(', ')}`);
-    if (missingReact.length) errors.push(`[${docId}] React page is missing Markdown section(s): ${missingReact.join(', ')}`);
-
-    // 2. Every section authored in Markdown must be consumed, otherwise the prose never renders.
-    for (const section of sections) {
-      if (!reactSections.has(section.id) && !qtSections.has(section.id)) {
-        errors.push(`[${docId}] section "${section.id}" exists in ${docId}.md but no page renders it`);
+    const authored = sectionIds(pages[locales[0]]);
+    for (const id of authored) {
+      if (!reactSections.has(id) && !qtSections.has(id)) {
+        errors.push(`[${docId}] section "${id}" exists in ${docId}.md but no page renders it`);
       }
     }
 
-    // 3. Slots referenced by the Markdown must be implemented by both pages.
-    const requiredSlots = new Set(sections.flatMap((s) => s.slots ?? []));
+    const requiredSlots = new Set();
+    for (const locale of locales) for (const name of slotNames(pages[locale])) requiredSlots.add(name);
     const reactSlots = readSlots(reactSrc);
     const qtSlots = readSlots(qtSrc);
     for (const slot of requiredSlots) {
@@ -101,8 +127,8 @@ export function verifyDocContent({ quiet = false } = {}) {
     checked += 1;
   }
 
-  if (!quiet && !errors.length) {
-    console.log(`[check-doc-content] OK — ${checked} documented component(s) consume identical Markdown sections on React & Qt`);
+  if (!quiet && errors.length === 0) {
+    console.log(`[check-doc-content] OK — ${checked} documented component(s) parse cleanly and share identical Markdown sections`);
   }
   return { ok: errors.length === 0, checked, errors };
 }
@@ -110,18 +136,52 @@ export function verifyDocContent({ quiet = false } = {}) {
 /** Prove the detectors still fire, so a silently-broken regex cannot pass the gate forever. */
 export function selfTest() {
   const errors = [];
+
   const sections = readSections('<DocMarkdown id="x" section="animations" />\n<DocMarkdown\n  section={"keyboard"}\n/>');
   if (!sections.has('animations')) errors.push('readSections missed a string section id');
   if (!sections.has('keyboard')) errors.push('readSections missed a JSX expression section id');
   if (readSections('').size !== 0) errors.push('readSections invented a section id from empty input');
-
-  const qtSections = readSections('DocMarkdown {\n    section: "animations"\n}\n');
-  if (!qtSections.has('animations')) errors.push('readSections missed a QML section id');
+  if (!readSections('DocMarkdown {\n    section: "animations"\n}\n').has('animations')) {
+    errors.push('readSections missed a QML section id');
+  }
 
   const slots = readSlots('<DocMarkdown slots={{ overview: <Overview />, anatomy: <Anatomy /> }} />');
   if (!slots.has('overview') || !slots.has('anatomy')) errors.push('readSlots missed object-literal slots');
-  const qtSlots = readSlots('DocMarkdown {\n    slots: { overview: overviewComp }\n}');
-  if (!qtSlots.has('overview')) errors.push('readSlots missed QML slots');
+  if (!readSlots('DocMarkdown {\n    slots: { overview: overviewComp }\n}').has('overview')) {
+    errors.push('readSlots missed QML slots');
+  }
+
+  // The shared parser is the runtime contract: keep a smoke test so a broken edit fails the gate
+  // instead of rendering an empty section in both apps.
+  const fixture = [
+    '---',
+    'id: probe',
+    'component: probe',
+    'category: Probe',
+    'title: Probe',
+    'description: Probe page.',
+    '---',
+    '',
+    '## Animations {#animations}',
+    '',
+    'Intro with `duration-quick` inline.',
+    '',
+    '- First `a` item',
+    '- Second item',
+    '',
+    '```overview',
+    '```',
+    '',
+  ].join('\n');
+  const probe = buildDocAst(fixture);
+  if (probe.errors.length) errors.push(`parser rejected the clean fixture: ${probe.errors.join(' | ')}`);
+  if (sectionIds(probe.page).join(',') !== 'animations') errors.push('parser lost the heading id');
+  if (slotNames(probe.page).join(',') !== 'overview') errors.push('parser lost the slot fence');
+  const inline = probe.page?.sections[0]?.blocks[2]?.items?.[0] ?? [];
+  if (!inline.some((node) => node.t === 'code' && node.v === 'a')) errors.push('parser lost inline code');
+
+  const bad = buildDocAst('> quote\n\n## H {#h}\n');
+  if (!bad.errors.some((error) => error.includes('blockquote'))) errors.push('parser accepted a blockquote');
 
   return { ok: errors.length === 0, errors };
 }

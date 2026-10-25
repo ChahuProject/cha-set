@@ -43,16 +43,6 @@ set_source_files_properties(src/ShowcaseData.generated.qml PROPERTIES
     QT_QML_SKIP_CACHEGEN TRUE
 )
 
-# Markdown-derived doc content contract (spec/content/**.md -> pnpm gen:docs).
-# Lives in the ChaSet module next to the other generated data singletons: a singleton
-# defined in the demo module is not reachable from its own sibling files, so DocMarkdown
-# could not see DocContent.pages and rendered nothing at all.
-set_source_files_properties(src/DocContent.generated.qml PROPERTIES
-    QT_QML_SINGLETON_TYPE TRUE
-    QT_QML_SOURCE_TYPENAME DocContent
-    QT_QML_SKIP_CACHEGEN TRUE
-)
-
 # Icon specification contract and compiled artwork (emitted from
 # spec/icons/registry.json by pnpm gen:icons). QT_QML_SINGLETON_TYPE is what makes
 # ChaSetIcons.resolveIcon() / shapesFor() callable from other components; the pragma
@@ -124,6 +114,8 @@ qt_add_qml_module(ChaSet
     SOURCES
         src/ChaSetClipboard.h
         src/ChaSetClipboard.cpp
+        src/ChaSetDocSource.h
+        src/ChaSetDocSource.cpp
         src/ChaSetFontSystem.h
         src/ChaSetFontSystem.cpp
         src/ChaSetPathUtil.h
@@ -232,7 +224,6 @@ qt_add_qml_module(ChaSet
         src/ChaSetIcons.generated.qml
 
         src/ShowcaseData.generated.qml
-        src/DocContent.generated.qml
         src/ChaSetI18nData.generated.qml
         src/ChaSetI18n.qml
 
@@ -368,6 +359,24 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
     target_link_libraries(QtChaSetDemo PRIVATE
         ChaSet
         Qt6::Test
+    )
+
+    # Living-doc prose is parsed AT RUNTIME (see docs/architecture/markdown-doc-content.md):
+    #   - spec/content/**.md is embedded as-is, so editing prose needs no code generation,
+    #   - spec/shared/docAst.mjs is the single parser shared verbatim with the React bundle,
+    #     placed inside the module directory so `import "vendor/docAst.mjs"` resolves.
+    file(GLOB_RECURSE CHASET_DOC_MD CONFIGURE_DEPENDS
+        "${CMAKE_CURRENT_SOURCE_DIR}/../spec/content/*.md"
+    )
+    qt_add_resources(QtChaSetDemo "chaset_doc_content"
+        PREFIX "/"
+        BASE "${CMAKE_CURRENT_SOURCE_DIR}/.."
+        FILES ${CHASET_DOC_MD}
+    )
+    qt_add_resources(QtChaSetDemo "chaset_doc_parser"
+        PREFIX "/src/vendor"
+        BASE "${CMAKE_CURRENT_SOURCE_DIR}/../spec/shared"
+        FILES "${CMAKE_CURRENT_SOURCE_DIR}/../spec/shared/docAst.mjs"
     )
 
     if(CHASET_QML_HOT_RELOAD)

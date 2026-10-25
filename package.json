@@ -11,7 +11,6 @@
     "gen:qt": "node spec/generators/generate-qt.mjs",
     "gen:highlight": "node spec/generators/generate-highlight.mjs",
     "gen:showcase": "node spec/generators/generate-showcase-data.mjs",
-    "gen:docs": "node spec/generators/generate-doc-content.mjs",
     "gen:icons": "node spec/generators/generate-icons.mjs",
     "gen:all": "node spec/generators/generate-all.mjs",
     "build:tokens": "node spec/generators/generate-all.mjs",

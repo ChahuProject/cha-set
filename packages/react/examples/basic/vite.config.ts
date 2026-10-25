@@ -13,8 +13,9 @@ import tailwindcss from '@tailwindcss/vite';
 function chaSpecWatch(): Plugin {
   const repoRoot = path.resolve(import.meta.dirname, '../../../..');
   const specRoot = path.resolve(repoRoot, 'spec');
+  const contentRoot = path.resolve(specRoot, 'content');
   const genAll = path.resolve(specRoot, 'generators/generate-all.mjs');
-  const watchDirs = ['tokens', 'i18n', 'icons', 'showcase', 'components'].map((d) =>
+  const watchDirs = ['tokens', 'i18n', 'icons', 'showcase', 'components', 'content'].map((d) =>
     path.resolve(specRoot, d)
   );
   // spec/ root-level inputs (capabilities, qt-mapping, top-level scripts).
@@ -63,6 +64,12 @@ function chaSpecWatch(): Plugin {
         // Never react to our own output: spec/tokens.json is rewritten by
         // build-tokens.mjs on every regen.
         if (file === path.resolve(specRoot, 'tokens.json')) return;
+        // Living-doc prose is parsed at runtime (spec/shared/docAst.mjs), so editing a
+        // .md needs nothing but a page reload — no generator run.
+        if (file.startsWith(contentRoot)) {
+          server.ws.send({ type: 'full-reload' });
+          return;
+        }
         if (timer) clearTimeout(timer);
         timer = setTimeout(() => run(server), 300);
       };
@@ -92,5 +99,10 @@ export default defineConfig({
   },
   server: {
     port: 5173,
+    // Living-doc Markdown is imported straight from spec/content at runtime (same sources the
+    // Qt renderer embeds), so the dev server must be allowed to read outside the app root.
+    fs: {
+      allow: [path.resolve(import.meta.dirname, '../../../..')],
+    },
   },
 });

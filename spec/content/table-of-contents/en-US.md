@@ -10,5 +10,5 @@ description: Hierarchical outline navigation tree with guide lines, active indic
 
 Motion behavior and timing for interactive states, strictly following the ChaSet token system.
 
-- State changes (hover, press, focus) animate over [duration-quick](token:duration-quick) with the [ease-standard](token:ease-standard) curve.
-- Durations and easing resolve from theme tokens, so enabling the reduced-motion preference ([prefers-reduced-motion](token:prefers-reduced-motion)) zeroes them automatically; on Qt the switch is governed by `ThemeTokens.animationsEnabled`.
+- State changes (hover, press, focus) animate over `duration-quick` with the `ease-standard` curve.
+- Durations and easing resolve from theme tokens, so enabling the reduced-motion preference (`prefers-reduced-motion`) zeroes them automatically; on Qt the switch is governed by `ThemeTokens.animationsEnabled`.

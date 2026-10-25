@@ -1,11 +1,16 @@
-// DocMarkdown.qml — Renders the single-sourced Markdown AST (spec/content/<docId>/<locale>.md)
+// DocMarkdown.qml — Renders the runtime-parsed Markdown AST (spec/content/<docId>/<locale>.md)
 // for the Living Documentation, mirroring packages/react/.../DocMarkdown.tsx.
 //
-// Prose is authored once; this file owns typography and spacing only. Every text node goes
-// through DocText so sizes resolve from Typography (which is ThemeTokens.sp-scaled), and the
-// copyable chip row is derived from the AST instead of being hand-written per page.
+// Parsing happens at RUNTIME with the SAME parser the React side imports
+// (spec/shared/docAst.mjs, embedded as a module resource). The Markdown itself is embedded
+// verbatim by qt_add_resources and handed over by ChaSetDocSource, so editing prose needs no
+// code generation — only a rebuild.
+//
+// This file owns typography only: every node resolves through DocText / Typography / dp, never
+// through MarkdownText (which would bypass ThemeTokens.sp scaling).
 import QtQuick 6.10
 import ChaSet
+import "vendor/docAst.mjs" as DocAst
 
 Column {
     id: root
@@ -16,29 +21,28 @@ Column {
     property string docId: ""
     /// Render a single section id (incremental migration) or the whole page when empty.
     property string section: ""
-    /// Native implementations for `demo` / `anatomy` / `props` slots: { "<slot>": Component }.
+    /// Native implementations for `overview` / `anatomy` / `props` slots: { "<slot>": Component }.
     property var slots: ({})
 
-    /// DocLayout discovers outline entries from child items; expose the section identity so a
-    /// markdown-driven block lands in the TOC exactly like a hand-written one.
-    readonly property string sectionId: section
-    readonly property string sectionTitle: {
-        if (!page || !page.sections) return "";
-        for (var i = 0; i < page.sections.length; i += 1) {
-            if (page.sections[i].id === section) return page.sections[i].title || "";
-        }
-        return "";
-    }
+    /// Parsed page cache: "<docId>/<locale>" -> page object (null when unreadable).
+    property var pageCache: ({})
 
     readonly property string activeLocale: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.locale)
         ? ChaSetI18n.locale
         : "zh-CN"
 
-    readonly property var page: {
-        if (!docId || typeof DocContent === "undefined" || !DocContent.pages) return null;
-        var byLocale = DocContent.pages[docId];
-        if (!byLocale) return null;
-        return byLocale[activeLocale] || byLocale[DocContent.defaultLocale] || null;
+    readonly property var page: loadPage(docId, activeLocale)
+
+    /// DocLayout discovers outline entries from child items; expose the section identity so a
+    /// markdown-driven block lands in the TOC exactly like a hand-written one.
+    readonly property string sectionId: section
+    readonly property string sectionTitle: {
+        var entry = page;
+        if (!entry || !entry.sections) return "";
+        for (var i = 0; i < entry.sections.length; i += 1) {
+            if (entry.sections[i].id === section) return entry.sections[i].title || "";
+        }
+        return "";
     }
 
     readonly property var blocks: {
@@ -52,14 +56,55 @@ Column {
         return out;
     }
 
-    function esc(value) {        return String(value)
+    /// QML has no file IO (XMLHttpRequest rejects the qrc scheme for sync and async alike), so
+    /// the raw Markdown crosses a C++ boundary and is parsed here, at runtime.
+    function readSource(id, locale) {
+        return ChaSetDocSource.read(id, locale);
+    }
+
+    function loadPage(id, locale) {
+        if (!id) return null;
+        var key = id + "/" + locale;
+        if (pageCache.hasOwnProperty(key)) return pageCache[key];
+
+        var source = readSource(id, locale);
+        if (!source) source = readSource(id, "zh-CN");
+        if (!source) {
+            console.warn("[DocMarkdown] no Markdown source for " + key + " (:/spec/content/)");
+            pageCache[key] = null;
+            return null;
+        }
+
+        var result = DocAst.buildDocAst(source);
+        if (result.errors && result.errors.length > 0) {
+            console.warn("[DocMarkdown] " + key + ".md dialect errors: " + result.errors.join(" | "));
+        }
+        pageCache[key] = result.page;
+        return result.page;
+    }
+
+    function pad2(value) {
+        var hex = Math.round(value * 255).toString(16);
+        return hex.length < 2 ? "0" + hex : hex;
+    }
+
+    function toHex(color) {
+        return "#" + pad2(color.r) + pad2(color.g) + pad2(color.b);
+    }
+
+    function esc(value) {
+        return String(value)
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
             .replace(/>/g, "&gt;");
     }
 
-    function monoSpan(value) {
-        return '<span style="font-family:' + Typography.familyMono + '">' + esc(value) + "</span>";
+    /// Markdown code span → the documented "token chip" feel: monospace on a small surface,
+    /// inline with the sentence. Rich text cannot round corners, so the chip is a flat rectangle.
+    function codeSpan(value) {
+        return '<span style="background-color:' + toHex(ThemeTokens.panelRaised)
+            + "; font-family:" + Typography.familyMono
+            + "; color:" + toHex(ThemeTokens.text) + '">&nbsp;' + esc(value) + "&nbsp;</span>";
     }
 
     function inlineHtml(nodes) {
@@ -69,7 +114,7 @@ Column {
             var node = nodes[i];
             if (node.t === "strong") out += "<b>" + inlineHtml(node.c) + "</b>";
             else if (node.t === "em") out += "<i>" + inlineHtml(node.c) + "</i>";
-            else if (node.t === "code" || node.t === "token") out += monoSpan(node.v);
+            else if (node.t === "code") out += codeSpan(node.v);
             else out += esc(node.v);
         }
         return out;
@@ -77,16 +122,16 @@ Column {
 
     Repeater {
         model: root.blocks
+
         delegate: Item {
             id: block
             width: root.width
             height: blockHeight()
             readonly property var node: modelData
-            readonly property bool isText: node && (node.t === "heading" || node.t === "para")
+            readonly property bool isText: !!node && (node.t === "heading" || node.t === "para")
 
             function blockHeight() {
                 if (!node) return 0;
-                if (node.t === "chips") return chipFlow.height + ThemeTokens.dp(6);
                 if (node.t === "table") return tableColumn.height + ThemeTokens.dp(8);
                 if (node.t === "list") return listColumn.height + ThemeTokens.dp(4);
                 if (node.t === "slot") return slotHost.height + ThemeTokens.dp(6);
@@ -105,7 +150,7 @@ Column {
 
             Column {
                 id: listColumn
-                visible: block.node && block.node.t === "list"
+                visible: !!block.node && block.node.t === "list"
                 width: block.width
                 spacing: ThemeTokens.dp(6)
 
@@ -137,25 +182,9 @@ Column {
                 }
             }
 
-            Flow {
-                id: chipFlow
-                visible: block.node && block.node.t === "chips"
-                width: block.width
-                spacing: ThemeTokens.dp(8)
-
-                Repeater {
-                    model: block.node && block.node.t === "chips" ? block.node.tokens : []
-
-                    ChaSetCopyableBadge {
-                        text: modelData
-                        size: "sm"
-                    }
-                }
-            }
-
             Column {
                 id: tableColumn
-                visible: block.node && block.node.t === "table"
+                visible: !!block.node && block.node.t === "table"
                 width: block.width
                 spacing: 0
 
@@ -204,7 +233,7 @@ Column {
 
             Loader {
                 id: slotHost
-                visible: block.node && block.node.t === "slot"
+                visible: !!block.node && block.node.t === "slot"
                 width: block.width
                 sourceComponent: (block.node && block.node.t === "slot")
                     ? (root.slots[block.node.name] ? root.slots[block.node.name] : null)
