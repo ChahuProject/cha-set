@@ -352,6 +352,29 @@ if (existsSync(i18nCoverageCheckPath)) {
   console.log(`[gate] OK — i18n Translation Coverage Gate passed (${i18nRes.stats.files} files scanned, ${i18nRes.stats.findings} known findings in ratchet baseline, 0 new)`);
 }
 
+// 2.15a Mandatory Markdown Doc Content Gate
+// Prose for the living docs is authored once in spec/content/<docId>/<locale>.md and rendered
+// by DocMarkdown.tsx / DocMarkdown.qml. Because the text no longer sits in the page files, the
+// source-scanning showcase parity gate above cannot see it — this gate asserts both stacks
+// consume the same section set and implement every slot the Markdown declares.
+const docContentCheckPath = resolve(root, 'scripts/check-doc-content.mjs');
+if (existsSync(docContentCheckPath)) {
+  const { verifyDocContent, selfTest: docContentSelfTest } = await import(pathToFileURL(docContentCheckPath).href);
+  const dcSt = docContentSelfTest();
+  if (!dcSt.ok) {
+    console.error('[gate] FAIL: doc content gate self-test failed — the detectors no longer match page syntax');
+    for (const e of dcSt.errors) console.error('  - ' + e);
+    process.exit(1);
+  }
+  const dcRes = verifyDocContent({ quiet: true });
+  if (!dcRes.ok) {
+    console.error('[gate] FAIL: Markdown Doc Content Gate failed — sections drifted across stacks:');
+    for (const err of dcRes.errors) console.error('  - ' + err);
+    process.exit(1);
+  }
+  console.log(`[gate] OK — Markdown Doc Content Gate passed (${dcRes.checked} documented component(s) share identical sections)`);
+}
+
 // 2.16 Mandatory Theme-Adaptive Color Contract Gate
 // Strictly enforces Red Line 18: bare border -> currentColor fallback, hardcoded
 // white/black/zinc borders, and bg surfaces without text pairing across React + Qt.
