@@ -1,0 +1,156 @@
+{
+  "$comment": "Living-documentation typography roles. Single source of truth for DocText (Qt) / DocText.tsx (React). A role is DATA, not a component: it names a slot in the typography scale (spec/tokens/primitives.json -> primitives.typography) plus the semantic tag and default tone. Adding a role means editing this file and running `pnpm gen:roles` — never adding a component, a DocPage, or a CMake entry.",
+  "schemaVersion": 1,
+  "defaultRole": "p",
+  "toneVars": {
+    "default": "foreground",
+    "muted": "muted-foreground",
+    "danger": "destructive"
+  },
+  "roles": {
+    "base": {
+      "tag": "span",
+      "family": "sans",
+      "size": "small",
+      "weight": "regular",
+      "leading": "small",
+      "tracking": "normal",
+      "tone": "default",
+      "wrap": false,
+      "uppercase": false,
+      "_comment": "Legacy untyped text: what DocText rendered before roles existed (12px regular sans, no wrap). Kept as an explicit role so `role: \"\"` keeps its old meaning instead of silently jumping to `p` (14px)."
+    },
+    "display": {
+      "tag": "h1",
+      "family": "sans",
+      "size": "display",
+      "weight": "bold",
+      "leading": "display",
+      "tracking": "tighter",
+      "tone": "default",
+      "wrap": true,
+      "uppercase": false
+    },
+    "h1": {
+      "tag": "h1",
+      "family": "sans",
+      "size": "title",
+      "weight": "bold",
+      "leading": "title",
+      "tracking": "tight",
+      "tone": "default",
+      "wrap": true,
+      "uppercase": false
+    },
+    "h2": {
+      "tag": "h2",
+      "family": "sans",
+      "size": "titleSm",
+      "weight": "semibold",
+      "leading": "titleSm",
+      "tracking": "tight",
+      "tone": "default",
+      "wrap": true,
+      "uppercase": false
+    },
+    "h3": {
+      "tag": "h3",
+      "family": "sans",
+      "size": "heading",
+      "weight": "semibold",
+      "leading": "heading",
+      "tracking": "tight",
+      "tone": "default",
+      "wrap": true,
+      "uppercase": false
+    },
+    "h4": {
+      "tag": "h4",
+      "family": "sans",
+      "size": "body",
+      "weight": "semibold",
+      "leading": "body",
+      "tracking": "normal",
+      "tone": "default",
+      "wrap": true,
+      "uppercase": false
+    },
+    "p": {
+      "tag": "p",
+      "family": "sans",
+      "size": "body",
+      "weight": "regular",
+      "leading": "body",
+      "tracking": "normal",
+      "tone": "muted",
+      "wrap": true,
+      "uppercase": false
+    },
+    "lead": {
+      "tag": "p",
+      "family": "sans",
+      "size": "subheading",
+      "weight": "regular",
+      "leading": "subheading",
+      "tracking": "normal",
+      "tone": "muted",
+      "wrap": true,
+      "uppercase": false
+    },
+    "overline": {
+      "tag": "span",
+      "family": "sans",
+      "size": "small",
+      "weight": "semibold",
+      "leading": "small",
+      "tracking": "wider",
+      "tone": "muted",
+      "wrap": false,
+      "uppercase": true
+    },
+    "caption": {
+      "tag": "span",
+      "family": "sans",
+      "size": "caption",
+      "weight": "regular",
+      "leading": "caption",
+      "tracking": "normal",
+      "tone": "muted",
+      "wrap": true,
+      "uppercase": false
+    },
+    "micro": {
+      "tag": "span",
+      "family": "sans",
+      "size": "micro",
+      "weight": "medium",
+      "leading": "micro",
+      "tracking": "normal",
+      "tone": "muted",
+      "wrap": false,
+      "uppercase": false
+    },
+    "code": {
+      "tag": "code",
+      "family": "mono",
+      "size": "small",
+      "weight": "medium",
+      "leading": "code",
+      "tracking": "normal",
+      "tone": "default",
+      "wrap": false,
+      "uppercase": false
+    },
+    "quote": {
+      "tag": "blockquote",
+      "family": "sans",
+      "size": "body",
+      "weight": "regular",
+      "leading": "relaxed",
+      "tracking": "normal",
+      "tone": "muted",
+      "wrap": true,
+      "uppercase": false
+    }
+  }
+}

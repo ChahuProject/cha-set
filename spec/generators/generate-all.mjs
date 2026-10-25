@@ -24,6 +24,7 @@ if (existsSync(tokensDir)) {
 
 run('generate-css.mjs');
 run('generate-qt.mjs');
+run('generate-doc-roles.mjs');
 run('generate-highlight.mjs');
 run('generate-showcase-data.mjs');
 run('generate-i18n.mjs');

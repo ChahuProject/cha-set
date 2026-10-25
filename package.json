@@ -9,6 +9,8 @@
     "gen:tokens": "node spec/build-tokens.mjs",
     "gen:css": "node spec/generators/generate-css.mjs",
     "gen:qt": "node spec/generators/generate-qt.mjs",
+    "gen:roles": "node spec/generators/generate-doc-roles.mjs",
+    "migrate:doctext": "node scripts/migrate-doc-text.mjs",
     "gen:highlight": "node spec/generators/generate-highlight.mjs",
     "gen:showcase": "node spec/generators/generate-showcase-data.mjs",
     "gen:icons": "node spec/generators/generate-icons.mjs",

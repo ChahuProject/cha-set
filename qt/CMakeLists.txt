@@ -80,6 +80,14 @@ set_source_files_properties(src/SelectionHub.qml PROPERTIES
     QT_QML_SOURCE_TYPENAME SelectionHub
 )
 
+# Doc-typography role table (emitted from spec/doc-roles.json by pnpm gen:roles).
+# Pure data: DocText.qml is the only consumer. Roles live here — not as one QML
+# file per heading level — so the scale stays in one place on both stacks.
+set_source_files_properties(src/DocRoles.generated.qml PROPERTIES
+    QT_QML_SINGLETON_TYPE TRUE
+    QT_QML_SOURCE_TYPENAME DocRoles
+)
+
 # Process-wide overlay registry: the single source of truth for "which floating layers
 # are open right now". Hosts read `count` to suppress product-level key bindings, and
 # every ChaSet overlay registers itself so Escape always dismisses exactly the topmost
@@ -233,6 +241,7 @@ qt_add_qml_module(ChaSet
 
         src/CodeTokens.generated.qml
         src/Typography.generated.qml
+        src/DocRoles.generated.qml
 
         src/SelectionHub.qml
         src/ChaSetOverlayHub.qml
@@ -277,6 +286,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/Main.qml
             src/DocLayout.qml
             src/DocText.qml
+            src/DocSectionHeader.qml
             src/DocChipLayer.qml
             src/DocMarkdown.qml
             src/DocAnatomy.qml
