@@ -74,9 +74,9 @@ export function TypographyPage() {
 
   const qtInvariants = [
     { id: 'rasterizer', label: t('getStarted.typography.rasterizer.labelRasterizer', 'Rasterizer'), value: t('getStarted.typography.rasterizer.qtValRasterizer', 'Selected by CHASET_TEXT_RENDER') },
-    { id: 'policies', label: t('getStarted.typography.rasterizer.labelPolicies', 'Policies'), value: t('getStarted.typography.rasterizer.qtValPolicies', 'qt (default) · native · curve') },
+    { id: 'policies', label: t('getStarted.typography.rasterizer.labelPolicies', 'Policies'), value: t('getStarted.typography.rasterizer.qtValPolicies', 'curve (default) · native · qt') },
     { id: 'subpixel', label: t('getStarted.typography.rasterizer.labelSubpixel', 'Subpixel AA'), value: t('getStarted.typography.rasterizer.qtValSubpixel', 'Disabled — grayscale only') },
-    { id: 'hinting', label: t('getStarted.typography.rasterizer.labelHinting', 'Hinting'), value: t('getStarted.typography.rasterizer.qtValHinting', 'Vertical only') },
+    { id: 'hinting', label: t('getStarted.typography.rasterizer.labelHinting', 'Hinting'), value: t('getStarted.typography.rasterizer.qtValHinting', 'None — outlines are never grid-fitted') },
     { id: 'scale', label: t('getStarted.typography.rasterizer.labelScale', 'Interface scale'), value: t('getStarted.typography.rasterizer.qtValScale', 'uiScale multiplier on every size token') },
   ];
 
@@ -95,7 +95,7 @@ export function TypographyPage() {
         <section className="block" id="rasterizer">
           <SectionHeader
             title={t('getStarted.typography.rasterizer.title', 'Rasterization Path')}
-            description={t('getStarted.typography.rasterizer.desc', 'The two stacks reach the same glyph outlines through different rasterizers. Web asks Chromium for grayscale antialiasing with no grid fitting; Desktop resolves one policy for the whole process before the first window exists.')}
+            description={t('getStarted.typography.rasterizer.desc', 'The two stacks reach the same glyph outlines through different rasterizers. Web hands smoothing to Chromium and never fits outlines to the grid; Desktop resolves one policy for the whole process before the first window exists and integrates the outline per pixel on the GPU, which is what keeps strokes anti-aliased and sharp at the same time.')}
           />
 
           <div className="space-y-4">
@@ -192,7 +192,7 @@ export function TypographyPage() {
                 <Badge variant="secondary">Qt</Badge>
               </div>
               <p className="mb-4 text-small text-muted-foreground">
-                {t('getStarted.typography.integration.desktopDesc', 'Desktop applications initialize the typography system via ChaSet::FontSystem. Two calls in main.cpp configure DirectWrite pure alpha grayscale antialiasing, vertical hinting, and inject CJK fallback tables into QFontDatabase to eliminate bitmap SimSun degradation.')}
+                {t('getStarted.typography.integration.desktopDesc', 'Desktop applications initialize the typography system via ChaSet::FontSystem. Two calls in main.cpp select the GPU curve rasterizer (analytic grayscale coverage, no fringes, no hinting) and inject CJK fallback tables into QFontDatabase to eliminate bitmap SimSun degradation.')}
               </p>
 
               <div className="space-y-4">
@@ -219,13 +219,13 @@ export function TypographyPage() {
                   </p>
                   <ul className="mb-3 list-disc space-y-1 pl-5 text-small text-muted-foreground">
                     <li>
-                      {t('getStarted.typography.integration.envQt', 'qt (default): Qt glyph outline rasterizer (QtTextRendering). Smooth grayscale outline coverage without OS pixel grid-fitting; curves remain smooth when scaled.')}
+                      {t('getStarted.typography.integration.envQt', 'qt: Qt glyph outline rasterizer (QtTextRendering). Still sampled from the platform glyph bitmap, so it keeps the fringes and leaves most of a stroke at half coverage — the page reads dim and out of focus.')}
                     </li>
                     <li>
-                      {t('getStarted.typography.integration.envNative', 'native: Operating-system rasterizer (DirectWrite / CoreText, NativeTextRendering). Crisp pixel-grid fitting for small upright text; staircasing on curves when scaled.')}
+                      {t('getStarted.typography.integration.envNative', 'native: Operating-system rasterizer (DirectWrite / CoreText, NativeTextRendering). Comparison only: the platform engine emits ClearType subpixel glyphs, so every stem is tinted red on one side and blue on the other, and QFont::NoSubpixelAntialias cannot switch it off.')}
                     </li>
                     <li>
-                      {t('getStarted.typography.integration.envCurve', 'curve: Hardware GPU curve rasterizer (CurveTextRendering, Qt 6.7+). Scale-invariant GPU curve rendering; automatically degrades to qt when a software rasterizer is active.')}
+                      {t('getStarted.typography.integration.envCurve', 'curve (default): Hardware GPU curve rasterizer (CurveTextRendering, Qt 6.7+). Coverage is integrated from the outline per pixel, so glyphs are anti-aliased and sharp at once — no colour fringes, no grid fitting, identical at every scale. Automatically degrades to qt when a software rasterizer is active.')}
                     </li>
                   </ul>
                   <CodeBlock code={ENV_SNIPPET} language="bash" filename="Terminal" />
