@@ -152,7 +152,7 @@
       "radiusNone": "none",
       "radiusSm": "sm",
       "resetTarget": "sk-chaset-reset-2048",
-      "resetTimeDesc": "Milliseconds before restoring after a successful copy, default 2000.",
+      "resetTimeDesc": "Milliseconds before restoring after a successful copy, default 1000.",
       "restoreInterval": "Restore interval",
       "textDesc": "Payload copied to the clipboard; may differ from the displayed (possibly truncated) content.",
       "truncateDesc": "The visible label may be truncated while the copied payload stays the full string.",

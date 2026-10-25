@@ -30,7 +30,7 @@ Names and semantics are identical on both stacks; `Type` gives the TypeScript si
 | `radius` | `'none' \| 'sm' \| 'md' \| 'lg' \| 'full'` | `'md'` | Semantic radius of the overlay: none, sm, md, lg or full (pill). |
 | `icon` | `'copy' \| 'check'` | `'copy'` | Resting overlay icon semantic name, default copy. |
 | `copiedIcon` | `'copy' \| 'check'` | `'check'` | Success icon semantic name, default check. |
-| `resetTime` | `number` | `2000` | Milliseconds before restoring after a successful copy, default 2000. |
+| `resetTime` | `number` | `1000` | Milliseconds before restoring after a successful copy, default 1000. |
 | `disabled` | `boolean` | `false` | When disabled the overlay never appears and copy never fires. |
 | `onCopy` | `(text: string) => void` | `undefined` | Fired on successful copy with the copied text. |
 | `onError` | `(error: unknown) => void` | `undefined` | Fired when the clipboard write fails. |

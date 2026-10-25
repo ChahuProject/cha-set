@@ -152,7 +152,7 @@
       "radiusNone": "无",
       "radiusSm": "sm",
       "resetTarget": "sk-chaset-reset-2048",
-      "resetTimeDesc": "复制成功后恢复常态的间隔毫秒数，默认 2000。",
+      "resetTimeDesc": "复制成功后恢复常态的间隔毫秒数，默认 1000。",
       "restoreInterval": "恢复时间",
       "textDesc": "要复制的文本，可与展示内容不同（展示可被截断）。",
       "truncateDesc": "可见标签可能被截断，而复制的载荷始终保持完整字符串。",

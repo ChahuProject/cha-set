@@ -31,7 +31,7 @@ export function HoverCopyDocPage() {
   const copiedStatus = t('components.hover-copy.copiedStatus', 'Copied');
 
   const [previewCopied, setPreviewCopied] = useState(false);
-  const [resetTime, setResetTime] = useState(2000);
+  const [resetTime, setResetTime] = useState(1000);
   const [dim, setDim] = useState(0.45);
   const [radius, setRadius] = useState<HoverCopyRadius>('md');
   const [playgroundDisabled, setPlaygroundDisabled] = useState(false);
@@ -66,7 +66,7 @@ ChaSetCopyableBadge {
     text: "ORDER-1024"
 }`;
 
-  const playgroundReactCode = `const [resetTime, setResetTime] = useState(2000);
+  const playgroundReactCode = `const [resetTime, setResetTime] = useState(1000);
 const [dim, setDim] = useState(0.45);
 const [radius, setRadius] = useState<'none' | 'sm' | 'md' | 'lg' | 'full'>('md');
 
@@ -84,7 +84,7 @@ Column {
         onCurrentValueChanged: (v) => hoverDemo.radius = v
     }
     ChaSetSlider {
-        from: 800; to: 4000; stepSize: 200; value: 2000
+        from: 400; to: 3000; stepSize: 100; value: 1000
         onMoved: (v) => hoverDemo.resetTime = v
     }
     ChaSetSlider {
@@ -148,7 +148,7 @@ ChaSetHoverCopy {
               text={demoToken}
               onCopy={() => {
                 setPreviewCopied(true);
-                window.setTimeout(() => setPreviewCopied(false), 2000);
+                window.setTimeout(() => setPreviewCopied(false), 1000);
               }}
             >
               <Card className="w-64 p-4">
@@ -243,9 +243,9 @@ ChaSetHoverCopy {
               <Slider
                 className="flex-1"
                 value={resetTime}
-                min={800}
-                max={4000}
-                step={200}
+                min={400}
+                max={3000}
+                step={100}
                 onValueChange={setResetTime}
               />
               <span className="w-12 shrink-0 text-right text-xs tabular-nums text-foreground">{resetTime}</span>

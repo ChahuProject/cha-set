@@ -35,7 +35,7 @@ Source: `spec/components/hover-copy.ts`.
 | `radius` | `'md'` | Corner radius of the dim overlay + wrapper. **Never hardcoded** — supplied externally so pill and small-radius contents both work. | `hoverCopyRadiusMap`: `none->rounded-none/0`, `sm->rounded/2`, `md->rounded-md/6`, `lg->rounded-lg/8`, `full->rounded-full/pill` (`pill` = height/2) |
 | `icon` | `'copy'` | Resting overlay icon (semantic name). | React `CopyIcon`, Qt `ChaSetIcon { name: "copy" }` |
 | `copiedIcon` | `'check'` | Success icon (semantic name). | React `CheckIcon`, Qt `ChaSetIcon { name: "check" }` |
-| `resetTime` | `2000` ms | Restore interval after a successful copy. Logic timer — reduced motion does NOT shorten it. | identical both stacks |
+| `resetTime` | `1000` ms | Restore interval after a successful copy. Logic timer — reduced motion does NOT shorten it. | identical both stacks |
 | `disabled` | `false` | Blocks reveal + copy. | identical both stacks |
 
 Motion (visual transitions only) comes from the shared motion tokens

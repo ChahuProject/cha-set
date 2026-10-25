@@ -171,6 +171,23 @@ describe('HoverCopy', () => {
     expect(wrapper).toHaveAttribute('data-state', 'idle');
   });
 
+  it('default resetTime is 1000ms and mouse click blurs so pointer leave restores idle', async () => {
+    vi.useFakeTimers();
+    render(<HoverCopy text="abc">content</HoverCopy>);
+    const wrapper = wrapperOf('content');
+    fireEvent.pointerEnter(wrapper);
+    const button = screen.getByRole('button', { name: 'Copy to clipboard' });
+    fireEvent.click(button, { detail: 1 });
+    await act(async () => {});
+    expect(wrapper).toHaveAttribute('data-state', 'copied');
+
+    fireEvent.pointerLeave(wrapper);
+    act(() => {
+      vi.advanceTimersByTime(1000);
+    });
+    expect(wrapper).toHaveAttribute('data-state', 'idle');
+  });
+
   it('pointer leave during copied does not change state', async () => {
     render(<HoverCopy text="abc">content</HoverCopy>);
     const wrapper = wrapperOf('content');

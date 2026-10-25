@@ -1116,7 +1116,7 @@ static bool runRealHoverCopyVerification(QQuickWindow* window) {
         testHoverCopy->setProperty("forceHover", false);
         testHoverCopy->setProperty("disabled", false);
         testHoverCopy->setProperty("text", QStringLiteral("hover-copy-harness-token"));
-        testHoverCopy->setProperty("resetTime", 2000);
+        testHoverCopy->setProperty("resetTime", 1000);
         testHoverCopy->setParentItem(origParent);
         testHoverCopy->setPosition(origPos);
         testHoverCopy->setZ(origZ);
@@ -1141,7 +1141,7 @@ static bool runRealHoverCopyVerification(QQuickWindow* window) {
     testHoverCopy->setProperty("forceHover", false);
     testHoverCopy->setProperty("disabled", false);
     testHoverCopy->setProperty("text", QStringLiteral("hover-copy-harness-token"));
-    testHoverCopy->setProperty("resetTime", 2000);
+    testHoverCopy->setProperty("resetTime", 1000);
     // A cursor left anywhere by an earlier scenario (e.g. cursor raycasting)
     // makes Qt deliver a synthetic hover-enter the moment the harness is
     // reparented under it, so park the pointer off-target first to establish
@@ -1188,7 +1188,7 @@ static bool runRealHoverCopyVerification(QQuickWindow* window) {
     if (!QMetaObject::invokeMethod(testHoverCopy, "copy"))
         return fail(QStringLiteral("invokeMethod second re-copy on testHoverCopy failed"));
     bool restoredHover = false;
-    for (int poll = 0; poll < 20; ++poll) {
+    for (int poll = 0; poll < 30; ++poll) {
         QTest::qWait(200);
         if (hoverState() == QStringLiteral("hovered")) { restoredHover = true; break; }
     }
@@ -1206,7 +1206,7 @@ static bool runRealHoverCopyVerification(QQuickWindow* window) {
     if (!QMetaObject::invokeMethod(testHoverCopy, "copy"))
         return fail(QStringLiteral("invokeMethod copy() before idle-restore failed"));
     bool restoredIdle = false;
-    for (int poll = 0; poll < 20; ++poll) {
+    for (int poll = 0; poll < 30; ++poll) {
         QTest::qWait(200);
         if (hoverState() == QStringLiteral("idle")) { restoredIdle = true; break; }
     }

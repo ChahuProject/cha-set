@@ -21,7 +21,7 @@ describe('hover-copy shared contract', () => {
     expect(hoverCopyDefaults.radius).toBe('md');
     expect(hoverCopyDefaults.icon).toBe('copy');
     expect(hoverCopyDefaults.copiedIcon).toBe('check');
-    expect(hoverCopyDefaults.resetTime).toBe(2000);
+    expect(hoverCopyDefaults.resetTime).toBe(1000);
   });
 
   it('radius map covers all five semantic radii with web + qt geometry', () => {
@@ -52,7 +52,7 @@ describe('hover-copy React mirror', () => {
 
   it('mirrors the behavior defaults', () => {
     expect(reactSource).toContain('0.45');
-    expect(reactSource).toContain('2000');
+    expect(reactSource).toContain('1000');
     expect(reactSource).toContain(`icon = 'copy'`);
     expect(reactSource).toContain(`copiedIcon = 'check'`);
     expect(reactSource).toContain(`radius = 'md'`);
@@ -75,7 +75,7 @@ describe('hover-copy Qt mirror', () => {
 
   it('mirrors the behavior defaults', () => {
     expect(qmlSource).toContain('0.45');
-    expect(qmlSource).toContain('2000');
+    expect(qmlSource).toContain('1000');
     expect(qmlSource).toContain('"copy"');
     expect(qmlSource).toContain('"check"');
   });

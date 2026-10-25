@@ -1069,7 +1069,7 @@ ApplicationWindow {
                     console.log("[qt-scenario] FAIL: testHoverCopy text expected 'hover-copy-harness-token', got '" + testHoverCopy.text + "'");
                     hcFailures++;
                 }
-                if (testHoverCopy.dim !== 0.45 || testHoverCopy.radius !== "md" || testHoverCopy.resetTime !== 2000 || testHoverCopy.disabled !== false) {
+                if (testHoverCopy.dim !== 0.45 || testHoverCopy.radius !== "md" || testHoverCopy.resetTime !== 1000 || testHoverCopy.disabled !== false) {
                     console.log("[qt-scenario] FAIL: testHoverCopy defaults drifted (dim=" + testHoverCopy.dim + ", radius=" + testHoverCopy.radius + ", resetTime=" + testHoverCopy.resetTime + ", disabled=" + testHoverCopy.disabled + ")");
                     hcFailures++;
                 }

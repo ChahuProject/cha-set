@@ -22,7 +22,7 @@ DocLayout {
     property string copyStatus: ChaSetI18n.tr("components.hover-copy.hoverHint", "Hover the card, then click anywhere on the overlay to copy.")
     property string playgroundRadius: "md"
     property real playgroundDim: 0.45
-    property int playgroundResetTime: 2000
+    property int playgroundResetTime: 1000
     property bool playgroundDisabled: false
     // Demo payloads stay byte-identical across locales: plain properties,
     // never raw quoted literals on visible text bindings.
@@ -167,8 +167,8 @@ ChaSetHoverCopy {
         ComponentPreview {
             title: ChaSetI18n.tr("showcase.previewTitles.Timing & Dim Controls", "Timing & Dim Controls")
             stageHeight: 200
-            reactCode: `const [resetTime, setResetTime] = useState(2000);\nconst [dim, setDim] = useState(0.45);\nconst [radius, setRadius] = useState<'none' | 'sm' | 'md' | 'lg' | 'full'>('md');\n\n<HoverCopy text="sk-chaset-reset-2048" resetTime={resetTime} dim={dim} radius={radius} disabled={disabled}>\n  <code className="text-xs font-mono">sk-chaset-reset-2048</code>\n</HoverCopy>`
-            qtCode: `ChaSetHoverCopy {\n    text: "sk-chaset-reset-2048"\n    radius: "md"\n    dim: 0.45\n    resetTime: 2000\n    onCopiedToClipboard: (txt) => console.log("Copied:", txt)\n\n    Text {\n        text: "sk-chaset-reset-2048"\n        font.family: Typography.familyMono\n    }\n}`
+            reactCode: `const [resetTime, setResetTime] = useState(1000);\nconst [dim, setDim] = useState(0.45);\nconst [radius, setRadius] = useState<'none' | 'sm' | 'md' | 'lg' | 'full'>('md');\n\n<HoverCopy text="sk-chaset-reset-2048" resetTime={resetTime} dim={dim} radius={radius} disabled={disabled}>\n  <code className="text-xs font-mono">sk-chaset-reset-2048</code>\n</HoverCopy>`
+            qtCode: `ChaSetHoverCopy {\n    text: "sk-chaset-reset-2048"\n    radius: "md"\n    dim: 0.45\n    resetTime: 1000\n    onCopiedToClipboard: (txt) => console.log("Copied:", txt)\n\n    Text {\n        text: "sk-chaset-reset-2048"\n        font.family: Typography.familyMono\n    }\n}`
 
             Item {
                 anchors.fill: parent
@@ -226,9 +226,9 @@ ChaSetHoverCopy {
                         width: ThemeTokens.dp(160)
                         size: "sm"
                         value: root.playgroundResetTime
-                        min: 800
-                        max: 4000
-                        step: 200
+                        min: 400
+                        max: 3000
+                        step: 100
                         onValueMoved: function(val) { root.playgroundResetTime = Math.round(val) }
                     }
                     DocText {

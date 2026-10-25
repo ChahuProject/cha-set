@@ -44,7 +44,7 @@ export const hoverCopyDefaults = {
   radius: 'md' as HoverCopyRadius,
   icon: 'copy' as HoverCopyIcon,
   copiedIcon: 'check' as HoverCopyIcon,
-  resetTime: 2000,
+  resetTime: 1000,
 };
 
 /** State machine states, shared vocabulary for both stacks and tests. */

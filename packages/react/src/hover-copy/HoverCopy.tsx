@@ -33,7 +33,7 @@ export interface HoverCopyProps extends Omit<React.HTMLAttributes<HTMLSpanElemen
   icon?: HoverCopyIcon;
   /** Success icon (semantic name). @default 'check' */
   copiedIcon?: HoverCopyIcon;
-  /** Restore interval after a successful copy, in ms. Logic timer — reduced motion never shortens it. @default 2000 */
+  /** Restore interval after a successful copy, in ms. Logic timer — reduced motion never shortens it. @default 1000 */
   resetTime?: number;
   /** Blocks reveal + copy. @default false */
   disabled?: boolean;
@@ -68,7 +68,7 @@ export const HoverCopy = React.forwardRef<HTMLSpanElement, HoverCopyProps>(
       radius = 'md',
       icon = 'copy',
       copiedIcon = 'check',
-      resetTime = 2000,
+      resetTime = 1000,
       disabled = false,
       onCopy,
       onError,
@@ -170,6 +170,12 @@ export const HoverCopy = React.forwardRef<HTMLSpanElement, HoverCopyProps>(
     const handleCopy = async (event: React.MouseEvent<HTMLElement>) => {
       event.stopPropagation();
       if (disabled) return;
+      // A mouse/touch click should not leave focus stuck on the inner button,
+      // which would keep the dim overlay open after pointer-leave.
+      if (event.detail > 0) {
+        (event.currentTarget as HTMLElement)?.blur?.();
+        focusInsideRef.current = false;
+      }
       // Transition #6: empty text is a silent no-op — no clipboard call, no
       // callbacks, no error, no state change.
       if (!text) return;

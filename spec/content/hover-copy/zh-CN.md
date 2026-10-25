@@ -30,7 +30,7 @@ Tab 聚焦居中按钮，Enter 或 Space 执行复制，点击遮罩任意位置
 | `radius` | `'none' \| 'sm' \| 'md' \| 'lg' \| 'full'` | `'md'` | 遮罩圆角语义值：none、sm、md、lg 或 full（pill）。 |
 | `icon` | `'copy' \| 'check'` | `'copy'` | 常态浮层图标语义名，默认 copy。 |
 | `copiedIcon` | `'copy' \| 'check'` | `'check'` | 复制成功后的图标语义名，默认 check。 |
-| `resetTime` | `number` | `2000` | 复制成功后恢复常态的间隔毫秒数，默认 2000。 |
+| `resetTime` | `number` | `1000` | 复制成功后恢复常态的间隔毫秒数，默认 1000。 |
 | `disabled` | `boolean` | `false` | 禁用后不显示浮层且不触发复制。 |
 | `onCopy` | `(text: string) => void` | `undefined` | 复制成功回调，参数为被复制的文本。 |
 | `onError` | `(error: unknown) => void` | `undefined` | 复制失败回调。 |

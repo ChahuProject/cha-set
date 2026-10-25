@@ -18,7 +18,7 @@ Item {
     property string radius: "md"            // "none" | "sm" | "md" | "lg" | "full"
     property string icon: "copy"            // semantic ChaSetIcon name
     property string copiedIcon: "check"     // semantic ChaSetIcon name
-    property int resetTime: 2000            // ms, logic timer (NOT affected by animationsEnabled)
+    property int resetTime: 1000            // ms, logic timer (NOT affected by animationsEnabled)
     property bool disabled: false
     property bool forceHover: false         // deterministic test hook
 

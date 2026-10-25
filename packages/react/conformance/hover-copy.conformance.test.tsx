@@ -22,7 +22,7 @@ describe('HoverCopy conformance (spec contract)', () => {
     expect(parsed.radius).toBe(hoverCopyDefaults.radius);
     expect(parsed.radius).toBe('md');
     expect(parsed.resetTime).toBe(hoverCopyDefaults.resetTime);
-    expect(parsed.resetTime).toBe(2000);
+    expect(parsed.resetTime).toBe(1000);
     expect(parsed.icon).toBe('copy');
     expect(parsed.copiedIcon).toBe('check');
     expect(parsed.disabled).toBe(false);
