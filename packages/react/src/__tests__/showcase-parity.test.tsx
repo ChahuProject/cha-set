@@ -66,8 +66,8 @@ describe('Showcase Parity Assurance System (SPAS)', () => {
         ComponentPreview { title: "Sandbox" }
         DocAnatomy { sectionId: "anatomy" }
         Column { DocText { text: "Variants"; font.pixelSize: Typography.sizeTitleSm } }
-        KeyboardShortcutsTable { componentId: "test" }
-        PropsTable { propsModel: [] }
+        DocMarkdown { width: parent.width; docId: "test"; section: "keyboard" }
+        DocMarkdown { width: parent.width; docId: "test"; section: "props" }
       }
     `;
     const qMeta = extractQtDocMetadata(syntheticQt);
