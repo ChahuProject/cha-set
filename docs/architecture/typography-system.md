@@ -325,3 +325,136 @@ In `packages/react/src/styles/theme.css`:
 ```
 Host React applications can override `--font-sans: 'Inter', var(--cs-font-sans);` while automatically inheriting the full Chinese fallback chain (`PingFang SC`, `Microsoft YaHei`, `Noto Sans SC`).
 
+
+---
+
+## 11. Doc roles: the living-documentation scale
+
+The Living Documentation has its own typographic **roles**. A role is a slot in
+the scale above (`primitives.typography`) plus a semantic tag, a default tone and
+a wrap/capitalization flag — **not a component**.
+
+### 11.1 Why roles are data, not components
+
+The obvious refactor — one component per heading level (`<H1> <H2> <H3> <H4>
+<Code>` …) — was measured and rejected:
+
+| Evidence (before this refactor) | Count |
+| :--- | :--- |
+| Raw `<h2` in the React showcase | 166 |
+| Raw `<h3` / `<h4` | 21 / 27 |
+| Distinct `className` strings on `<h4>` alone | 6+ (`text-sm font-semibold`, `text-caption font-medium`, `text-xs uppercase tracking-wider`, …) |
+| `DocText` instances in QML with a hand-written `font.pixelSize` | 282 |
+| Roles defined inside `DocText.qml` | 7 (`h1 h2 h3 p caption micro code`) — **no `h4`**, which was used 27 times |
+
+Splitting per level would have produced 8–13 components that are *the same
+`TextEdit` with four different numbers* while:
+
+1. **keeping the switch** — the Markdown AST (`block.level`) still needs a
+   level→style mapping; it would just move from inside `DocText` to a component
+   table at every call site (and in QML, a per-block `Loader` swap);
+2. **multiplying gate obligations** — every `spec/components/*.ts` owes a React
+   DocPage, a QML DocPage, a `navigation.json` entry, a CMake line and a runtime
+   scenario; 13 zero-behaviour components ≈ 13× that bookkeeping;
+3. **breaking rich text** — `DocMarkdown` feeds `textFormat: RichText` and the
+   inline token chips are positioned by `DocChipLayer`, which reads fragment
+   geometry from one known `TextEdit`. Per-level components tempt plain-text-only
+   APIs and silently kill `<strong>` / chip spans;
+4. **freezing the divergence** — six accidental `<h4>` looks would have become
+   six "components" instead of one decision.
+
+What composition actually needed was the opposite split: **roles stay data, only
+behaviour becomes a component, and composition happens at block level**
+(`SectionHeader` / `DocSectionHeader`), not at the level of a single line.
+
+### 11.2 Single source of truth
+
+`spec/doc-roles.json` → `pnpm gen:roles` (`spec/generators/generate-doc-roles.mjs`)
+→ two artifacts emitted from the same table:
+
+| Target | Artifact | Contents |
+| :--- | :--- | :--- |
+| Web (doc layer) | `packages/react/examples/basic/src/components/docRoles.generated.ts` | `DocRole` union, `docRoles` map of **CSS-variable references**, `docToneColor`, `resolveDocRole()` |
+| Qt | `qt/src/DocRoles.generated.qml` (singleton `DocRoles`) | same table in scaled px (`ThemeTokens.sp`), int weights, ratio leading, em tracking |
+
+Both artifacts are deliberately **doc-layer**: they are not exported from
+`@chahu/cha-set`, and product components keep using the tokens directly, so the
+documentation scale cannot leak into product UI by accident.
+
+Consumer primitives (one per stack, both reading the table):
+
+- `packages/react/examples/basic/src/components/DocText.tsx`
+- `qt/src/DocText.qml`
+
+### 11.3 The roles
+
+| Role | Size | Weight | Family | Tag (web) | Default tone | Notes |
+| :--- | ---: | ---: | :--- | :--- | :--- | :--- |
+| `base` | 12 | 400 | sans | `span` | default | Legacy untyped text; what `role: ""` kept meaning |
+| `display` | 36 | 700 | sans | `h1` | default | Page title (`DocLayout`) |
+| `h1` | 28 | 700 | sans | `h1` | default | |
+| `h2` | 20 | 600 | sans | `h2` | default | Section title |
+| `h3` | 16 | 600 | sans | `h3` | default | Sub-section |
+| `h4` | 14 | 600 | sans | `h4` | default | Card / group title |
+| `p` | 14 | 400 | sans | `p` | **muted** | Body copy |
+| `lead` | 18 | 400 | sans | `p` | **muted** | Page intro |
+| `overline` | 12 | 600 | sans | `span` | muted | ALL CAPS + `tracking-wider` |
+| `caption` | 11 | 400 | sans | `span` | muted | |
+| `micro` | 10 | 500 | sans | `span` | muted | Breadcrumbs, inline meta |
+| `code` | 12 | 500 | **mono** | `code` | default | Inline token chip |
+| `quote` | 14 | 400 | sans | `blockquote` | muted | `leading-relaxed` |
+
+A role carries **no margin**. Qt resolves block spacing through `Column.spacing`
+while the web uses utilities; a role with a built-in margin would drift between
+the stacks the moment either side changed. Spacing lives in the block
+(`SectionHeader` / `DocSectionHeader`) or at the call site.
+
+### 11.4 Adding a role
+
+1. Add the entry to `spec/doc-roles.json` (reference primitive **names** —
+   `size: "titleSm"`, `leading: "titleSm"`, not raw numbers).
+2. Run `pnpm gen:roles`. The generator fails loud if a referenced primitive does
+   not exist, so a typo can never silently fall back to `p`.
+3. Nothing else. No component, no DocPage, no CMake line, no gate entry — both
+   stacks pick it up, and `DocRole` becomes a compile error at any call site
+   still passing the old string.
+
+### 11.5 Qt encoding quirks
+
+1. `size` is emitted as `ThemeTokens.sp(px)`, i.e. **already scaled** — `DocText`
+   assigns it to `font.pixelSize` verbatim.
+2. `leading` is a unitless ratio. `DocText` applies it through
+   `lineHeightMode: Text.ProportionalHeight` **only for roles that wrap**
+   (`strictLeading && style.wrap`); single-line labels keep `1.0`, so growing
+   leading can never clip a fixed-height row.
+3. `tracking` is an em ratio while `Text.letterSpacing` is in **px**, so
+   `DocText` computes `tracking × font.pixelSize`.
+4. `role: ""` maps to `base`, preserving the pre-roles default (12px regular).
+5. An explicit `color:` assignment on a `DocText` instance still wins over the
+   role's tone (QML replaces the binding), and `isMuted` remains as a
+   compatibility alias for `tone: "muted"`.
+
+### 11.6 Migrating call sites
+
+`scripts/migrate-doc-text.mjs` (idempotent) rewrites raw `<h1…h4>` / `<p>` in the
+React showcase onto roles and repairs the `DocText` import position:
+
+```bash
+node scripts/migrate-doc-text.mjs --dry-run   # report only
+node scripts/migrate-doc-text.mjs --check     # exit 1 if drift remains
+node scripts/migrate-doc-text.mjs             # rewrite
+```
+
+It intentionally **leaves alone** (and reports) the sites that need a human
+decision: body copy at a non-canonical size (`text-xs`, no size class), an
+explicit weight on a `<p>`, and caption-sized `<h4>` specimen labels. 95 such
+sites remain — they are the next authoring decision, not a codemod target.
+
+### 11.7 Verification
+
+```bash
+pnpm gen:all                                     # idempotent; also emits doc roles
+node scripts/migrate-doc-text.mjs --check        # zero raw headings left to migrate
+pnpm --filter @chahu/cha-set typecheck           # no new diagnostics
+pnpm gate                                        # dual-stack showcase completeness
+```
