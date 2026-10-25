@@ -114,6 +114,9 @@ Column {
 
     /// Anchor href prefix that marks an inline chip. Shared with DocChipLayer.marker.
     readonly property string chipMarker: "chip:"
+    /// Anchor href prefix that marks one keycap. A shortcut like [[Ctrl+K]] emits one anchor
+    /// per key, because each key is its own cap and the separator in between must stay bare.
+    readonly property string keyMarker: "key:"
 
     /// Markdown code span → token chip.
     ///
@@ -144,17 +147,103 @@ Column {
             + '">' + esc(value) + "</span>" + pad + "</a>";
     }
 
-    function inlineHtml(nodes) {
+    function inlineHtml(nodes, flat) {
         var out = "";
         if (!nodes) return out;
         for (var i = 0; i < nodes.length; i += 1) {
             var node = nodes[i];
-            if (node.t === "strong") out += "<b>" + inlineHtml(node.c) + "</b>";
-            else if (node.t === "em") out += "<i>" + inlineHtml(node.c) + "</i>";
-            else if (node.t === "code") out += codeSpan(node.v);
+            if (node.t === "strong") out += "<b>" + inlineHtml(node.c, flat) + "</b>";
+            else if (node.t === "em") out += "<i>" + inlineHtml(node.c, flat) + "</i>";
+            else if (node.t === "code") out += flat ? monoSpan(node.v) : codeSpan(node.v);
+            else if (node.t === "kbd") out += flat ? monoSpan(node.v) : keycapHtml(node.v);
             else out += esc(node.v);
         }
         return out;
+    }
+
+    /// Table cells are DATA, not prose. They carry no chip layer, so a `background-color`
+    /// would fill the whole line box and read as a highlight band. Both stacks therefore drop
+    /// the surface inside tables and keep the monospace treatment only — the cell text renders
+    /// identically on the two stacks instead of being one rounded pill and one grey bar.
+    function monoSpan(value) {
+        return '<span style="font-family:' + Typography.familyMono
+            + "; font-size:" + Typography.sizeSmall + "px"
+            + "; color:" + toHex(ThemeTokens.text) + '">' + esc(value) + "</span>";
+    }
+
+    /// [[Ctrl+K]] / [[Space / Enter]] → one bordered keycap per key, bare separators between.
+    /// The split comes from the shared parser so both stacks agree on where a key starts.
+    function keycapHtml(value) {
+        var groups = DocAst.splitShortcut(value);
+        if (!groups || groups.length === 0) return esc(value);
+        var out = "";
+        for (var g = 0; g < groups.length; g += 1) {
+            if (g > 0) out += " / ";
+            for (var k = 0; k < groups[g].length; k += 1) {
+                if (k > 0) out += "+";
+                out += keySpan(groups[g][k]);
+            }
+        }
+        return out;
+    }
+
+    /// One keycap, authored exactly like codeSpan(): two small padding cells around the key so
+    /// the painted box hugs the glyph instead of the whole line box. The padding cells need
+    /// `text-decoration:none`, otherwise the anchor's underline crosses the cap.
+    function keySpan(key) {
+        var pad = '<span style="font-family:' + Typography.familyMono
+            + "; font-size:" + Typography.sizeMicro + "px"
+            + "; text-decoration:none"
+            + "; color:" + toHex(ThemeTokens.text) + '">&nbsp;</span>';
+        return '<a href="' + keyMarker + attr(key) + '">' + pad
+            + '<span style="font-family:' + Typography.familyMono
+            + "; font-size:" + Typography.sizeSmall + "px"
+            + "; text-decoration:none; color:" + toHex(ThemeTokens.text)
+            + '">' + esc(key) + "</span>" + pad + "</a>";
+    }
+
+    /// ```table <schema>``` → the column descriptors ChaSetTable already consumes. The schema
+    /// table itself lives in spec/shared/docAst.mjs, so React and Qt cannot disagree on what
+    /// a `props` table means: both read the same kind/width list.
+    function tableColumns(node) {
+        var spec = DocAst.DOC_SCHEMAS[node.schema];
+        var columns = [];
+        for (var i = 0; i < node.head.length; i += 1) {
+            var def = (spec && spec.length > i) ? spec[i] : { kind: "rich", wrap: true };
+            var column = {
+                key: "c" + i,
+                title: DocAst.inlineText(node.head[i]).toUpperCase(),
+                code: def.kind === "code",
+                copyableBadge: def.kind === "copyable",
+                kbd: def.kind === "kbd",
+                wrap: def.kind === "rich",
+                rich: def.kind === "rich"
+            };
+            if (def.width) column.width = def.width;
+            columns.push(column);
+        }
+        return columns;
+    }
+
+    function tableRows(node) {
+        var spec = DocAst.DOC_SCHEMAS[node.schema];
+        var rows = [];
+        for (var r = 0; r < node.rows.length; r += 1) {
+            var record = {};
+            for (var c = 0; c < node.rows[r].length; c += 1) {
+                var def = (spec && spec.length > c) ? spec[c] : { kind: "rich" };
+                if (def.kind === "rich") {
+                    record["c" + c] = inlineHtml(node.rows[r][c], true);
+                } else {
+                    var text = DocAst.inlineText(node.rows[r][c]);
+                    // An authored empty default cell would render as an empty badge; the em
+                    // dash is what "no default" looks like everywhere else in the showcase.
+                    record["c" + c] = (def.kind === "copyable" && text === "") ? "—" : text;
+                }
+            }
+            rows.push(record);
+        }
+        return rows;
     }
 
     Repeater {
@@ -169,7 +258,7 @@ Column {
 
             function blockHeight() {
                 if (!node) return 0;
-                if (node.t === "table") return tableColumn.height + ThemeTokens.dp(8);
+                if (node.t === "table") return tableTable.implicitHeight + ThemeTokens.dp(8);
                 if (node.t === "list") return listColumn.height + ThemeTokens.dp(4);
                 if (node.t === "slot") return slotHost.height + ThemeTokens.dp(6);
                 return textBlock.contentHeight + (node.t === "heading" ? ThemeTokens.dp(4) : ThemeTokens.dp(8));
@@ -178,6 +267,18 @@ Column {
             DocChipLayer {
                 target: textBlock
                 marker: root.chipMarker
+            }
+
+            /// Keycaps sit behind the text exactly like the token pills do, but with a hairline
+            /// outline instead of a lighter fill. Two layers, same geometry source.
+            DocChipLayer {
+                target: textBlock
+                marker: root.keyMarker
+                chipColor: ThemeTokens.panel
+                borderColor: ThemeTokens.border
+                borderWidth: ThemeTokens.dp(1)
+                radius: ThemeTokens.dp(4)
+                verticalPadding: ThemeTokens.dp(7) / 2
             }
 
             DocText {
@@ -216,6 +317,16 @@ Column {
                             marker: root.chipMarker
                         }
 
+                        DocChipLayer {
+                            target: itemText
+                            marker: root.keyMarker
+                            chipColor: ThemeTokens.panel
+                            borderColor: ThemeTokens.border
+                            borderWidth: ThemeTokens.dp(1)
+                            radius: ThemeTokens.dp(4)
+                            verticalPadding: ThemeTokens.dp(7) / 2
+                        }
+
                         DocText {
                             id: itemText
                             x: ThemeTokens.dp(16)
@@ -229,53 +340,18 @@ Column {
                 }
             }
 
-            Column {
-                id: tableColumn
+            /// Tables are delegated to the design system's own table, driven by the column
+            /// descriptors from the shared schema: a Markdown `props` table therefore lands on
+            /// the same chrome (header strip, borders, copyable badges, keycaps) as the
+            /// hand-written PropsTable instead of being painted a second time here.
+            ChaSetTable {
+                id: tableTable
                 visible: !!block.node && block.node.t === "table"
                 width: block.width
-                spacing: 0
-
-                readonly property var allRows: (block.node && block.node.t === "table")
-                    ? [block.node.head].concat(block.node.rows)
-                    : []
-                readonly property int columnCount: allRows.length > 0 ? allRows[0].length : 1
-
-                Repeater {
-                    model: tableColumn.allRows
-
-                    delegate: Item {
-                        id: rowItem
-                        width: tableColumn.width
-                        height: rowHost.height + ThemeTokens.dp(10)
-                        readonly property bool isHeaderRow: index === 0
-
-                        Row {
-                            id: rowHost
-                            width: parent.width
-                            spacing: 0
-
-                            Repeater {
-                                model: modelData
-
-                                delegate: DocText {
-                                    role: "p"
-                                    width: tableColumn.width / tableColumn.columnCount
-                                    color: rowItem.isHeaderRow ? ThemeTokens.text : ThemeTokens.subduedText
-                                    textFormat: TextEdit.RichText
-                                    text: root.inlineHtml(modelData)
-                                }
-                            }
-                        }
-
-                        Rectangle {
-                            y: rowHost.height + ThemeTokens.dp(4)
-                            width: parent.width
-                            height: 1
-                            color: ThemeTokens.border
-                            opacity: rowItem.isHeaderRow ? 1.0 : 0.4
-                        }
-                    }
-                }
+                height: implicitHeight
+                interactive: false
+                columns: (block.node && block.node.t === "table") ? root.tableColumns(block.node) : []
+                rows: (block.node && block.node.t === "table") ? root.tableRows(block.node) : []
             }
 
             Loader {

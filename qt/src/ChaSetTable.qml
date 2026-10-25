@@ -311,6 +311,11 @@ Rectangle {
                                 font.family: (columnDef && columnDef.code) ? Typography.familyMono : Typography.familySans
                                 font.weight: Boolean(columnDef && columnDef.code) ? Typography.weightMedium : Typography.weightRegular
                                 font.pixelSize: Typography.sizeSmall
+                                // Column values are DATA, not markup: a type such as
+                                // `Map<string, T>` must not be sniffed as rich text. A caller
+                                // that deliberately passes markup opts in per column with
+                                // `rich: true` (living-doc prose cells do).
+                                textFormat: Boolean(columnDef && columnDef.rich) ? TextEdit.RichText : TextEdit.PlainText
                                 readOnly: true
                                 clip: true
                                 wrapMode: (columnDef && columnDef.wrap) ? TextEdit.WordWrap : TextEdit.NoWrap
