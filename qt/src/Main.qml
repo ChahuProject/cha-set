@@ -1429,13 +1429,18 @@ ApplicationWindow {
             console.log("[qt-scenario] Running Table of Contents interactive scrolling scenario...");
             var tocFailures = 0;
             var docItem = pageLoader.item;
-            if (!docItem || !docItem.tocItems || docItem.tocItems.length === 0) {
+            var tocList = (docItem && docItem.effectiveTocItems && docItem.effectiveTocItems.length > 0) ? docItem.effectiveTocItems : (docItem ? docItem.tocItems : []);
+            console.log("[qt-scenario] effectiveTocItems length =", tocList ? tocList.length : 0);
+            for (var k = 0; k < (tocList ? tocList.length : 0); k++) {
+                console.log("[qt-scenario] TOC item", k, ":", tocList[k].id, tocList[k].title);
+            }
+            if (!docItem || !tocList || tocList.length === 0) {
                 console.log("[qt-scenario] FAIL: pageLoader.item is not a DocLayout with tocItems");
                 tocFailures++;
             } else {
                 // 1. Verify findSectionTarget locates all tocItems declared on the active page
-                for (var t = 0; t < docItem.tocItems.length; t++) {
-                    var item = docItem.tocItems[t];
+                for (var t = 0; t < tocList.length; t++) {
+                    var item = tocList[t];
                     var target = docItem.findSectionTarget(item);
                     if (!target) {
                         console.log("[qt-scenario] FAIL: findSectionTarget failed to find target for '" + item.id + "' ('" + item.title + "')");
@@ -1443,22 +1448,42 @@ ApplicationWindow {
                     }
                 }
 
-                // 2. Test scrollToSection to second section and verify scrolling
-                if (docItem.tocItems.length > 1) {
-                    var secondItem = docItem.tocItems[1];
+                // 2. Test scrollToSection to second section and verify scrolling and activeTocIndex follow
+                if (tocList.length > 1) {
+                    var secondItem = tocList[1];
                     docItem.scrollToSection(secondItem);
                     if (contentScroll.contentY <= 0) {
                         console.log("[qt-scenario] FAIL: scrollToSection('" + secondItem.id + "') did not advance contentScroll.contentY (got " + contentScroll.contentY + ")");
                         tocFailures++;
                     }
+                    docItem.updateActiveTocOnScroll();
+                    if (docItem.activeTocIndex !== 1) {
+                        console.log("[qt-scenario] FAIL: activeTocIndex expected 1 after scrolling to second section, got " + docItem.activeTocIndex);
+                        tocFailures++;
+                    }
                 }
 
-                // 3. Test scrollToSection back to first section
-                if (docItem.tocItems.length > 0) {
-                    var firstItem = docItem.tocItems[0];
+                // 3. Test scrolling to bottom of viewport and verify auto-follow to last section
+                if (tocList.length > 2) {
+                    contentScroll.scrollToBottom(false);
+                    docItem.updateActiveTocOnScroll();
+                    if (docItem.activeTocIndex !== (tocList.length - 1)) {
+                        console.log("[qt-scenario] FAIL: activeTocIndex expected last index " + (tocList.length - 1) + " at bottom, got " + docItem.activeTocIndex);
+                        tocFailures++;
+                    }
+                }
+
+                // 4. Test scrollToSection back to first section
+                if (tocList.length > 0) {
+                    var firstItem = tocList[0];
                     docItem.scrollToSection(firstItem);
                     if (contentScroll.contentY > 250) {
                         console.log("[qt-scenario] FAIL: scrollToSection('" + firstItem.id + "') did not return near top (got " + contentScroll.contentY + ")");
+                        tocFailures++;
+                    }
+                    docItem.updateActiveTocOnScroll();
+                    if (docItem.activeTocIndex !== 0) {
+                        console.log("[qt-scenario] FAIL: activeTocIndex expected 0 near top, got " + docItem.activeTocIndex);
                         tocFailures++;
                     }
                 }

@@ -33,6 +33,10 @@ Item {
         root.requestMobileToc();
     }
 
+    property real currentScrollY: 0
+    property real viewportHeight: 0
+    property real contentTotalHeight: 0
+
     readonly property var scrollAreaItem: {
         var p = root.parent;
         while (p) {
@@ -48,6 +52,21 @@ Item {
         target: root.scrollAreaItem
         ignoreUnknownSignals: true
         function onContentYChanged() {
+            if (root.scrollAreaItem) {
+                root.currentScrollY = root.scrollAreaItem.contentY;
+            }
+            root.updateActiveTocOnScroll();
+        }
+        function onHeightChanged() {
+            if (root.scrollAreaItem) {
+                root.viewportHeight = root.scrollAreaItem.height;
+            }
+            root.updateActiveTocOnScroll();
+        }
+        function onContentHeightChanged() {
+            if (root.scrollAreaItem) {
+                root.contentTotalHeight = root.scrollAreaItem.contentHeight;
+            }
             root.updateActiveTocOnScroll();
         }
     }
@@ -63,6 +82,12 @@ Item {
     Component.onCompleted: {
         root.scanSections();
         Qt.callLater(root.scanSections);
+        if (root.scrollAreaItem) {
+            root.currentScrollY = root.scrollAreaItem.contentY;
+            root.viewportHeight = root.scrollAreaItem.height;
+            root.contentTotalHeight = root.scrollAreaItem.contentHeight;
+            root.updateActiveTocOnScroll();
+        }
     }
 
     function slugify(text) {
@@ -149,7 +174,19 @@ Item {
         var seenIds = {};
 
         function addEntry(id, title, target, level) {
-            if (!id || !title || !target) return;
+            if (!target) return;
+            var lowTitle = (title || "").toLowerCase();
+            if (!id || id === "") {
+                if (lowTitle.indexOf("动效") !== -1 || lowTitle.indexOf("animat") !== -1) id = "animations";
+                else if (lowTitle.indexOf("安装") !== -1 || lowTitle.indexOf("install") !== -1) id = "installation";
+                else if (lowTitle.indexOf("键盘") !== -1 || lowTitle.indexOf("keyboard") !== -1) id = "keyboard";
+                else if (lowTitle.indexOf("属性") !== -1 || lowTitle.indexOf("props") !== -1) id = "props";
+                else if (lowTitle.indexOf("尺寸") !== -1 || lowTitle.indexOf("size") !== -1) id = "sizes";
+                else if (lowTitle.indexOf("状态") !== -1 || lowTitle.indexOf("state") !== -1) id = "states";
+                else if (lowTitle.indexOf("变体") !== -1 || lowTitle.indexOf("variant") !== -1) id = "variants";
+                else id = "section-" + (scanned.length + 1);
+            }
+            if (!title || title === "") title = id;
             if (id === "interactive-overview" || id === "sandbox") {
                 id = "overview";
                 title = tr("showcase.interactiveOverview", "Interactive Overview");
@@ -372,7 +409,7 @@ Item {
         return null;
     }
 
-    function scrollToSection(tocItem) {
+    function scrollToSection(tocItem, smooth) {
         var scrollArea = root.scrollAreaItem;
         if (!scrollArea || !tocItem) return;
 
@@ -384,10 +421,11 @@ Item {
         if (pt) {
             var targetY = Math.max(0, pt.y - ThemeTokens.dp(16));
             if (scrollArea.scrollToY !== undefined) {
-                scrollArea.scrollToY(targetY, true);
+                scrollArea.scrollToY(targetY, (typeof smooth !== "undefined") ? smooth : false);
             } else {
                 scrollArea.contentY = targetY;
             }
+            root.updateActiveTocOnScroll();
         }
     }
 
@@ -395,19 +433,41 @@ Item {
         var scrollArea = root.scrollAreaItem;
         var items = root.effectiveTocItems;
         if (!scrollArea || !items || items.length === 0) return;
-        var contentTarget = scrollArea.contentItem ? scrollArea.contentItem : scrollArea;
-        var currentY = scrollArea.contentY + ThemeTokens.dp(60);
 
+        var scrollY = scrollArea.contentY;
+        var innerHeight = scrollArea.height;
+        var scrollHeight = scrollArea.contentHeight;
+        var contentTarget = scrollArea.contentItem ? scrollArea.contentItem : scrollArea;
+
+        // 1. Bottom of page -> activate last item
+        if (scrollHeight > innerHeight && scrollY + innerHeight >= scrollHeight - ThemeTokens.dp(64)) {
+            root.activeTocIndex = items.length - 1;
+            return;
+        }
+
+        // 2. Top of page -> activate first item
+        if (scrollY < ThemeTokens.dp(50)) {
+            root.activeTocIndex = 0;
+            return;
+        }
+
+        // 3. Current heading nearest reading baseline below top (threshold ~96dp)
+        var threshold = ThemeTokens.dp(96);
         var bestIndex = 0;
+
         for (var i = 0; i < items.length; i++) {
             var item = items[i];
             var target = (item && item.targetItem) ? item.targetItem : findSectionTarget(item);
             if (!target) continue;
             var pt = target.mapToItem(contentTarget, 0, 0);
-            if (pt && pt.y <= currentY) {
-                bestIndex = i;
+            if (pt) {
+                var topInViewport = pt.y - scrollY;
+                if (topInViewport <= threshold) {
+                    bestIndex = i;
+                }
             }
         }
+
         root.activeTocIndex = bestIndex;
     }
 
@@ -634,10 +694,8 @@ Item {
             items: root.effectiveTocItems
             activeId: (root.effectiveTocItems && root.effectiveTocItems.length > root.activeTocIndex && root.activeTocIndex >= 0) ? root.effectiveTocItems[root.activeTocIndex].id : ""
             y: {
-                var sa = root.scrollAreaItem;
-                if (!sa) return 0;
                 var maxSticky = Math.max(0, mainCol.height - tocCol.implicitHeight);
-                return Math.max(0, Math.min(maxSticky, sa.contentY));
+                return Math.max(0, Math.min(maxSticky, root.currentScrollY));
             }
             onSelectItem: function(item) {
                 root.scrollToSection(item);
