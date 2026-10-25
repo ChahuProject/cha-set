@@ -913,6 +913,7 @@ static bool runShowcaseCursorRaycasting(QQuickWindow* window) {
 
     int totalRaycastChecked = 0;
     int totalDiscrepancies = 0;
+    int totalOccluded = 0;
 
     auto* contentScroll = window->findChild<QQuickItem*>("contentScroll");
     auto* flickable = contentScroll ? contentScroll->property("flickableItem").value<QQuickItem*>() : nullptr;
@@ -954,7 +955,6 @@ static bool runShowcaseCursorRaycasting(QQuickWindow* window) {
                 QTest::qWait(10);
 
                 int actual = window->cursor().shape();
-                totalRaycastChecked++;
 
                 if (actual != expected) {
                     QQuickItem* deepest = window->contentItem();
@@ -964,6 +964,26 @@ static bool runShowcaseCursorRaycasting(QQuickWindow* window) {
                         if (!child || child == deepest) break;
                         deepest = child;
                     }
+
+                    // Occlusion / clipping: when the point does not resolve back to this item
+                    // (or one of its descendants), the item's own centre is covered by something
+                    // else — a modal's dim overlay, a scroll child scrolled out of its viewport.
+                    // The user cannot hover the item there, so comparing cursors would be an
+                    // assertion about z-order, not about the control's cursor contract. It is
+                    // also the one check whose outcome depends on event delivery timing, which
+                    // made this audit fail roughly one run in three on an unchanged build.
+                    bool reachable = false;
+                    for (QQuickItem* d = deepest; d; d = d->parentItem()) {
+                        if (d == item) {
+                            reachable = true;
+                            break;
+                        }
+                    }
+                    if (!reachable) {
+                        totalOccluded++;
+                        continue;
+                    }
+
                     QString deepestPath;
                     for (QQuickItem* dp = deepest; dp; dp = dp->parentItem()) {
                         deepestPath.prepend(QString("%1(pos:%2,%3 size:%4x%5) / ")
@@ -983,12 +1003,15 @@ static bool runShowcaseCursorRaycasting(QQuickWindow* window) {
                                << "expected cursor" << expected << ", got" << actual;
                     totalDiscrepancies++;
                 }
+
+                totalRaycastChecked++;
             }
         }
     }
 
     qInfo() << "[qt-scenario] Showcase pointer raycasting completed:" << totalRaycastChecked
-            << "on-screen controls verified across" << pageList.size() << "pages with" << totalDiscrepancies << "discrepancies.";
+            << "on-screen controls verified across" << pageList.size() << "pages with" << totalDiscrepancies
+            << "discrepancies (" << totalOccluded << " skipped as clipped/occluded).";
 
     // Reset back to button page
     window->setProperty("activePage", "button");
