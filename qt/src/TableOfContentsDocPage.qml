@@ -408,64 +408,15 @@ DocLayout {
         section: "animations"
     }
 
-    ComponentReference {
-        name: "TableOfContents"
-        componentId: "table-of-contents"
-        propsModel: [
-            {
-                name: "items",
-                type: "var (array)",
-                defaultValue: "[]",
-                description: ChaSetI18n.tr("components.tableOfContents.itemsDesc", "Hierarchical array of outline items with level and nested children.")
-            },
-            {
-                name: "activeId",
-                type: "string",
-                defaultValue: '""',
-                description: ChaSetI18n.tr("components.tableOfContents.activeIdDesc", "Currently active section ID.")
-            },
-            {
-                name: "topOffset",
-                type: "real",
-                defaultValue: "0",
-                description: ChaSetI18n.tr("components.tableOfContents.topOffsetDesc", "Top offset for sticky positioning, accommodating global announcement banners.")
-            },
-            {
-                name: "targetOffset",
-                type: "real",
-                defaultValue: "0",
-                description: ChaSetI18n.tr("components.tableOfContents.targetOffsetDesc", "Safety scroll offset ensuring headings are not occluded by top banners.")
-            },
-            {
-                name: "variant",
-                type: "string",
-                defaultValue: '"default"',
-                description: ChaSetI18n.tr("components.tableOfContents.variantDesc", "Visual styling variant of the table of contents container.")
-            },
-            {
-                name: "size",
-                type: "string",
-                defaultValue: '"default"',
-                description: ChaSetI18n.tr("components.tableOfContents.sizeDesc", "Size density and font scaling of the outline labels.")
-            },
-            {
-                name: "showTrack",
-                type: "bool",
-                defaultValue: "true",
-                description: ChaSetI18n.tr("components.tableOfContents.showTrackDesc", "Whether to render the vertical guide track and active indicator marker.")
-            },
-            {
-                name: "showTitle",
-                type: "bool",
-                defaultValue: "true",
-                description: ChaSetI18n.tr("components.tableOfContents.showTitleDesc", "Whether to display the header title label.")
-            },
-            {
-                name: "title",
-                type: "string",
-                defaultValue: '"ON THIS PAGE"',
-                description: ChaSetI18n.tr("components.tableOfContents.titleDesc", "Header title text displayed above outline items.")
-            }
-        ]
+    DocMarkdown {
+        width: parent.width
+        docId: "table-of-contents"
+        section: "keyboard"
+    }
+
+    DocMarkdown {
+        width: parent.width
+        docId: "table-of-contents"
+        section: "props"
     }
     }

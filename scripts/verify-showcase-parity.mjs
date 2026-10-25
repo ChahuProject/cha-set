@@ -5,15 +5,46 @@
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { resolve, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { buildDocAst } from '../spec/shared/docAst.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot = resolve(dirname(__filename), '..');
 
 const navPath = resolve(repoRoot, 'spec', 'showcase', 'navigation.json');
 const kbPath = resolve(repoRoot, 'spec', 'showcase', 'keyboard-shortcuts.json');
+const contentDir = resolve(repoRoot, 'spec', 'content');
 const componentsDir = resolve(repoRoot, 'spec', 'components');
 const reactDocPagesDir = resolve(repoRoot, 'packages', 'react', 'examples', 'basic', 'src', 'pages', 'components');
 const qtSrcDir = resolve(repoRoot, 'qt', 'src');
+
+/**
+ * Outline title of a Markdown-driven section.
+ *
+ * `<DocMarkdown section="x"/>` / `DocMarkdown { section: "x" }` carries no title in the page
+ * source — it is authored in `spec/content/<docId>/<locale>.md`. Resolving it here keeps the
+ * 1:1 outline check meaningful for migrated sections instead of silently skipping them.
+ * Locale files are read in a fixed order so both stacks resolve the identical string.
+ */
+const mdTitleCache = new Map();
+function markdownSectionTitle(docId, sectionId) {
+  if (!docId || !sectionId) return '';
+  const cacheKey = `${docId}/${sectionId}`;
+  if (mdTitleCache.has(cacheKey)) return mdTitleCache.get(cacheKey);
+
+  let title = '';
+  for (const locale of ['en-US', 'zh-CN']) {
+    const file = join(contentDir, docId, `${locale}.md`);
+    if (!existsSync(file)) continue;
+    const { page } = buildDocAst(readFileSync(file, 'utf8'));
+    const hit = page?.sections?.find((entry) => entry.id === sectionId);
+    if (hit?.title) {
+      title = hit.title;
+      break;
+    }
+  }
+  mdTitleCache.set(cacheKey, title);
+  return title;
+}
 
 if (!existsSync(navPath) || !existsSync(kbPath)) {
   console.error('[showcase-parity] Missing navigation.json or keyboard-shortcuts.json');
@@ -230,6 +261,16 @@ export function extractReactDocMetadata(content) {
       events.push({ index: dfs.index + 2, id: 'props', title: 'Props Reference' });
     }
 
+    // Markdown-driven sections: title comes from spec/content/, not from the page source.
+    const mdStarts = [...content.matchAll(/<DocMarkdown\b([^>]*?)\/?>/gs)];
+    for (const md of mdStarts) {
+      const attrs = md[1];
+      const docId = attrs.match(/\bid=["']([^"']+)["']/)?.[1] ?? '';
+      const sectionId = attrs.match(/\bsection=["']([^"']+)["']/)?.[1] ?? '';
+      if (!sectionId) continue;
+      events.push({ index: md.index, id: sectionId, title: markdownSectionTitle(docId, sectionId) || sectionId });
+    }
+
     const crRegex = /<ComponentReference\b([^>]*?)(?:\/>|>)/gs;
     let crMatch;
     while ((crMatch = crRegex.exec(content)) !== null) {
@@ -435,6 +476,16 @@ export function extractQtDocMetadata(content) {
       events.push({ index: dfs.index, id: 'animations', title: 'Animations' });
       events.push({ index: dfs.index + 1, id: 'keyboard', title: 'Keyboard Navigation' });
       events.push({ index: dfs.index + 2, id: 'props', title: 'Props Reference' });
+    }
+
+    // Markdown-driven sections: title comes from spec/content/, not from the page source.
+    const mdStarts = [...content.matchAll(/\bDocMarkdown\s*\{([^}]*)\}/g)];
+    for (const md of mdStarts) {
+      const body = md[1];
+      const docId = body.match(/docId\s*:\s*["']([^"']+)["']/)?.[1] ?? '';
+      const sectionId = body.match(/section\s*:\s*["']([^"']+)["']/)?.[1] ?? '';
+      if (!sectionId) continue;
+      events.push({ index: md.index, id: sectionId, title: markdownSectionTitle(docId, sectionId) || sectionId });
     }
 
     const crRegex = /\bComponentReference\s*\{([^}]*)\}/g;

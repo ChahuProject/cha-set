@@ -2375,24 +2375,6 @@ export const KEYBOARD_SHORTCUTS_DATA: Record<string, KeyboardShortcutItem[]> = {
       "action": "Select the focused language card and apply language preference"
     }
   ],
-  "table-of-contents": [
-    {
-      "key": "↑ / ↓",
-      "action": "Navigate selection through outline items"
-    },
-    {
-      "key": "Home / End",
-      "action": "Jump directly to the first / last outline item"
-    },
-    {
-      "key": "Space / Enter",
-      "action": "Activate selected item and scroll to target section"
-    },
-    {
-      "key": "Tab / Shift + Tab",
-      "action": "Move focus into and out of table of contents navigation"
-    }
-  ],
   "kbd": [
     {
       "key": "—",

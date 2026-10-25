@@ -13,8 +13,6 @@ import { DocLayout } from '../../layout/DocLayout';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocMarkdown } from '../../components/DocMarkdown';
-import { ComponentReference } from "../../components/ComponentReference";
-import type { PropItem } from '../../components/PropsTable';
 import { DocText } from '../../components/DocText';
 
 export function TableOfContentsDocPage() {
@@ -232,72 +230,9 @@ export function TableOfContentsDocPage() {
       {/* 3. Footer Sections — prose is single-sourced from spec/content/table-of-contents/ */}
       <DocMarkdown id="table-of-contents" section="animations" />
 
-      <ComponentReference
-        name="TableOfContents"
-        componentId="table-of-contents"
-        props={[
-          {
-            name: 'items',
-            type: 'TocItem[]',
-            defaultValue: '[]',
-            description: t('components.tableOfContents.itemsDesc', 'Hierarchical array of outline items with level and nested children.'),
-          },
-          {
-            name: 'activeId',
-            type: 'string',
-            defaultValue: '""',
-            description: t('components.tableOfContents.activeIdDesc', 'Currently active section ID.'),
-          },
-          {
-            name: 'topOffset',
-            type: 'number | string',
-            defaultValue: '0',
-            description: t('components.tableOfContents.topOffsetDesc', 'Top offset for sticky positioning, accommodating global announcement banners.'),
-          },
-          {
-            name: 'targetOffset',
-            type: 'number',
-            defaultValue: '0',
-            description: t('components.tableOfContents.targetOffsetDesc', 'Safety scroll offset ensuring headings are not occluded by top banners.'),
-          },
-          {
-            name: 'variant',
-            type: '"default" | "track" | "flat"',
-            defaultValue: '"default"',
-            description: t('components.tableOfContents.variantDesc', 'Visual styling variant of the table of contents container.'),
-          },
-          {
-            name: 'size',
-            type: '"default" | "sm"',
-            defaultValue: '"default"',
-            description: t('components.tableOfContents.sizeDesc', 'Size density and font scaling of the outline labels.'),
-          },
-          {
-            name: 'showTrack',
-            type: 'boolean',
-            defaultValue: 'true',
-            description: t('components.tableOfContents.showTrackDesc', 'Whether to render the vertical guide track and active indicator marker.'),
-          },
-          {
-            name: 'showTitle',
-            type: 'boolean',
-            defaultValue: 'true',
-            description: t('components.tableOfContents.showTitleDesc', 'Whether to display the header title label.'),
-          },
-          {
-            name: 'title',
-            type: 'string',
-            defaultValue: '"On this page"',
-            description: t('components.tableOfContents.titleDesc', 'Header title text displayed above outline items.'),
-          },
-          {
-            name: 'onSelect',
-            type: '(item: TocItem, event) => void',
-            defaultValue: 'undefined',
-            description: t('components.tableOfContents.onSelectDesc', 'Callback fired when an outline item is selected or activated.'),
-          },
-        ]}
-      />
+      <DocMarkdown id="table-of-contents" section="keyboard" />
+
+      <DocMarkdown id="table-of-contents" section="props" />
     </DocLayout>
   );
 }
