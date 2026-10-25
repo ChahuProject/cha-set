@@ -50,14 +50,14 @@ When developing or modifying components across React and Qt, you MUST follow thi
 8. **Mandatory Keyboard Navigation & Input Modality Disambiguation (键盘交互规范与输入模态排他律)**
    - **Single Source of Truth**: Active highlight is driven strictly by `highlightedIndex` / `[data-highlighted]`. Never combine `isHighlighted || containsMouse` in QML delegates or CSS hover selectors.
    - **Zero Dual-Highlight**: Navigational keys switch modality to `'keyboard'`, immediately suppressing hover highlight under the mouse cursor. Stationary mouse events are ignored; only intentional mouse movement ($\Delta > 1\text{px}$) switches modality back to `'pointer'`.
-   - **Showcase Completeness**: Every living showcase DocPage must render `<KeyboardShortcutsTable>` backed by `spec/showcase/keyboard-shortcuts.json`.
+   - **Showcase Completeness**: Every living showcase DocPage must render its keyboard section from `spec/content/<doc-id>/<locale>.md` (a `table shortcuts` block).
 
 9. **Mandatory Zero-`px` Units Mandate (零 `px` 跨端度量与样式红线)**
    - **Strict Zero-`px`**: Raw `px` units are strictly forbidden across all component code, CSS classes, inline styles, doc descriptions, and properties tables.
    - **Web Scale**: Use Tailwind scale (`w-32`, `h-9`, `gap-2`, `size-8`) or rem arbitrary values (`w-[6.25rem]`, `h-[0.0625rem]`). Never use `w-[100px]`, `w-px`, or inline `${val}px`.
    - **Virtualization Spacers**: Dynamic height/width calculations in spacers must convert to rem: `${val * 0.0625}rem`.
    - **Neutral Prop Names**: Omit `Px` suffixes from props and CSS variables (`hitThickness`, `visualThickness`, `deltaAmount`, `--sidebar-width`).
-   - **Docs & Descriptions**: Never write `in pixels` or `100px` in PropsTable descriptions or doc text.
+   - **Docs & Descriptions**: Never write `in pixels` or `100px` in props table descriptions or doc text.
 
 10. **Mandatory Motion Token & Animation Determinism Contract (双端动效统一与测试确定性红线)**
    - **Token-driven only**: Durations (`--cs-motion-quick/short/medium`) and easings (`--cs-ease-standard/emphasized/entrance`, each with a Qt `Easing.*` counterpart) live in `spec/tokens/primitives.json` and are regenerated via `pnpm gen:css && pnpm gen:qt`. Components MUST consume them — `duration-quick`/`ease-*` utilities on React, `ThemeTokens.motion*`/`ThemeTokens.ease*` in QML. Hardcoded `duration-100/150/200`, `ease-in-out`, raw `Easing.*`, or numeric animation durations are forbidden (they silently bypass reduced-motion handling).
@@ -119,7 +119,7 @@ When developing or modifying components across React and Qt, you MUST follow thi
      1. `overview`: **Interactive Overview** (strict ban on legacy `preview` / `Interactive Preview`)
      2. `installation`: **Installation**
      3. `animations`: **Animations** (motion tokens, transitions, reduced motion per Red Line 10)
-     4. `keyboard`: **Keyboard Navigation** (backed by `spec/showcase/keyboard-shortcuts.json`)
+     4. `keyboard`: **Keyboard Navigation** (backed by a `table shortcuts` block in `spec/content/<doc-id>/<locale>.md`)
      5. `props`: **Props Reference** (strict ban on legacy `api` / `API Reference`)
    - **Authentic Code Snippet Contract**: Qt's `ComponentPreview` `reactCode` property MUST contain authentic, valid React JSX conforming to the real ChaSet React component API. Speculative, invalid, or hallucinated React JSX in QML is strictly forbidden.
    - **Sandbox Equivalence**: Sandbox layouts, pane titles, mock items, badge calculations, and reset actions MUST match 1:1 between React and Qt showcases.

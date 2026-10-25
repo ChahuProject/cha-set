@@ -124,7 +124,7 @@ Before committing any component changes in this repository, run the project-defi
    - Parity gate must verify all capability checks, the living showcase doc pages across React and Qt (1:1), and headless Qt scenario tests (`QtChaSetDemo.exe --test-scenario all`).
 
 2. **Mandatory Zero-`px` Verification**:
-   - Verify zero raw `px` units in newly created or modified component files, styles, inline properties, code previews, and `PropsTable` descriptions.
+   - Verify zero raw `px` units in newly created or modified component files, styles, inline properties, code previews, and props table descriptions.
    - Dynamic measurements must use `rem` (`${val * 0.0625}rem`).
 
 3. **`pnpm build` before `pnpm typecheck`**:

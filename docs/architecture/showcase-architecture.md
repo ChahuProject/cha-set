@@ -1,7 +1,7 @@
 # Showcase Living Documentation & Automated TOC Architecture
 
 ## 1. Role & System Boundaries
-- **Core Role**: Provides the living documentation page infrastructure across Web (React) and Desktop (Qt Quick / QML) showcases. Manages the dual-stack documentation template (`DocLayout`), dynamic interactive sandboxes (`ComponentPreview`), props references (`PropsTable`), keyboard tables (`KeyboardShortcutsTable`), and the **Automated "On this page" Table of Contents (TOC) Scanning Engine**.
+- **Core Role**: Provides the living documentation page infrastructure across Web (React) and Desktop (Qt Quick / QML) showcases. Manages the dual-stack documentation template (`DocLayout`), dynamic interactive sandboxes (`ComponentPreview`), the Markdown-driven living content (`DocMarkdown` + `spec/content/<doc-id>/<locale>.md`, which supplies both the props reference and the keyboard tables), and the **Automated "On this page" Table of Contents (TOC) Scanning Engine**.
 - **Scope Delineation**:
   - **In-Scope**:
     - Dual-stack living documentation layouts (`DocLayout.tsx` and `DocLayout.qml`).
@@ -31,7 +31,7 @@
 │ • Container ref mutation observer │ │ • Item tree children scanner     │
 │ • Inspects section[id], h2, h3    │ │ • Inspects ComponentPreview,     │
 │ • Extracts exact heading text     │ │   DocText (sizeTitleSm/weight),  │
-│ • Resolves canonical fallbacks    │ │   KeyboardShortcutsTable, Props  │
+│ • Resolves canonical fallbacks    │ │   DocMarkdown sections         │
 └─────────────────┬─────────────────┘ └──────────────────┬───────────────┘
                   │                                      │
                   ▼                                      ▼

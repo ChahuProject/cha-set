@@ -95,7 +95,7 @@ The schema is therefore declared once, in the fence, and the *column list* is sh
 
 Each `kind` maps onto a treatment the design system's table already has — React
 `TableColumn` (`code` / `render`), Qt `ChaSetTable.columns` (`code` / `copyableBadge` / `kbd` /
-`rich`) — so a Markdown props table inherits the hand-written `PropsTable` chrome instead of
+`rich`) — so a Markdown props table lands on the design system's own table chrome instead of
 being painted a second time. Adding a schema is one entry in `DOC_SCHEMAS` plus a `kind` both
 renderers already draw; no component, no DocPage, no gate entry.
 
@@ -271,17 +271,19 @@ produces no error dialog, just an empty area where the prose should be.
 2. Move the props rows into a ```` ```table props ```` block and the shortcut rows into a
    ```` ```table shortcuts ```` block. Write `\|` for a literal pipe in a union type, and `—`
    for "no default".
-3. Delete the component's entry from `spec/showcase/keyboard-shortcuts.json` and re-run
-   `pnpm gen:showcase` — leaving it there keeps a second copy of the same rows alive.
-4. React: replace the footer block with `<DocMarkdown id="<doc-id>" section="<id>" />` per
+3. React: replace the footer block with `<DocMarkdown id="<doc-id>" section="<id>" />` per
    section. Qt: `DocMarkdown { width: parent.width; docId: "<doc-id>"; section: "<id>" }`.
-5. `pnpm check:docs` — fails until both stacks consume the same section set.
+4. `pnpm check:docs` — fails until both stacks consume the same section set.
+
+The shortcut rows used to live in a second file, `spec/showcase/keyboard-shortcuts.json`, and
+the props rows in a hand-written table component per stack. All three are gone: the Markdown
+file is the only copy, so there is nothing left to delete after a migration.
 
 ## 10. Known gaps
 
 - **`required: true` has no Markdown spelling.** A trailing `*` inside the name cell renders as
-  part of the mono identifier instead of the red marker `PropsTable` draws. Only two props in
-  the showcase are required, so the codepath stays unused; add a `kind` if that changes.
+  part of the mono identifier instead of a required marker. Only two props in the showcase are
+  required, so the codepath stays unused; add a `kind` if that changes.
 - **Structured cells are plain text.** `code` / `copyable` / `kbd` columns flatten their inline
   AST (`inlineText`), so `` `a` `` inside a *type* cell loses its chip surface — the column
   already supplies the monospace treatment, so only authorial accident can notice.

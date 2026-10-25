@@ -101,13 +101,13 @@
     - **Full Component Keyboard Parity (全量组件键盘交互对齐)**:
       Every interactive component MUST support its standard keyboard traversal flow (Enter/Space to activate, Escape to dismiss, Arrow keys for spatial navigation, Tab/Shift+Tab for focus cycling).
     - **Mandatory Showcase Documentation (100% 演示文档必须提供快捷键说明)**:
-      Every living showcase DocPage (`<Name>DocPage.tsx` and `<Name>DocPage.qml`) MUST provide a dedicated `Keyboard Navigation` section using `<KeyboardShortcutsTable>` with entries linked in the right-side Table of Contents (`tocItems`).
+      Every living showcase DocPage (`<Name>DocPage.tsx` and `<Name>DocPage.qml`) MUST provide a dedicated `Keyboard Navigation` section. The section is authored once in `spec/content/<doc-id>/<locale>.md` as `## Keyboard Navigation {#keyboard}` followed by a ```` ```table shortcuts ```` block, and BOTH stacks render it through `DocMarkdown`. Hand-written shortcut tables are forbidden — they are the duplicate this pipeline removes.
 11. **Mandatory Zero-`px` Units Mandate (禁止使用 `px` 作为单位与度量规范)**:
     - **Zero `px` in UI Text & Styles**: Raw `px` units are strictly forbidden across all component code, CSS classes, inline styles, doc descriptions, and properties tables.
     - **Tailwind & CSS**: Use Tailwind semantic scale (`w-32`, `h-9`, `gap-2`, `size-8`) or rem arbitrary values (`w-[6.25rem]`, `h-[0.0625rem]`). Never use `w-[100px]`, `h-[300px]`, `w-px`, `h-px`, or inline `${val}px`.
     - **Virtualizer & Dynamic Spacers**: Dynamic measurements (virtual list spacer rows, dynamic offsets) must convert pixel calculations to rem: `${val * 0.0625}rem`.
     - **Neutral Prop Names & Tokens**: Component props and CSS variables must omit `Px` or `pixel` suffixes (`hitThickness`, `visualThickness`, `deltaAmount`, `--sidebar-width` instead of `hitThicknessPx`, `deltaPixels`, `--sidebar-width-px`).
-    - **Documentation & PropsTable**: Doc descriptions, code examples, and props tables must never describe measurements as "in pixels" or "100px". Use neutral units, rem scale, or component tokens.
+    - **Documentation & Props Tables**: Doc descriptions, code examples, and props tables must never describe measurements as "in pixels" or "100px". Use neutral units, rem scale, or component tokens.
 12. **Mandatory Mouse Cursor Semantics & Text Selectability Contract (鼠标光标语义与文本可选性全景规约 — 工字光标与禁用态零缺失红线)**:
     - **Single Source of Truth for Cursor Shapes (光标语义跨端单一真理源与严格对齐表)**:
       - All cursor semantics are codified in `spec/cursor-contract.json` mapping semantic types (`action`, `text`, `slider`, `resize-col`, `resize-row`, `window-move`, `disabled`) across Web CSS classes and Qt cursor enums.
@@ -146,7 +146,7 @@
       1. `overview`: **Interactive Overview** (strict ban on legacy `preview` / `Interactive Preview`)
       2. `installation`: **Installation**
       3. `animations`: **Animations** (motion tokens, transitions, reduced motion per Golden Red Line 10)
-      4. `keyboard`: **Keyboard Navigation** (backed by `spec/showcase/keyboard-shortcuts.json`)
+      4. `keyboard`: **Keyboard Navigation** (backed by a `table shortcuts` block in `spec/content/<doc-id>/<locale>.md`)
       5. `props`: **Props Reference** (strict ban on legacy `api` / `API Reference`)
     - **Authentic Code Snippet Contract (Qt 演示页真实 React 代码契约)**:
       Qt's `ComponentPreview` `reactCode` property MUST provide authentic, valid React JSX conforming to the component's actual TypeScript API contract. Speculative, synthetically hallucinated, or placeholder JSX in QML is strictly forbidden.

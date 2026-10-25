@@ -21,7 +21,7 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
      - `overview`: **Interactive Overview** (strict ban on legacy `preview` / `Interactive Preview`)
      - `installation`: **Installation**
      - `animations`: **Animations** (motion tokens per Golden Rule 11)
-     - `keyboard`: **Keyboard Navigation** (backed by `spec/showcase/keyboard-shortcuts.json`)
+     - `keyboard`: **Keyboard Navigation** (backed by a `table shortcuts` block in `spec/content/<doc-id>/<locale>.md`)
      - `props`: **Props Reference** (strict ban on legacy `api` / `API Reference`)
    - **Authentic Code Snippet Contract**: Qt's `ComponentPreview` `reactCode` MUST contain real, valid, runnable React JSX conforming to the component's actual API contract. Speculative, invalid, or hallucinated React tags in QML are strictly forbidden.
    - **Sandbox Visual & Content Equivalence**: Sandbox layouts, pane titles, mock items (e.g. file trees), badge calculations, and reset buttons/values MUST match 1:1 between React and Qt.
@@ -53,13 +53,13 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
 8. **Mandatory Keyboard Navigation & Input Modality Contract (键盘交互规范与输入模态排他律 — 禁止双重高亮)**:
    - **Single Source of Truth for Visual Highlight**: In menus, dropdowns, selects, and lists, visual active highlight MUST be driven exclusively by `highlightedIndex` (Qt) or `[data-highlighted]` / roving focus (React). Never combine hover and keyboard focus with boolean OR (`isHighlighted || containsMouse` is strictly forbidden).
    - **Input Modality State Machine**: Navigational keys (`ArrowDown`, `ArrowUp`, `Home`, `End`, etc.) switch modality to `'keyboard'` and suppress hover highlights on any item under the mouse. Stationary pointer events are discarded; only intentional pointer movements ($\Delta x > 1\text{px} \lor \Delta y > 1\text{px}$) switch modality to `'pointer'`.
-   - **100% Showcase Documentation**: Every component DocPage MUST render `<KeyboardShortcutsTable>` linking its shortcut mapping from `spec/showcase/keyboard-shortcuts.json`.
+   - **100% Showcase Documentation**: Every component DocPage MUST document its keyboard shortcuts in `spec/content/<doc-id>/<locale>.md` (a `table shortcuts` block) and render that section through `DocMarkdown`.
 9. **Mandatory Zero-`px` Units Mandate (禁止使用 `px` 作为单位与度量规范)**:
    - **Zero `px` in UI & Styles**: Raw `px` units are strictly forbidden across all component code, CSS classes, inline styles, doc descriptions, and properties tables.
    - **Tailwind & CSS**: Use Tailwind semantic scale (`w-32`, `h-9`, `gap-2`, `size-8`) or rem arbitrary values (`w-[6.25rem]`, `h-[0.0625rem]`). Never use `w-[100px]`, `h-[300px]`, `w-px`, `h-px`, or inline `${val}px`.
    - **Virtualizer & Dynamic Spacers**: Dynamic measurements (virtual list spacer rows, dynamic offsets) must convert pixel calculations to rem: `${val * 0.0625}rem`.
    - **Neutral Prop Names & Tokens**: Component props and CSS variables must omit `Px` or `pixel` suffixes (`hitThickness`, `visualThickness`, `deltaAmount`, `--sidebar-width` instead of `hitThicknessPx`, `deltaPixels`, `--sidebar-width-px`).
-   - **Documentation & PropsTable**: Doc descriptions, code examples, and props tables must never describe measurements as "in pixels" or "100px". Use neutral units, rem scale, or component tokens.
+   - **Documentation & Props Tables**: Doc descriptions, code examples, and props tables must never describe measurements as "in pixels" or "100px". Use neutral units, rem scale, or component tokens.
 10. **Pre-Response Commit Gate & Incremental Verification (增量提交门禁与验证壁垒)**:
     - Every component introduced or modified MUST pass full verification (`cmake --build qt/build && pnpm test && pnpm gate`) and be committed immediately with English Conventional Commits (`feat(<name>): ...`) and pushed to origin BEFORE proceeding to the next component or yielding the turn. Never accumulate uncommitted changes.
 11. **Mandatory Motion Tokens & Animation Contract (动效令牌统一约束律 — 新组件必带动画)**:
@@ -155,7 +155,7 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
 4. **Initialize Conformance Snapshots**:
    Register initial capability flags in `packages/react/conformance/coverage.json` and `qt/conformance/coverage.json`.
 5. **Register Keyboard Interaction Matrix**:
-   Add keyboard interaction specifications to `spec/showcase/keyboard-shortcuts.json` under `"<name>"`, then run `node spec/generators/generate-showcase-data.mjs`.
+   Create `spec/content/<doc-id>/en-US.md` and `zh-CN.md`, then author the `## Keyboard Navigation {#keyboard}` section as a `table shortcuts` block — one row per shortcut, key in the first column, action in the second.
 
 ---
 
@@ -278,7 +278,7 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
    - `{ id: 'overview', title: 'Interactive Overview' }` (strict ban on legacy `preview` / `Interactive Preview`).
    - `{ id: 'installation', title: 'Installation' }`.
    - `{ id: 'animations', title: 'Animations' }` (documenting motion tokens per Golden Rule 11, reduced motion, and kill switch).
-   - `{ id: 'keyboard', title: 'Keyboard Navigation' }` (backed by `spec/showcase/keyboard-shortcuts.json`).
+   - `{ id: 'keyboard', title: 'Keyboard Navigation' }` (backed by a `table shortcuts` block in `spec/content/<doc-id>/<locale>.md`).
    - `{ id: 'props', title: 'Props Reference' }` (strict ban on legacy `api` / `API Reference`).
 
 3. **Authentic Code Snippets, Multi-Example Cardinality & Sandbox Equivalence**:
@@ -293,12 +293,12 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
      - Interactive `ComponentPreview` with live preview and controls.
      - Section `#installation` with package install and import snippet.
      - Section `#animations` describing motion tokens, transitions, and `prefers-reduced-motion`.
-     - Section `#keyboard` with `<KeyboardShortcutsTable componentId="<name>" />`.
-     - Section `#props` with `<PropsTable>` (strictly zero `px` or "in pixels" in descriptions).
+     - Section `#keyboard` with `<DocMarkdown id="<doc-id>" section="keyboard" />`.
+     - Section `#props` with `<DocMarkdown id="<doc-id>" section="props" />` — the table itself is authored in the Markdown (strictly zero `px` or "in pixels" in descriptions).
      - Variant showcase sections.
 
 5. **Qt Living DocPage Component & Main Route (`qt/src/<Name>DocPage.qml`)**:
-   - Create `qt/src/<Name>DocPage.qml` with interactive preview, variant controls, `KeyboardShortcutsTable`, code blocks, and props table.
+   - Create `qt/src/<Name>DocPage.qml` with interactive preview, variant controls, `DocMarkdown` sections, and code blocks.
    - Register `qt/src/<Name>DocPage.qml` in `qt/CMakeLists.txt` under `QtChaSetDemo` `QML_FILES`.
    - Register `qt/src/ChaSet<Name>.qml` in `qt/CMakeLists.txt` under `ChaSet` `QML_FILES`.
    - Add route mapping in `qt/src/Main.qml` (`getPageSource`).
@@ -332,7 +332,7 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
 1. **Showcase Parity Verification**:
    - Run `pnpm check:showcase` (or `pnpm check:showcase --component <name>`) and ensure all 5 canonical sections, authentic React snippets, metadata, and keyboard shortcut IDs are 100% aligned across React and Qt.
 2. **Zero-`px` Verification**:
-   - Verify zero raw `px` units in component implementation, styles, virtualizer spacer calculations (must use rem), code snippets, doc page previews, and PropsTable descriptions.
+   - Verify zero raw `px` units in component implementation, styles, virtualizer spacer calculations (must use rem), code snippets, doc page previews, and props table descriptions.
 3. **Motion Token Verification**:
    - Grep the new component files for forbidden hardcoded motion: `duration-100|150|200`, `ease-in-out` (React) and raw `Easing.` / numeric animation durations (Qt). Replace with token utilities/`ThemeTokens.motion*|ease*`.
    - Verify every Qt `Behavior` guards on `ThemeTokens.animationsEnabled` (+ force/harness exclusions) and references `ThemeTokens.motion*`/`ThemeTokens.ease*`.

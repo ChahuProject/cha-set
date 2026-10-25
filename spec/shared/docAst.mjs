@@ -43,9 +43,9 @@ export var DOC_SCHEMAS = {
   props: [
     { kind: "code", width: 170 },
     { kind: "copyable", width: 240 },
-    // 130, not the 110 PropsTable uses: a quoted default such as `"On this page"` overflows
-    // an 110dp badge and gets clipped by the Qt cell, and a clipped badge reads as corrupt
-    // data rather than as a width decision.
+    // 130, not 110: a quoted default such as `"On this page"` overflows a 110dp badge
+    // and gets clipped by the Qt cell, and a clipped badge reads as corrupt data rather
+    // than as a width decision.
     { kind: "copyable", width: 130 },
     { kind: "rich", wrap: true }
   ],
