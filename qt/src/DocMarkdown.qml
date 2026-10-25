@@ -120,11 +120,20 @@ Column {
     ///
     /// Note: CSS `em` is NOT in Qt's supported subset — font-size must be an absolute px value.
     function codeSpan(value) {
-        return '<a href="' + chipMarker + attr(value) + '">'
+        // The padding cells are a *smaller* font than the token: at body size a monospace
+        // space is ~6.6px per side, which makes the pill look much wider than React's
+        // `px-1.5` (6px). At sizeMicro the padding lands at ~5.5px per side, matching React.
+        // They stay inside the anchor so the pill still spans them.
+        var pad = '<span style="font-family:' + Typography.familyMono
+            + "; font-size:" + Typography.sizeMicro + "px"
+            + "; text-decoration:none"
+            + "; color:" + toHex(ThemeTokens.text) + '">&nbsp;</span>';
+
+        return '<a href="' + chipMarker + attr(value) + '">' + pad
             + '<span style="font-family:' + Typography.familyMono
             + "; font-size:" + Typography.sizeSmall + "px"
             + "; text-decoration:none; color:" + toHex(ThemeTokens.text)
-            + '">&nbsp;' + esc(value) + "&nbsp;</span></a>";
+            + '">' + esc(value) + "</span>" + pad + "</a>";
     }
 
     function inlineHtml(nodes) {

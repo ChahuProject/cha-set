@@ -18,7 +18,18 @@ Item {
     /// Anchor href prefix that marks a chip, e.g. "chip:". Set by DocMarkdown.codeSpan().
     property string marker: "chip:"
     property color chipColor: ThemeTokens.panelRaised
-    property real radius: ThemeTokens.dp(2)
+    /// React's `rounded-sm` is 2px, but Qt's rounded-rect shader produces a much shallower
+    /// arc at the same value (measured against a 200% crop: ~2 device px of corner versus 5).
+    /// 4 keeps the two visually equal.
+    property real radius: ThemeTokens.dp(4)
+    /// Vertical breathing room. The rich text box hugs the glyph metrics (13px for the 12px
+    /// mono font), while React's `py-0.5` adds 2px above and below a ~14px line box, giving an
+    /// 18px pill. Without it the pill reads as "too wide" even when the horizontal padding
+    /// matches, because the width/height ratio is wrong.
+    ///
+    /// Expressed as dp(5)/2 because `ThemeTokens.dp()` rounds: dp(2.5) would collapse to 3 and
+    /// make the pill 2px taller than React's at 200%.
+    property real verticalPadding: ThemeTokens.dp(5) / 2
 
     /// {x, y, w, h} per line segment, in the target's content coordinates.
     property var rects: []
@@ -53,9 +64,9 @@ Item {
 
         delegate: Rectangle {
             x: modelData.x
-            y: modelData.y
+            y: modelData.y - root.verticalPadding
             width: modelData.w
-            height: modelData.h
+            height: modelData.h + root.verticalPadding * 2
             radius: root.radius
             color: root.chipColor
             antialiasing: true

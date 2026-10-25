@@ -112,12 +112,29 @@ Design rules that follow from this:
   (the background hugs the fragment box, not the line box).
 - **A chip never wraps internally**, so the cross-line branch of `fragmentRects()` is defensive
   only: tokens contain no break opportunities.
+- **Both x edges use `QTextLine::Leading`.** `Trailing` at the segment end returns the right
+  edge of the *next* character, which overshot the pill by one advance width (measured: 3 CSS px
+  too wide on the right, and asymmetric against the left edge).
+- **The pill is authored as three fragments** (padding cell, token, padding cell) so the padding
+  can use a smaller font than the token. `fragmentRects()` merges consecutive marked fragments,
+  otherwise one chip would paint three boxes. The padding cells also need
+  `text-decoration:none`: without it they inherit the anchor's underline and the chip renders
+  with a strikethrough-looking line through it.
+- **`radius: dp(4)`, not `dp(2)`.** React's `rounded-sm` is 2px, but Qt's rounded-rect shader
+  renders a noticeably shallower arc at the same value (measured on 200% crops: ~2 device px of
+  corner versus 5).
+- **`verticalPadding: dp(5)/2`, not `dp(2.5)`.** `ThemeTokens.dp()` rounds, so `dp(2.5)` collapses
+  to 3 and the pill ends up 2px taller than React's at 200%.
 - **`background-image` is not an option** even though it is listed as supported: Qt paints
   backgrounds with a texture brush anchored at the painter origin, not the fragment rect, so a
   rounded image would be misaligned (and there is no `background-size`).
 
-Known limitation: the pill's radius/padding are ours, so they can drift from `rounded-sm`. Keep
-the radius in `DocChipLayer.radius` and the React class in sync when either changes.
+Measured against React at 200% after these fixes: pill 206×36 vs 207×36, glyph width 182 vs 181,
+horizontal padding 12/12 vs 13/13.
+
+Known limitation: the pill's colour still differs — Qt uses `ThemeTokens.panelRaised`
+(`#252d3d`) while React's `bg-secondary` resolves to `#1e293b`. Unifying them needs a dedicated
+chip token; reusing `panelRaised` keeps the palette contract but not the exact hue.
 
 ## 5. Slots and incremental migration
 
