@@ -50,10 +50,11 @@ Three constraints drove this shape, all verified empirically:
 2. **QML cannot read files.** `XMLHttpRequest` rejects the `qrc:` scheme for both sync and async
    requests (`Error: Invalid state`, no READYSTATE.DONE), so `ChaSetDocSource` (a C++
    `QML_SINGLETON`) hands the embedded Markdown to QML.
-3. **Qt rich text has no round corners.** A Markdown code span therefore renders as a flat
-   rectangle chip on Qt (`background-color` span) and `rounded-sm` on React. This is the agreed
-   approximation; anything stricter would require an inline layout of real components, which
-   cannot wrap long paragraphs.
+3. **Qt rich text has no round corners and no inline items.** `border-radius` is not in the
+   supported CSS subset, and the only inline object Qt understands is an image. A code span
+   therefore *reserves* space in the text flow and marks itself with an anchor
+   (`href="chip:<token>"`); the rounded pill is painted by a sibling layer **behind** the text,
+   positioned from `QTextLayout` geometry. See §4.
 
 ## 3. Dialect (closed whitelist)
 
@@ -75,15 +76,48 @@ Rejected on purpose: raw HTML, images, blockquotes, nested lists.
 ## 4. Inline code is the chip
 
 There is no trailing badge row. A Markdown code span *is* the token chip, inline with the
-sentence — that is the intended reading of "`` `duration-quick` `` looks like a copyable token":
+sentence — that is the intended reading of "`` `duration-quick` `` looks like a copyable token".
 
-- React: `<code class="rounded-sm bg-secondary px-1.5 py-0.5 font-mono text-[0.85em]">`.
-- Qt: rich-text `<span style="background-color:ThemeTokens.panelRaised; font-family:Consolas">`
-  with `&nbsp;` padding on both sides.
+**React** renders `<code class="rounded-sm bg-secondary px-1.5 py-0.5 font-mono text-[0.85em]">`;
+the browser's inline formatting context does the layout, so a real element with real padding and
+radius is free.
 
-Neither is click-to-copy. If copy-on-click is ever required for inline code, Qt must abandon
-rich text for an inline `Flow` of real components, which breaks long-paragraph wrapping — treat
-that as a separate decision, not a styling tweak.
+**Qt** cannot do that. `border-radius` is absent from the supported CSS subset, `padding` only
+applies to table cells, and Qt Quick has no way to place a `QQuickItem` inside a text flow
+([QTBUG-85651](https://bugreports.qt.io/browse/QTBUG-85651), open since 2020). The chip is
+therefore split in two:
+
+| Concern | Owner |
+| :--- | :--- |
+| Reserve width, break lines, shape glyphs, selection, copy | `QTextEdit` + `QTextLayout` (unchanged) |
+| Mark which characters are a chip | anchor: `<a href="chip:<token>"><span …>&nbsp;token&nbsp;</span></a>` |
+| Paint the rounded pill | `DocChipLayer.qml` → `Rectangle` **behind** the text |
+| Where the pill goes | `ChaSetTextFragments::fragmentRects()` (C++) |
+
+`fragmentRects()` walks the document, keeps fragments whose anchor href starts with `chip:`, and
+maps their character range to pixels with `QTextLine::cursorToX()` + `blockBoundingRect()`.
+The box is aligned on the fragment's own baseline (`line.y() + line.ascent() - fm.ascent()`),
+because the line's ascent belongs to the taller body font, not to the chip font.
+
+Design rules that follow from this:
+
+- **The layer is declared before the `DocText`** so the text paints on top. It carries no
+  `MouseArea`, so presses, drag-selection and the native selection highlight stay with the text.
+- **No `background-color` in the span.** The pill is the only background; a square rich-text
+  background would show through at the rounded corners.
+- **The anchor is not decoration** — it is also the payload. `linkActivated("chip:<token>")` is
+  what click-to-copy will bind to, so no separate id bookkeeping is needed.
+- **`font-size` must be absolute px.** Qt's CSS subset has no `em`; `Typography.sizeSmall` (12px)
+  is the equivalent of React's `0.85em`, and it also gives the chip its vertical breathing room
+  (the background hugs the fragment box, not the line box).
+- **A chip never wraps internally**, so the cross-line branch of `fragmentRects()` is defensive
+  only: tokens contain no break opportunities.
+- **`background-image` is not an option** even though it is listed as supported: Qt paints
+  backgrounds with a texture brush anchored at the painter origin, not the fragment rect, so a
+  rounded image would be misaligned (and there is no `background-size`).
+
+Known limitation: the pill's radius/padding are ours, so they can drift from `rounded-sm`. Keep
+the radius in `DocChipLayer.radius` and the React class in sync when either changes.
 
 ## 5. Slots and incremental migration
 
