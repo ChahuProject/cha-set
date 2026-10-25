@@ -114,6 +114,47 @@ const specialMap = {
   'data-table': { navId: 'generic-data-table', reactDoc: 'GenericDataTableDocPage.tsx', qtDoc: 'GenericDataTableDocPage.qml' },
 };
 
+/** Strip tags and unwrap `t('key', 'Fallback')` down to the fallback string. */
+function normalizeHeadingText(raw) {
+  let text = String(raw).replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+  const tr = text.match(/t\([^,]+,\s*['"]([^'"]+)['"]\s*\)/);
+  if (tr) text = tr[1];
+  return text;
+}
+
+/**
+ * First visible heading of a <section>, in any of the three shapes the docs use:
+ *
+ *   1. `<SectionHeader title={t('k','Fallback')} />` — block-level composition
+ *   2. `<h2>Title</h2>` — native semantics
+ *   3. `<DocText role="h2">Title</DocText>` — the typography primitive whose
+ *      role decides the tag, so the source has no literal `<h2>` to match
+ *
+ * (3) exists because doc typography is role-driven; a heading extractor that
+ * only understands literal `<h2>` silently degrades every section title to a
+ * slugified id and reports phantom React/Qt TOC mismatches.
+ */
+function sectionHeadingText(inner) {
+  const sectionHeader = inner.match(
+    /<SectionHeader\b[^>]*?\btitle=(?:\{\s*t\([^,]+,\s*['"]((?:[^'"\\]|\\.)*)['"]\s*\)\s*\}|["']([^"']+)["'])/,
+  );
+  if (sectionHeader) return sectionHeader[1] || sectionHeader[2];
+
+  // Section titles are h1–h3; h4+ are card/group titles inside the body and
+  // must never become the section's outline label (they used to be excluded by
+  // matching only `<h2>` / `<h3>`).
+  const candidates = [];
+  for (const m of inner.matchAll(/<h([1-3])\b[^>]*>([\s\S]*?)<\/h\1>/g)) {
+    candidates.push({ index: m.index, text: normalizeHeadingText(m[2]) });
+  }
+  for (const m of inner.matchAll(/<DocText\b[^>]*?\brole=\{?["']h([1-3])["']\}?[^>]*>([\s\S]*?)<\/DocText>/g)) {
+    candidates.push({ index: m.index, text: normalizeHeadingText(m[2]) });
+  }
+  if (candidates.length === 0) return '';
+  candidates.sort((a, b) => a.index - b.index);
+  return candidates[0].text;
+}
+
 export function extractReactDocMetadata(content) {
   const meta = {
     category: '',
@@ -171,14 +212,7 @@ export function extractReactDocMetadata(content) {
       if (customTitleMatch) {
         title = customTitleMatch[1] || customTitleMatch[2] || customTitleMatch[3];
       } else {
-        const hMatch = inner.match(/<h[23][^>]*>([\s\S]*?)<\/h[23]>/);
-        if (hMatch) {
-          title = hMatch[1].replace(/<[^>]+>/g, '').trim();
-          const trMatch = title.match(/t\([^,]+,\s*['"]([^'"]+)['"]\)/);
-          if (trMatch) {
-            title = trMatch[1];
-          }
-        }
+        title = sectionHeadingText(inner);
       }
       if (!title) {
         if (id === 'animations') title = 'Animations';
