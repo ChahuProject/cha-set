@@ -14,13 +14,13 @@ namespace ChaSet {
  *
  * Solves CJK fallback degradation (e.g. falling back to bitmap SimSun on Windows)
  * by configuring Qt font substitution tables, grayscale vector antialiasing,
- * vertical hinting, ordered font family fallback chains, and the global
- * QQuickWindow text rasterization path.
+ * ordered font family fallback chains, and the global QQuickWindow text
+ * rasterization path.
  */
 class FontSystem {
 public:
     /// Environment variable selecting the global text rasterization path.
-    /// Accepted values: "native" (default), "qt", "curve".
+    /// Accepted values: "curve" (default), "native", "qt".
     static const char* textRenderEnvVar();
 
     /**
@@ -29,19 +29,22 @@ public:
      *
      * Must be called before the first QQuickWindow is instantiated.
      *
-     * - "native" (default) -> QQuickWindow::NativeTextRendering. DirectWrite /
-     *                         CoreText. Grid-fits glyphs, so 12–14px CJK stems
-     *                         stay solid instead of dissolving into a grey
-     *                         fringe. Locked-in default because the showcase is
-     *                         read side by side with a browser.
-     * - "qt"               -> QQuickWindow::QtTextRendering. Qt's own rasterizer;
-     *                         position-independent outlines, but soft at UI sizes.
-     * - "curve"            -> QQuickWindow::CurveTextRendering. Curve rasterizer
-     *                         running on the graphics hardware; requires a
-     *                         hardware RHI backend and falls back to "qt" when a
+     * - "curve"  (default) -> QQuickWindow::CurveTextRendering. Analytic coverage
+     *                         on the GPU: anti-aliased and sharp at once, with no
+     *                         colour fringes and no scale dependence. Requires a
+     *                         hardware RHI backend; falls back to "qt" when a
      *                         software rasterizer is active.
+     * - "native"           -> QQuickWindow::NativeTextRendering. DirectWrite /
+     *                         CoreText. Escape hatch for comparison only: the
+     *                         platform engine renders ClearType subpixel glyphs
+     *                         (red/blue fringes on every stem) and, when hinting
+     *                         is enabled, snaps outlines to the pixel grid.
+     * - "qt"               -> QQuickWindow::QtTextRendering. Qt's own rasterizer;
+     *                         position-independent outlines, but at UI sizes most
+     *                         of a stroke lands in the half-lit fringe band, so
+     *                         the page reads dim and out of focus.
      *
-     * Unknown values log a warning and fall back to the default ("native").
+     * Unknown values log a warning and fall back to the default ("curve").
      */
     static void applyTextRenderType();
 
@@ -67,7 +70,8 @@ public:
      *    - "monospace"  -> activeMonoFamilies()
      * 2. Configures QGuiApplication default font with:
      *    - Grayscale vector antialiasing (QFont::NoSubpixelAntialias | QFont::PreferQuality | QFont::PreferAntialias)
-     *    - Vertical hinting preference (QFont::PreferVerticalHinting)
+     *    - No hinting (QFont::PreferNoHinting); the curve rasterizer ignores it, the
+     *      platform rasterizer would otherwise snap stems to the pixel grid
      *    - Ordered font families chain matching activeSansFamilies()
      *    - Standard 14px body size
      */

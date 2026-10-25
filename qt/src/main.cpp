@@ -1014,8 +1014,9 @@ bool runRealTypographyVerification(QQuickWindow* window) {
         qCritical("[qt-scenario] FAIL: QGuiApplication font missing PreferQuality strategy!");
         return false;
     }
-    if (appFont.hintingPreference() != QFont::PreferVerticalHinting) {
-        qCritical("[qt-scenario] FAIL: QGuiApplication font hintingPreference is not PreferVerticalHinting!");
+    if (appFont.hintingPreference() != QFont::PreferNoHinting) {
+        qCritical("[qt-scenario] FAIL: QGuiApplication font hintingPreference is not PreferNoHinting! "
+                  "Grid fitting is what reduced the platform rasterizer to 1px staircases.");
         return false;
     }
     if (QQuickWindow::textRenderType() != static_cast<QQuickWindow::TextRenderType>(ChaSet::FontSystem::activeTextRenderType())) {
@@ -1066,7 +1067,7 @@ bool runRealTypographyVerification(QQuickWindow* window) {
     };
 
     if (!scanItems(window->contentItem())) return false;
-    qInfo() << "[qt-scenario] PASS: Verified global typography and native grayscale antialiasing across" << verifiedCount << "active text nodes";
+    qInfo() << "[qt-scenario] PASS: Verified global typography and grayscale curve antialiasing across" << verifiedCount << "active text nodes";
     return true;
 }
 
@@ -1343,7 +1344,7 @@ int main(int argc, char* argv[])
 
     QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
     // Single owner of the global text rasterization path: CHASET_TEXT_RENDER
-    // selects qt (default) / native / curve. Must precede the first window.
+    // selects curve (default) / native / qt. Must precede the first window.
     ChaSet::FontSystem::applyTextRenderType();
 
     QGuiApplication app(argc, argv);

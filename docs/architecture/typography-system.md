@@ -237,28 +237,32 @@ Even with identical font metrics and tokens, visual discrepancy ("像素感" / b
 
 ### Engine Configuration Invariants
 
-1. **Grayscale Alpha Antialiasing (`QFont::NoSubpixelAntialias`)**:
-   - DirectWrite's default ClearType RGB subpixel antialiasing introduces visible red/orange left and blue/cyan right fringes at 9px–14px on contrasting dark/light backgrounds.
-   - Setting `QFont::NoSubpixelAntialias | QFont::PreferQuality | QFont::PreferAntialias` globally via `QGuiApplication::setFont(appFont)` in `qt/src/main.cpp` forces DirectWrite to use pure alpha grayscale antialiasing (`DWRITE_TEXT_ANTIALIAS_MODE_GRAYSCALE`), matching Chrome/Edge's `-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`.
+1. **Colour Is Decided by the Rasterizer, Not by `QFont`**:
+   - The premise this system was built on — that `QFont::NoSubpixelAntialias` makes DirectWrite emit grayscale coverage — is false on Windows. The DirectWrite *font engine* returns 3×1 ClearType glyph textures; the style flag never reaches it.
+   - Measured, same window, same text, only the flag differing: the two frames are **byte-identical** (`md5` equal), and both carry ClearType chroma. Peak channel spread inside the text is **173/255**, against **22** for the text colour's own chroma (`#e6f0fa` is itself 20 off neutral).
+   - Consequence: no `QFont` setting can remove fringes from the `native` or `qt` paths. Only `curve` produces colourless coverage, because it integrates the outline per pixel instead of sampling an OS glyph bitmap.
 
-2. **Vertical Hinting Preservation (`QFont::PreferVerticalHinting`)**:
-   - `QFont::PreferDefaultHinting` in TrueType rasterization snaps small glyph curves aggressively to full integer pixel grid boundaries, producing jagged pixelated staircases.
-   - Setting `appFont.setHintingPreference(QFont::PreferVerticalHinting)` preserves vertical baseline alignment while allowing smooth vector antialiasing along horizontal curves.
+2. **Hinting Is What Eats the Antialiasing (`QFont::PreferNoHinting`)**:
+   - `PreferVerticalHinting` + the platform rasterizer snaps outlines to the pixel grid. Stems that happen to land on a pixel boundary are painted solid and their neighbours empty, and every curve breaks into a 1px staircase — the "chewed edge" look. What survives is not grayscale AA but a hard binary edge plus a thin grey residue.
+   - Measured on the same 2× Latin+CJK line: hinted **3 240** ink pixels, unhinted **3 522**. Hinting squeezes stems thinner and moves them, so letterforms are re-shaped, not just sharpened.
+   - The trap that let this ship: hinted output has the *highest* solid-to-fringe ratio of the three policies (0.86 → 1.31 in the guide's own crops). Aliasing scores as "crisp" on any coverage-ratio metric, which is exactly why the guide flipped to it. Coverage ratios cannot see a staircase; edge structure and chroma can.
+   - Resolution: the application font is now `PreferNoHinting`. The curve rasterizer ignores the preference outright (measured: byte-identical frames for `PreferVerticalHinting` vs `PreferNoHinting`), so this only constrains the `native`/`qt` escape hatches.
 
 3. **Window-Level Text Rasterizer Single Truth (`CHASET_TEXT_RENDER`)**:
    - The rasterizer is owned by exactly one place: `ChaSet::FontSystem::applyTextRenderType()` in `qt/src/ChaSetFontSystem.cpp`. `qt/src/main.cpp` invokes it immediately before `QGuiApplication` is constructed, so the choice precedes the first `QQuickWindow`. `QQuickWindow::setTextRenderType()` is called nowhere else.
    - The policy is switchable at runtime through the `CHASET_TEXT_RENDER` environment variable:
 
-     | Value | `QQuickWindow::TextRenderType` | Rasterizer | Trade-off |
+     | Value | `QQuickWindow::TextRenderType` | Rasterizer | Measured at 2× on a 14px Latin+CJK line |
      | :--- | :--- | :--- | :--- |
-     | `native` **(default)** | `NativeTextRendering` | Operating-system rasterizer (DirectWrite / CoreText) | Grid-fits stems, so 12–14px CJK strokes stay solid. Glyph positions are no longer sub-pixel independent (advance widths can shift by 1px between scales), which is unacceptable for text that is transformed or animated, and irrelevant for static prose. |
-     | `qt` | `QtTextRendering` | Qt's own glyph-outline rasterizer | Position-independent outlines, but at UI sizes most of a stroke ends up as half-lit fringe: measured on 200% CJK body text, the ratio of solid-core to fringe pixels is **0.86 vs 1.88** for the platform rasterizer, i.e. the page reads dim and out of focus next to a browser. |
-     | `curve` | `CurveTextRendering` | Hardware curve rasterizer (Qt 6.7+) | Glyph outlines are rasterized as curves on the GPU; scale-invariant smoothness and the lowest texture memory. Requires a hardware RHI backend. |
+     | `curve` **(default)** | `CurveTextRendering` | Hardware curve rasterizer (Qt 6.7+) | Analytic per-pixel coverage: mid-coverage edge band **0.42**, peak channel spread **22** (= the text colour's own chroma, i.e. no fringes), edge gradient **101** (Chromium: 94). Scale-invariant, lowest texture memory. Requires a hardware RHI backend. |
+     | `native` | `NativeTextRendering` | Operating-system rasterizer (DirectWrite / CoreText) | ClearType subpixel glyphs (**spread 173**, red/blue on every stem) that `NoSubpixelAntialias` cannot switch off, and grid-fitted outlines whenever hinting is on. Kept as an escape hatch for comparison; never ship it. |
+     | `qt` | `QtTextRendering` | Qt's own glyph-outline rasterizer | Still sampled from the DirectWrite glyph texture (spread **159**), and at UI sizes most of a stroke ends up as half-lit fringe: solid-to-fringe **0.86** vs **1.88** in Chromium, i.e. the page reads dim and out of focus. |
 
-   - **Why `native` is the default**: ChaSet's living documentation is read side by side with the React docs. Under `qt` rendering, identical 14px CJK body text peaked at 238.6 luminance with 62% of the marked pixels in the fringe band, versus 249.7 / 41% in Chromium; the difference reads as "the Qt text is lighter and blurrier" and is not a colour-token problem. The trade-off above only bites when text itself is animated or lives under a QML `scale` transform, which is why manual `renderType:` overrides are still forbidden — one policy, chosen here.
-   - Unknown values log a warning and resolve to `native`. `curve` degrades to `qt` when a software rasterizer is active (`QT_QUICK_BACKEND=software`, `QSG_RHI_BACKEND=software`, or `QSG_RHI_PREFER_SOFTWARE_RENDERER`), because the curve rasterizer runs on the graphics hardware.
+   - **Why `curve` is the default**: it is the only policy that is simultaneously anti-aliased *and* sharp — coverage is computed from the outline, so edges get the exact grey they need (no fringe band, no halo) while stems stay solid, and nothing is tied to the pixel grid so the result is identical at 100%, 150% and 200%. `native` looks crisp in a coverage-ratio table only because aliasing removes the fringe it is measuring.
+   - Unknown values log a warning and resolve to `curve`. `curve` degrades to `qt` when a software rasterizer is active (`QT_QUICK_BACKEND=software`, `QSG_RHI_BACKEND=software`, or `QSG_RHI_PREFER_SOFTWARE_RENDERER`), because the curve rasterizer runs on the graphics hardware.
    - The resolved policy is exposed to QML as the `textRenderPolicy` context property and asserted by the headless `typography` scenario in `qt/src/main.cpp`.
    - Manual `renderType:` overrides in QML components remain strictly forbidden and are mechanically checked by `scripts/check-typography-parity.mjs`.
+   - **Known residual**: curve's ink mass runs ~8 % below Chromium at the same colour (measured 3 424 vs 3 721 ink pixels), because Skia thickens mid-coverage pixels on purpose. Matching it would require a colour token deviation, which the palette gate forbids; the honest coverage is preferred over a tinted approximation.
 
 4. **Web Monospace Font Fallback Integrity**:
    - Raw CSS declarations such as `ui-monospace, monospace` without `Consolas` fall back on Windows Chromium to bitmap-infused `NSimSun` at small font sizes.
@@ -289,7 +293,7 @@ Host applications linking against `ChaSet::ChaSet` initialize the entire font su
 #include <ChaSet/ChaSetFontSystem.h>
 
 int main(int argc, char* argv[]) {
-    // Must precede QGuiApplication: resolves CHASET_TEXT_RENDER (native / qt / curve).
+    // Must precede QGuiApplication: resolves CHASET_TEXT_RENDER (curve / native / qt).
     ChaSet::FontSystem::applyTextRenderType();
     QGuiApplication app(argc, argv);
     ChaSet::FontSystem::initialize(&app);
@@ -298,9 +302,9 @@ int main(int argc, char* argv[]) {
 ```
 
 Between the two calls they configure:
-- The global text rasterizer (`applyTextRenderType()`, see §9.3) — `native` by default
-- Pure alpha grayscale antialiasing (`QFont::NoSubpixelAntialias`)
-- Vertical curve hinting (`QFont::PreferVerticalHinting`)
+- The global text rasterizer (`applyTextRenderType()`, see §9.3) — `curve` by default
+- Grayscale antialiasing intent (`QFont::NoSubpixelAntialias | PreferAntialias | PreferQuality`) — inert on the DirectWrite path, but it keeps the `qt` escape hatch honest and costs nothing
+- No hinting (`QFont::PreferNoHinting`) — grid fitting is the aliasing (see §9.2)
 - DirectWrite CJK substitution tables (`Segoe UI`, `Consolas`, `sans-serif`, `monospace`)
 - Application font with 14px body size and ordered fallback families
 
