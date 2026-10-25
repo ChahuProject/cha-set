@@ -35,7 +35,7 @@ export function CopyableBadge({
   return (
     <HoverCopy
       text={text}
-      radius="full"
+      radius={size === 'sm' ? 'sm' : 'full'}
       disabled={disabled}
       onCopy={onCopy}
       onError={onError}

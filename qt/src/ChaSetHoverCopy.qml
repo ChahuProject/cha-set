@@ -39,12 +39,12 @@ Item {
 
     // Radius semantic mapping mirroring hoverCopyRadiusMap
     // (spec/components/hover-copy.ts) bit-for-bit:
-    // none -> 0, sm -> 2, md -> 6, lg -> 8, full -> pill (height / 2).
+    // none -> 0, sm -> 4, md -> 6, lg -> 8, full -> pill (height / 2).
     readonly property real _effectiveRadius: {
         if (root.radius === "none")
             return 0
         if (root.radius === "sm")
-            return ThemeTokens.dp(2)
+            return ThemeTokens.dp(4)
         if (root.radius === "md")
             return ThemeTokens.dp(6)
         if (root.radius === "lg")

@@ -32,7 +32,7 @@ Source: `spec/components/hover-copy.ts`.
 | :--- | :--- | :--- | :--- |
 | `text` | `''` | Payload to copy. Independent of displayed content (display may be truncated). | plain string both stacks |
 | `dim` | `0.45` | Black scrim alpha over content while active. Theme-independent by design (matches dialog scrim approach). | alpha value identical both stacks |
-| `radius` | `'md'` | Corner radius of the dim overlay + wrapper. **Never hardcoded** — supplied externally so pill and small-radius contents both work. | `hoverCopyRadiusMap`: `none->rounded-none/0`, `sm->rounded/2`, `md->rounded-md/6`, `lg->rounded-lg/8`, `full->rounded-full/pill` (`pill` = height/2) |
+| `radius` | `'md'` | Corner radius of the dim overlay + wrapper. **Never hardcoded** — supplied externally so pill and small-radius contents both work. | `hoverCopyRadiusMap`: `none->rounded-none/0`, `sm->rounded/4`, `md->rounded-md/6`, `lg->rounded-lg/8`, `full->rounded-full/pill` (`pill` = height/2) |
 | `icon` | `'copy'` | Resting overlay icon (semantic name). | React `CopyIcon`, Qt `ChaSetIcon { name: "copy" }` |
 | `copiedIcon` | `'check'` | Success icon (semantic name). | React `CheckIcon`, Qt `ChaSetIcon { name: "check" }` |
 | `resetTime` | `1000` ms | Restore interval after a successful copy. Logic timer — reduced motion does NOT shorten it. | identical both stacks |

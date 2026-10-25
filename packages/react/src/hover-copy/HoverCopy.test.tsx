@@ -45,7 +45,7 @@ describe('HoverCopy', () => {
     const { container } = render(<HoverCopy text="abc">content</HoverCopy>);
     const wrapper = container.querySelector('[data-state]');
     expect(wrapper).toHaveAttribute('data-state', 'idle');
-    const scrim = wrapper?.querySelector('div[aria-hidden="true"]');
+    const scrim = wrapper?.querySelector('[aria-hidden="true"]');
     expect(scrim).toHaveClass('opacity-0');
     expect(scrim).toHaveClass('pointer-events-none');
     const button = screen.getByRole('button', { name: 'Copy to clipboard' });
@@ -381,9 +381,12 @@ describe('CopyableBadge', () => {
     expect(wrapper).toHaveAttribute('data-state', 'idle');
   });
 
-  it('forwards size="sm" to inner Badge', () => {
+  it('forwards size="sm" with rounded radius to HoverCopy and inner Badge', () => {
     render(<CopyableBadge text="SM-PAYLOAD" size="sm" />);
     const badge = screen.getByText('SM-PAYLOAD');
     expect(badge).toHaveAttribute('data-size', 'sm');
+    expect(badge).toHaveClass('rounded');
+    const wrapper = badge.closest('[data-state]');
+    expect(wrapper).toHaveClass('rounded');
   });
 });

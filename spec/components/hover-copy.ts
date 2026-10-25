@@ -25,7 +25,7 @@ export type HoverCopyIcon = z.infer<typeof hoverCopyIconSchema>;
  */
 export const hoverCopyRadiusMap: Record<HoverCopyRadius, { web: string; qt: number | 'pill' }> = {
   none: { web: 'rounded-none', qt: 0 },
-  sm: { web: 'rounded', qt: 2 },
+  sm: { web: 'rounded', qt: 4 },
   md: { web: 'rounded-md', qt: 6 },
   lg: { web: 'rounded-lg', qt: 8 },
   full: { web: 'rounded-full', qt: 'pill' },

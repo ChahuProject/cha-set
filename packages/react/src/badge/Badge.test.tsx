@@ -32,9 +32,11 @@ describe('Badge Component', () => {
     expect(screen.getByText('Link')).toHaveAttribute('data-variant', 'link');
   });
 
-  it('renders sm size correctly', () => {
+  it('renders sm size correctly with rounded (4px) corner radius', () => {
     render(<Badge size="sm">Small</Badge>);
-    expect(screen.getByText('Small')).toHaveAttribute('data-size', 'sm');
+    const badge = screen.getByText('Small');
+    expect(badge).toHaveAttribute('data-size', 'sm');
+    expect(badge.className).toContain('rounded');
   });
 
   it('applies custom className', () => {

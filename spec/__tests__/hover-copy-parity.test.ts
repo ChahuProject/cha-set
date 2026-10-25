@@ -27,7 +27,7 @@ describe('hover-copy shared contract', () => {
   it('radius map covers all five semantic radii with web + qt geometry', () => {
     expect(hoverCopyRadiusMap).toEqual({
       none: { web: 'rounded-none', qt: 0 },
-      sm: { web: 'rounded', qt: 2 },
+      sm: { web: 'rounded', qt: 4 },
       md: { web: 'rounded-md', qt: 6 },
       lg: { web: 'rounded-lg', qt: 8 },
       full: { web: 'rounded-full', qt: 'pill' },
@@ -83,7 +83,7 @@ describe('hover-copy Qt mirror', () => {
   it('maps all five semantic radii to qt geometry', () => {
     expect(qmlSource).toContain('"none"');
     expect(qmlSource).toContain('"full"');
-    for (const token of ['0', '2', '6', '8', 'pill']) {
+    for (const token of ['0', '4', '6', '8', 'pill']) {
       expect(qmlSource).toContain(token);
     }
   });

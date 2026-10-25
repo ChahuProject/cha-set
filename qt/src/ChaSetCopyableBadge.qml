@@ -25,7 +25,7 @@ Item {
     ChaSetHoverCopy {
         id: hoverCopy
         text: root.text
-        radius: "full"
+        radius: root.size === "sm" ? "sm" : "full"
         disabled: root.disabled
         onCopiedToClipboard: function(copiedText) {
             root.copiedToClipboard(copiedText)
