@@ -44,6 +44,17 @@ Rectangle {
     color: cBg
     clip: true
 
+    /// A non-interactive table is a block of selectable text — the cells already select with
+    /// the mouse, but their I-beam only covers the glyph box, so hovering a column gap, the
+    /// row padding or a copyable badge fell back to the arrow and the whole surface read as
+    /// "not text". Claiming I-beam at the root closes those holes; a child that sets its own
+    /// cursor (a copy affordance, an interactive row) still wins, because a cursor belongs to
+    /// the deepest item that defines one.
+    HoverHandler {
+        enabled: !root.interactive
+        cursorShape: Qt.IBeamCursor
+    }
+
     function getColWidth(index, totalWidth) {
         if (!columns || columns.length === 0) return totalWidth;
         var col = columns[index];
@@ -369,7 +380,11 @@ Rectangle {
                     anchors.fill: parent
                     hoverEnabled: root.interactive
                     enabled: root.interactive
-                    cursorShape: root.interactive ? Qt.PointingHandCursor : Qt.ArrowCursor
+                    // MouseArea::setCursorShape calls setCursor() unconditionally, so a
+                    // disabled row area would still shadow the table's own cursor with an
+                    // arrow. Off-interactive it must claim the text cursor instead: the row
+                    // is selectable text, and this is the area between the cells.
+                    cursorShape: root.interactive ? Qt.PointingHandCursor : Qt.IBeamCursor
                     onClicked: {
                         if (root.interactive) {
                             root.selectedIndex = rowItem.index;

@@ -58,6 +58,11 @@ export const Table = React.forwardRef<HTMLTableElement, TableProps>(
           data-slot="table-container"
           className={cn(
             'relative w-full overflow-auto',
+            // A non-interactive table is a block of selectable text. The glyphs already get
+            // the I-beam from the browser, but the column gaps, row padding and badge cells
+            // fell back to the arrow, which reads as "this is chrome, not content" — the
+            // Qt side claims the cursor on the table root for exactly the same reason.
+            !interactive && 'cursor-text',
             bordered && 'rounded-lg border border-border bg-card text-card-foreground',
             containerClassName
           )}
