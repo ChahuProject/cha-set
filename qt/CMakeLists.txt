@@ -116,6 +116,8 @@ qt_add_qml_module(ChaSet
         src/ChaSetClipboard.cpp
         src/ChaSetDocSource.h
         src/ChaSetDocSource.cpp
+        src/ChaSetTextFragments.h
+        src/ChaSetTextFragments.cpp
         src/ChaSetFontSystem.h
         src/ChaSetFontSystem.cpp
         src/ChaSetPathUtil.h
@@ -275,6 +277,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/Main.qml
             src/DocLayout.qml
             src/DocText.qml
+            src/DocChipLayer.qml
             src/DocMarkdown.qml
             src/DocAnatomy.qml
             src/DocFooterSections.qml

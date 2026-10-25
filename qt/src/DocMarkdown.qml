@@ -99,12 +99,32 @@ Column {
             .replace(/>/g, "&gt;");
     }
 
-    /// Markdown code span → the documented "token chip" feel: monospace on a small surface,
-    /// inline with the sentence. Rich text cannot round corners, so the chip is a flat rectangle.
+    /// Same as esc(), plus quote escaping for attribute values (chip hrefs).
+    function attr(value) {
+        return esc(value).replace(/"/g, "&quot;");
+    }
+
+    /// Anchor href prefix that marks an inline chip. Shared with DocChipLayer.marker.
+    readonly property string chipMarker: "chip:"
+
+    /// Markdown code span → token chip.
+    ///
+    /// The visual pill is NOT painted here: Qt's rich text has no border-radius (CSS property
+    /// not in the supported subset) and no inline-item API, so the background would be a hard
+    /// rectangle that fills the whole line box. Instead the span only reserves space and marks
+    /// itself with an anchor; DocChipLayer reads the fragment geometry from QTextLayout and
+    /// paints a rounded Rectangle *behind* the text.
+    ///
+    /// The anchor is not decoration — it is the marker AND the payload: clicking a chip emits
+    /// linkActivated("chip:<token>"), which is how copy-to-clipboard will be wired.
+    ///
+    /// Note: CSS `em` is NOT in Qt's supported subset — font-size must be an absolute px value.
     function codeSpan(value) {
-        return '<span style="background-color:' + toHex(ThemeTokens.panelRaised)
-            + "; font-family:" + Typography.familyMono
-            + "; color:" + toHex(ThemeTokens.text) + '">&nbsp;' + esc(value) + "&nbsp;</span>";
+        return '<a href="' + chipMarker + attr(value) + '">'
+            + '<span style="font-family:' + Typography.familyMono
+            + "; font-size:" + Typography.sizeSmall + "px"
+            + "; text-decoration:none; color:" + toHex(ThemeTokens.text)
+            + '">&nbsp;' + esc(value) + "&nbsp;</span></a>";
     }
 
     function inlineHtml(nodes) {
@@ -138,6 +158,11 @@ Column {
                 return textBlock.contentHeight + (node.t === "heading" ? ThemeTokens.dp(4) : ThemeTokens.dp(8));
             }
 
+            DocChipLayer {
+                target: textBlock
+                marker: root.chipMarker
+            }
+
             DocText {
                 id: textBlock
                 visible: block.isText
@@ -167,6 +192,11 @@ Column {
                             wrap: false
                             color: ThemeTokens.text
                             text: block.node && block.node.ordered ? (index + 1) + "." : "\u2022"
+                        }
+
+                        DocChipLayer {
+                            target: itemText
+                            marker: root.chipMarker
                         }
 
                         DocText {
