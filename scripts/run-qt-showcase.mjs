@@ -7,28 +7,24 @@ import { existsSync } from 'node:fs';
 import { spawnSync, spawn } from 'node:child_process';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { detectQtPrefix, qtVersionOf } from './lib/qt-install.mjs';
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const qtDir = resolve(repoRoot, 'qt');
 
-// 1. Locate Qt 6 root
-const candidateQtPaths = [
-  process.env.QTDIR,
-  process.env.CMAKE_PREFIX_PATH,
-  'D:\\pengj\\qt\\current\\msvc2022_64',
-  'D:\\pengj\\qt\\6.10.1\\msvc2022_64',
-  'C:\\pengj\\qt\\6.10.1\\msvc2022_64',
-  'C:\\Qt\\6.10.1\\msvc2022_64',
-  'D:\\Qt\\6.10.1\\msvc2022_64',
-].filter(Boolean);
-
-let qtPrefix = candidateQtPaths.find((p) => existsSync(resolve(p, 'bin', 'qmake.exe')) || existsSync(resolve(p, 'lib', 'cmake', 'Qt6')));
+// 1. Locate Qt 6 root — never a hardcoded version, so a Qt upgrade needs no edits.
+//    Resolution order lives in scripts/lib/qt-install.mjs (QTDIR / CMAKE_PREFIX_PATH,
+//    then `<root>/current`, then the newest `<root>/<version>` directory).
+let qtPrefix = detectQtPrefix({
+  onWarn: (msg) => console.warn(`[qt-showcase] ${msg}`),
+});
 
 if (!qtPrefix) {
   console.warn('[qt-showcase] Warning: Could not auto-detect Qt 6 path from standard locations.');
   console.warn('[qt-showcase] Please ensure Qt 6 is in PATH or set QTDIR / CMAKE_PREFIX_PATH.');
 } else {
-  console.log(`[qt-showcase] Found Qt 6 at: ${qtPrefix}`);
+  console.log(`[qt-showcase] Found Qt ${qtVersionOf(qtPrefix) ?? ''} at: ${qtPrefix}`);
+
   // Prepend Qt bin directory to PATH so runtime DLLs (Qt6Core.dll, Qt6Quick.dll, etc.) are found
   const qtBin = resolve(qtPrefix, 'bin');
   process.env.PATH = `${qtBin};${process.env.PATH}`;

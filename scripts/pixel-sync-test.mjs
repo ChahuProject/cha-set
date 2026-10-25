@@ -4,6 +4,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { PNG } from 'pngjs';
 import pixelmatch from 'pixelmatch';
+import { detectQtBin } from './lib/qt-install.mjs';
 
 const rootDir = resolve(process.cwd());
 const outDir = join(rootDir, '.pixel-diff');
@@ -11,7 +12,13 @@ if (!existsSync(outDir)) mkdirSync(outDir, { recursive: true });
 
 const edgePath = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';
 const qtExe = join(rootDir, 'qt', 'build', 'QtChaSetDemo.exe');
-const qtBin = 'D:\\pengj\\qt\\6.10.1\\msvc2022_64\\bin';
+// Qt lookup is version-agnostic (see scripts/lib/qt-install.mjs): `current`, then
+// the newest installed version. QTDIR still wins when set.
+const qtBin = detectQtBin({ onWarn: (msg) => console.warn(`[PIXEL-SYNC] ${msg}`) });
+if (!qtBin) {
+  console.warn('[PIXEL-SYNC] Warning: no Qt 6 installation detected; Qt screenshots may fail. Set QTDIR.');
+}
+
 const port = 5299;
 const cdpPort = 9457;
 
@@ -607,7 +614,7 @@ try {
 
     const qtEnv = {
       ...process.env,
-      PATH: `${qtBin};${process.env.PATH || ''}`,
+      PATH: qtBin ? `${qtBin};${process.env.PATH || ''}` : process.env.PATH,
       QT_ENABLE_HIGHDPI_SCALING: '0',
       QT_SCALE_FACTOR: '1',
     };
