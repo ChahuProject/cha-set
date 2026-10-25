@@ -43,23 +43,11 @@ DocLayout {
             width: parent.width
             spacing: ThemeTokens.dp(14)
 
-            Column {
+            DocSectionHeader {
                 width: parent.width
-                spacing: ThemeTokens.dp(4)
-                DocText {
-                    text: ChaSetI18n.tr("getStarted.typography.rasterizer.title", "Rasterization Path")
-                    textColor: ThemeTokens.text
-                    font.pixelSize: Typography.sizeTitleSm
-                    font.weight: Typography.weightBold
-                }
-                DocText {
-                    text: ChaSetI18n.tr("getStarted.typography.rasterizer.desc", "The two stacks reach the same glyph outlines through different rasterizers. Web hands smoothing to Chromium and never fits outlines to the grid; Desktop resolves one policy for the whole process before the first window exists and integrates the outline per pixel on the GPU, which is what keeps strokes anti-aliased and sharp at the same time.")
-                    isMuted: true
-                    font.pixelSize: Typography.sizeBody
-                    width: parent.width
-                    wrapMode: TextEdit.WordWrap
-                    height: contentHeight
-                }
+                level: "h2"
+                title: ChaSetI18n.tr("getStarted.typography.rasterizer.title", "Rasterization Path")
+                description: ChaSetI18n.tr("getStarted.typography.rasterizer.desc", "The two stacks reach the same glyph outlines through different rasterizers. Web hands smoothing to Chromium and never fits outlines to the grid; Desktop resolves one policy for the whole process before the first window exists and integrates the outline per pixel on the GPU, which is what keeps strokes anti-aliased and sharp at the same time.")
             }
 
             Repeater {
@@ -132,23 +120,11 @@ DocLayout {
             width: parent.width
             spacing: ThemeTokens.dp(20)
 
-            Column {
+            DocSectionHeader {
                 width: parent.width
-                spacing: ThemeTokens.dp(4)
-                DocText {
-                    text: ChaSetI18n.tr("getStarted.typography.ramp.title", "Cross-Script Size Ramp")
-                    textColor: ThemeTokens.text
-                    font.pixelSize: Typography.sizeTitleSm
-                    font.weight: Typography.weightBold
-                }
-                DocText {
-                    text: ChaSetI18n.tr("getStarted.typography.ramp.desc", "Five script portals, each rendered once per type scale step. The passage never changes inside a block, so strokes can be compared across the whole ramp — including the rounded CJK and Hangul curves that reveal grid fitting first. Sizes follow the type scale and the interface scale, so they are named by token instead of by unit.")
-                    isMuted: true
-                    font.pixelSize: Typography.sizeBody
-                    width: parent.width
-                    wrapMode: TextEdit.WordWrap
-                    height: contentHeight
-                }
+                level: "h2"
+                title: ChaSetI18n.tr("getStarted.typography.ramp.title", "Cross-Script Size Ramp")
+                description: ChaSetI18n.tr("getStarted.typography.ramp.desc", "Five script portals, each rendered once per type scale step. The passage never changes inside a block, so strokes can be compared across the whole ramp — including the rounded CJK and Hangul curves that reveal grid fitting first. Sizes follow the type scale and the interface scale, so they are named by token instead of by unit.")
             }
 
             Repeater {
@@ -249,23 +225,11 @@ DocLayout {
             width: parent.width
             spacing: ThemeTokens.dp(20)
 
-            Column {
+            DocSectionHeader {
                 width: parent.width
-                spacing: ThemeTokens.dp(4)
-                DocText {
-                    text: ChaSetI18n.tr("getStarted.typography.integration.title", "Host Integration")
-                    textColor: ThemeTokens.text
-                    font.pixelSize: Typography.sizeTitleSm
-                    font.weight: Typography.weightBold
-                }
-                DocText {
-                    text: ChaSetI18n.tr("getStarted.typography.integration.desc", "How host applications configure and initialize ChaSet's typography subsystem across desktop and web runtimes.")
-                    isMuted: true
-                    font.pixelSize: Typography.sizeBody
-                    width: parent.width
-                    wrapMode: TextEdit.WordWrap
-                    height: contentHeight
-                }
+                level: "h2"
+                title: ChaSetI18n.tr("getStarted.typography.integration.title", "Host Integration")
+                description: ChaSetI18n.tr("getStarted.typography.integration.desc", "How host applications configure and initialize ChaSet's typography subsystem across desktop and web runtimes.")
             }
 
             Column {

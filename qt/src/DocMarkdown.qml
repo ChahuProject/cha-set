@@ -92,13 +92,21 @@ Column {
         return "#" + pad2(color.r) + pad2(color.g) + pad2(color.b);
     }
 
+    /// Markdown heading level → doc role. Level is DATA, exactly like the React
+    /// renderer: `#` is h1, `##` is h2 … and `####`+ collapses onto h4.
+    function headingRole(level) {
+        if (level <= 1) return "h1";
+        if (level === 2) return "h2";
+        if (level === 3) return "h3";
+        return "h4";
+    }
+
     function esc(value) {
         return String(value)
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
             .replace(/>/g, "&gt;");
     }
-
     /// Same as esc(), plus quote escaping for attribute values (chip hrefs).
     function attr(value) {
         return esc(value).replace(/"/g, "&quot;");
@@ -176,7 +184,7 @@ Column {
                 id: textBlock
                 visible: block.isText
                 width: block.width
-                role: block.node && block.node.t === "heading" ? "h2" : "p"
+                role: block.node && block.node.t === "heading" ? root.headingRole(block.node.level) : "p"
                 textFormat: TextEdit.RichText
                 color: block.node && block.node.t === "heading" ? ThemeTokens.text : ThemeTokens.subduedText
                 text: visible ? root.inlineHtml(block.node.inlines) : ""

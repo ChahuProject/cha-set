@@ -1,57 +1,85 @@
-// DocText.qml — Selectable typography primitive for ChaSet Living Documentation
+// DocText.qml — Selectable typography primitive for ChaSet Living Documentation.
+//
+// Roles are DATA, not components: qt/src/DocRoles.generated.qml is emitted from
+// spec/doc-roles.json by `pnpm gen:roles`, and the React counterpart
+// (packages/react/examples/basic/src/components/DocText.tsx) reads the SAME
+// table. H1…H4 / p / code are deliberately NOT separate QML files — that would
+// multiply files, DocPages, CMake entries and gate obligations while leaving the
+// same role→style switch somewhere else, and Qt has no semantic tags to gain.
+//
+// What a role carries: size, weight, family, leading, tracking, capitalization,
+// wrap and a default tone. What it does NOT carry: margins — Qt resolves block
+// spacing through Column.spacing, the web through utilities, so a role with a
+// built-in margin would drift between the stacks immediately.
 import QtQuick 6.10
 import ChaSet
 
 TextEdit {
     id: root
 
-    property string role: "" // "h1" | "h2" | "h3" | "p" | "caption" | "micro" | "code"
-    property color textColor: ThemeTokens.text
+    /// Typography role. "" keeps the legacy untyped style (= the `base` role).
+    property string role: ""
+
+    /// Explicit color (legacy). Leave undefined to inherit the role's tone.
+    property var textColor
+
+    /// Force the muted tone — legacy alias for `tone: "muted"`, which wins.
     property bool isMuted: false
+
+    /// "default" | "muted" | "danger". "" = the role's declared tone.
+    property string tone: ""
+
+    /// Force the monospace family (identifiers, measured values, token chips).
     property bool isMono: false
 
-    // Defensive compatibility properties matching QQuickText APIs
+    /// Wrap. Defaults to the role's flag, and stays assignable per call site.
+    property bool wrap: root.style.wrap
+
+    // Defensive compatibility properties matching QQuickText APIs.
+    //
+    // QQuickTextEdit has NO lineHeight / lineHeightMode / elide /
+    // maximumLineCount (those belong to QQuickText), so a role's `leading`
+    // ratio cannot be applied here — Qt keeps the font's natural leading and
+    // `leading` stays a web-only field of the role table. The properties below
+    // exist only so call sites that were written against the Text API keep
+    // compiling instead of failing at load time.
     property real lineHeight: 1.0
     property int elide: 0
     property int maximumLineCount: -1
 
-    readonly property int rolePixelSize: {
-        switch (role) {
-        case "h1": return Typography.sizeTitle       // 28px
-        case "h2": return Typography.sizeTitleSm     // 20px (React text-xl)
-        case "h3": return Typography.sizeHeading     // 16px (React text-base)
-        case "p": return Typography.sizeBody         // 14px (React text-sm)
-        case "caption": return Typography.sizeSmall  // 12px (React text-xs)
-        case "micro": return Typography.sizeMicro    // 10px
-        case "code": return Typography.sizeSmall     // 12px
-        default: return 0
+    readonly property var style: DocRoles.style(root.role === "" ? "base" : root.role)
+
+    readonly property string effectiveTone: root.tone !== ""
+        ? root.tone
+        : (root.isMuted ? "muted" : root.style.tone)
+
+    function toneColor(name) {
+        switch (name) {
+        case "muted": return ThemeTokens.subduedText;
+        case "danger": return ThemeTokens.danger;
+        default: return ThemeTokens.text;
         }
     }
 
-    readonly property int roleWeight: {
-        switch (role) {
-        case "h1":
-        case "h2": return Typography.weightBold      // 700
-        case "h3": return Typography.weightSemibold  // 600
-        case "code": return Typography.weightMedium  // 500
-        default: return 0
-        }
-    }
+    font.family: (root.isMono || root.style.mono) ? Typography.familyMono : Typography.familySans
+    font.pixelSize: root.style.size
+    font.weight: root.style.weight
+    font.capitalization: (root.style.uppercase && !root.isMono) ? Font.AllUppercase : Font.MixedCase
 
-    font.family: (role === "code" || isMono) ? Typography.familyMono : Typography.familySans
-    font.pixelSize: rolePixelSize > 0 ? rolePixelSize : Typography.sizeSmall
-    font.weight: roleWeight > 0 ? roleWeight : Typography.weightRegular
+    // The token scale stores tracking as an em ratio while Qt wants pixels, so
+    // the product is taken here — a scaled UI keeps the same optical tracking.
+    // `letterSpacing` lives on the font value type (QFont), not on TextEdit.
+    font.letterSpacing: root.style.tracking * root.style.size
 
     readOnly: true
     selectByMouse: true
     selectByKeyboard: true
     cursorVisible: false
     activeFocusOnPress: true
-    property bool wrap: role === "p"
     textMargin: 0
     padding: 0
     wrapMode: wrap ? TextEdit.WordWrap : TextEdit.NoWrap
-    color: isMuted ? ThemeTokens.subduedText : textColor
+    color: root.textColor !== undefined ? root.textColor : root.toneColor(root.effectiveTone)
     selectionColor: ThemeTokens.accent
     selectedTextColor: "#ffffff"
 
