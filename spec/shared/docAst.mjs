@@ -58,8 +58,8 @@ export var DOC_SCHEMAS = {
 var RE_FENCE = /^```(\S*)\s*$/;
 var RE_TABLE_FENCE = /^```table(?:\s+([a-z]+))?\s*$/;
 var RE_HEADING = /^(#{2,3})\s+(.*)$/;
-var RE_UL = /^[-*]\s+(.*)$/;
-var RE_OL = /^(\d+)\.\s+(.*)$/;
+var RE_UL = /^[-*+]\s+(.*)$/;
+var RE_OL = /^(\d+)[.)]\s+(.*)$/;
 var RE_TABLE_ROW = /^\|/;
 var RE_TABLE_DELIM = /^\|?[\s:|-]+\|[\s:|-]*$/;
 var RE_HEADING_ID = /\{#([\w-]+)\}\s*$/;
@@ -456,7 +456,20 @@ export function buildDocAst(source) {
           i += 1;
           continue;
         }
-        if (!itemTrimmed) break;
+        if (!itemTrimmed) {
+          var nextIdx = i + 1;
+          while (nextIdx < lines.length && !lines[nextIdx].replace(/\s+$/, "").replace(/^\s+/, "")) {
+            nextIdx += 1;
+          }
+          if (nextIdx < lines.length) {
+            var nextTrimmed = lines[nextIdx].replace(/\s+$/, "").replace(/^\s+/, "");
+            if (ordered ? RE_OL.test(nextTrimmed) : RE_UL.test(nextTrimmed)) {
+              i += 1;
+              continue;
+            }
+          }
+          break;
+        }
         // Continuation line of the previous item (indented, not a new block).
         if (/^\s{2,}\S/.test(itemLine) && items.length > 0) {
           items[items.length - 1] = joinSoft(items[items.length - 1], itemTrimmed);

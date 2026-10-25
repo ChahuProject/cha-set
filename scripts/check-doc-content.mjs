@@ -179,6 +179,22 @@ export function selfTest() {
   if (slotNames(probe.page).join(',') !== 'overview') errors.push('parser lost the slot fence');
   const inline = probe.page?.sections[0]?.blocks[2]?.items?.[0] ?? [];
   if (!inline.some((node) => node.t === 'code' && node.v === 'a')) errors.push('parser lost inline code');
+  if (probe.page?.sections[0]?.blocks[2]?.t !== 'list' || probe.page?.sections[0]?.blocks[2]?.ordered !== false) {
+    errors.push('parser lost unordered list');
+  }
+
+  // Ordered and numbered list testing
+  const orderedFixture = [
+    fixture,
+    '',
+    '1. First numbered item with `token`',
+    '2. Second numbered item',
+  ].join('\n');
+  const orderedProbe = buildDocAst(orderedFixture);
+  if (orderedProbe.errors.length) errors.push(`parser rejected ordered list fixture: ${orderedProbe.errors.join(' | ')}`);
+  const orderedBlock = orderedProbe.page?.sections[0]?.blocks?.find((b) => b.t === 'list' && b.ordered === true);
+  if (!orderedBlock || orderedBlock.items.length !== 2) errors.push('parser lost ordered/numbered list block');
+  if (!orderedBlock?.items?.[0]?.some((n) => n.t === 'code' && n.v === 'token')) errors.push('parser lost inline code in ordered list');
 
   // Keycaps and typed tables are the tableture of the docs: a regression here renders a
   // table as plain text (or drops a keycap) on both stacks without any error dialog.

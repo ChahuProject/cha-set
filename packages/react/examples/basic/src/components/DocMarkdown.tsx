@@ -171,7 +171,7 @@ function renderBlock(block: DocBlock, index: number, slots: DocMarkdownProps['sl
       return (
         <ListTag
           key={key}
-          className={`${block.ordered ? 'list-decimal' : 'list-disc'} pl-5 space-y-1.5 text-sm text-foreground`}
+          className={`${block.ordered ? 'list-decimal' : 'list-disc'} pl-5 space-y-1.5 text-sm text-foreground mb-4`}
         >
           {block.items.map((item, itemIndex) => (
             <li key={`${key}-${itemIndex}`}>{renderInline(item, `${key}-${itemIndex}`)}</li>

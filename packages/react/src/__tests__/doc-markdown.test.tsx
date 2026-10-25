@@ -64,4 +64,17 @@ describe('DocMarkdown block vocabulary', () => {
     expect(container.querySelector('ul')).not.toBeNull();
     expect(container.textContent).toContain('duration-quick');
   });
+
+  it('renders unordered lists with bullet points, tokens and design classes', () => {
+    const { container } = render(<DocMarkdown id="table-of-contents" section="animations" />);
+    const ul = container.querySelector('ul');
+    expect(ul).not.toBeNull();
+    expect(ul?.className).toContain('list-disc');
+    expect(ul?.className).toContain('pl-5');
+
+    const items = container.querySelectorAll('ul li');
+    expect(items.length).toBeGreaterThanOrEqual(2);
+    // Inline code inside list items is rendered with chip role
+    expect(container.querySelector('ul code')).not.toBeNull();
+  });
 });
