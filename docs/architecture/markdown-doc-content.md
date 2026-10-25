@@ -67,11 +67,43 @@ render as blank space on one stack, which is worse than the drift being fixed.
 | Heading | `## text {#section-id}` | `h2` starts a section, `h3` nests; the explicit id is required for CJK headings |
 | Paragraph | plain text | soft breaks join with a space for latin, directly for CJK |
 | List | `- item` / `1. item` | one level; continuation lines indented 2+ spaces |
-| Table | GFM pipe table | header + delimiter row required |
+| Table | GFM pipe table | header + delimiter row required; `\|` is an escaped literal pipe |
+| Typed table | ```` ```table props ```` / ```` ```table shortcuts ```` | wraps a pipe table; the schema decides the column treatment (§5) |
 | Code span | `` `duration-quick` `` | rendered as the inline token chip (see §4) |
+| Keycap | `[[Ctrl+K]]`, `[[Space / Enter]]` | one cap per key, `/` = alternative, `+` = chord (§6) |
 | Slot | ```` ```overview ```` / ```` ```anatomy ```` / ```` ```props ```` | native escape hatch |
 
 Rejected on purpose: raw HTML, images, blockquotes, nested lists.
+
+## 3.1 Why tables are typed, not sniffed
+
+A Markdown table that should look like the props table needs more than borders: the first
+column is an identifier in monospace + accent, the type and default columns are copyable
+badges, and only the description wraps. That information cannot be recovered from a header
+row — the same four columns are titled `Prop/Type/Default/Description` in English and
+`属性/类型/默认值/描述` in Chinese, so any header-text heuristic breaks the moment the page is
+translated.
+
+The schema is therefore declared once, in the fence, and the *column list* is shared data
+(`DOC_SCHEMAS` in `docAst.mjs`) rather than per-stack styling:
+
+| Schema | Columns (`kind`) |
+| :--- | :--- |
+| `plain` (default, and the bare-table case) | one `rich` column per header cell |
+| `props` | `code` 170 · `copyable` 240 · `copyable` 130 · `rich` (wrap) |
+| `shortcuts` | `kbd` 220 · `rich` (wrap) |
+
+Each `kind` maps onto a treatment the design system's table already has — React
+`TableColumn` (`code` / `render`), Qt `ChaSetTable.columns` (`code` / `copyableBadge` / `kbd` /
+`rich`) — so a Markdown props table inherits the hand-written `PropsTable` chrome instead of
+being painted a second time. Adding a schema is one entry in `DOC_SCHEMAS` plus a `kind` both
+renderers already draw; no component, no DocPage, no gate entry.
+
+Shape mistakes are errors, not silent repairs: an unknown schema, a column count that does not
+match the schema, a ragged row, or a fence with prose after the table all fail the gate. A
+silently padded cell would render as an empty cell on **both** stacks, which is worse than a
+build failure.
+
 
 ## 4. Inline code is the chip
 
@@ -136,6 +168,42 @@ Known limitation: the pill's colour still differs — Qt uses `ThemeTokens.panel
 (`#252d3d`) while React's `bg-secondary` resolves to `#1e293b`. Unifying them needs a dedicated
 chip token; reusing `panelRaised` keeps the palette contract but not the exact hue.
 
+## 4.1 Inline keycaps reuse the chip machinery
+
+`[[Ctrl+K]]` has to become real keycaps on the web and something equivalent on Qt, where a
+`QQuickItem` cannot live inside a text flow. The same split as the token chip applies, with one
+difference: a shortcut holds several caps, and the separators between them must stay bare.
+
+| Concern | React | Qt |
+| :--- | :--- | :--- |
+| Structure | `<Kbd shortcut="Ctrl+K">` — the component's inline layout does the rest | one anchor per key: `<a href="key:Ctrl">…</a>+<a href="key:K">…</a>` |
+| Where the split happens | inside `Kbd` (which also owns compact symbols) | `splitShortcut()` from the shared parser |
+| Surface | the component's own `outline` variant | a second `DocChipLayer` instance with `marker: "key:"` |
+
+Splitting the string in the AST was rejected: both `Kbd` and `ChaSetKbd` already parse the
+serialized form (including `Ctrl` → `⌃` under `compact`), so a parser-side interpretation would
+be a third source of truth. `DocAst.splitShortcut()` exists only for renderers that need
+per-key geometry, and both stacks call the same function when they do.
+
+The Qt layer is the *same component* as the token pill: `DocChipLayer` gained
+`borderColor` / `borderWidth`, so keycap mode is "fill + hairline outline" while chip mode stays
+"fill only". One painter, one geometry source (`ChaSetTextFragments.fragmentRects`), two
+markers — and because the layer reads fragment rects, a wrapped line or a scaled UI keeps the
+caps glued to their glyphs.
+
+Two consequences worth knowing:
+
+- **Each key is its own anchor**, so the run-merger in `fragmentRects()` cannot join `Ctrl` and
+  `K` into one wide pill. The `+` between them is ordinary text and stays unmarked.
+- **The cap is deliberately shallower than the line box** (`verticalPadding: dp(7)/2`, ~20dp at
+  the 14px body size). A taller cap would overlap the next line, because Qt paints it in a
+  sibling layer instead of growing the line.
+
+Table cells are the exception: they carry no chip layer, so a `background-color` there would
+fill the whole line box and read as a highlight band. Both stacks therefore drop the surface
+inside tables and keep monospace only, while the `shortcuts` schema renders *real* keycaps
+(`ChaSetKbd` / `<Kbd>`) in its key column, where the cell is an item rather than rich text.
+
 ## 5. Slots and incremental migration
 
 Markdown owns structure, headings and prose. Anything interactive stays native:
@@ -192,19 +260,31 @@ produces no error dialog, just an empty area where the prose should be.
 | Gate | What it prevents |
 | :--- | :--- |
 | `scripts/check-doc-content.mjs` (`pnpm check:docs`, wired into `pnpm gate`) | dialect errors, missing front matter, locale section drift, one stack consuming sections the other does not, slots implemented on only one stack, authored sections nobody renders |
-| parser self-test inside the same script | a broken detector or a parser regression (heading id, slot fence, inline code, blockquote rejection) |
-| `verify-showcase-parity.mjs` | still guards the native skeleton (previews, anatomy, props tables) |
+| parser self-test inside the same script | a broken detector or a parser regression — heading id, slot fence, inline code, blockquote rejection, inline keycap, both table schemas, escaped pipe, unknown-schema and wrong-column-count rejection |
+| `verify-showcase-parity.mjs` | still guards the native skeleton (previews, anatomy, props tables), and now resolves the outline title of `<DocMarkdown section="x">` / `DocMarkdown { section: "x" }` from `spec/content/`, so a migrated section cannot silently drop out of the 1:1 outline comparison |
 
 ## 9. Migrating a page
 
 1. Create `spec/content/<doc-id>/zh-CN.md` and `en-US.md`; copy the *better* of the two existing
-   wordings rather than merging them.
-2. React: replace the section block with `<DocMarkdown id="<doc-id>" section="<id>" />`.
-3. Qt: replace the block with `DocMarkdown { width: parent.width; docId: "<doc-id>"; section: "<id>" }`.
-4. `pnpm check:docs` — fails until both stacks consume the same section set.
+   wordings rather than merging them — the React and Qt props tables usually disagree
+   (`TocItem[]` vs `var (array)`), and the Markdown file is where that gets resolved.
+2. Move the props rows into a ```` ```table props ```` block and the shortcut rows into a
+   ```` ```table shortcuts ```` block. Write `\|` for a literal pipe in a union type, and `—`
+   for "no default".
+3. Delete the component's entry from `spec/showcase/keyboard-shortcuts.json` and re-run
+   `pnpm gen:showcase` — leaving it there keeps a second copy of the same rows alive.
+4. React: replace the footer block with `<DocMarkdown id="<doc-id>" section="<id>" />` per
+   section. Qt: `DocMarkdown { width: parent.width; docId: "<doc-id>"; section: "<id>" }`.
+5. `pnpm check:docs` — fails until both stacks consume the same section set.
 
 ## 10. Known gaps
 
+- **`required: true` has no Markdown spelling.** A trailing `*` inside the name cell renders as
+  part of the mono identifier instead of the red marker `PropsTable` draws. Only two props in
+  the showcase are required, so the codepath stays unused; add a `kind` if that changes.
+- **Structured cells are plain text.** `code` / `copyable` / `kbd` columns flatten their inline
+  AST (`inlineText`), so `` `a` `` inside a *type* cell loses its chip surface — the column
+  already supplies the monospace treatment, so only authorial accident can notice.
 - **Rendered spacing is not pixel-identical** between stacks, by design: break points, line
   height and block rhythm belong to each platform's typography stack. Living-doc pages are out of
   scope for `pnpm test:pixel`, which covers atomic components only.
