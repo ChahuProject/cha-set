@@ -19,8 +19,8 @@ export interface CopyableBadgeProps {
 }
 
 /**
- * Thin preset: Badge (secondary, default/sm size) wrapped in HoverCopy with pill
- * radius. Forwards everything to HoverCopy — no copy logic, timing, or state
+ * Thin preset: Badge (secondary, default/sm size) wrapped in HoverCopy with sm
+ * (4px) rounded radius. Forwards everything to HoverCopy — no copy logic, timing, or state
  * of its own. See docs/architecture/hover-copy.md section 7.
  */
 export function CopyableBadge({
@@ -35,7 +35,7 @@ export function CopyableBadge({
   return (
     <HoverCopy
       text={text}
-      radius={size === 'sm' ? 'sm' : 'full'}
+      radius="sm"
       disabled={disabled}
       onCopy={onCopy}
       onError={onError}

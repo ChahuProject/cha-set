@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { Badge } from './Badge';
 
 describe('Badge Component', () => {
-  it('renders with default props as a span with h-5 and rounded-4xl', () => {
+  it('renders with default props as a span with h-5 and rounded', () => {
     render(<Badge>Default Badge</Badge>);
     const badge = screen.getByText('Default Badge');
     expect(badge).toBeInTheDocument();
@@ -12,7 +12,8 @@ describe('Badge Component', () => {
     expect(badge).toHaveAttribute('data-variant', 'default');
     expect(badge).toHaveAttribute('data-size', 'default');
     expect(badge.className).toContain('h-5');
-    expect(badge.className).toContain('rounded-4xl');
+    expect(badge.className).toContain('rounded');
+    expect(badge.className).not.toContain('rounded-4xl');
   });
 
   it('renders all variants correctly', () => {

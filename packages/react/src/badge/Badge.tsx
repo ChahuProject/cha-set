@@ -43,7 +43,7 @@ const variantStyles: Record<BadgeVariant, string> = {
 };
 
 const sizeStyles: Record<BadgeSize, string> = {
-  default: 'h-5 px-2 text-xs rounded-4xl gap-1',
+  default: 'h-5 px-2 text-xs rounded gap-1',
   sm: 'h-4 px-1.5 text-micro font-mono rounded gap-0.5',
 };
 

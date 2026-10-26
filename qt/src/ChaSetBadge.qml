@@ -34,7 +34,7 @@ ChaSetSquircle {
     implicitWidth: Math.max(ThemeTokens.dp(isSm ? 16 : 20), contentRow.implicitWidth + ThemeTokens.dp(isSm ? 12 : 16))
     height: implicitHeight
     width: implicitWidth
-    radius: ThemeTokens.dp(isSm ? 4 : 10)
+    radius: ThemeTokens.dp(4)
 
     // Background Color
     color: {
