@@ -1,6 +1,7 @@
 // ChaSetTable.qml — Cross-Stack Table Component for Qt Quick
 // Pixel-Perfect & Behavioral Parity with React Table.tsx
 import QtQuick
+import QtQuick.Controls
 import ChaSet
 
 Rectangle {
@@ -36,7 +37,8 @@ Rectangle {
     readonly property color cSelection: ThemeTokens.selection
 
     implicitWidth: ThemeTokens.dp(600)
-    implicitHeight: mainLayout.implicitHeight
+    implicitHeight: mainLayout.implicitHeight + 2
+    height: implicitHeight
 
     radius: effectiveRadius
     border.color: cBorder
@@ -44,25 +46,134 @@ Rectangle {
     color: cBg
     clip: true
 
+    TextMetrics {
+        id: monoMetrics
+        font.family: Typography.familyMono
+        font.pixelSize: Typography.sizeSmall
+        font.weight: Typography.weightMedium
+    }
+
+    TextMetrics {
+        id: sansMetrics
+        font.family: Typography.familySans
+        font.pixelSize: Typography.sizeSmall
+        font.weight: Typography.weightRegular
+    }
+
+    function isFlexCol(col) {
+        if (!col) return true;
+        if (col.wrap) return true;
+        return (col.width === undefined || Number(col.width) <= 0);
+    }
+
+    function getColContentWidth(index) {
+        if (!columns || index < 0 || index >= columns.length) return 0;
+        var col = columns[index];
+        if (!col) return 0;
+        if (col.wrap) {
+            return (col.width !== undefined && Number(col.width) > 0)
+                ? ThemeTokens.dp(Number(col.width))
+                : ThemeTokens.dp(160);
+        }
+        var maxWidth = (col.width !== undefined && Number(col.width) > 0)
+            ? ThemeTokens.dp(Number(col.width))
+            : ThemeTokens.dp(80);
+
+        if (col.title) {
+            sansMetrics.font.weight = Typography.weightSemibold;
+            sansMetrics.text = String(col.title);
+            var hWidth = sansMetrics.width + ThemeTokens.dp(28);
+            if (hWidth > maxWidth) maxWidth = hWidth;
+        }
+
+        if (rows && rows.length > 0) {
+            var isMono = Boolean(col.code || col.copyableBadge || col.kbd);
+            for (var r = 0; r < rows.length; ++r) {
+                var rowRecord = rows[r];
+                if (!rowRecord || col.key === undefined) continue;
+                var val = rowRecord[col.key];
+                if (val === undefined || val === null) continue;
+                var strVal = String(val);
+                if (strVal === "" || strVal === "—") continue;
+
+                var cellW = 0;
+                if (isMono) {
+                    monoMetrics.text = strVal;
+                    // mono text width + 12dp badge padding + 24dp cell margins/padding
+                    cellW = monoMetrics.width + ThemeTokens.dp(38);
+                } else {
+                    sansMetrics.font.weight = Typography.weightRegular;
+                    sansMetrics.text = strVal;
+                    cellW = sansMetrics.width + ThemeTokens.dp(28);
+                }
+                if (cellW > maxWidth) {
+                    maxWidth = cellW;
+                }
+            }
+        }
+        return Math.ceil(maxWidth);
+    }
+
+    property var _colWidths: []
+
+    function updateColWidths() {
+        if (!columns || columns.length === 0) {
+            _colWidths = [];
+            return;
+        }
+        var fixedTotal = 0;
+        var flexCount = 0;
+        var widths = [];
+        for (var i = 0; i < columns.length; ++i) {
+            var col = columns[i];
+            if (isFlexCol(col)) {
+                flexCount++;
+                widths.push(0);
+            } else {
+                var w = getColContentWidth(i);
+                widths.push(w);
+                fixedTotal += w;
+            }
+        }
+        var minFlexW = ThemeTokens.dp(160);
+        var avail = Math.max(root.width, fixedTotal + flexCount * minFlexW);
+        var remainingForFlex = avail - fixedTotal;
+        var flexColWidth = flexCount > 0 ? Math.max(minFlexW, remainingForFlex / flexCount) : 0;
+        for (var j = 0; j < columns.length; ++j) {
+            if (isFlexCol(columns[j])) {
+                widths[j] = Math.ceil(flexColWidth);
+            }
+        }
+        _colWidths = widths;
+    }
+
+    onColumnsChanged: updateColWidths()
+    onRowsChanged: updateColWidths()
+    onWidthChanged: updateColWidths()
+    Component.onCompleted: updateColWidths()
+
+    Connections {
+        target: ThemeTokens
+        function onUiScaleChanged() { root.updateColWidths(); }
+    }
+
+    readonly property real tableContentWidth: {
+        if (!_colWidths || _colWidths.length === 0) return root.width;
+        var sum = 0;
+        for (var i = 0; i < _colWidths.length; ++i) {
+            sum += _colWidths[i];
+        }
+        return Math.max(root.width, sum);
+    }
+
     function getColWidth(index, totalWidth) {
+        if (_colWidths && index >= 0 && index < _colWidths.length && _colWidths[index] > 0) {
+            return _colWidths[index];
+        }
         if (!columns || columns.length === 0) return totalWidth;
         var col = columns[index];
         if (col && col.width !== undefined && Number(col.width) > 0) {
             return ThemeTokens.dp(Number(col.width));
-        }
-        var fixedTotal = 0;
-        var flexCount = 0;
-        for (var i = 0; i < columns.length; ++i) {
-            var c = columns[i];
-            if (c && c.width !== undefined && Number(c.width) > 0) {
-                fixedTotal += ThemeTokens.dp(Number(c.width));
-            } else {
-                flexCount++;
-            }
-        }
-        var available = totalWidth - fixedTotal;
-        if (flexCount > 0 && available > 0) {
-            return available / flexCount;
         }
         return ThemeTokens.dp(80);
     }
@@ -73,9 +184,42 @@ Rectangle {
         return Text.AlignLeft;
     }
 
-    Column {
-        id: mainLayout
-        width: parent.width
+    Flickable {
+        id: flickable
+        anchors.fill: parent
+        anchors.margins: 1
+        contentWidth: mainLayout.width
+        contentHeight: mainLayout.height
+        clip: true
+        boundsBehavior: Flickable.StopAtBounds
+        flickableDirection: Flickable.HorizontalFlick
+
+        ScrollBar.horizontal: ChaSetScrollBar {
+            id: hScrollBar
+            scrollArea: flickable
+            barSize: "sm"
+            showButtons: false
+        }
+
+        WheelHandler {
+            id: hWheelHandler
+            target: null
+            acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+            enabled: flickable.contentWidth > flickable.width
+            onWheel: function(event) {
+                if (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)) return;
+                var delta = event.angleDelta.x !== 0 ? event.angleDelta.x : ((event.modifiers & Qt.ShiftModifier) ? event.angleDelta.y : 0);
+                if (delta === 0) return;
+                var newContentX = flickable.contentX - delta;
+                var maxContentX = Math.max(0, flickable.contentWidth - flickable.width);
+                flickable.contentX = Math.max(0, Math.min(maxContentX, newContentX));
+                event.accepted = true;
+            }
+        }
+
+        Column {
+            id: mainLayout
+            width: root.tableContentWidth
 
         // Header Row
         Rectangle {
@@ -480,5 +624,12 @@ Rectangle {
                 font.pixelSize: Typography.sizeSmall
             }
         }
+
+        // Bottom spacer for scrollbar clearance when horizontal scrollbar is active
+        Item {
+            width: parent.width
+            height: (flickable.contentWidth > flickable.width) ? ThemeTokens.dp(12) : 0
+        }
     }
+}
 }
