@@ -32,7 +32,18 @@ ChaSetSquircle::ChaSetSquircle(QQuickItem *parent)
     setMipmap(false);
     setRenderTarget(QQuickPaintedItem::FramebufferObject);
 
-    connect(&m_pen, &ChaSetSquirclePen::changed, this, [this]() { update(); });
+    connect(&m_pen, &ChaSetSquirclePen::changed, this, [this]() {
+        m_pathDirty = true;
+        update();
+    });
+}
+
+void ChaSetSquircle::geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry)
+{
+    QQuickPaintedItem::geometryChange(newGeometry, oldGeometry);
+    if (newGeometry.size() != oldGeometry.size()) {
+        m_pathDirty = true;
+    }
 }
 
 void ChaSetSquircle::setColor(const QColor &c)
@@ -49,6 +60,7 @@ void ChaSetSquircle::setRadius(qreal r)
     if (qFuzzyCompare(m_radius, r))
         return;
     m_radius = r;
+    m_pathDirty = true;
     emit radiusChanged();
     update();
 }
@@ -58,6 +70,7 @@ void ChaSetSquircle::setTopLeftRadius(qreal r)
     if (qFuzzyCompare(m_topLeftRadius, r))
         return;
     m_topLeftRadius = r;
+    m_pathDirty = true;
     emit topLeftRadiusChanged();
     update();
 }
@@ -67,6 +80,7 @@ void ChaSetSquircle::setTopRightRadius(qreal r)
     if (qFuzzyCompare(m_topRightRadius, r))
         return;
     m_topRightRadius = r;
+    m_pathDirty = true;
     emit topRightRadiusChanged();
     update();
 }
@@ -76,6 +90,7 @@ void ChaSetSquircle::setBottomLeftRadius(qreal r)
     if (qFuzzyCompare(m_bottomLeftRadius, r))
         return;
     m_bottomLeftRadius = r;
+    m_pathDirty = true;
     emit bottomLeftRadiusChanged();
     update();
 }
@@ -85,6 +100,7 @@ void ChaSetSquircle::setBottomRightRadius(qreal r)
     if (qFuzzyCompare(m_bottomRightRadius, r))
         return;
     m_bottomRightRadius = r;
+    m_pathDirty = true;
     emit bottomRightRadiusChanged();
     update();
 }
@@ -94,6 +110,7 @@ void ChaSetSquircle::setCornerSmoothing(qreal s)
     if (qFuzzyCompare(m_cornerSmoothing, s))
         return;
     m_cornerSmoothing = s;
+    m_pathDirty = true;
     emit cornerSmoothingChanged();
     update();
 }
@@ -103,6 +120,7 @@ void ChaSetSquircle::setRoundLeft(bool v)
     if (m_roundLeft == v)
         return;
     m_roundLeft = v;
+    m_pathDirty = true;
     emit roundLeftChanged();
     update();
 }
@@ -112,6 +130,7 @@ void ChaSetSquircle::setRoundRight(bool v)
     if (m_roundRight == v)
         return;
     m_roundRight = v;
+    m_pathDirty = true;
     emit roundRightChanged();
     update();
 }
@@ -121,6 +140,7 @@ void ChaSetSquircle::setRoundTop(bool v)
     if (m_roundTop == v)
         return;
     m_roundTop = v;
+    m_pathDirty = true;
     emit roundTopChanged();
     update();
 }
@@ -130,6 +150,7 @@ void ChaSetSquircle::setRoundBottom(bool v)
     if (m_roundBottom == v)
         return;
     m_roundBottom = v;
+    m_pathDirty = true;
     emit roundBottomChanged();
     update();
 }
@@ -139,6 +160,7 @@ void ChaSetSquircle::setRoundTopLeft(bool v)
     if (m_roundTopLeft == v)
         return;
     m_roundTopLeft = v;
+    m_pathDirty = true;
     emit roundTopLeftChanged();
     update();
 }
@@ -148,6 +170,7 @@ void ChaSetSquircle::setRoundTopRight(bool v)
     if (m_roundTopRight == v)
         return;
     m_roundTopRight = v;
+    m_pathDirty = true;
     emit roundTopRightChanged();
     update();
 }
@@ -157,6 +180,7 @@ void ChaSetSquircle::setRoundBottomLeft(bool v)
     if (m_roundBottomLeft == v)
         return;
     m_roundBottomLeft = v;
+    m_pathDirty = true;
     emit roundBottomLeftChanged();
     update();
 }
@@ -166,6 +190,7 @@ void ChaSetSquircle::setRoundBottomRight(bool v)
     if (m_roundBottomRight == v)
         return;
     m_roundBottomRight = v;
+    m_pathDirty = true;
     emit roundBottomRightChanged();
     update();
 }
@@ -357,6 +382,14 @@ void ChaSetSquircle::paint(QPainter *painter)
     if (W <= 0 || H <= 0)
         return;
 
+    const qreal bw = m_pen.width();
+    const QColor bc = m_pen.color();
+    const bool hasBorder = (bw > 0.0 && bc.alpha() > 0);
+
+    // 0. Transparent early-out: if both fill and border are completely invisible, do zero work
+    if (m_color.alpha() <= 0 && !hasBorder)
+        return;
+
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
 
@@ -370,32 +403,39 @@ void ChaSetSquircle::paint(QPainter *painter)
     const bool br = m_roundRight && m_roundBottom && m_roundBottomRight;
     const bool bl = m_roundLeft && m_roundBottom && m_roundBottomLeft;
 
-    const qreal bw = m_pen.width();
-    const QColor bc = m_pen.color();
-    const bool hasBorder = (bw > 0.0 && bc.alpha() > 0);
+    if (m_pathDirty || !qFuzzyCompare(m_cachedW, W) || !qFuzzyCompare(m_cachedH, H)) {
+        QRectF fillRect(0, 0, W, H);
+        m_cachedFillPath = createSquirclePath(fillRect, rTL, rTR, rBR, rBL, m_cornerSmoothing, tl, tr, br, bl);
+
+        if (bw > 0.0) {
+            const qreal inset = bw / 2.0;
+            QRectF strokeRect(inset, inset, std::max(0.0, W - bw), std::max(0.0, H - bw));
+            const qreal strTL = std::max(0.0, rTL - inset);
+            const qreal strTR = std::max(0.0, rTR - inset);
+            const qreal strBR = std::max(0.0, rBR - inset);
+            const qreal strBL = std::max(0.0, rBL - inset);
+            m_cachedStrokePath = createSquirclePath(strokeRect, strTL, strTR, strBR, strBL, m_cornerSmoothing, tl, tr, br, bl);
+        } else {
+            m_cachedStrokePath = QPainterPath();
+        }
+
+        m_cachedW = W;
+        m_cachedH = H;
+        m_pathDirty = false;
+    }
 
     // 1. Fill background
     if (m_color.alpha() > 0) {
-        QRectF fillRect(0, 0, W, H);
-        QPainterPath fillPath = createSquirclePath(fillRect, rTL, rTR, rBR, rBL, m_cornerSmoothing, tl, tr, br, bl);
         painter->setPen(Qt::NoPen);
         painter->setBrush(m_color);
-        painter->drawPath(fillPath);
+        painter->drawPath(m_cachedFillPath);
     }
 
     // 2. Stroke inner border (box-sizing: border-box)
     if (hasBorder) {
-        const qreal inset = bw / 2.0;
-        QRectF strokeRect(inset, inset, std::max(0.0, W - bw), std::max(0.0, H - bw));
-        const qreal strTL = std::max(0.0, rTL - inset);
-        const qreal strTR = std::max(0.0, rTR - inset);
-        const qreal strBR = std::max(0.0, rBR - inset);
-        const qreal strBL = std::max(0.0, rBL - inset);
-
-        QPainterPath strokePath = createSquirclePath(strokeRect, strTL, strTR, strBR, strBL, m_cornerSmoothing, tl, tr, br, bl);
         QPen pen(bc, bw, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
         painter->setPen(pen);
         painter->setBrush(Qt::NoBrush);
-        painter->drawPath(strokePath);
+        painter->drawPath(m_cachedStrokePath);
     }
 }

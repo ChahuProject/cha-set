@@ -113,6 +113,9 @@ public:
         bool tl = true, bool tr = true, bool br = true, bool bl = true
     );
 
+protected:
+    void geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry) override;
+
 signals:
     void colorChanged();
     void radiusChanged();
@@ -149,6 +152,12 @@ private:
     bool m_roundBottomRight = true;
 
     ChaSetSquirclePen m_pen{this};
+
+    bool m_pathDirty = true;
+    qreal m_cachedW = -1.0;
+    qreal m_cachedH = -1.0;
+    QPainterPath m_cachedFillPath;
+    QPainterPath m_cachedStrokePath;
 };
 
 class ChaSetSmoothRectangle : public ChaSetSquircle
