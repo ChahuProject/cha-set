@@ -116,6 +116,8 @@ Rectangle {
 
     property var _colWidths: []
 
+    readonly property real availableTableWidth: Math.max(0, root.width - 2)
+
     function updateColWidths() {
         if (!columns || columns.length === 0) {
             _colWidths = [];
@@ -136,12 +138,26 @@ Rectangle {
             }
         }
         var minFlexW = ThemeTokens.dp(160);
-        var avail = Math.max(root.width, fixedTotal + flexCount * minFlexW);
+        var baseW = root.availableTableWidth;
+        var avail = Math.max(baseW, fixedTotal + flexCount * minFlexW);
         var remainingForFlex = avail - fixedTotal;
         var flexColWidth = flexCount > 0 ? Math.max(minFlexW, remainingForFlex / flexCount) : 0;
         for (var j = 0; j < columns.length; ++j) {
             if (isFlexCol(columns[j])) {
                 widths[j] = Math.ceil(flexColWidth);
+            }
+        }
+        // If content fits within available width, adjust the last flex column
+        // so the sum of column widths exactly equals availableTableWidth (zero fake overflow).
+        if (flexCount > 0 && avail === baseW) {
+            var currentSum = 0;
+            var lastFlexIdx = -1;
+            for (var k = 0; k < widths.length; ++k) {
+                currentSum += widths[k];
+                if (isFlexCol(columns[k])) lastFlexIdx = k;
+            }
+            if (lastFlexIdx >= 0 && currentSum !== baseW) {
+                widths[lastFlexIdx] += (baseW - currentSum);
             }
         }
         _colWidths = widths;
@@ -158,12 +174,33 @@ Rectangle {
     }
 
     readonly property real tableContentWidth: {
-        if (!_colWidths || _colWidths.length === 0) return root.width;
+        var baseW = root.availableTableWidth;
+        if (!_colWidths || _colWidths.length === 0) return baseW;
         var sum = 0;
         for (var i = 0; i < _colWidths.length; ++i) {
             sum += _colWidths[i];
         }
-        return Math.max(root.width, sum);
+        return Math.max(baseW, sum);
+    }
+
+    function resolveParentScrollArea() {
+        var p = root.parent;
+        while (p) {
+            if (p.flickableItem && typeof p.handleVerticalWheel === "function") {
+                return p;
+            }
+            if (typeof p.handleVerticalWheel === "function") {
+                return p;
+            }
+            if (p.scrollToY !== undefined && typeof p.handleVerticalWheel === "function") {
+                return p;
+            }
+            if (p.flickableDirection !== undefined && p.contentY !== undefined && p.contentHeight !== undefined) {
+                return p;
+            }
+            p = p.parent;
+        }
+        return null;
     }
 
     function getColWidth(index, totalWidth) {
@@ -199,21 +236,70 @@ Rectangle {
             scrollArea: flickable
             barSize: "sm"
             showButtons: false
+            policy: ScrollBar.AsNeeded
+            visible: (flickable.contentWidth - flickable.width) > 1.0
         }
 
         WheelHandler {
-            id: hWheelHandler
+            id: tableWheelHandler
             target: null
             acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
-            enabled: flickable.contentWidth > flickable.width
             onWheel: function(event) {
                 if (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)) return;
-                var delta = event.angleDelta.x !== 0 ? event.angleDelta.x : ((event.modifiers & Qt.ShiftModifier) ? event.angleDelta.y : 0);
-                if (delta === 0) return;
-                var newContentX = flickable.contentX - delta;
+
+                var isShift = Boolean(event.modifiers & Qt.ShiftModifier);
+                var isHorizontal = (event.angleDelta.x !== 0) || isShift;
+
+                if (!isHorizontal) {
+                    // Vertical mouse wheel: this table has NO vertical scrollbar,
+                    // so forward the vertical wheel event directly to parent scroll area!
+                    var deltaY = event.angleDelta.y;
+                    if (deltaY === 0) return;
+                    var parentArea = root.resolveParentScrollArea();
+                    if (parentArea) {
+                        if (typeof parentArea.handleVerticalWheel === "function") {
+                            parentArea.handleVerticalWheel(deltaY);
+                            event.accepted = true;
+                            return;
+                        } else if (parentArea.contentY !== undefined) {
+                            var maxScrollY = Math.max(0, parentArea.contentHeight - parentArea.height);
+                            var scrollPixels = (deltaY / 120.0) * 80.0;
+                            parentArea.contentY = Math.max(0, Math.min(maxScrollY, parentArea.contentY - scrollPixels));
+                            event.accepted = true;
+                            return;
+                        }
+                    }
+                    return;
+                }
+
+                // Horizontal mouse wheel (angleDelta.x != 0 or Shift + angleDelta.y)
+                var deltaX = event.angleDelta.x !== 0 ? event.angleDelta.x : event.angleDelta.y;
+                if (deltaX === 0) return;
+
                 var maxContentX = Math.max(0, flickable.contentWidth - flickable.width);
-                flickable.contentX = Math.max(0, Math.min(maxContentX, newContentX));
-                event.accepted = true;
+                if (maxContentX > 1.0) {
+                    var scrollingRight = (deltaX < 0);
+                    var scrollingLeft = (deltaX > 0);
+                    var atLeft = flickable.contentX <= 0.5;
+                    var atRight = flickable.contentX >= maxContentX - 0.5;
+
+                    if ((scrollingLeft && !atLeft) || (scrollingRight && !atRight)) {
+                        var scrollPx = (deltaX / 120.0) * 80.0;
+                        var newContentX = Math.max(0, Math.min(maxContentX, flickable.contentX - scrollPx));
+                        flickable.contentX = newContentX;
+                        event.accepted = true;
+                        return;
+                    }
+                }
+
+                // If this table cannot scroll horizontally (or reached horizontal bound),
+                // forward horizontal wheel to parent if parent can scroll horizontally
+                var pArea = root.resolveParentScrollArea();
+                if (pArea && typeof pArea.handleHorizontalWheel === "function") {
+                    if (pArea.handleHorizontalWheel(deltaX)) {
+                        event.accepted = true;
+                    }
+                }
             }
         }
 
@@ -628,7 +714,7 @@ Rectangle {
         // Bottom spacer for scrollbar clearance when horizontal scrollbar is active
         Item {
             width: parent.width
-            height: (flickable.contentWidth > flickable.width) ? ThemeTokens.dp(12) : 0
+            height: hScrollBar.visible ? ThemeTokens.dp(12) : 0
         }
     }
 }
