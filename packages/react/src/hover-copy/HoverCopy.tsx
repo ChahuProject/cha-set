@@ -85,10 +85,13 @@ export const HoverCopy = React.forwardRef<HTMLSpanElement, HoverCopyProps>(
     forwardedRef,
   ) => {
     const [state, setState] = React.useState<HoverCopyState>('idle');
+    const [activeGlyph, setActiveGlyph] = React.useState<string>(icon);
     const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
     const pointerInsideRef = React.useRef(false);
     const focusInsideRef = React.useRef(false);
     const pinnedRef = React.useRef(false);
+    const suppressHoverRef = React.useRef(false);
+    const buttonRef = React.useRef<HTMLButtonElement | null>(null);
 
     const clearTimer = React.useCallback(() => {
       if (timerRef.current) {
@@ -110,13 +113,16 @@ export const HoverCopy = React.forwardRef<HTMLSpanElement, HoverCopyProps>(
         pointerInsideRef.current = false;
         focusInsideRef.current = false;
         pinnedRef.current = false;
+        suppressHoverRef.current = false;
         setState('idle');
       }
     }, [disabled, clearTimer]);
 
     const reveal = React.useCallback(() => {
+      if (suppressHoverRef.current) return;
+      setActiveGlyph(icon);
       setState((prev) => (prev === 'idle' ? 'hovered' : prev));
-    }, []);
+    }, [icon]);
 
     const conceal = React.useCallback(() => {
       // Transitions #4 (leave/out only when not copied) and #9 (leave during
@@ -139,6 +145,7 @@ export const HoverCopy = React.forwardRef<HTMLSpanElement, HoverCopyProps>(
       onPointerLeave?.(event);
       if (disabled) return;
       pointerInsideRef.current = false;
+      suppressHoverRef.current = false;
       conceal();
     };
 
@@ -183,19 +190,26 @@ export const HoverCopy = React.forwardRef<HTMLSpanElement, HoverCopyProps>(
         if (typeof navigator !== 'undefined' && navigator.clipboard) {
           await navigator.clipboard.writeText(text);
         }
-        // Transition #5 / #10: success (or unavailable-bridge no-op write, same
-        // idiom as CopyButton) enters copied, swaps the icon, restarts the
-        // restore timer, and fires onCopy.
+        // Transition #5 / #10: success enters copied, swaps the icon to checkmark,
+        // restarts the restore timer, and fires onCopy.
+        setActiveGlyph(copiedIcon);
         setState('copied');
         onCopy?.(text);
         clearTimer();
         timerRef.current = setTimeout(() => {
-          // Immediately hide overlay upon completion of copied checkmark display
-          // (transitions to idle instead of reverting to hovered/dim overlay).
+          // Immediately hide overlay upon completion of copied checkmark display:
+          // 1. Suppress re-triggering hovered while pointer stays stationary inside.
+          // 2. Blur button so focus modality does not reopen it.
+          // 3. activeGlyph remains copiedIcon (check) so it never reverts to copy icon during exit!
+          suppressHoverRef.current = true;
+          if (buttonRef.current && document.activeElement === buttonRef.current) {
+            buttonRef.current.blur();
+          }
           setState('idle');
         }, resetTime);
       } catch (err) {
         // Transition #12: failure stays hovered (no false check), fires onError.
+        setActiveGlyph(icon);
         setState('hovered');
         onError?.(err);
       }
@@ -206,7 +220,7 @@ export const HoverCopy = React.forwardRef<HTMLSpanElement, HoverCopyProps>(
     // Resolved off a capitalized non-Icon-suffixed identifier: the icon-spec
     // gate resolves `<XIcon/>` JSX against the registry, and a local alias
     // named *Icon would register as unowned artwork.
-    const OverlayGlyph = state === 'copied' ? ICONS[copiedIcon] : ICONS[icon];
+    const OverlayGlyph = ICONS[activeGlyph] ?? ICONS[icon];
 
     return (
       <span
@@ -237,6 +251,7 @@ export const HoverCopy = React.forwardRef<HTMLSpanElement, HoverCopyProps>(
           style={{ backgroundColor: `rgb(0 0 0 / ${Math.round(clampedDim * 100)}%)` }}
         />
         <button
+          ref={buttonRef}
           type="button"
           aria-label="Copy to clipboard"
           disabled={disabled}

@@ -31,11 +31,13 @@ Item {
     property bool _hovered: false           // mouse hover modality (HoverHandler)
     property bool _pinned: false            // touch-tap pinned reveal (#3)
     property bool _buttonFocused: false     // keyboard focus-within equivalence (#2)
+    property bool _suppressHover: false     // suppresses re-hover while mouse stays stationary after copy
+    property bool _retainingCheck: false    // retains checkmark icon during dismissal fadeout
     readonly property bool _revealed: root._state !== "idle"
     // Effective icon resolved off the name: line — the icon-spec gate scans
     // the literals on a ChaSetIcon `name:` line, and a ternary would smuggle
     // the state string in as a phantom icon name.
-    readonly property string effectiveIcon: root._state === "copied" ? root.copiedIcon : root.icon
+    readonly property string effectiveIcon: (root._state === "copied" || root._retainingCheck) ? root.copiedIcon : root.icon
 
     // Radius semantic mapping mirroring hoverCopyRadiusMap
     // (spec/components/hover-copy.ts) bit-for-bit:
@@ -118,7 +120,7 @@ Item {
 
         onActiveFocusChanged: {
             root._buttonFocused = copyBtn.activeFocus
-            if (copyBtn.activeFocus)
+            if (copyBtn.activeFocus && !root._suppressHover)
                 root._enterHovered()
             else
                 root._maybeIdle()
@@ -179,11 +181,14 @@ Item {
         cursorShape: (root._revealed && !root.disabled) ? Qt.PointingHandCursor : Qt.ArrowCursor
         onHoveredChanged: {
             root._hovered = revealHover.hovered
-            if (revealHover.hovered) {
+            if (!revealHover.hovered) {
+                root._suppressHover = false
+            }
+            if (revealHover.hovered && !root._suppressHover) {
                 // Mouse takeover unpins a touch reveal.
                 root._pinned = false
                 root._enterHovered()
-            } else {
+            } else if (!revealHover.hovered) {
                 root._maybeIdle()
             }
         }
@@ -214,7 +219,9 @@ Item {
         interval: root.resetTime
         repeat: false
         onTriggered: {
+            root._suppressHover = true
             root._pinned = false
+            root._buttonFocused = false
             root._state = "idle"
         }
     }
@@ -226,6 +233,8 @@ Item {
             root._pinned = false
             root._hovered = false
             root._buttonFocused = false
+            root._suppressHover = false
+            root._retainingCheck = false
             root._state = "idle"
         } else {
             root._maybeIdle()
@@ -234,6 +243,7 @@ Item {
 
     onForceHoverChanged: {
         if (root.forceHover) {
+            root._suppressHover = false
             root._enterHovered()
         } else {
             root._maybeIdle()
@@ -241,10 +251,11 @@ Item {
     }
 
     function _enterHovered() {
-        if (root.disabled)
+        if (root.disabled || root._suppressHover)
             return
         if (root._state === "copied")
             return
+        root._retainingCheck = false
         root._state = "hovered"
     }
 
@@ -257,7 +268,7 @@ Item {
             root._state = "idle"
             return
         }
-        if (root._hovered || root._pinned || root._buttonFocused || root.forceHover)
+        if (!root._suppressHover && (root._hovered || root._pinned || root._buttonFocused || root.forceHover))
             root._state = "hovered"
         else
             root._state = "idle"
@@ -275,11 +286,13 @@ Item {
                 ChaSetClipboard.setText(root.text)
             }
             // Transition #10: re-copy while copied restarts the timer.
+            root._retainingCheck = true
             root._state = "copied"
             resetTimer.restart()
             root.copiedToClipboard(root.text)
         } catch (e) {
             // Transition #12: failure keeps hovered (no false check).
+            root._retainingCheck = false
             root._state = "hovered"
             root.copyFailed(String(e))
         }

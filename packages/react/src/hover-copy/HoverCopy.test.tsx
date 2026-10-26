@@ -144,6 +144,15 @@ describe('HoverCopy', () => {
     });
     expect(wrapper).toHaveAttribute('data-state', 'idle');
     expect(screen.getByRole('button', { name: 'Copy to clipboard' })).toHaveClass('opacity-0');
+
+    // Moving pointer without leaving does not resurrect hovered while stationary
+    fireEvent.pointerEnter(wrapper);
+    expect(wrapper).toHaveAttribute('data-state', 'idle');
+
+    // Leaving resets suppression; re-entering restores hovered with copy icon
+    fireEvent.pointerLeave(wrapper);
+    fireEvent.pointerEnter(wrapper);
+    expect(wrapper).toHaveAttribute('data-state', 'hovered');
   });
 
   it('restore timer returns to idle when the pointer left before the timer', async () => {
