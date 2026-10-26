@@ -1177,12 +1177,12 @@ static bool runRealHoverCopyVerification(QQuickWindow* window) {
         return fail(QStringLiteral("clipboard text mismatch after copy (got '%1')").arg(checkClip.text()));
     qInfo("[qt-scenario] PASS: Copy activation writes clipboard and enters copied state");
 
-    // 4. Restore-while-hovering (#7, anti-flicker guarantee): with hover modality
-    // still engaged, the restore timer must land on hovered, NOT idle.
+    // 4. Restore timer: after checkmark feedback completes, the timer must
+    // immediately land on idle (not reverting to hovered / visible overlay).
     // NOTE: the countdown is always primed from a stopped timer. Restarting a
     // running QQmlTimer in the same pass as an interval change is unreliable
     // (the reschedule can be swallowed), so stop it explicitly first.
-    testHoverCopy->setProperty("forceHover", true);
+    testHoverCopy->setProperty("forceHover", false);
     if (qmlTimerObj) QMetaObject::invokeMethod(qmlTimerObj, "stop");
     testHoverCopy->setProperty("resetTime", 350);
     if (!QMetaObject::invokeMethod(testHoverCopy, "copy"))
@@ -1191,15 +1191,15 @@ static bool runRealHoverCopyVerification(QQuickWindow* window) {
     // re-prime: a second activation immediately re-arms the countdown.
     if (!QMetaObject::invokeMethod(testHoverCopy, "copy"))
         return fail(QStringLiteral("invokeMethod second re-copy on testHoverCopy failed"));
-    bool restoredHover = false;
+    bool restoredIdle = false;
     for (int poll = 0; poll < 30; ++poll) {
         window->requestUpdate();
         QTest::qWait(200);
-        if (hoverState() == QStringLiteral("hovered")) { restoredHover = true; break; }
+        if (hoverState() == QStringLiteral("idle")) { restoredIdle = true; break; }
     }
-    if (!restoredHover)
-        return fail(QStringLiteral("restore timer under persistent hover expected 'hovered', got '%1'").arg(hoverState()));
-    qInfo("[qt-scenario] PASS: Restore timer under persistent hover returns to hovered (not idle)");
+    if (!restoredIdle)
+        return fail(QStringLiteral("restore timer expected 'idle', got '%1'").arg(hoverState()));
+    qInfo("[qt-scenario] PASS: Restore timer lands on idle immediately after checkmark completion");
 
     // 5. Restore-to-idle (#8): drop modality, leave, copy, and the timer must fade out.
     testHoverCopy->setProperty("forceHover", false);
@@ -1210,7 +1210,7 @@ static bool runRealHoverCopyVerification(QQuickWindow* window) {
     if (qmlTimerObj) QMetaObject::invokeMethod(qmlTimerObj, "stop");
     if (!QMetaObject::invokeMethod(testHoverCopy, "copy"))
         return fail(QStringLiteral("invokeMethod copy() before idle-restore failed"));
-    bool restoredIdle = false;
+    restoredIdle = false;
     for (int poll = 0; poll < 30; ++poll) {
         window->requestUpdate();
         QTest::qWait(200);

@@ -60,11 +60,10 @@ States: `idle`, `hovered`, `copied`.
       │ pointer-enter (mouse) | focus-in | touch-tap               ┌────────┐
       │ (guard: !disabled)       │                                 │ copied │
       ▼                          │                                 └───┬────┘
-   ┌─────────┐  copy activation  │                                     │ restore timer
+   ┌─────────┐  copy activation                                    │ restore timer
    │ hovered ├───────────────────┘ (guard: !disabled, text non-empty) │ fires (resetTime)
    └─────────┘                                                         ▼
-      ▲                                          still hovering/focus-within -> hovered
-      └────────────────────────────────────────  otherwise -> idle
+                                                             immediately -> idle
 ```
 
 | # | From | Event | Guard | To | Side effects |
@@ -75,12 +74,11 @@ States: `idle`, `hovered`, `copied`.
 | 4 | `hovered` | pointer-leave (mouse) / focus-out | not `copied` | `idle` | overlay fades out |
 | 5 | `hovered` | copy activation (click anywhere on the overlay / Enter / Space) | `!disabled`, `text` non-empty | `copied` | clipboard write; icon -> check (`short`); restart `resetTime` timer; `onCopy(text)` on success |
 | 6 | `hovered` | copy activation | `text` empty | `hovered` | **no-op**: no clipboard call, no callbacks, no error |
-| 7 | `copied` | restore timer fires | still hovering / focus-within | `hovered` | icon back to resting; **overlay stays** (scrim remains, icon reverts) |
-| 8 | `copied` | restore timer fires | not hovering / focus-within | `idle` | overlay fades out |
-| 9 | `copied` | pointer-leave during `copied` | — | `copied` | **ignored** — never truncate the success feedback |
-| 10 | `copied` | copy activation again | as #5 | `copied` | re-copies, timer restarts |
-| 11 | any | `disabled` becomes true | — | `idle` | overlay out, button inert |
-| 12 | `copied` | clipboard write fails | — | `hovered` | icon unchanged (no false check); `onError(reason)` fired |
+| 7 | `copied` | restore timer fires | — | `idle` | overlay immediately fades out to idle (zero stuck scrim after checkmark) |
+| 8 | `copied` | pointer-leave during `copied` | — | `copied` | **ignored** — never truncate the success feedback |
+| 9 | `copied` | copy activation again | as #5 | `copied` | re-copies, timer restarts |
+| 10 | any | `disabled` becomes true | — | `idle` | overlay out, button inert |
+| 11 | `copied` | clipboard write fails | — | `hovered` | icon unchanged (no false check); `onError(reason)` fired |
 
 Success/failure semantics (both stacks):
 - success -> enter `copied`, fire `onCopy(text)` (React) / `copiedToClipboard(text)` (Qt).
@@ -88,11 +86,10 @@ Success/failure semantics (both stacks):
 - empty `text` -> silent no-op per #6 (never an error).
 - disabled -> never reveals, never copies.
 
-Restore rule (the anti-flicker guarantee): when the restore timer fires, the
-component re-checks hover/focus modality. Still hovering -> `hovered`
-(overlay remains, icon reverts) NOT `idle`. This is the rule most likely to
-drift between stacks; the parity test asserts both implementations restore to
-`hovered` under persistent hover.
+Restore rule: when the restore timer fires (checkmark feedback finishes), the
+component immediately transitions to `idle` and fades out the overlay. It does
+not revert to `hovered` with a persisting dim scrim over user content. Re-entering
+via pointer or focus cleanly re-engages the overlay.
 
 ---
 

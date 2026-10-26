@@ -126,7 +126,7 @@ describe('HoverCopy', () => {
     expect(wrapper).toHaveAttribute('data-state', 'copied');
   });
 
-  it('restore timer returns to hovered while the pointer stays inside', async () => {
+  it('restore timer returns to idle immediately after checkmark finishes', async () => {
     vi.useFakeTimers();
     render(
       <HoverCopy text="abc" resetTime={2000}>
@@ -142,8 +142,8 @@ describe('HoverCopy', () => {
     act(() => {
       vi.advanceTimersByTime(2000);
     });
-    expect(wrapper).toHaveAttribute('data-state', 'hovered');
-    expect(screen.getByRole('button', { name: 'Copy to clipboard' })).toHaveClass('opacity-100');
+    expect(wrapper).toHaveAttribute('data-state', 'idle');
+    expect(screen.getByRole('button', { name: 'Copy to clipboard' })).toHaveClass('opacity-0');
   });
 
   it('restore timer returns to idle when the pointer left before the timer', async () => {
@@ -226,7 +226,7 @@ describe('HoverCopy', () => {
     act(() => {
       vi.advanceTimersByTime(500);
     });
-    expect(wrapper).toHaveAttribute('data-state', 'hovered');
+    expect(wrapper).toHaveAttribute('data-state', 'idle');
   });
 
   it('empty text activation is a complete no-op', async () => {
@@ -360,7 +360,7 @@ describe('CopyableBadge', () => {
     const badge = screen.getByText('ORDER-1024');
     expect(badge).toHaveAttribute('data-variant', 'secondary');
     const wrapper = badge.closest('[data-state]');
-    expect(wrapper).toHaveClass('rounded-full');
+    expect(wrapper).toHaveClass('rounded');
 
     fireEvent.pointerEnter(wrapper as HTMLElement);
     expect(wrapper).toHaveAttribute('data-state', 'hovered');

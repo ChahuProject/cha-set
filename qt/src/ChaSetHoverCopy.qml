@@ -110,11 +110,11 @@ Item {
         activeFocusOnTab: enabled
 
         // Glyph size in logical units (ChaSetIcon scales via ThemeTokens.dp
-        // internally): 55% of the smallest overlay dimension, clamped to
-        // 8..14 so it auto-shrinks with small content and never overflows.
-        readonly property int glyphSize: Math.max(8, Math.min(14,
-            Math.round(Math.min(copyBtn.width, copyBtn.height)
-                / Math.max(0.25, ThemeTokens.uiScale) * 0.55)))
+        // internally): matches React's min(1.5rem, max(0.75rem, 55%)) with a
+        // floor of 12 logical px and cap of 24 logical px (1.5rem = 24px).
+        readonly property int glyphSize: Math.max(12, Math.min(24,
+            Math.round(Math.min(root.width, root.height)
+                / Math.max(0.25, ThemeTokens.uiScale) * 0.6)))
 
         onActiveFocusChanged: {
             root._buttonFocused = copyBtn.activeFocus
@@ -148,7 +148,6 @@ Item {
             // theme-adaptive:allow overlay-icon - white glyph on black dim scrim (functional contrast, both modes).
             color: "white"
             opacity: root.state === "copied" ? 1.0 : 0.65
-            scale: root.state === "copied" ? 1.0 : 0.85
 
             Behavior on scale {
                 enabled: ThemeTokens.animationsEnabled && !root.forceHover && (typeof harnessMode === "undefined" || harnessMode === "")
@@ -209,12 +208,14 @@ Item {
     }
 
     // Restore timer (#7/#8): logic timer, never gated on animationsEnabled.
+    // Immediately hides the overlay (restores to idle) once copied feedback completes.
     Timer {
         id: resetTimer
         interval: root.resetTime
         repeat: false
         onTriggered: {
-            root._state = (root._hovered || root._pinned || root._buttonFocused || root.forceHover) ? "hovered" : "idle"
+            root._pinned = false
+            root._state = "idle"
         }
     }
 

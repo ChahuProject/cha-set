@@ -190,14 +190,9 @@ export const HoverCopy = React.forwardRef<HTMLSpanElement, HoverCopyProps>(
         onCopy?.(text);
         clearTimer();
         timerRef.current = setTimeout(() => {
-          // Transitions #7 / #8 (anti-flicker guarantee): re-check hover/focus
-          // modality — still engaged restores to hovered with the overlay
-          // staying, otherwise fades out to idle.
-          if (pointerInsideRef.current || focusInsideRef.current || pinnedRef.current) {
-            setState('hovered');
-          } else {
-            setState('idle');
-          }
+          // Immediately hide overlay upon completion of copied checkmark display
+          // (transitions to idle instead of reverting to hovered/dim overlay).
+          setState('idle');
         }, resetTime);
       } catch (err) {
         // Transition #12: failure stays hovered (no false check), fires onError.
