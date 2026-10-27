@@ -1,8 +1,10 @@
 #pragma once
 
-#include <QQuickPaintedItem>
+#include <QQuickItem>
 #include <QColor>
 #include <QPainterPath>
+#include <QVector>
+#include <QPointF>
 #include <QtQml/qqmlregistration.h>
 
 class ChaSetSquirclePen : public QObject
@@ -29,7 +31,7 @@ private:
     QColor m_color = Qt::transparent;
 };
 
-class ChaSetSquircle : public QQuickPaintedItem
+class ChaSetSquircle : public QQuickItem
 {
     Q_OBJECT
     QML_NAMED_ELEMENT(ChaSetSquircleBase)
@@ -56,8 +58,6 @@ class ChaSetSquircle : public QQuickPaintedItem
 public:
     explicit ChaSetSquircle(QQuickItem *parent = nullptr);
     ~ChaSetSquircle() override = default;
-
-    void paint(QPainter *painter) override;
 
     QColor color() const { return m_color; }
     void setColor(const QColor &c);
@@ -113,8 +113,17 @@ public:
         bool tl = true, bool tr = true, bool br = true, bool bl = true
     );
 
+    static QVector<QPointF> generateSquirclePolygon(
+        const QRectF &rect,
+        qreal rTL, qreal rTR, qreal rBR, qreal rBL,
+        qreal smoothing,
+        bool tl = true, bool tr = true, bool br = true, bool bl = true,
+        int stepsPerSegment = 6
+    );
+
 protected:
     void geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry) override;
+    QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *data) override;
 
 signals:
     void colorChanged();
@@ -152,12 +161,6 @@ private:
     bool m_roundBottomRight = true;
 
     ChaSetSquirclePen m_pen{this};
-
-    bool m_pathDirty = true;
-    qreal m_cachedW = -1.0;
-    qreal m_cachedH = -1.0;
-    QPainterPath m_cachedFillPath;
-    QPainterPath m_cachedStrokePath;
 };
 
 class ChaSetSmoothRectangle : public ChaSetSquircle

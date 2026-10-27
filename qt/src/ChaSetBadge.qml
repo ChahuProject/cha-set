@@ -3,7 +3,7 @@ import QtQuick
 import QtQuick.Controls
 import ChaSet
 
-Rectangle {
+ChaSetSquircle {
     id: root
 
     property string variant: "default"     // "default" | "secondary" | "destructive" | "outline" | "ghost" | "link"
@@ -143,29 +143,34 @@ Rectangle {
         }
 
         // Optional Dismiss Button
-        Item {
-            id: removeBtn
-            visible: root.removable
-            width: ThemeTokens.dp(root.isSm ? 10 : 12)
+        Loader {
+            id: removeLoader
+            active: root.removable
+            visible: active
+            width: active ? ThemeTokens.dp(root.isSm ? 10 : 12) : 0
             height: width
             anchors.verticalCenter: parent.verticalCenter
+            sourceComponent: Item {
+                width: removeLoader.width
+                height: removeLoader.height
 
-            ChaSetIcon {
-                anchors.centerIn: parent
-                name: "x"
-                size: root.isSm ? 10 : 12
-                color: badgeText.color
-                opacity: removeTap.pressed ? 1.0 : (removeHover.hovered ? 0.9 : 0.6)
-            }
+                ChaSetIcon {
+                    anchors.centerIn: parent
+                    name: "x"
+                    size: root.isSm ? 10 : 12
+                    color: badgeText.color
+                    opacity: removeTap.pressed ? 1.0 : (removeHover.hovered ? 0.9 : 0.6)
+                }
 
-            HoverHandler {
-                id: removeHover
-                cursorShape: Qt.PointingHandCursor
-            }
+                HoverHandler {
+                    id: removeHover
+                    cursorShape: Qt.PointingHandCursor
+                }
 
-            TapHandler {
-                id: removeTap
-                onTapped: root.removed()
+                TapHandler {
+                    id: removeTap
+                    onTapped: root.removed()
+                }
             }
         }
     }
