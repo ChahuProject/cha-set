@@ -559,23 +559,26 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
 
     // 2. Fill Geometry Node
     if (hasFill) {
-        if (!rootNode->fillNode) {
+        const int numVerts = N + 1;
+        const int numIndices = N * 3;
+        const bool isNewNode = (rootNode->fillNode == nullptr);
+        if (isNewNode) {
             rootNode->fillNode = new QSGGeometryNode();
             rootNode->fillNode->setMaterial(&rootNode->fillMaterial);
-            rootNode->appendChildNode(rootNode->fillNode);
         }
         rootNode->fillMaterial.setColor(m_color);
         rootNode->fillNode->markDirty(QSGNode::DirtyMaterial);
 
         // Vertices: center + N outer points
-        const int numVerts = N + 1;
-        const int numIndices = N * 3;
         QSGGeometry *fillGeom = rootNode->fillNode->geometry();
         if (!fillGeom || fillGeom->vertexCount() != numVerts || fillGeom->indexCount() != numIndices) {
             fillGeom = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), numVerts, numIndices);
             fillGeom->setDrawingMode(QSGGeometry::DrawTriangles);
             rootNode->fillNode->setGeometry(fillGeom);
             rootNode->fillNode->setFlag(QSGNode::OwnsGeometry);
+        }
+        if (isNewNode) {
+            rootNode->appendChildNode(rootNode->fillNode);
         }
 
         QSGGeometry::Point2D *v = fillGeom->vertexDataAsPoint2D();
@@ -603,14 +606,6 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
 
     // 3. Stroke Geometry Node (inner border, box-sizing: border-box)
     if (hasBorder) {
-        if (!rootNode->strokeNode) {
-            rootNode->strokeNode = new QSGGeometryNode();
-            rootNode->strokeNode->setMaterial(&rootNode->strokeMaterial);
-            rootNode->appendChildNode(rootNode->strokeNode);
-        }
-        rootNode->strokeMaterial.setColor(bc);
-        rootNode->strokeNode->markDirty(QSGNode::DirtyMaterial);
-
         const qreal inset = bw;
         const qreal innerW = std::max(0.0, W - 2.0 * inset);
         const qreal innerH = std::max(0.0, H - 2.0 * inset);
@@ -622,6 +617,14 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
 
         QVector<QPointF> innerPoints = generateSquirclePolygon(strokeRect, strTL, strTR, strBR, strBL, m_cornerSmoothing, tl, tr, br, bl, 6);
         if (innerPoints.size() == N) {
+            const bool isNewNode = (rootNode->strokeNode == nullptr);
+            if (isNewNode) {
+                rootNode->strokeNode = new QSGGeometryNode();
+                rootNode->strokeNode->setMaterial(&rootNode->strokeMaterial);
+            }
+            rootNode->strokeMaterial.setColor(bc);
+            rootNode->strokeNode->markDirty(QSGNode::DirtyMaterial);
+
             const int numVerts = 2 * N;
             const int numIndices = 6 * N;
             QSGGeometry *strokeGeom = rootNode->strokeNode->geometry();
@@ -630,6 +633,9 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
                 strokeGeom->setDrawingMode(QSGGeometry::DrawTriangles);
                 rootNode->strokeNode->setGeometry(strokeGeom);
                 rootNode->strokeNode->setFlag(QSGNode::OwnsGeometry);
+            }
+            if (isNewNode) {
+                rootNode->appendChildNode(rootNode->strokeNode);
             }
 
             QSGGeometry::Point2D *v = strokeGeom->vertexDataAsPoint2D();
@@ -657,6 +663,10 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
             strokeGeom->markVertexDataDirty();
             strokeGeom->markIndexDataDirty();
             rootNode->strokeNode->markDirty(QSGNode::DirtyGeometry);
+        } else if (rootNode->strokeNode) {
+            rootNode->removeChildNode(rootNode->strokeNode);
+            delete rootNode->strokeNode;
+            rootNode->strokeNode = nullptr;
         }
     } else if (rootNode->strokeNode) {
         rootNode->removeChildNode(rootNode->strokeNode);
