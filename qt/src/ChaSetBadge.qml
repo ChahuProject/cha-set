@@ -3,7 +3,7 @@ import QtQuick
 import QtQuick.Controls
 import ChaSet
 
-ChaSetSquircle {
+Rectangle {
     id: root
 
     property string variant: "default"     // "default" | "secondary" | "destructive" | "outline" | "ghost" | "link"
