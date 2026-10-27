@@ -175,11 +175,18 @@ Item {
 
         const dur = root.duration
         if (dur > 0 && Math.abs(nextTarget - cur) > 0.5) {
-            smoothAnim.stop()
-            smoothAnim.from = cur
-            smoothAnim.to = nextTarget
-            smoothAnim.duration = dur
-            smoothAnim.start()
+            const isSameDirection = (nextTarget >= cur && smoothAnim.to >= smoothAnim.from)
+                                 || (nextTarget <= cur && smoothAnim.to <= smoothAnim.from)
+            if (smoothAnim.running && isSameDirection) {
+                // 连续同向平滑位移：无缝更新运动终点，消除频繁 stop/start 造成的初速度撕裂与掉帧
+                smoothAnim.to = nextTarget
+            } else {
+                smoothAnim.stop()
+                smoothAnim.from = cur
+                smoothAnim.to = nextTarget
+                smoothAnim.duration = dur
+                smoothAnim.start()
+            }
         } else {
             smoothAnim.stop()
             if (isVerticalTarget()) {
@@ -200,11 +207,18 @@ Item {
 
         const dur = root.duration
         if (dur > 0 && Math.abs(nextTarget - cur) > 0.5) {
-            smoothAnim.stop()
-            smoothAnim.from = cur
-            smoothAnim.to = nextTarget
-            smoothAnim.duration = dur
-            smoothAnim.start()
+            const isSameDirection = (nextTarget >= cur && smoothAnim.to >= smoothAnim.from)
+                                 || (nextTarget <= cur && smoothAnim.to <= smoothAnim.from)
+            if (smoothAnim.running && isSameDirection) {
+                // 连续同向平滑位移：无缝更新运动终点，消除频繁 stop/start 造成的初速度撕裂与掉帧
+                smoothAnim.to = nextTarget
+            } else {
+                smoothAnim.stop()
+                smoothAnim.from = cur
+                smoothAnim.to = nextTarget
+                smoothAnim.duration = dur
+                smoothAnim.start()
+            }
         } else {
             smoothAnim.stop()
             if (isVerticalTarget()) {
