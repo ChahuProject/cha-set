@@ -138,7 +138,7 @@ Rectangle {
             }
         }
         var minFlexW = ThemeTokens.dp(160);
-        var baseW = root.availableTableWidth;
+        var baseW = Math.max(0, root.width - 2);
         var avail = Math.max(baseW, fixedTotal + flexCount * minFlexW);
         var remainingForFlex = avail - fixedTotal;
         var flexColWidth = flexCount > 0 ? Math.max(minFlexW, remainingForFlex / flexCount) : 0;
@@ -166,6 +166,7 @@ Rectangle {
     onColumnsChanged: updateColWidths()
     onRowsChanged: updateColWidths()
     onWidthChanged: updateColWidths()
+    onAvailableTableWidthChanged: updateColWidths()
     Component.onCompleted: updateColWidths()
 
     Connections {
@@ -174,7 +175,7 @@ Rectangle {
     }
 
     readonly property real tableContentWidth: {
-        var baseW = root.availableTableWidth;
+        var baseW = Math.max(0, root.width - 2);
         if (!_colWidths || _colWidths.length === 0) return baseW;
         var sum = 0;
         for (var i = 0; i < _colWidths.length; ++i) {
