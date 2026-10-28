@@ -11,6 +11,7 @@ Item {
     property bool disabled: false
     property bool readOnly: false
     property bool loading: false
+    property bool animated: true
     property string size: "default" // "default" | "sm"
     property string label: ""
     property string description: ""
@@ -68,7 +69,7 @@ Item {
         }
 
         Behavior on color {
-            enabled: ThemeTokens.animationsEnabled && !root.forceHover && !root.forceFocus && (typeof harnessMode === "undefined" || harnessMode === "")
+            enabled: root.animated && ThemeTokens.animationsEnabled && !root.forceHover && !root.forceFocus && (typeof harnessMode === "undefined" || harnessMode === "")
             ColorAnimation {
                 duration: ThemeTokens.motionShort
                 easing.type: ThemeTokens.easeStandard
@@ -100,7 +101,7 @@ Item {
             border.color: Qt.rgba(0, 0, 0, 0.06)
 
             Behavior on x {
-                enabled: ThemeTokens.animationsEnabled && !root.forceHover && !root.forceFocus && (typeof harnessMode === "undefined" || harnessMode === "")
+                enabled: root.animated && ThemeTokens.animationsEnabled && !root.forceHover && !root.forceFocus && (typeof harnessMode === "undefined" || harnessMode === "")
                 NumberAnimation {
                     duration: ThemeTokens.motionShort
                     easing.type: ThemeTokens.easeStandard
