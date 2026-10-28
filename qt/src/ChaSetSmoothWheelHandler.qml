@@ -28,19 +28,28 @@ Item {
     /// Animation duration in milliseconds (defaults to ThemeTokens.motionMedium, 0 when animations disabled)
     property int duration: ThemeTokens.animationsEnabled ? ThemeTokens.motionMedium : 0
 
-    /// Easing curve
+    /// Easing curve (preserved for API compatibility)
     property int easingType: Easing.OutCubic
 
     /// Target accumulated position
     property real targetPos: 0
 
+    /// Current kinematic velocity
+    property real velocity: 0
+
     /// Whether smooth scroll animation is actively running
-    readonly property bool isAnimating: smoothAnim.running
+    readonly property bool isAnimating: frameAnim.running
+
+    /// Kinetic friction coefficient derived from duration (0.70 ~ 0.94)
+    readonly property real friction: {
+        const d = root.duration
+        if (d <= 50) return 0.70
+        if (d >= 500) return 0.94
+        return Math.max(0.70, Math.min(0.94, 1.0 - (24.0 / Math.max(80, d))))
+    }
 
     onTargetItemChanged: {
-        if (smoothAnim.running) {
-            smoothAnim.stop()
-        }
+        stopKineticAnimation()
         syncToCurrent()
     }
 
@@ -58,15 +67,57 @@ Item {
         }
     }
 
-    NumberAnimation {
-        id: smoothAnim
-        target: root.targetItem
-        property: (root.scrollOrientation === Qt.Vertical && !root.mapVerticalToHorizontal) ? "contentY" : "contentX"
-        duration: root.duration
-        easing.type: root.easingType
+    FrameAnimation {
+        id: frameAnim
+        running: false
 
-        onFinished: {
-            root.syncToCurrent()
+        onTriggered: {
+            if (!root.targetItem) {
+                frameAnim.stop()
+                root.velocity = 0
+                return
+            }
+
+            const dt = frameTime > 0 ? (frameTime * 1000.0) : 16.6667
+            const clampedDt = Math.max(1.0, Math.min(50.0, dt))
+            const frameFactor = clampedDt / 16.6667
+            const effectiveFriction = Math.pow(root.friction, frameFactor)
+
+            const deltaMove = root.velocity * frameFactor
+            const cur = root.currentPos()
+            const minS = root.calculateMinScroll()
+            const maxS = root.calculateMaxScroll()
+            const next = cur + deltaMove
+
+            // 边界吸附与碰撞检测
+            if (next <= minS) {
+                root.setPos(minS)
+                root.velocity = 0
+                root.targetPos = minS
+                frameAnim.stop()
+                root.syncToCurrent()
+                return
+            }
+            if (next >= maxS) {
+                root.setPos(maxS)
+                root.velocity = 0
+                root.targetPos = maxS
+                frameAnim.stop()
+                root.syncToCurrent()
+                return
+            }
+
+            // 推进连续位移并衰减速度
+            root.setPos(next)
+            root.velocity *= effectiveFriction
+
+            // 速度临界值吸附：当动量衰减殆尽或距终点不足半像素时干净停靠
+            if (Math.abs(root.velocity) < 0.15 || Math.abs(root.targetPos - next) < 0.4) {
+                root.setPos(root.targetPos)
+                root.velocity = 0
+                frameAnim.stop()
+                root.syncToCurrent()
+            }
         }
     }
 
@@ -80,29 +131,35 @@ Item {
         target: root.targetItem
         ignoreUnknownSignals: true
         function onMovingChanged() {
-            if (root.targetItem && root.targetItem.moving && smoothAnim.running) {
-                smoothAnim.stop()
-                root.syncToCurrent()
+            if (root.targetItem && root.targetItem.moving && frameAnim.running) {
+                root.stopKineticAnimation()
             }
         }
         function onFlickingChanged() {
-            if (root.targetItem && root.targetItem.flicking && smoothAnim.running) {
-                smoothAnim.stop()
-                root.syncToCurrent()
+            if (root.targetItem && root.targetItem.flicking && frameAnim.running) {
+                root.stopKineticAnimation()
             }
         }
         function onContentYChanged() {
-            if (root.targetItem && !smoothAnim.running
+            if (root.targetItem && !frameAnim.running
                     && root.isVerticalTarget()) {
                 root.syncToCurrent()
             }
         }
         function onContentXChanged() {
-            if (root.targetItem && !smoothAnim.running
+            if (root.targetItem && !frameAnim.running
                     && !root.isVerticalTarget()) {
                 root.syncToCurrent()
             }
         }
+    }
+
+    function stopKineticAnimation() {
+        if (frameAnim.running) {
+            frameAnim.stop()
+        }
+        velocity = 0
+        syncToCurrent()
     }
 
     function syncToCurrent() {
@@ -118,8 +175,16 @@ Item {
         return (scrollOrientation === Qt.Vertical && !mapVerticalToHorizontal)
     }
 
+    function setPos(val) {
+        if (!targetItem) return
+        if (isVerticalTarget()) {
+            targetItem.contentY = val
+        } else {
+            targetItem.contentX = val
+        }
+    }
+
     // Flickable 真实滚动下界：origin - margin（无 margin 时为 0）。
-    // 不含此项时，带 topMargin/leftMargin 的视图滚轮最小值与原生滚动条不一致。
     function calculateMinScroll() {
         if (!targetItem) return 0
         if (isVerticalTarget()) {
@@ -134,8 +199,6 @@ Item {
     }
 
     // Flickable 真实滚动上界：origin + content - viewport + margin。
-    // 旧实现漏算 topMargin/bottomMargin（及 origin），导致带 bottomMargin
-    // （如文件树锚定垫高）的视图滚轮到不了底，而原生滚动条可以到底。
     function calculateMaxScroll() {
         if (!targetItem) return 0
         var min = calculateMinScroll()
@@ -161,41 +224,40 @@ Item {
         if (!targetItem) return
         const minScroll = calculateMinScroll()
         const maxScroll = calculateMaxScroll()
-        const cur = currentPos()
 
-        let base = cur
-        if (smoothAnim.running) {
-            if (Math.abs(targetPos - cur) <= Math.max(targetItem.width, targetItem.height) * 2) {
-                base = targetPos
-            }
-            // 在途目标若因外部布局变化（展开/折叠、margin 变化）已越界，
-            // 先收敛回合法区间再累加，避免顶部到顶仍能滚动/底部空一截。
-            base = Math.max(minScroll, Math.min(maxScroll, base))
+        if (root.duration <= 0) {
+            stopKineticAnimation()
+            const cur = currentPos()
+            const nextTarget = Math.max(minScroll, Math.min(maxScroll, cur + deltaAmount))
+            setPos(nextTarget)
+            syncToCurrent()
+            return
         }
 
-        const nextTarget = Math.max(minScroll, Math.min(maxScroll, base + deltaAmount))
+        if (!frameAnim.running) {
+            syncToCurrent()
+        }
+
+        const baseTarget = frameAnim.running ? targetPos : currentPos()
+        const nextTarget = Math.max(minScroll, Math.min(maxScroll, baseTarget + deltaAmount))
+        const effectiveStep = nextTarget - baseTarget
         targetPos = nextTarget
 
-        const dur = root.duration
-        if (dur > 0 && Math.abs(nextTarget - cur) > 0.5) {
-            const isSameDirection = (nextTarget >= cur && smoothAnim.to >= smoothAnim.from)
-                                 || (nextTarget <= cur && smoothAnim.to <= smoothAnim.from)
-            if (smoothAnim.running && isSameDirection) {
-                // 连续同向平滑位移：无缝更新运动终点，消除频繁 stop/start 造成的初速度撕裂与掉帧
-                smoothAnim.to = nextTarget
+        if (Math.abs(effectiveStep) > 0.01) {
+            const f = root.friction
+            const impulse = effectiveStep * ((1.0 - f) / f)
+            const targetDim = isVerticalTarget() ? targetItem.height : targetItem.width
+            const maxV = Math.max(120.0, targetDim * 1.5)
+
+            // 同向冲量线性累加，反向冲量直接重构初速度消除迟滞
+            if ((velocity >= 0 && impulse >= 0) || (velocity <= 0 && impulse <= 0)) {
+                velocity = Math.max(-maxV, Math.min(maxV, velocity + impulse))
             } else {
-                smoothAnim.stop()
-                smoothAnim.from = cur
-                smoothAnim.to = nextTarget
-                smoothAnim.duration = dur
-                smoothAnim.start()
+                velocity = Math.max(-maxV, Math.min(maxV, impulse))
             }
-        } else {
-            smoothAnim.stop()
-            if (isVerticalTarget()) {
-                targetItem.contentY = nextTarget
-            } else {
-                targetItem.contentX = nextTarget
+
+            if (!frameAnim.running) {
+                frameAnim.start()
             }
         }
     }
@@ -204,31 +266,34 @@ Item {
         if (!targetItem) return
         const minScroll = calculateMinScroll()
         const maxScroll = calculateMaxScroll()
+
+        if (root.duration <= 0) {
+            stopKineticAnimation()
+            const nextTarget = Math.max(minScroll, Math.min(maxScroll, absolutePos))
+            setPos(nextTarget)
+            syncToCurrent()
+            return
+        }
+
+        if (!frameAnim.running) {
+            syncToCurrent()
+        }
+
         const cur = currentPos()
         const nextTarget = Math.max(minScroll, Math.min(maxScroll, absolutePos))
+        const step = nextTarget - cur
         targetPos = nextTarget
 
-        const dur = root.duration
-        if (dur > 0 && Math.abs(nextTarget - cur) > 0.5) {
-            const isSameDirection = (nextTarget >= cur && smoothAnim.to >= smoothAnim.from)
-                                 || (nextTarget <= cur && smoothAnim.to <= smoothAnim.from)
-            if (smoothAnim.running && isSameDirection) {
-                // 连续同向平滑位移：无缝更新运动终点，消除频繁 stop/start 造成的初速度撕裂与掉帧
-                smoothAnim.to = nextTarget
-            } else {
-                smoothAnim.stop()
-                smoothAnim.from = cur
-                smoothAnim.to = nextTarget
-                smoothAnim.duration = dur
-                smoothAnim.start()
+        if (Math.abs(step) > 0.5) {
+            const f = root.friction
+            const impulse = step * ((1.0 - f) / f)
+            velocity = impulse
+            if (!frameAnim.running) {
+                frameAnim.start()
             }
         } else {
-            smoothAnim.stop()
-            if (isVerticalTarget()) {
-                targetItem.contentY = nextTarget
-            } else {
-                targetItem.contentX = nextTarget
-            }
+            setPos(nextTarget)
+            stopKineticAnimation()
         }
     }
 
