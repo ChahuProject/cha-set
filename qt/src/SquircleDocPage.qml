@@ -23,6 +23,7 @@ DocLayout {
     ComponentPreview {
         id: heroPreview
         width: parent.width
+        stageHeight: 440
         title: ChaSetI18n.tr("desktopComposite.squircle.sandboxTitle", "Squircle Sandbox & Curvature Comparison")
         reactCode: `<Squircle
   radius={${root.customRadius}}
@@ -304,12 +305,14 @@ DocLayout {
                 customRadius: 8
 
                 Column {
+                    id: stratCol1
                     width: parent.width
                     topPadding: ThemeTokens.dp(16)
                     bottomPadding: ThemeTokens.dp(16)
                     leftPadding: ThemeTokens.dp(20)
                     rightPadding: ThemeTokens.dp(20)
                     spacing: ThemeTokens.dp(12)
+                    readonly property real contentWidth: Math.max(0, width - leftPadding - rightPadding)
 
                     Row {
                         spacing: ThemeTokens.dp(8)
@@ -328,13 +331,14 @@ DocLayout {
                     }
 
                     DocText {
+                        width: stratCol1.contentWidth
                         text: ChaSetI18n.tr("desktopComposite.squircle.strategy1Desc", "Add a CSS feature query in the host project global stylesheet (e.g. globals.css or index.css). Every element based on Tailwind rounded-* utilities is instantly promoted to iOS continuous-curvature superellipses, smoothly eliminating harsh edge creases.")
                         role: "p"
                         isMuted: true
                     }
 
                     ChaSetCodeBlock {
-                        width: parent.width
+                        width: stratCol1.contentWidth
                         language: "css"
                         filename: "globals.css"
                         code: "/* globals.css — 全局 CSS 连续曲率超椭圆加速 */\n@supports (corner-shape: squircle) {\n  *,\n  ::before,\n  ::after {\n    corner-shape: squircle;\n  }\n\n  /* 保持纯圆 Pill / Avatar 徽章不受连续曲率形变影响 */\n  .rounded-full,\n  [data-shape=\"round\"] {\n    corner-shape: round;\n  }\n}"
@@ -348,12 +352,14 @@ DocLayout {
                 customRadius: 8
 
                 Column {
+                    id: stratCol2
                     width: parent.width
                     topPadding: ThemeTokens.dp(16)
                     bottomPadding: ThemeTokens.dp(16)
                     leftPadding: ThemeTokens.dp(20)
                     rightPadding: ThemeTokens.dp(20)
                     spacing: ThemeTokens.dp(12)
+                    readonly property real contentWidth: Math.max(0, width - leftPadding - rightPadding)
 
                     Row {
                         spacing: ThemeTokens.dp(8)
@@ -372,20 +378,21 @@ DocLayout {
                     }
 
                     DocText {
+                        width: stratCol2.contentWidth
                         text: ChaSetI18n.tr("desktopComposite.squircle.strategy2Desc", "For dialogs (Dialog/Sheet), highlight cards, or browser engines without CSS corner-shape support, wrap content with the ChaSet component. Internally it clips via SVG clipPath with ResizeObserver-driven geometry, guaranteeing 100% cross-platform pixel-smooth rendering.")
                         role: "p"
                         isMuted: true
                     }
 
                     ChaSetCodeBlock {
-                        width: parent.width
+                        width: stratCol2.contentWidth
                         language: "cmake"
                         filename: "CMakeLists.txt"
                         code: "find_package(ChaSet REQUIRED) # or FetchContent / add_subdirectory\ntarget_link_libraries(my_desktop_app PRIVATE ChaSetPlugin)"
                     }
 
                     ChaSetCodeBlock {
-                        width: parent.width
+                        width: stratCol2.contentWidth
                         language: "qml"
                         filename: "ContinuousCard.qml"
                         code: "import QtQuick\nimport ChaSet\n\nChaSetSquircle {\n    width: ThemeTokens.dp(320)\n    height: ThemeTokens.dp(180)\n    radius: ThemeTokens.dp(16)\n    // cornerSmoothing 默认继承 ThemeTokens.cornerSmoothing (0.6)\n    color: ThemeTokens.panel\n    border.color: ThemeTokens.border\n    border.width: 1\n\n    // 支持独立单边圆角 (常用于分栏或停靠面板)\n    roundLeft: true\n    roundRight: false\n\n    Text {\n        anchors.centerIn: parent\n        text: \"Continuous Curvature Panel\"\n        color: ThemeTokens.text\n    }\n}"
@@ -399,12 +406,14 @@ DocLayout {
                 customRadius: 8
 
                 Column {
+                    id: stratCol3
                     width: parent.width
                     topPadding: ThemeTokens.dp(16)
                     bottomPadding: ThemeTokens.dp(16)
                     leftPadding: ThemeTokens.dp(20)
                     rightPadding: ThemeTokens.dp(20)
                     spacing: ThemeTokens.dp(12)
+                    readonly property real contentWidth: Math.max(0, width - leftPadding - rightPadding)
 
                     Row {
                         spacing: ThemeTokens.dp(8)
@@ -423,20 +432,21 @@ DocLayout {
                     }
 
                     DocText {
+                        width: stratCol3.contentWidth
                         text: ChaSetI18n.tr("desktopComposite.squircle.strategy3Desc", "ChaSet core design tokens ship built-in curvature variables. Host projects may define --cs-corner-shape and --cs-corner-smoothing at the root level, and the full component library automatically inherits the matching curvature.")
                         role: "p"
                         isMuted: true
                     }
 
                     ChaSetCodeBlock {
-                        width: parent.width
+                        width: stratCol3.contentWidth
                         language: "qml"
                         filename: "ThemeConfig.qml"
                         code: "// Qt Quick 桌面端主题配置\nThemeTokens.cornerSmoothing = 0.6 // Apple iOS G2 连续曲率标准"
                     }
 
                     ChaSetCodeBlock {
-                        width: parent.width
+                        width: stratCol3.contentWidth
                         language: "css"
                         filename: "tokens.css"
                         code: "/* Web 跨端设计令牌配置 */\n:root {\n  --cs-corner-shape: squircle;\n  --cs-corner-smoothing: 0.6;\n}"
