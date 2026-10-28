@@ -46,6 +46,7 @@
     "gate:pixel": "node scripts/pixel-sync-test.mjs --component all",
     "bench:react": "pnpm --filter @chahu/cha-set exec vitest bench --run",
     "bench:qt": "node scripts/run-qt-showcase.mjs --test-scenario benchmark",
+    "bench:audit": "node scripts/perf-audit.mjs",
     "bench": "pnpm bench:react && pnpm bench:qt",
     "dev": "pnpm --filter @chaset/example-react-button dev",
     "prepare": "node -e \"try{require('child_process').execSync('lefthook install',{stdio:'inherit'})}catch{console.log('Not yet git init, skipping lefthook install; run git init first then pnpm lefthook:install')}\"",

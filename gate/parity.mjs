@@ -137,6 +137,41 @@ if (existsSync(componentsDir) && existsSync(navPath)) {
     process.exit(1);
   }
   console.log(`[gate] OK — 100% Dual-Stack Living Showcase documentation coverage (${specFiles.length} components registered across React & Qt)`);
+
+  // 1b. Component Performance Benchmark Coverage Gate (100% Dual-Stack Coverage)
+  const reactBenchDir = resolve(root, 'packages', 'react', 'bench');
+  if (existsSync(reactBenchDir)) {
+    const reactBenchFiles = readdirSync(reactBenchDir).filter(f => f.endsWith('.bench.tsx'));
+    const reactBenchContent = reactBenchFiles.map(f => readFileSync(resolve(reactBenchDir, f), 'utf8')).join('\n');
+    const benchSpecialMap = {
+      'scrollbar': { reactComp: 'ScrollArea', qtComp: 'ChaSetScrollBar' },
+      'data-table': { reactComp: 'GenericDataTable', qtComp: 'ChaSetGenericDataTable' }
+    };
+
+    let missingBench = 0;
+    for (const file of specFiles) {
+      const base = file.replace('.ts', '');
+      const pascal = toPascalCase(base);
+      const reactComp = benchSpecialMap[base]?.reactComp || pascal;
+      const qtComp = benchSpecialMap[base]?.qtComp || `ChaSet${pascal}`;
+
+      const hasReactBench = reactBenchContent.includes(reactComp);
+      const hasQtBench = qtMainContent.includes(`"${qtComp}"`) || qtMainContent.includes(qtComp);
+
+      if (!hasReactBench || !hasQtBench) {
+        console.error(`[gate] FAIL: Component "${base}" is missing performance benchmark coverage:`);
+        if (!hasReactBench) console.error(`  - Missing React benchmark in packages/react/bench/*.bench.tsx for "${reactComp}"`);
+        if (!hasQtBench) console.error(`  - Missing Qt benchmark in qt/src/Main.qml (Scenario 16) for "${qtComp}"`);
+        missingBench++;
+      }
+    }
+
+    if (missingBench > 0) {
+      console.error(`[gate] FAIL: ${missingBench} components lack performance benchmark coverage.`);
+      process.exit(1);
+    }
+    console.log(`[gate] OK — 100% Component Performance Benchmark Coverage verified (${specFiles.length}/${specFiles.length} components tested across React & Qt)`);
+  }
 }
 
 // 2.5 Mandatory Cross-Stack Showcase Semantic & Structural Parity Gate (SPAS)

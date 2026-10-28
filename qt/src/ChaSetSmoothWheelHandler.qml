@@ -108,7 +108,10 @@ Item {
     function syncToCurrent() {
         if (!targetItem) return
         const isVert = (scrollOrientation === Qt.Vertical && !mapVerticalToHorizontal)
-        targetPos = isVert ? targetItem.contentY : targetItem.contentX
+        var pos = isVert ? targetItem.contentY : targetItem.contentX
+        if (typeof pos === "number") {
+            targetPos = pos
+        }
     }
 
     function isVerticalTarget() {

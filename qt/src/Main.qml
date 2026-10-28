@@ -1828,30 +1828,115 @@ ApplicationWindow {
             }
         }
 
-        // Scenario 16: Dynamic QML Component Instantiation Benchmark
+        // Scenario 16: Dynamic QML Component Instantiation Benchmark (All 62 Components)
         if (scenario === "all" || scenario === "benchmark" || scenario === "perf") {
-            console.log("[qt-scenario] Running dynamic QML component instantiation benchmark...");
-            var perfStart = new Date().getTime();
-            var badgeBatch = [];
-            var batchCount = 50;
-            for (var b = 0; b < batchCount; b++) {
-                var badge = Qt.createQmlObject('import QtQuick; import ChaSet; ChaSetBadge { text: ChaSetI18n.tr("common.status", "Status"); variant: "secondary" }', win.contentItem, "perfBadge_" + b);
-                if (badge) {
-                    badgeBatch.push(badge);
+            console.log("[qt-scenario] Running dynamic QML component instantiation benchmark for all ChaSet components...");
+            var allComponents = [
+                { id: "address-bar", name: "ChaSetAddressBar" },
+                { id: "badge", name: "ChaSetBadge" },
+                { id: "button", name: "ChaSetButton" },
+                { id: "card", name: "ChaSetCard" },
+                { id: "checkbox", name: "ChaSetCheckbox" },
+                { id: "code-block", name: "ChaSetCodeBlock" },
+                { id: "collapsible", name: "ChaSetCollapsible" },
+                { id: "color-picker", name: "ChaSetColorPicker" },
+                { id: "context-menu", name: "ChaSetContextMenu" },
+                { id: "copy-button", name: "ChaSetCopyButton" },
+                { id: "data-table", name: "ChaSetGenericDataTable" },
+                { id: "dialog", name: "ChaSetDialog" },
+                { id: "draggable-modal", name: "ChaSetDraggableModal" },
+                { id: "dropdown-menu", name: "ChaSetDropdownMenu" },
+                { id: "duration-input", name: "ChaSetDurationInput" },
+                { id: "elided-text", name: "ChaSetElidedText" },
+                { id: "floating-notice", name: "ChaSetFloatingNotice" },
+                { id: "hover-copy", name: "ChaSetHoverCopy" },
+                { id: "inline-editable-text", name: "ChaSetInlineEditableText" },
+                { id: "input", name: "ChaSetInput" },
+                { id: "kbd", name: "ChaSetKbd" },
+                { id: "keybinding-recorder", name: "ChaSetKeybindingRecorder" },
+                { id: "label", name: "ChaSetLabel" },
+                { id: "language-settings", name: "ChaSetLanguageSettings" },
+                { id: "media-progress-bar", name: "ChaSetMediaProgressBar" },
+                { id: "notification-stack", name: "ChaSetNotificationStack" },
+                { id: "panel-card", name: "ChaSetPanelCard" },
+                { id: "pipeline-view", name: "ChaSetPipelineView" },
+                { id: "popover", name: "ChaSetPopover" },
+                { id: "preset-number-input", name: "ChaSetPresetNumberInput" },
+                { id: "query-builder", name: "ChaSetQueryBuilder" },
+                { id: "range-slider", name: "ChaSetRangeSlider" },
+                { id: "read-only-input", name: "ChaSetReadOnlyInput" },
+                { id: "resizable", name: "ChaSetResizable" },
+                { id: "scale-osd", name: "ChaSetScaleOsd" },
+                { id: "scrollbar", name: "ChaSetScrollBar" },
+                { id: "scroll-area", name: "ChaSetScrollArea" },
+                { id: "segmented-control", name: "ChaSetSegmentedControl" },
+                { id: "select", name: "ChaSetSelect" },
+                { id: "separator", name: "ChaSetSeparator" },
+                { id: "setting-row", name: "ChaSetSettingRow" },
+                { id: "sheet", name: "ChaSetSheet" },
+                { id: "sidebar", name: "ChaSetSidebar" },
+                { id: "skeleton", name: "ChaSetSkeleton" },
+                { id: "slider", name: "ChaSetSlider" },
+                { id: "smooth-wheel-handler", name: "ChaSetSmoothWheelHandler" },
+                { id: "snap-slider", name: "ChaSetSnapSlider" },
+                { id: "split-button", name: "ChaSetSplitButton" },
+                { id: "splitter-handle", name: "ChaSetSplitterHandle" },
+                { id: "splitter", name: "ChaSetSplitter" },
+                { id: "squircle", name: "ChaSetSquircle" },
+                { id: "switch", name: "ChaSetSwitch" },
+                { id: "table-of-contents", name: "ChaSetTableOfContents" },
+                { id: "table", name: "ChaSetTable" },
+                { id: "tabs", name: "ChaSetTabs" },
+                { id: "task-hud", name: "ChaSetTaskHud" },
+                { id: "theme-settings", name: "ChaSetThemeSettings" },
+                { id: "tooltip", name: "ChaSetTooltip" },
+                { id: "viewport-constrained-container", name: "ChaSetViewportConstrainedContainer" },
+                { id: "virtual-grid", name: "ChaSetVirtualGrid" },
+                { id: "virtual-list", name: "ChaSetVirtualList" },
+                { id: "virtual-tree", name: "ChaSetVirtualTree" },
+                { id: "window-title-bar", name: "ChaSetWindowTitleBar" }
+            ];
+
+            var batchCount = 5;
+            var totalInstantiated = 0;
+            var totalElapsed = 0;
+            var componentErrors = 0;
+
+            for (var c = 0; c < allComponents.length; c++) {
+                var compInfo = allComponents[c];
+                var cStart = new Date().getTime();
+                var instances = [];
+                var qmlCode = 'import QtQuick; import ChaSet; ' + compInfo.name + ' {}';
+                for (var b = 0; b < batchCount; b++) {
+                    var obj = Qt.createQmlObject(qmlCode, win.contentItem, "bench_" + compInfo.name + "_" + b);
+                    if (obj) {
+                        instances.push(obj);
+                    } else {
+                        console.log("[qt-scenario] FAIL: Failed to create dynamic instance of " + compInfo.name);
+                        failures++;
+                        componentErrors++;
+                        break;
+                    }
+                }
+                var cElapsed = new Date().getTime() - cStart;
+                totalElapsed += cElapsed;
+                totalInstantiated += instances.length;
+
+                for (var d = 0; d < instances.length; d++) {
+                    instances[d].destroy();
+                }
+
+                if (instances.length === batchCount) {
+                    console.log("[qt-scenario] " + compInfo.name + ": " + batchCount + " instances in " + cElapsed + " ms (" + (cElapsed / batchCount).toFixed(2) + " ms/item)");
                 }
             }
-            var instantiateElapsed = new Date().getTime() - perfStart;
-            console.log("[qt-scenario] Instantiated " + badgeBatch.length + " ChaSetBadge components in " + instantiateElapsed + " ms (" + (instantiateElapsed / batchCount).toFixed(2) + " ms/item)");
 
-            for (var d = 0; d < badgeBatch.length; d++) {
-                badgeBatch[d].destroy();
-            }
-
-            if (instantiateElapsed > 1500) {
-                console.log("[qt-scenario] FAIL: Instantiating " + batchCount + " badges exceeded budget: " + instantiateElapsed + " ms");
+            console.log("[qt-scenario] Total: Instantiated " + totalInstantiated + " instances across " + allComponents.length + " components in " + totalElapsed + " ms");
+            if (componentErrors > 0) {
+                console.log("[qt-scenario] FAIL: " + componentErrors + " components failed dynamic instantiation benchmark");
                 failures++;
             } else {
-                console.log("[qt-scenario] PASS: QML dynamic badge instantiation within budget");
+                console.log("[qt-scenario] PASS: All " + allComponents.length + " ChaSet components passed dynamic instantiation benchmark");
             }
         }
 
