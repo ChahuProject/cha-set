@@ -16,6 +16,7 @@
 #include "ChaSetFontSystem.h"
 #include "ChaSetClipboard.h"
 #include "ChaSetSystemTheme.h"
+#include "ChaSetSquircle.h"
 
 class GlobalWheelZoomFilter : public QObject {
 public:
@@ -1265,30 +1266,29 @@ static bool runRealPerformanceBenchmark(QQuickWindow* window) {
 
     QElapsedTimer timer;
 
-    // 1. Squircle continuous curvature computation benchmark
+    // 1. Squircle continuous curvature computation benchmark (Real production algorithm)
     {
         timer.start();
-        const int squircleIterations = 1000;
-        qreal totalPoints = 0.0;
+        const int squircleIterations = 5000;
+        int totalVertexCount = 0;
         for (int i = 0; i < squircleIterations; ++i) {
-            const qreal w = 120.0 + (i % 30);
-            const qreal h = 40.0 + (i % 20);
-            const qreal r = 8.0 + (i % 8);
+            const qreal w = 120.0 + (i % 60);
+            const qreal h = 40.0 + (i % 40);
+            const qreal r = 8.0 + (i % 16);
             const qreal smoothing = 0.6;
-
-            const qreal p = (1.0 + smoothing) * r;
-            const qreal a = smoothing * r;
-            const qreal b = (1.0 - smoothing) * r;
-            const qreal c = a / 2.0;
-            const qreal d = r * (1.0 - std::cos(3.14159265358979323846 / 4.0));
-            totalPoints += (w + h + p + a + b + c + d);
+            QRectF rect(0, 0, w, h);
+            QVector<QPointF> pts = ChaSetSquircle::generateSquirclePolygon(
+                rect, r, r, r, r, smoothing, true, true, true, true, 16
+            );
+            totalVertexCount += pts.size();
         }
         qint64 squircleNs = timer.nsecsElapsed();
         double squircleMs = squircleNs / 1000000.0;
         double perSquircleUs = (squircleNs / 1000.0) / squircleIterations;
-        qInfo("[qt-perf] PASS: Squircle continuous curvature 1,000 runs completed in %.2f ms (%.2f us/op)", squircleMs, perSquircleUs);
-        if (perSquircleUs > 100.0) {
-            qCritical("[qt-perf] FAIL: Squircle computation exceeded 100us per op budget!");
+        qInfo("[qt-perf] PASS: Squircle continuous curvature 5,000 production runs completed in %.2f ms (%.2f us/op, %d vertices generated)",
+              squircleMs, perSquircleUs, totalVertexCount);
+        if (perSquircleUs > 50.0) {
+            qCritical("[qt-perf] FAIL: Squircle computation exceeded 50us per op budget!");
             return false;
         }
     }
