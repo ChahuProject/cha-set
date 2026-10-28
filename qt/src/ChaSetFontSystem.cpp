@@ -27,7 +27,7 @@ bool isSoftwareRasterizerRequested()
 
 QStringList FontSystem::s_customSansFamilies;
 QStringList FontSystem::s_customMonoFamilies;
-QString FontSystem::s_textRenderPolicyName = QStringLiteral("curve");
+QString FontSystem::s_textRenderPolicyName = QStringLiteral("native");
 
 const char* FontSystem::textRenderEnvVar()
 {
@@ -89,24 +89,21 @@ void FontSystem::applyTextRenderType()
 {
     QString requested = qEnvironmentVariable(textRenderEnvVar()).trimmed().toLower();
     if (requested.isEmpty()) {
-        requested = QStringLiteral("curve");
+        requested = QStringLiteral("native");
     } else if (requested != QLatin1String("curve")
                && requested != QLatin1String("native")
                && requested != QLatin1String("qt")) {
         qWarning() << "[ChaSet][FontSystem] Unknown" << textRenderEnvVar() << "value" << requested
-                   << "- expected one of {curve, native, qt}; falling back to the default (CurveTextRendering).";
-        requested = QStringLiteral("curve");
+                   << "- expected one of {curve, native, qt}; falling back to the default (NativeTextRendering).";
+        requested = QStringLiteral("native");
     }
 
-    // Curve rasterization is the default because it is the only path on Windows that
-    // produces *colourless* coverage: the DirectWrite font engine renders ClearType
-    // subpixel glyphs no matter what QFont::NoSubpixelAntialias says (measured: frames
-    // with and without the flag are byte-identical), so the platform and Qt rasterizers
-    // both tint every stem red on one side and blue on the other. The curve rasterizer
-    // integrates the outline per pixel on the GPU instead: analytic grayscale coverage,
-    // no grid fitting, no fringes, and identical at any scale or DPI.
-    QQuickWindow::TextRenderType type = QQuickWindow::CurveTextRendering;
-    QString resolved = QStringLiteral("curve");
+    // DirectWrite NativeTextRendering is the default on Windows to preserve TrueType
+    // font hinting (grid-fitting) and subpixel antialiasing at 100% display scale (96 DPI).
+    // CurveTextRendering runs outline integration without hinting, which causes 12px
+    // CJK hairline horizontal strokes (~0.6px) to break apart into disconnected dots.
+    QQuickWindow::TextRenderType type = QQuickWindow::NativeTextRendering;
+    QString resolved = QStringLiteral("native");
 
     if (requested == QLatin1String("curve")) {
         if (isSoftwareRasterizerRequested()) {
@@ -115,13 +112,16 @@ void FontSystem::applyTextRenderType()
                        << "falling back to QtTextRendering.";
             type = QQuickWindow::QtTextRendering;
             resolved = QStringLiteral("qt");
+        } else {
+            type = QQuickWindow::CurveTextRendering;
+            resolved = QStringLiteral("curve");
         }
-    } else if (requested == QLatin1String("native")) {
-        type = QQuickWindow::NativeTextRendering;
-        resolved = QStringLiteral("native");
-    } else {
+    } else if (requested == QLatin1String("qt")) {
         type = QQuickWindow::QtTextRendering;
         resolved = QStringLiteral("qt");
+    } else {
+        type = QQuickWindow::NativeTextRendering;
+        resolved = QStringLiteral("native");
     }
 
     QQuickWindow::setTextRenderType(type);
@@ -148,17 +148,13 @@ void FontSystem::initialize(QGuiApplication* /*app*/)
     // Register font substitution tables to eliminate SimSun fallback
     applySubstitutions();
 
-    // Configure application-level default font with grayscale antialiasing
+    // Configure application-level default font with antialiasing and vertical hinting for CJK stroke clarity
     const QStringList sans = activeSansFamilies();
     QFont appFont(sans.isEmpty() ? QStringLiteral("Microsoft YaHei UI") : sans.first());
     appFont.setStyleStrategy(static_cast<QFont::StyleStrategy>(
-        QFont::PreferAntialias | QFont::PreferQuality | QFont::NoSubpixelAntialias
+        QFont::PreferAntialias | QFont::PreferQuality
     ));
-    // No hinting: grid fitting is exactly what turned the platform rasterizer's output into
-    // hard 1px staircases (see applyTextRenderType()). The curve rasterizer ignores the
-    // preference outright — measured byte-identical frames — so this only constrains the
-    // `native`/`qt` escape hatches, which are not the shipping path.
-    appFont.setHintingPreference(QFont::PreferNoHinting);
+    appFont.setHintingPreference(QFont::PreferVerticalHinting);
     appFont.setPixelSize(14);
     appFont.setWeight(QFont::Normal);
     appFont.setFamilies(sans);

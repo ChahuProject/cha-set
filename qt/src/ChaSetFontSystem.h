@@ -70,9 +70,8 @@ public:
      *    - "sans-serif" -> activeSansFamilies()
      *    - "monospace"  -> activeMonoFamilies()
      * 2. Configures QGuiApplication default font with:
-     *    - Grayscale vector antialiasing (QFont::NoSubpixelAntialias | QFont::PreferQuality | QFont::PreferAntialias)
-     *    - No hinting (QFont::PreferNoHinting); the curve rasterizer ignores it, the
-     *      platform rasterizer would otherwise snap stems to the pixel grid
+     *    - Antialiasing (QFont::PreferQuality | QFont::PreferAntialias)
+     *    - Vertical hinting (QFont::PreferVerticalHinting) for CJK hairline stroke continuity
      *    - Ordered font families chain matching activeSansFamilies()
      *    - Standard 14px body size
      */

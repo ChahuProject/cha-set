@@ -1375,7 +1375,7 @@ ApplicationWindow {
         }
 
         // Scenario 11: Cross-Stack Typography Hierarchy & Metric Invariants
-        if (scenario === "all" || scenario === "typography") {
+        if (scenario === "all" || scenario === "typography" || scenario === "font" || scenario === "font-clarity") {
             console.log("[qt-scenario] Running typography metrics and token validation scenario...");
             var typoFailures = 0;
 

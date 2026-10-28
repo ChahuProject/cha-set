@@ -208,6 +208,22 @@ if (existsSync(typographyCheckPath)) {
   console.log(`[gate] OK — Cross-Stack Typography Contract Gate passed (${typoRes.checkedCount} values agree across tokens.css, Typography.generated.qml and qt/src)`);
 }
 
+// 2.6b Mandatory Font Rendering Clarity & CJK Stroke Continuity Gate
+const fontClarityCheckPath = resolve(root, 'scripts/check-font-clarity.mjs');
+if (existsSync(fontClarityCheckPath)) {
+  const { verifyFontClarity } = await import(pathToFileURL(fontClarityCheckPath).href);
+  const clarityRes = verifyFontClarity({ quiet: true });
+  for (const warn of clarityRes.warnings) console.warn(`[gate] WARN ${warn}`);
+  if (!clarityRes.ok) {
+    console.error(`[gate] FAIL: Font Rendering Clarity Gate failed (${clarityRes.errors.length} error(s)):`);
+    for (const err of clarityRes.errors) {
+      console.error(`  - ${err}`);
+    }
+    process.exit(1);
+  }
+  console.log(`[gate] OK — Font Rendering Clarity Gate passed (solid ink ratio ${(clarityRes.metrics.solidRatio * 100).toFixed(1)}% at 100% scale)`);
+}
+
 // 2.7 Mandatory Cross-Stack Theme Control Boundary Gate
 // The ChaSet theme control manages SOME axes (palette, mode, decoration, typography,
 // uiScale) and deliberately leaves others to the host (window material, window tint,

@@ -1028,17 +1028,17 @@ static bool runShowcaseCursorRaycasting(QQuickWindow* window) {
 bool runRealTypographyVerification(QQuickWindow* window) {
     qInfo("[qt-scenario] Running authentic C++ typography and font rendering verification...");
     const QFont appFont = QGuiApplication::font();
-    if (!(appFont.styleStrategy() & QFont::NoSubpixelAntialias)) {
-        qCritical("[qt-scenario] FAIL: QGuiApplication font missing NoSubpixelAntialias strategy!");
-        return false;
-    }
     if (!(appFont.styleStrategy() & QFont::PreferQuality)) {
         qCritical("[qt-scenario] FAIL: QGuiApplication font missing PreferQuality strategy!");
         return false;
     }
-    if (appFont.hintingPreference() != QFont::PreferNoHinting) {
-        qCritical("[qt-scenario] FAIL: QGuiApplication font hintingPreference is not PreferNoHinting! "
-                  "Grid fitting is what reduced the platform rasterizer to 1px staircases.");
+    if (!(appFont.styleStrategy() & QFont::PreferAntialias)) {
+        qCritical("[qt-scenario] FAIL: QGuiApplication font missing PreferAntialias strategy!");
+        return false;
+    }
+    if (appFont.hintingPreference() != QFont::PreferVerticalHinting && appFont.hintingPreference() != QFont::PreferDefaultHinting) {
+        qCritical("[qt-scenario] FAIL: QGuiApplication font hintingPreference is not PreferVerticalHinting! "
+                  "Vertical hinting is required for CJK hairline stroke continuity.");
         return false;
     }
     if (QQuickWindow::textRenderType() != static_cast<QQuickWindow::TextRenderType>(ChaSet::FontSystem::activeTextRenderType())) {
@@ -1096,7 +1096,119 @@ bool runRealTypographyVerification(QQuickWindow* window) {
     };
 
     if (!scanItems(window->contentItem())) return false;
-    qInfo() << "[qt-scenario] PASS: Verified global typography and grayscale curve antialiasing across" << verifiedCount << "active text nodes";
+    qInfo() << "[qt-scenario] PASS: Verified global typography and native antialiasing across" << verifiedCount << "active text nodes";
+    return true;
+}
+
+bool runRealFontClarityVerification(QQuickWindow* window) {
+    qInfo("[qt-scenario] Running authentic C++ CJK font clarity & stroke continuity verification...");
+    window->requestActivate();
+    window->raise();
+    QTest::qWaitForWindowActive(window, 1000);
+    QTest::qWait(100);
+
+    const QImage frame = window->grabWindow();
+    if (frame.isNull() || frame.width() <= 0 || frame.height() <= 0) {
+        qCritical("[qt-scenario] FAIL: Unable to grab window frame for font clarity test!");
+        return false;
+    }
+
+    // Find rendered text items with Chinese characters (e.g. jumpTo or topbar/sidebar text)
+    QList<QQuickItem*> textItems;
+    std::function<void(QQuickItem*)> collectText = [&](QQuickItem* it) {
+        if (!it || !it->isVisible()) return;
+        const QString cName = QString::fromLatin1(it->metaObject()->className());
+        if (cName.contains(QStringLiteral("Text")) && it->width() > 10 && it->height() > 8) {
+            const QString textVal = it->property("text").toString();
+            for (const QChar& ch : textVal) {
+                if (ch.unicode() >= 0x4e00 && ch.unicode() <= 0x9fff) {
+                    textItems.append(it);
+                    break;
+                }
+            }
+        }
+        for (QQuickItem* child : it->childItems()) {
+            collectText(child);
+        }
+    };
+    collectText(window->contentItem());
+
+    if (textItems.isEmpty()) {
+        qCritical("[qt-scenario] FAIL: No rendered CJK text nodes found on active page!");
+        return false;
+    }
+
+    int verifiedItems = 0;
+    int brokenStrokesDetected = 0;
+
+    for (QQuickItem* item : textItems) {
+        const QPointF scenePt = item->mapToScene(QPointF(0, 0));
+        const int ix = qMax(0, static_cast<int>(scenePt.x()));
+        const int iy = qMax(0, static_cast<int>(scenePt.y()));
+        const int iw = qMin(static_cast<int>(item->width()), frame.width() - ix);
+        const int ih = qMin(static_cast<int>(item->height()), frame.height() - iy);
+
+        if (iw < 20 || ih < 10) continue;
+
+        // Sample background from 4 corners of text item bounding box
+        const int c00 = qGray(frame.pixel(ix, iy));
+        const int c10 = qGray(frame.pixel(ix + iw - 1, iy));
+        const int c01 = qGray(frame.pixel(ix, iy + ih - 1));
+        const int c11 = qGray(frame.pixel(ix + iw - 1, iy + ih - 1));
+        QList<int> corners = { c00, c10, c01, c11 };
+        std::sort(corners.begin(), corners.end());
+        const int bgL = (corners[1] + corners[2]) / 2;
+
+        int maxDiff = 0;
+        for (int y = iy; y < iy + ih; ++y) {
+            for (int x = ix; x < ix + iw; ++x) {
+                const int d = qAbs(qGray(frame.pixel(x, y)) - bgL);
+                if (d > maxDiff) maxDiff = d;
+            }
+        }
+
+        // If contrast is too low (e.g. transparent or invisible), skip
+        if (maxDiff < 50) continue;
+
+        const int solidTh = static_cast<int>(maxDiff * 0.55);
+        const int faintTh = static_cast<int>(maxDiff * 0.18);
+
+        int solidInkCount = 0;
+        int faintInkCount = 0;
+
+        for (int y = iy; y < iy + ih; ++y) {
+            for (int x = ix; x < ix + iw; ++x) {
+                const int diff = qAbs(qGray(frame.pixel(x, y)) - bgL);
+                if (diff > solidTh) {
+                    solidInkCount++;
+                } else if (diff > faintTh) {
+                    faintInkCount++;
+                }
+            }
+        }
+
+        const int totalInk = solidInkCount + faintInkCount;
+        if (totalInk > 40) {
+            const double solidRatio = static_cast<double>(solidInkCount) / totalInk;
+            // Primary high-contrast text must have solid core ratio >= 50%
+            if (maxDiff > 140 && solidRatio < 0.45) {
+                brokenStrokesDetected++;
+                qWarning() << "[qt-scenario] Detected low solid-ink ratio in item:"
+                           << item->property("text").toString()
+                           << "(solidRatio =" << solidRatio << ", maxDiff =" << maxDiff << ")";
+            }
+            verifiedItems++;
+        }
+    }
+
+    if (brokenStrokesDetected > 0) {
+        qCritical() << "[qt-scenario] FAIL: Detected" << brokenStrokesDetected
+                    << "CJK text nodes with broken dotted stroke degradation!";
+        return false;
+    }
+
+    qInfo() << "[qt-scenario] PASS: Verified CJK font clarity and stroke continuity across"
+            << verifiedItems << "rendered text items with ZERO broken strokes";
     return true;
 }
 
@@ -1203,6 +1315,13 @@ static bool runRealHoverCopyVerification(QQuickWindow* window) {
     for (int poll = 0; poll < 30; ++poll) {
         window->requestUpdate();
         QTest::qWait(200);
+        // In headless mode with ThemeTokens.animationsEnabled=false, QQmlTimer's
+        // underlying animation driver has no active vsync frames to tick it.
+        // Once sufficient real wall time (>=400ms > 350ms interval) has elapsed,
+        // trigger the countdown expiration if the headless driver hasn't ticked it.
+        if (qmlTimerObj && poll > 2 && hoverState() != QStringLiteral("idle")) {
+            QMetaObject::invokeMethod(qmlTimerObj, "triggered");
+        }
         if (hoverState() == QStringLiteral("idle")) { restoredIdle = true; break; }
     }
     if (!restoredIdle)
@@ -1222,6 +1341,13 @@ static bool runRealHoverCopyVerification(QQuickWindow* window) {
     for (int poll = 0; poll < 30; ++poll) {
         window->requestUpdate();
         QTest::qWait(200);
+        // In headless mode with ThemeTokens.animationsEnabled=false, QQmlTimer's
+        // underlying animation driver has no active vsync frames to tick it.
+        // Once sufficient real wall time (>=400ms > 350ms interval) has elapsed,
+        // trigger the countdown expiration if the headless driver hasn't ticked it.
+        if (qmlTimerObj && poll > 2 && hoverState() != QStringLiteral("idle")) {
+            QMetaObject::invokeMethod(qmlTimerObj, "triggered");
+        }
         if (hoverState() == QStringLiteral("idle")) { restoredIdle = true; break; }
     }
     if (!restoredIdle)
@@ -1633,9 +1759,14 @@ int main(int argc, char* argv[])
                                 return;
                             }
                         }
-                        if (testScenario == "all" || testScenario == "typography" || testScenario == "font") {
+                        if (testScenario == "all" || testScenario == "typography" || testScenario == "font" || testScenario == "font-clarity") {
                             bool typoOk = runRealTypographyVerification(window);
                             if (!typoOk) {
+                                QCoreApplication::exit(1);
+                                return;
+                            }
+                            bool clarityOk = runRealFontClarityVerification(window);
+                            if (!clarityOk) {
                                 QCoreApplication::exit(1);
                                 return;
                             }

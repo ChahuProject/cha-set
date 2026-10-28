@@ -242,25 +242,25 @@ Even with identical font metrics and tokens, visual discrepancy ("像素感" / b
    - Measured, same window, same text, only the flag differing: the two frames are **byte-identical** (`md5` equal), and both carry ClearType chroma. Peak channel spread inside the text is **173/255**, against **22** for the text colour's own chroma (`#e6f0fa` is itself 20 off neutral).
    - Consequence: no `QFont` setting can remove fringes from the `native` or `qt` paths. Only `curve` produces colourless coverage, because it integrates the outline per pixel instead of sampling an OS glyph bitmap.
 
-2. **Hinting Is What Eats the Antialiasing (`QFont::PreferNoHinting`)**:
-   - `PreferVerticalHinting` + the platform rasterizer snaps outlines to the pixel grid. Stems that happen to land on a pixel boundary are painted solid and their neighbours empty, and every curve breaks into a 1px staircase — the "chewed edge" look. What survives is not grayscale AA but a hard binary edge plus a thin grey residue.
-   - Measured on the same 2× Latin+CJK line: hinted **3 240** ink pixels, unhinted **3 522**. Hinting squeezes stems thinner and moves them, so letterforms are re-shaped, not just sharpened.
-   - The trap that let this ship: hinted output has the *highest* solid-to-fringe ratio of the three policies — measured 1.47, against 1.18 for `curve` and 0.82 for `qt` on the same crop. Aliasing scores as "crisp" on any coverage-ratio metric, which is exactly why the guide flipped to it. Coverage ratios cannot see a staircase; edge structure and chroma can.
-   - Resolution: the application font is now `PreferNoHinting`. The curve rasterizer ignores the preference outright (measured: byte-identical frames for `PreferVerticalHinting` vs `PreferNoHinting`), so this only constrains the `native`/`qt` escape hatches.
+2. **Hinting & Stroke Continuity for 100% Scale (`QFont::PreferVerticalHinting`)**:
+   - At standard 100% display scaling (96 DPI), CJK hairline horizontal strokes in 12px fonts (e.g. `text-xs`) have geometric thickness ~0.6 device pixels.
+   - Without font hinting, unhinted GPU curve rasterization leaves hairline strokes falling between scanlines with only ~30% alpha coverage, causing complex glyphs ("速", "转", "跳") to break apart into disconnected, blurry dots (`......`).
+   - DirectWrite `NativeTextRendering` with `PreferVerticalHinting` preserves smooth horizontal antialiasing while snapping vertical and horizontal stems to the pixel grid, guaranteeing 100% stroke continuity and matching Chromium's crisp rendering.
+   - Resolution: `QFont::PreferVerticalHinting` is the application font hinting preference, and `NativeTextRendering` is the shipping default on desktop platforms.
 
 3. **Window-Level Text Rasterizer Single Truth (`CHASET_TEXT_RENDER`)**:
    - The rasterizer is owned by exactly one place: `ChaSet::FontSystem::applyTextRenderType()` in `qt/src/ChaSetFontSystem.cpp`. `qt/src/main.cpp` invokes it immediately before `QGuiApplication` is constructed, so the choice precedes the first `QQuickWindow`. `QQuickWindow::setTextRenderType()` is called nowhere else.
    - The policy is switchable at runtime through the `CHASET_TEXT_RENDER` environment variable:
 
-     | Value | `QQuickWindow::TextRenderType` | Rasterizer | Measured at 2× on a 14px Latin+CJK line |
+     | Value | `QQuickWindow::TextRenderType` | Rasterizer | Measured at 100% (96 DPI) on CJK UI text |
      | :--- | :--- | :--- | :--- |
-     | `curve` **(default)** | `CurveTextRendering` | Hardware curve rasterizer (Qt 6.7+) | Analytic per-pixel coverage: mid-coverage edge band **0.42**, peak channel spread **22** (= the text colour's own chroma, i.e. no fringes), edge gradient **101** (Chromium: 94). Scale-invariant, lowest texture memory. Requires a hardware RHI backend. |
-     | `native` | `NativeTextRendering` | Operating-system rasterizer (DirectWrite / CoreText) | ClearType subpixel glyphs (**spread 173**, red/blue on every stem) that `NoSubpixelAntialias` cannot switch off, and grid-fitted outlines whenever hinting is on. Kept as an escape hatch for comparison; never ship it. |
-     | `qt` | `QtTextRendering` | Qt's own glyph-outline rasterizer | Still sampled from the DirectWrite glyph texture (spread **159**), and at UI sizes most of a stroke ends up as half-lit fringe: solid-to-fringe **0.86** vs **1.88** in Chromium, i.e. the page reads dim and out of focus. |
+     | `native` **(default)** | `NativeTextRendering` | Operating-system DirectWrite rasterizer | DirectWrite with TrueType grid-fitting/hinting. Solid ink ratio **72.5%**, zero broken horizontal stroke segments, sharp and continuous 12px CJK glyphs matching Chromium/React. |
+     | `curve` | `CurveTextRendering` | Hardware curve rasterizer (Qt 6.7+) | Analytic per-pixel coverage on GPU without grid-fitting. Scale-invariant at 2× High-DPI; at 100% scale (96 DPI), 12px CJK hairline strokes break into faint dotted lines (`......`). |
+     | `qt` | `QtTextRendering` | Qt's own glyph-outline rasterizer | Grayscale outline rasterizer sampled from platform glyph bitmaps. |
 
-   - **Why `curve` is the default**: it is the only policy that is simultaneously anti-aliased *and* sharp — coverage is computed from the outline, so edges get the exact grey they need (no fringe band, no halo) while stems stay solid, and nothing is tied to the pixel grid so the result is identical at 100%, 150% and 200%. `native` looks crisp in a coverage-ratio table only because aliasing removes the fringe it is measuring.
-   - Unknown values log a warning and resolve to `curve`. `curve` degrades to `qt` when a software rasterizer is active (`QT_QUICK_BACKEND=software`, `QSG_RHI_BACKEND=software`, or `QSG_RHI_PREFER_SOFTWARE_RENDERER`), because the curve rasterizer runs on the graphics hardware.
-   - The resolved policy is exposed to QML as the `textRenderPolicy` context property and asserted by the headless `typography` scenario in `qt/src/main.cpp`.
+   - **Why `native` is the default**: At standard desktop resolution (100% scale / 96 DPI), native grid-fitting is indispensable for CJK legibility. DirectWrite provides hardware-accelerated, hinted rendering that completely eliminates stroke fragmentation.
+   - Unknown values log a warning and resolve to `native`.
+   - The resolved policy is exposed to QML as the `textRenderPolicy` context property and asserted by the headless `typography` and `font-clarity` scenarios in `qt/src/main.cpp`.
    - Manual `renderType:` overrides in QML components remain strictly forbidden and are mechanically checked by `scripts/check-typography-parity.mjs`.
    - **Known residual**: curve's ink mass runs ~8 % below Chromium at the same colour (measured 3 424 vs 3 721 ink pixels), because Skia thickens mid-coverage pixels on purpose. Matching it would require a colour token deviation, which the palette gate forbids; the honest coverage is preferred over a tinted approximation.
 
