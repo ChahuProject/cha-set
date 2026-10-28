@@ -50,4 +50,17 @@ describe('WindowTitleBar', () => {
     rerender(<WindowTitleBar title="Window" dragRegion={false} />);
     expect(dragRegion).not.toHaveAttribute('data-tauri-drag-region');
   });
+
+  it('renders caption button tooltips with full height and items-stretch container', () => {
+    const { container } = render(<WindowTitleBar title="Window" />);
+    const header = container.querySelector('[data-slot="window-title-bar"]');
+    const captionContainer = header?.querySelector('div.flex-shrink-0');
+    expect(captionContainer?.className).toContain('items-stretch');
+
+    const tooltipRoots = captionContainer?.querySelectorAll('[data-slot="tooltip-root"]');
+    expect(tooltipRoots?.length).toBeGreaterThan(0);
+    tooltipRoots?.forEach((root) => {
+      expect(root.className).toContain('h-full');
+    });
+  });
 });

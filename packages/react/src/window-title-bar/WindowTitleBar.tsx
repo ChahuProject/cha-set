@@ -80,7 +80,7 @@ export function WindowTitleBar({
   ) => {
     if (showTooltips && content) {
       return (
-        <Tooltip content={content} side={tooltipSide}>
+        <Tooltip content={content} side={tooltipSide} className="h-full">
           {button}
         </Tooltip>
       );
@@ -128,7 +128,7 @@ export function WindowTitleBar({
       )}
 
       {/* Right caption controls */}
-      <div className="flex h-full flex-shrink-0 items-center">
+      <div className="flex h-full flex-shrink-0 items-stretch">
         {extraControls}
 
         {showControls && (
