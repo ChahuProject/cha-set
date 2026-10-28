@@ -1047,6 +1047,13 @@ bool runRealTypographyVerification(QQuickWindow* window) {
     qInfo() << "[qt-scenario] Text render policy:" << ChaSet::FontSystem::activeTextRenderPolicyName()
             << "(renderType =" << ChaSet::FontSystem::activeTextRenderType() << ")";
 
+    const QStringList yaheiSubst = QFont::substitutes(QStringLiteral("Microsoft YaHei UI"));
+    if (!yaheiSubst.contains(QStringLiteral("PingFang SC"), Qt::CaseInsensitive) &&
+        !yaheiSubst.contains(QStringLiteral("Noto Sans SC"), Qt::CaseInsensitive) &&
+        !yaheiSubst.contains(QStringLiteral("Segoe UI"), Qt::CaseInsensitive)) {
+        qCritical("[qt-scenario] FAIL: QFont Microsoft YaHei UI substitutes missing fallback fonts!");
+        return false;
+    }
     const QStringList segoeSubst = QFont::substitutes(QStringLiteral("Segoe UI"));
     if (!segoeSubst.contains(QStringLiteral("Microsoft YaHei UI"), Qt::CaseInsensitive) &&
         !segoeSubst.contains(QStringLiteral("Microsoft YaHei"), Qt::CaseInsensitive) &&

@@ -1402,8 +1402,8 @@ ApplicationWindow {
             }
 
             // 2. Validate font family tokens
-            if (!Typography.familySans || Typography.familySans.indexOf("Segoe UI") === -1) {
-                console.log("[qt-scenario] FAIL: Typography.familySans missing Segoe UI: " + Typography.familySans);
+            if (!Typography.familySans || (Typography.familySans.indexOf("Microsoft YaHei") === -1 && Typography.familySans.indexOf("Segoe UI") === -1)) {
+                console.log("[qt-scenario] FAIL: Typography.familySans missing primary sans font: " + Typography.familySans);
                 typoFailures++;
             }
             if (!Typography.familyMono || Typography.familyMono.indexOf("Consolas") === -1) {

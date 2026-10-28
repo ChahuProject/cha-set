@@ -467,7 +467,7 @@ const familyProps = FONT_FAMILY_ORDER.map(
     `\n    // web stack: ${typographyPrim.fontFamily[f].css}`,
 ).join('\n');
 
-const sansFamilies = typographyPrim.fontFamily?.sans?.qtFamilies ?? ['Segoe UI', 'Microsoft YaHei UI', 'Microsoft YaHei', 'PingFang SC', 'Noto Sans SC', 'sans-serif'];
+const sansFamilies = typographyPrim.fontFamily?.sans?.qtFamilies ?? ['Microsoft YaHei UI', 'Microsoft YaHei', 'Segoe UI', 'PingFang SC', 'Noto Sans SC', 'sans-serif'];
 const monoFamilies = typographyPrim.fontFamily?.mono?.qtFamilies ?? ['Consolas', 'Cascadia Code', 'Microsoft YaHei UI', 'Microsoft YaHei', 'PingFang SC', 'Noto Sans SC', 'monospace'];
 
 // Qt maps 400/500/600/700 onto Font.Normal/Medium/DemiBold/Bold.

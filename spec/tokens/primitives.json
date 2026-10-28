@@ -50,11 +50,11 @@
     "typography": {
       "fontFamily": {
         "sans": {
-          "qt": "Segoe UI",
+          "qt": "Microsoft YaHei UI",
           "qtFamilies": [
-            "Segoe UI",
             "Microsoft YaHei UI",
             "Microsoft YaHei",
+            "Segoe UI",
             "PingFang SC",
             "Noto Sans SC",
             "sans-serif"

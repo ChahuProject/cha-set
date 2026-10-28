@@ -37,9 +37,9 @@ const char* FontSystem::textRenderEnvVar()
 QStringList FontSystem::defaultSansFamilies()
 {
     return {
-        QStringLiteral("Segoe UI"),
         QStringLiteral("Microsoft YaHei UI"),
         QStringLiteral("Microsoft YaHei"),
+        QStringLiteral("Segoe UI"),
         QStringLiteral("PingFang SC"),
         QStringLiteral("Noto Sans SC"),
         QStringLiteral("sans-serif")
@@ -74,7 +74,11 @@ void FontSystem::applySubstitutions()
     const QStringList sans = activeSansFamilies();
     const QStringList mono = activeMonoFamilies();
 
-    // Map Western-primary fonts to CJK fallback chains in QFontDatabase
+    // Map Western and primary fonts to CJK fallback chains in QFontDatabase.
+    // On macOS/Linux where "Microsoft YaHei UI" is absent, substitution tables
+    // cleanly map to PingFang SC / Noto Sans SC.
+    QFont::insertSubstitutions(QStringLiteral("Microsoft YaHei UI"), sans);
+    QFont::insertSubstitutions(QStringLiteral("Microsoft YaHei"), sans);
     QFont::insertSubstitutions(QStringLiteral("Segoe UI"), sans);
     QFont::insertSubstitutions(QStringLiteral("Consolas"), mono);
     QFont::insertSubstitutions(QStringLiteral("sans-serif"), sans);
@@ -146,7 +150,7 @@ void FontSystem::initialize(QGuiApplication* /*app*/)
 
     // Configure application-level default font with grayscale antialiasing
     const QStringList sans = activeSansFamilies();
-    QFont appFont(sans.isEmpty() ? QStringLiteral("Segoe UI") : sans.first());
+    QFont appFont(sans.isEmpty() ? QStringLiteral("Microsoft YaHei UI") : sans.first());
     appFont.setStyleStrategy(static_cast<QFont::StyleStrategy>(
         QFont::PreferAntialias | QFont::PreferQuality | QFont::NoSubpixelAntialias
     ));

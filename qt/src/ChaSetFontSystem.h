@@ -64,7 +64,8 @@ public:
      *
      * Actions performed:
      * 1. Injects font substitution tables into QFontDatabase:
-     *    - "Segoe UI" -> [Segoe UI, Microsoft YaHei UI, Microsoft YaHei, PingFang SC, Noto Sans SC, sans-serif]
+     *    - "Microsoft YaHei UI" -> [Microsoft YaHei UI, Microsoft YaHei, Segoe UI, PingFang SC, Noto Sans SC, sans-serif]
+     *    - "Segoe UI" -> [Microsoft YaHei UI, Microsoft YaHei, Segoe UI, PingFang SC, Noto Sans SC, sans-serif]
      *    - "Consolas" -> [Consolas, Cascadia Code, Microsoft YaHei UI, Microsoft YaHei, PingFang SC, Noto Sans SC, monospace]
      *    - "sans-serif" -> activeSansFamilies()
      *    - "monospace"  -> activeMonoFamilies()

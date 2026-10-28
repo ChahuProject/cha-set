@@ -23,13 +23,13 @@ QtObject {
     id: root
 
     // --- font families ---------------------------------------------------
-    readonly property string familySans: "Segoe UI"
+    readonly property string familySans: "Microsoft YaHei UI"
     // web stack: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', 'WenQuanYi Micro Hei', 'Helvetica Neue', Arial, sans-serif
     readonly property string familyMono: "Consolas"
     // web stack: ui-monospace, SFMono-Regular, 'Cascadia Code', Menlo, Monaco, Consolas, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', 'Liberation Mono', 'Courier New', monospace
 
     // --- font fallback chains (Qt 6 font.families support) ----------------
-    readonly property var familiesSans: ["Segoe UI","Microsoft YaHei UI","Microsoft YaHei","PingFang SC","Noto Sans SC","sans-serif"]
+    readonly property var familiesSans: ["Microsoft YaHei UI","Microsoft YaHei","Segoe UI","PingFang SC","Noto Sans SC","sans-serif"]
     readonly property var familiesMono: ["Consolas","Cascadia Code","Microsoft YaHei UI","Microsoft YaHei","PingFang SC","Noto Sans SC","monospace"]
 
     // --- font weights ----------------------------------------------------
