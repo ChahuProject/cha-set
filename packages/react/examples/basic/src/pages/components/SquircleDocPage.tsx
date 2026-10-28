@@ -108,17 +108,15 @@ export function PremiumCard({ children }: { children: React.ReactNode }) {
             <div className="flex flex-wrap items-center justify-center gap-8">
               {/* Active Squircle */}
               <div className="flex flex-col items-center gap-2">
-                <div
-                  className="w-44 h-28 bg-primary/15 border-2 border-primary flex items-center justify-center text-center p-3 text-sm font-medium text-foreground transition-all shadow-sm"
-                  style={{
-                    borderRadius: `${radius * 0.0625}rem`,
-                    ['cornerShape' as string]: 'squircle',
-                    ['--cs-corner-smoothing' as string]: smoothing,
-                  }}
-                  data-corner-shape="squircle"
+                <Squircle
+                  radius={radius}
+                  smoothing={smoothing}
+                  borderWidth={2}
+                  borderColor="var(--primary)"
+                  className="w-44 h-28 bg-primary/15 flex items-center justify-center text-center p-3 text-sm font-medium text-foreground shadow-sm"
                 >
                   <span>{t('components.squircle.squircleLabel', 'Squircle (Smoothing: {{smoothing}}%)', { smoothing: (smoothing * 100).toFixed(0) })}</span>
-                </div>
+                </Squircle>
                 <span className="text-xs text-muted-foreground font-mono">{t('components.squircle.radiusLabel', 'Radius: {{radius}}', { radius })} | S: {smoothing.toFixed(2)}</span>
               </div>
 

@@ -146,14 +146,20 @@ export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
       ]
     );
 
-    const initialPath = React.useMemo(() => {
-      if (width && height && width > 0 && height > 0) {
-        return computePath(width, height);
+    const [measuredDimensions, setMeasuredDimensions] = React.useState<{ w: number; h: number }>({
+      w: width ?? 0,
+      h: height ?? 0,
+    });
+
+    const currentW = width ?? measuredDimensions.w;
+    const currentH = height ?? measuredDimensions.h;
+
+    const path = React.useMemo(() => {
+      if (currentW > 0 && currentH > 0) {
+        return computePath(currentW, currentH);
       }
       return '';
-    }, [width, height, computePath]);
-
-    const [path, setPath] = React.useState<string>(initialPath);
+    }, [currentW, currentH, computePath]);
 
     // Combine forwarded ref and local ref
     const setRefs = React.useCallback(
@@ -168,23 +174,24 @@ export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
       [ref]
     );
 
-    const updatePath = React.useCallback(() => {
+    const updateDimensions = React.useCallback(() => {
       const el = containerRef.current;
-      const w = width ?? (el ? el.offsetWidth : 0);
-      const h = height ?? (el ? el.offsetHeight : 0);
-      if (w > 0 && h > 0) {
-        const p = computePath(w, h);
-        setPath(p);
-      }
-    }, [width, height, computePath]);
+      if (!el) return;
+      const w = width ?? el.offsetWidth;
+      const h = height ?? el.offsetHeight;
+      setMeasuredDimensions((prev) => {
+        if (prev.w === w && prev.h === h) return prev;
+        return { w, h };
+      });
+    }, [width, height]);
 
     React.useEffect(() => {
-      updatePath();
+      updateDimensions();
       if (!containerRef.current || typeof ResizeObserver === 'undefined') return;
-      const ro = new ResizeObserver(() => updatePath());
+      const ro = new ResizeObserver(() => updateDimensions());
       ro.observe(containerRef.current);
       return () => ro.disconnect();
-    }, [updatePath]);
+    }, [updateDimensions]);
 
     const combinedStyle: React.CSSProperties = {
       borderRadius: `${radius * 0.0625}rem`,

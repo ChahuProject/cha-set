@@ -111,4 +111,47 @@ describe('Squircle mathematical path generator', () => {
     expect(firstSvg).toBeDefined();
     expect(firstSvg?.querySelector('clipPath')).not.toBeNull();
   });
+
+  it('dynamically updates path and attributes when smoothing changes', () => {
+    const { container, rerender } = render(
+      <Squircle width={120} height={60} radius={16} smoothing={0.2} data-testid="sq">
+        <span>Dynamic</span>
+      </Squircle>
+    );
+    const el = container.querySelector('[data-corner-shape="squircle"]');
+    expect(el?.getAttribute('data-corner-smoothing')).toBe('0.2');
+
+    const path1 = container.querySelector('clipPath path')?.getAttribute('d');
+    expect(path1).toBeTruthy();
+
+    // Rerender with different smoothing
+    rerender(
+      <Squircle width={120} height={60} radius={16} smoothing={0.8} data-testid="sq">
+        <span>Dynamic</span>
+      </Squircle>
+    );
+    expect(el?.getAttribute('data-corner-smoothing')).toBe('0.8');
+
+    const path2 = container.querySelector('clipPath path')?.getAttribute('d');
+    expect(path2).toBeTruthy();
+    expect(path2).not.toBe(path1);
+  });
+
+  it('benchmarks mass squircle generation performance (5,000 runs within budget)', () => {
+    const start = performance.now();
+    const count = 5000;
+    for (let i = 0; i < count; ++i) {
+      const p = getSquircleSvgPath({
+        width: 120 + (i % 20),
+        height: 60 + (i % 15),
+        cornerRadius: 8 + (i % 8),
+        cornerSmoothing: (i % 10) / 10,
+      });
+      expect(p.length).toBeGreaterThan(0);
+    }
+    const elapsedMs = performance.now() - start;
+    const usPerOp = (elapsedMs * 1000) / count;
+    // Budget: less than 20us per op (5,000 ops < 100ms)
+    expect(usPerOp).toBeLessThan(20);
+  });
 });
