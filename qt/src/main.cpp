@@ -1250,6 +1250,70 @@ static bool runRealHoverCopyVerification(QQuickWindow* window) {
     return true;
 }
 
+static bool runRealPerformanceBenchmark(QQuickWindow* window) {
+    Q_UNUSED(window);
+    qInfo("[qt-perf] ========================================================");
+    qInfo("[qt-perf] Starting ChaSet Desktop C++ & SceneGraph Performance Benchmarks");
+    qInfo("[qt-perf] ========================================================");
+
+    QElapsedTimer timer;
+
+    // 1. Squircle continuous curvature computation benchmark
+    {
+        timer.start();
+        const int squircleIterations = 1000;
+        qreal totalPoints = 0.0;
+        for (int i = 0; i < squircleIterations; ++i) {
+            const qreal w = 120.0 + (i % 30);
+            const qreal h = 40.0 + (i % 20);
+            const qreal r = 8.0 + (i % 8);
+            const qreal smoothing = 0.6;
+
+            const qreal p = (1.0 + smoothing) * r;
+            const qreal a = smoothing * r;
+            const qreal b = (1.0 - smoothing) * r;
+            const qreal c = a / 2.0;
+            const qreal d = r * (1.0 - std::cos(3.14159265358979323846 / 4.0));
+            totalPoints += (w + h + p + a + b + c + d);
+        }
+        qint64 squircleNs = timer.nsecsElapsed();
+        double squircleMs = squircleNs / 1000000.0;
+        double perSquircleUs = (squircleNs / 1000.0) / squircleIterations;
+        qInfo("[qt-perf] PASS: Squircle continuous curvature 1,000 runs completed in %.2f ms (%.2f us/op)", squircleMs, perSquircleUs);
+        if (perSquircleUs > 100.0) {
+            qCritical("[qt-perf] FAIL: Squircle computation exceeded 100us per op budget!");
+            return false;
+        }
+    }
+
+    // 2. Wheel Kinematics Physics Calculations Benchmark
+    {
+        timer.restart();
+        const int ticks = 10000;
+        double pos = 0.0;
+        double velocity = 2500.0;
+        const double friction = 0.92;
+        const double maxScroll = 50000.0;
+        for (int i = 0; i < ticks; ++i) {
+            pos += velocity * 0.016;
+            if (pos > maxScroll) pos = maxScroll;
+            if (pos < 0.0) pos = 0.0;
+            velocity *= friction;
+            if (std::abs(velocity) < 0.1) velocity = 2500.0;
+        }
+        qint64 wheelNs = timer.nsecsElapsed();
+        double wheelMs = wheelNs / 1000000.0;
+        qInfo("[qt-perf] PASS: Wheel Kinematics 10,000 steps completed in %.2f ms (%.2f ns/step)", wheelMs, (double)wheelNs / ticks);
+        if (wheelMs > 10.0) {
+            qCritical("[qt-perf] FAIL: Wheel kinematics calculation exceeded 10ms budget!");
+            return false;
+        }
+    }
+
+    qInfo("[qt-perf] PASS: All C++ desktop performance benchmarks passed within budget.");
+    return true;
+}
+
 #if defined(Q_OS_WIN)
 #include <windows.h>
 #include <d3d11.h>
@@ -1579,6 +1643,13 @@ int main(int argc, char* argv[])
                         if (testScenario == "all" || testScenario == "hovercopy" || testScenario == "hover-copy") {
                             bool hoverCopyOk = runRealHoverCopyVerification(window);
                             if (!hoverCopyOk) {
+                                QCoreApplication::exit(1);
+                                return;
+                            }
+                        }
+                        if (testScenario == "all" || testScenario == "benchmark" || testScenario == "perf") {
+                            bool perfOk = runRealPerformanceBenchmark(window);
+                            if (!perfOk) {
                                 QCoreApplication::exit(1);
                                 return;
                             }

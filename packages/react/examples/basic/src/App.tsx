@@ -33,6 +33,7 @@ import { type ThemeOverrides } from './components/ThemeTuner';
 import { ExportModal } from './components/ExportModal';
 import { CommandSearchModal } from './components/CommandSearchModal';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { PerfMonitor } from './components/PerfMonitor';
 import { Header } from './layout/Header';
 import { Sidebar, NavigationContent } from './layout/Sidebar';
 import { TocProvider } from './layout/TocContext';
@@ -977,6 +978,9 @@ export function App() {
               debounceMs={500}
               format={(v) => `界面缩放 ${Math.round(v * 100)}%`}
             />
+
+            {/* Living Showcase Real-Time Telemetry HUD (Ctrl+Alt+P) */}
+            <PerfMonitor />
           </div>
         </TocProvider>
       </ResponsiveProvider>

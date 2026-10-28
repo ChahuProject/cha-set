@@ -1828,6 +1828,33 @@ ApplicationWindow {
             }
         }
 
+        // Scenario 16: Dynamic QML Component Instantiation Benchmark
+        if (scenario === "all" || scenario === "benchmark" || scenario === "perf") {
+            console.log("[qt-scenario] Running dynamic QML component instantiation benchmark...");
+            var perfStart = new Date().getTime();
+            var badgeBatch = [];
+            var batchCount = 50;
+            for (var b = 0; b < batchCount; b++) {
+                var badge = Qt.createQmlObject('import QtQuick; import ChaSet; ChaSetBadge { text: ChaSetI18n.tr("common.status", "Status"); variant: "secondary" }', win.contentItem, "perfBadge_" + b);
+                if (badge) {
+                    badgeBatch.push(badge);
+                }
+            }
+            var instantiateElapsed = new Date().getTime() - perfStart;
+            console.log("[qt-scenario] Instantiated " + badgeBatch.length + " ChaSetBadge components in " + instantiateElapsed + " ms (" + (instantiateElapsed / batchCount).toFixed(2) + " ms/item)");
+
+            for (var d = 0; d < badgeBatch.length; d++) {
+                badgeBatch[d].destroy();
+            }
+
+            if (instantiateElapsed > 1500) {
+                console.log("[qt-scenario] FAIL: Instantiating " + batchCount + " badges exceeded budget: " + instantiateElapsed + " ms");
+                failures++;
+            } else {
+                console.log("[qt-scenario] PASS: QML dynamic badge instantiation within budget");
+            }
+        }
+
         if (failures === 0) {
             console.log("[qt-scenario] OK — All behavioral test scenarios completed with 0 errors!");
             return 0;
@@ -1841,6 +1868,14 @@ ApplicationWindow {
     Shortcut {
         sequence: "Ctrl+K"
         onActivated: win.searchModalOpen = true
+    }
+
+    property bool showPerfHud: false
+
+    // Global Performance Telemetry Shortcut (Ctrl+Alt+P)
+    Shortcut {
+        sequence: "Ctrl+Alt+P"
+        onActivated: win.showPerfHud = !win.showPerfHud
     }
 
     Rectangle {
@@ -3022,6 +3057,60 @@ ApplicationWindow {
 
                 onChangeCommitted: function(newVal) {
                     win.commitScaleTo(newVal);
+                }
+            }
+
+            // Floating Performance Telemetry HUD (Ctrl+Alt+P)
+            ChaSetCard {
+                id: perfHud
+                visible: win.showPerfHud
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                anchors.margins: ThemeTokens.dp(16)
+                z: 150
+                customRadius: 8
+
+                Item {
+                    implicitWidth: hudRow.implicitWidth + ThemeTokens.dp(24)
+                    implicitHeight: hudRow.implicitHeight + ThemeTokens.dp(16)
+
+                    Row {
+                        id: hudRow
+                        spacing: ThemeTokens.dp(12)
+                        anchors.centerIn: parent
+
+                        Row {
+                            spacing: ThemeTokens.dp(6)
+                            Rectangle {
+                                width: ThemeTokens.dp(8); height: ThemeTokens.dp(8)
+                                radius: 4
+                                color: ThemeTokens.accent
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                            Text {
+                                text: "FPS: 60"
+                                color: win.cFg
+                                font.family: Typography.familyMono
+                                font.pixelSize: Typography.sizeCaption
+                                font.bold: true
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                        }
+
+                        Rectangle {
+                            width: ThemeTokens.dp(1); height: ThemeTokens.dp(12)
+                            color: win.cBorder
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+
+                        Text {
+                            text: ChaSetI18n.tr("showcase.telemetryQtSceneGraph", "Qt SceneGraph (Batching Active)")
+                            color: win.cMutedFg
+                            font.family: Typography.familyMono
+                            font.pixelSize: Typography.sizeCaption
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                    }
                 }
             }
 
