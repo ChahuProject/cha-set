@@ -2,10 +2,12 @@
 
 #include <QSGNode>
 #include <QSGGeometryNode>
-#include <QSGFlatColorMaterial>
+#include <QSGVertexColorMaterial>
 #include <QSGGeometry>
 #include <QtMath>
 #include <algorithm>
+#include <cmath>
+#include <tuple>
 
 ChaSetSquirclePen::ChaSetSquirclePen(QObject *parent)
     : QObject(parent)
@@ -28,15 +30,15 @@ void ChaSetSquirclePen::setColor(const QColor &c)
     emit changed();
 }
 
-class ChaSetSquircleNode : public QSGNode
+class ChaSetSquircleNode : public QSGGeometryNode
 {
 public:
-    QSGGeometryNode *fillNode = nullptr;
-    QSGGeometryNode *strokeNode = nullptr;
-    QSGFlatColorMaterial fillMaterial;
-    QSGFlatColorMaterial strokeMaterial;
+    QSGVertexColorMaterial material;
 
-    ChaSetSquircleNode() = default;
+    ChaSetSquircleNode() {
+        setMaterial(&material);
+        setFlag(OwnsGeometry, true);
+    }
 };
 
 ChaSetSquircle::ChaSetSquircle(QQuickItem *parent)
@@ -533,9 +535,9 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
         return nullptr;
     }
 
-    ChaSetSquircleNode *rootNode = static_cast<ChaSetSquircleNode *>(oldNode);
-    if (!rootNode) {
-        rootNode = new ChaSetSquircleNode();
+    ChaSetSquircleNode *node = static_cast<ChaSetSquircleNode *>(oldNode);
+    if (!node) {
+        node = new ChaSetSquircleNode();
     }
 
     const qreal rTL = (m_topLeftRadius >= 0.0) ? m_topLeftRadius : m_radius;
@@ -553,58 +555,12 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
     QVector<QPointF> outerPoints = generateSquirclePolygon(fillRect, rTL, rTR, rBR, rBL, m_cornerSmoothing, tl, tr, br, bl, 6);
     const int N = outerPoints.size();
     if (N < 3) {
-        delete rootNode;
+        delete node;
         return nullptr;
     }
 
-    // 2. Fill Geometry Node
-    if (hasFill) {
-        const int numVerts = N + 1;
-        const int numIndices = N * 3;
-        const bool isNewNode = (rootNode->fillNode == nullptr);
-        if (isNewNode) {
-            rootNode->fillNode = new QSGGeometryNode();
-            rootNode->fillNode->setMaterial(&rootNode->fillMaterial);
-        }
-        rootNode->fillMaterial.setColor(m_color);
-        rootNode->fillNode->markDirty(QSGNode::DirtyMaterial);
-
-        // Vertices: center + N outer points
-        QSGGeometry *fillGeom = rootNode->fillNode->geometry();
-        if (!fillGeom || fillGeom->vertexCount() != numVerts || fillGeom->indexCount() != numIndices) {
-            fillGeom = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), numVerts, numIndices);
-            fillGeom->setDrawingMode(QSGGeometry::DrawTriangles);
-            rootNode->fillNode->setGeometry(fillGeom);
-            rootNode->fillNode->setFlag(QSGNode::OwnsGeometry);
-        }
-        if (isNewNode) {
-            rootNode->appendChildNode(rootNode->fillNode);
-        }
-
-        QSGGeometry::Point2D *v = fillGeom->vertexDataAsPoint2D();
-        const QPointF center(W / 2.0, H / 2.0);
-        v[0].set(static_cast<float>(center.x()), static_cast<float>(center.y()));
-        for (int i = 0; i < N; ++i) {
-            v[i + 1].set(static_cast<float>(outerPoints[i].x()), static_cast<float>(outerPoints[i].y()));
-        }
-
-        quint16 *indices = fillGeom->indexDataAsUShort();
-        for (int i = 0; i < N; ++i) {
-            indices[3 * i + 0] = 0;
-            indices[3 * i + 1] = static_cast<quint16>(i + 1);
-            indices[3 * i + 2] = static_cast<quint16>((i + 1 == N) ? 1 : (i + 2));
-        }
-
-        fillGeom->markVertexDataDirty();
-        fillGeom->markIndexDataDirty();
-        rootNode->fillNode->markDirty(QSGNode::DirtyGeometry);
-    } else if (rootNode->fillNode) {
-        rootNode->removeChildNode(rootNode->fillNode);
-        delete rootNode->fillNode;
-        rootNode->fillNode = nullptr;
-    }
-
-    // 3. Stroke Geometry Node (inner border, box-sizing: border-box)
+    QVector<QPointF> innerPoints;
+    bool actualBorder = false;
     if (hasBorder) {
         const qreal inset = bw;
         const qreal innerW = std::max(0.0, W - 2.0 * inset);
@@ -615,64 +571,93 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
         const qreal strBR = std::max(0.0, rBR - inset);
         const qreal strBL = std::max(0.0, rBL - inset);
 
-        QVector<QPointF> innerPoints = generateSquirclePolygon(strokeRect, strTL, strTR, strBR, strBL, m_cornerSmoothing, tl, tr, br, bl, 6);
+        innerPoints = generateSquirclePolygon(strokeRect, strTL, strTR, strBR, strBL, m_cornerSmoothing, tl, tr, br, bl, 6);
         if (innerPoints.size() == N) {
-            const bool isNewNode = (rootNode->strokeNode == nullptr);
-            if (isNewNode) {
-                rootNode->strokeNode = new QSGGeometryNode();
-                rootNode->strokeNode->setMaterial(&rootNode->strokeMaterial);
-            }
-            rootNode->strokeMaterial.setColor(bc);
-            rootNode->strokeNode->markDirty(QSGNode::DirtyMaterial);
-
-            const int numVerts = 2 * N;
-            const int numIndices = 6 * N;
-            QSGGeometry *strokeGeom = rootNode->strokeNode->geometry();
-            if (!strokeGeom || strokeGeom->vertexCount() != numVerts || strokeGeom->indexCount() != numIndices) {
-                strokeGeom = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), numVerts, numIndices);
-                strokeGeom->setDrawingMode(QSGGeometry::DrawTriangles);
-                rootNode->strokeNode->setGeometry(strokeGeom);
-                rootNode->strokeNode->setFlag(QSGNode::OwnsGeometry);
-            }
-            if (isNewNode) {
-                rootNode->appendChildNode(rootNode->strokeNode);
-            }
-
-            QSGGeometry::Point2D *v = strokeGeom->vertexDataAsPoint2D();
-            for (int i = 0; i < N; ++i) {
-                v[2 * i + 0].set(static_cast<float>(outerPoints[i].x()), static_cast<float>(outerPoints[i].y()));
-                v[2 * i + 1].set(static_cast<float>(innerPoints[i].x()), static_cast<float>(innerPoints[i].y()));
-            }
-
-            quint16 *indices = strokeGeom->indexDataAsUShort();
-            for (int i = 0; i < N; ++i) {
-                const quint16 currOuter = static_cast<quint16>(2 * i + 0);
-                const quint16 currInner = static_cast<quint16>(2 * i + 1);
-                const quint16 nextOuter = static_cast<quint16>((i + 1 == N) ? 0 : (2 * (i + 1) + 0));
-                const quint16 nextInner = static_cast<quint16>((i + 1 == N) ? 1 : (2 * (i + 1) + 1));
-
-                indices[6 * i + 0] = currOuter;
-                indices[6 * i + 1] = currInner;
-                indices[6 * i + 2] = nextOuter;
-
-                indices[6 * i + 3] = nextOuter;
-                indices[6 * i + 4] = currInner;
-                indices[6 * i + 5] = nextInner;
-            }
-
-            strokeGeom->markVertexDataDirty();
-            strokeGeom->markIndexDataDirty();
-            rootNode->strokeNode->markDirty(QSGNode::DirtyGeometry);
-        } else if (rootNode->strokeNode) {
-            rootNode->removeChildNode(rootNode->strokeNode);
-            delete rootNode->strokeNode;
-            rootNode->strokeNode = nullptr;
+            actualBorder = true;
         }
-    } else if (rootNode->strokeNode) {
-        rootNode->removeChildNode(rootNode->strokeNode);
-        delete rootNode->strokeNode;
-        rootNode->strokeNode = nullptr;
     }
 
-    return rootNode;
+    int numVerts = 0;
+    int numIndices = 0;
+    if (hasFill) {
+        numVerts += (N + 1);
+        numIndices += (N * 3);
+    }
+    if (actualBorder) {
+        numVerts += (2 * N);
+        numIndices += (6 * N);
+    }
+
+    QSGGeometry *geom = node->geometry();
+    if (!geom || geom->vertexCount() != numVerts || geom->indexCount() != numIndices) {
+        geom = new QSGGeometry(QSGGeometry::defaultAttributes_ColoredPoint2D(), numVerts, numIndices);
+        geom->setDrawingMode(QSGGeometry::DrawTriangles);
+        node->setGeometry(geom);
+    }
+
+    QSGGeometry::ColoredPoint2D *v = geom->vertexDataAsColoredPoint2D();
+    quint16 *indices = geom->indexDataAsUShort();
+
+    int vertOffset = 0;
+    int idxOffset = 0;
+
+    auto makePremul = [](const QColor &c) -> std::tuple<uchar, uchar, uchar, uchar> {
+        const float a = static_cast<float>(c.alphaF());
+        const uchar r = static_cast<uchar>(std::round(static_cast<float>(c.redF()) * a * 255.0f));
+        const uchar g = static_cast<uchar>(std::round(static_cast<float>(c.greenF()) * a * 255.0f));
+        const uchar b = static_cast<uchar>(std::round(static_cast<float>(c.blueF()) * a * 255.0f));
+        const uchar na = static_cast<uchar>(std::round(a * 255.0f));
+        return {r, g, b, na};
+    };
+
+    if (hasFill) {
+        const auto [fr, fg, fb, fa] = makePremul(m_color);
+        const QPointF center(W / 2.0, H / 2.0);
+        v[vertOffset + 0].set(static_cast<float>(center.x()), static_cast<float>(center.y()), fr, fg, fb, fa);
+        for (int i = 0; i < N; ++i) {
+            v[vertOffset + 1 + i].set(static_cast<float>(outerPoints[i].x()), static_cast<float>(outerPoints[i].y()), fr, fg, fb, fa);
+        }
+
+        for (int i = 0; i < N; ++i) {
+            indices[idxOffset + 3 * i + 0] = static_cast<quint16>(vertOffset + 0);
+            indices[idxOffset + 3 * i + 1] = static_cast<quint16>(vertOffset + i + 1);
+            indices[idxOffset + 3 * i + 2] = static_cast<quint16>(vertOffset + ((i + 1 == N) ? 1 : (i + 2)));
+        }
+
+        vertOffset += (N + 1);
+        idxOffset += (N * 3);
+    }
+
+    if (actualBorder) {
+        const auto [br, bg, bb, ba] = makePremul(bc);
+        const int strokeBase = vertOffset;
+        for (int i = 0; i < N; ++i) {
+            v[strokeBase + 2 * i + 0].set(static_cast<float>(outerPoints[i].x()), static_cast<float>(outerPoints[i].y()), br, bg, bb, ba);
+            v[strokeBase + 2 * i + 1].set(static_cast<float>(innerPoints[i].x()), static_cast<float>(innerPoints[i].y()), br, bg, bb, ba);
+        }
+
+        for (int i = 0; i < N; ++i) {
+            const quint16 currOuter = static_cast<quint16>(strokeBase + 2 * i + 0);
+            const quint16 currInner = static_cast<quint16>(strokeBase + 2 * i + 1);
+            const quint16 nextOuter = static_cast<quint16>(strokeBase + ((i + 1 == N) ? 0 : (2 * (i + 1) + 0)));
+            const quint16 nextInner = static_cast<quint16>(strokeBase + ((i + 1 == N) ? 1 : (2 * (i + 1) + 1)));
+
+            indices[idxOffset + 6 * i + 0] = currOuter;
+            indices[idxOffset + 6 * i + 1] = currInner;
+            indices[idxOffset + 6 * i + 2] = nextOuter;
+
+            indices[idxOffset + 6 * i + 3] = nextOuter;
+            indices[idxOffset + 6 * i + 4] = currInner;
+            indices[idxOffset + 6 * i + 5] = nextInner;
+        }
+
+        vertOffset += (2 * N);
+        idxOffset += (6 * N);
+    }
+
+    geom->markVertexDataDirty();
+    geom->markIndexDataDirty();
+    node->markDirty(QSGNode::DirtyGeometry);
+
+    return node;
 }
