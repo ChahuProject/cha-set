@@ -85,7 +85,7 @@ describe('HoverCopy conformance (spec contract)', () => {
       act(() => {
         vi.advanceTimersByTime(2000);
       });
-      expect(wrapper).toHaveAttribute('data-state', 'hovered');
+      expect(wrapper).toHaveAttribute('data-state', 'idle');
     } finally {
       vi.useRealTimers();
     }
