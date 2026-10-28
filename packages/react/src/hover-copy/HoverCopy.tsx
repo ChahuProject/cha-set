@@ -85,7 +85,7 @@ export const HoverCopy = React.forwardRef<HTMLSpanElement, HoverCopyProps>(
     forwardedRef,
   ) => {
     const [state, setState] = React.useState<HoverCopyState>('idle');
-    const [activeGlyph, setActiveGlyph] = React.useState<string>(icon);
+    const [activeGlyph, setActiveGlyph] = React.useState<HoverCopyIcon>(icon);
     const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
     const pointerInsideRef = React.useRef(false);
     const focusInsideRef = React.useRef(false);
