@@ -118,7 +118,7 @@ public:
         qreal rTL, qreal rTR, qreal rBR, qreal rBL,
         qreal smoothing,
         bool tl = true, bool tr = true, bool br = true, bool bl = true,
-        int stepsPerSegment = 6
+        int stepsPerSegment = 16
     );
 
 protected:
