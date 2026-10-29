@@ -35,6 +35,36 @@ class ChaSetSquircleNode : public QSGGeometryNode
 public:
     QSGVertexColorMaterial material;
 
+    // 生成参数快照：参数未变时 updatePaintNode 直接短路，既不重算超椭圆多边形
+    // （393 点 Bezier 采样），也不 markDirty 重传几何。网格里每帧回收上百张卡，
+    // 大量卡片底色/半径/尺寸其实没变，逐卡全量重建是滚动帧时间的主因之一。
+    struct Params {
+        qreal w = 0, h = 0;
+        qreal rTL = 0, rTR = 0, rBR = 0, rBL = 0;
+        qreal smoothing = 0;
+        qreal penWidth = 0;
+        QColor color;
+        QColor penColor;
+        bool tl = false, tr = false, br = false, bl = false;
+        bool hasFill = false, hasBorder = false;
+        bool isAA = false;
+
+        static bool fuzzy(qreal a, qreal b) {
+            return qFuzzyCompare(a + 1.0, b + 1.0);
+        }
+        bool operator==(const Params &o) const {
+            return fuzzy(w, o.w) && fuzzy(h, o.h) && fuzzy(rTL, o.rTL) &&
+                   fuzzy(rTR, o.rTR) && fuzzy(rBR, o.rBR) && fuzzy(rBL, o.rBL) &&
+                   fuzzy(smoothing, o.smoothing) && fuzzy(penWidth, o.penWidth) &&
+                   color == o.color && penColor == o.penColor && tl == o.tl &&
+                   tr == o.tr && br == o.br && bl == o.bl &&
+                   hasFill == o.hasFill && hasBorder == o.hasBorder &&
+                   isAA == o.isAA;
+        }
+    };
+    Params cached;
+    bool hasCache = false;
+
     ChaSetSquircleNode() {
         material.setFlag(QSGMaterial::Blending, true);
         setMaterial(&material);
@@ -603,6 +633,24 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
     const bool tr = m_roundRight && m_roundTop && m_roundTopRight;
     const bool br = m_roundRight && m_roundBottom && m_roundBottomRight;
     const bool bl = m_roundLeft && m_roundBottom && m_roundBottomLeft;
+    const bool isAA = antialiasing();
+
+    // 参数未变 → 直接复用旧节点：不重算多边形、不重写顶点、不 markDirty。
+    // 这是滚动回收路径上最常见的分支（同尺寸卡片反复 rebind）。
+    {
+        ChaSetSquircleNode::Params p;
+        p.w = W; p.h = H;
+        p.rTL = rTL; p.rTR = rTR; p.rBR = rBR; p.rBL = rBL;
+        p.smoothing = m_cornerSmoothing;
+        p.penWidth = bw; p.color = m_color; p.penColor = bc;
+        p.tl = tl; p.tr = tr; p.br = br; p.bl = bl;
+        p.hasFill = hasFill; p.hasBorder = hasBorder;
+        p.isAA = isAA;
+        if (node->hasCache && node->cached == p)
+            return node;
+        node->cached = p;
+        node->hasCache = true;
+    }
 
     const int steps = 16;
     QRectF fillRect(0, 0, W, H);
@@ -637,7 +685,6 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
         }
     }
 
-    const bool isAA = antialiasing();
     const qreal f = isAA ? 0.5 : 0.0;
 
     // 内环不可用时统一按实心绘制（几何上等价：描边环已铺满整个外形）。
