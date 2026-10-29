@@ -309,6 +309,15 @@ static inline void sampleCubic(QVector<QPointF> &pts, const QPointF &p0, const Q
     }
 }
 
+// 半径退化（≤ 0.001）的圆角必须占用与真实圆角完全相同的顶点数，
+// 否则内外轮廓顶点数不一致，描边成环时无法逐点配对（会越界访问）。
+// 退化的三个贝塞尔段全部塌缩到同一个角点，几何上等价于零半径尖角。
+static inline void appendDegenerateCorner(QVector<QPointF> &pts, const QPointF &corner, int stepsPerSegment)
+{
+    pts.append(corner);
+    pts.insert(pts.end(), 3 * stepsPerSegment, corner);
+}
+
 QVector<QPointF> ChaSetSquircle::generateSquirclePolygon(
     const QRectF &rect,
     qreal rTL, qreal rTR, qreal rBR, qreal rBL,
@@ -335,7 +344,7 @@ QVector<QPointF> ChaSetSquircle::generateSquirclePolygon(
 
     // 1. Top Edge -> Top-Right Corner
     if (mTR.r <= 0.001) {
-        pts.append(QPointF(X + W, Y));
+        appendDegenerateCorner(pts, QPointF(X + W, Y), stepsPerSegment);
     } else {
         pts.append(QPointF(X + W - mTR.p, Y));
         // Segment 1
@@ -362,7 +371,7 @@ QVector<QPointF> ChaSetSquircle::generateSquirclePolygon(
 
     // 2. Right Edge -> Bottom-Right Corner
     if (mBR.r <= 0.001) {
-        pts.append(QPointF(X + W, Y + H));
+        appendDegenerateCorner(pts, QPointF(X + W, Y + H), stepsPerSegment);
     } else {
         pts.append(QPointF(X + W, Y + H - mBR.p));
         // Segment 1
@@ -389,7 +398,7 @@ QVector<QPointF> ChaSetSquircle::generateSquirclePolygon(
 
     // 3. Bottom Edge -> Bottom-Left Corner
     if (mBL.r <= 0.001) {
-        pts.append(QPointF(X, Y + H));
+        appendDegenerateCorner(pts, QPointF(X, Y + H), stepsPerSegment);
     } else {
         pts.append(QPointF(X + mBL.p, Y + H));
         // Segment 1
@@ -416,7 +425,7 @@ QVector<QPointF> ChaSetSquircle::generateSquirclePolygon(
 
     // 4. Left Edge -> Top-Left Corner
     if (mTL.r <= 0.001) {
-        pts.append(QPointF(X, Y));
+        appendDegenerateCorner(pts, QPointF(X, Y), stepsPerSegment);
     } else {
         pts.append(QPointF(X, Y + mTL.p));
         // Segment 1
@@ -631,13 +640,19 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
     const bool isAA = antialiasing();
     const qreal f = isAA ? 0.5 : 0.0;
 
+    // 内环不可用时统一按实心绘制（几何上等价：描边环已铺满整个外形）。
+    // 触发条件：线宽 ≥ 半宽高（内环整体塌缩），或内外轮廓顶点数不配对。
+    // 纯描边退化时取描边色，绝不能带着空的内轮廓去逐点成环。
+    const bool solid = !actualBorder;
+    const QColor solidColor = hasFill ? m_color : bc;
+
     int numVerts = 0;
     int numIndices = 0;
 
-    if (hasFill && !actualBorder) {
+    if (solid) {
         numVerts = (isAA ? (2 * N + 1) : (N + 1));
         numIndices = (isAA ? (9 * N) : (3 * N));
-    } else if (hasFill && actualBorder) {
+    } else if (hasFill) {
         numVerts = (isAA ? (4 * N + 1) : (3 * N + 1));
         numIndices = (isAA ? (15 * N) : (9 * N));
     } else {
@@ -677,9 +692,9 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
         indices[idxOffset++] = b2;
     };
 
-    if (hasFill && !actualBorder) {
-        const auto [fr, fg, fb, fa] = makePremul(m_color, 1.0f);
-        const auto [zr, zg, zb, za] = makePremul(m_color, 0.0f);
+    if (solid) {
+        const auto [fr, fg, fb, fa] = makePremul(solidColor, 1.0f);
+        const auto [zr, zg, zb, za] = makePremul(solidColor, 0.0f);
 
         const QPointF center(W / 2.0, H / 2.0);
         v[vertOffset + 0].set(static_cast<float>(center.x()), static_cast<float>(center.y()), fr, fg, fb, fa);
@@ -713,7 +728,7 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
                 addQuad(c1, o1, c2, o2);
             }
         }
-    } else if (hasFill && actualBorder) {
+    } else if (hasFill) {
         const auto [fr, fg, fb, fa] = makePremul(m_color, 1.0f);
         const auto [br, bg, bb, ba] = makePremul(bc, 1.0f);
         const auto [zr, zg, zb, za] = makePremul(bc, 0.0f);
