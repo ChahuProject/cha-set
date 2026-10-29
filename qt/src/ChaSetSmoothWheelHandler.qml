@@ -80,16 +80,36 @@ Item {
 
             const dt = frameTime > 0 ? (frameTime * 1000.0) : 16.6667
             const clampedDt = Math.max(1.0, Math.min(50.0, dt))
-            const frameFactor = clampedDt / 16.6667
-            const effectiveFriction = Math.pow(root.friction, frameFactor)
+            const dur = Math.max(30, root.duration)
+            // 归一化指数衰减因子：在 duration 毫秒内完成 99% 收敛，且严格无关刷新率（60Hz/120Hz/144Hz 恒等）
+            const decay = Math.exp(-4.605 * clampedDt / dur)
 
-            const deltaMove = root.velocity * frameFactor
             const cur = root.currentPos()
             const minS = root.calculateMinScroll()
             const maxS = root.calculateMaxScroll()
-            const next = cur + deltaMove
 
-            // 边界吸附与碰撞检测
+            // 视口边界安全收敛（应对列表动态增删项）
+            root.targetPos = Math.max(minS, Math.min(maxS, root.targetPos))
+
+            const diff = root.targetPos - cur
+
+            // 停靠判定：距离目标不足半像素时干净停靠，消除跳动与视口回弹
+            if (Math.abs(diff) < 0.5) {
+                root.setPos(root.targetPos)
+                root.velocity = 0
+                frameAnim.stop()
+                root.syncToCurrent()
+                return
+            }
+
+            // 平滑逼近：指数衰减插值，保证单调收敛、绝对不超调
+            // 设定每帧最小移动步长 0.4px（但不超过剩余 diff），避免尾部亚像素蠕动过久
+            const rawStep = diff * (1.0 - decay)
+            const minStep = Math.sign(diff) * Math.min(Math.abs(diff), 0.4)
+            const step = (Math.abs(rawStep) >= Math.abs(minStep)) ? rawStep : minStep
+            const next = cur + step
+
+            // 边界碰撞检测
             if (next <= minS) {
                 root.setPos(minS)
                 root.velocity = 0
@@ -107,17 +127,8 @@ Item {
                 return
             }
 
-            // 推进连续位移并衰减速度
             root.setPos(next)
-            root.velocity *= effectiveFriction
-
-            // 速度临界值吸附：当动量衰减殆尽或距终点不足半像素时干净停靠
-            if (Math.abs(root.velocity) < 0.15 || Math.abs(root.targetPos - next) < 0.4) {
-                root.setPos(root.targetPos)
-                root.velocity = 0
-                frameAnim.stop()
-                root.syncToCurrent()
-            }
+            root.velocity = step / (clampedDt / 16.6667)
         }
     }
 
@@ -238,24 +249,22 @@ Item {
             syncToCurrent()
         }
 
-        const baseTarget = frameAnim.running ? targetPos : currentPos()
-        const nextTarget = Math.max(minScroll, Math.min(maxScroll, baseTarget + deltaAmount))
-        const effectiveStep = nextTarget - baseTarget
+        const cur = currentPos()
+        const baseTarget = frameAnim.running ? targetPos : cur
+        let nextTarget = Math.max(minScroll, Math.min(maxScroll, baseTarget + deltaAmount))
+
+        // 视口前瞻距离限制（防滚轮飞旋过量失控）
+        const targetDim = isVerticalTarget() ? targetItem.height : targetItem.width
+        const maxLead = Math.max(2000.0, targetDim * 3.0)
+        if (nextTarget - cur > maxLead) {
+            nextTarget = cur + maxLead
+        } else if (cur - nextTarget > maxLead) {
+            nextTarget = cur - maxLead
+        }
+
         targetPos = nextTarget
 
-        if (Math.abs(effectiveStep) > 0.01) {
-            const f = root.friction
-            const impulse = effectiveStep * ((1.0 - f) / f)
-            const targetDim = isVerticalTarget() ? targetItem.height : targetItem.width
-            const maxV = Math.max(120.0, targetDim * 1.5)
-
-            // 同向冲量线性累加，反向冲量直接重构初速度消除迟滞
-            if ((velocity >= 0 && impulse >= 0) || (velocity <= 0 && impulse <= 0)) {
-                velocity = Math.max(-maxV, Math.min(maxV, velocity + impulse))
-            } else {
-                velocity = Math.max(-maxV, Math.min(maxV, impulse))
-            }
-
+        if (Math.abs(targetPos - cur) > 0.5) {
             if (!frameAnim.running) {
                 frameAnim.start()
             }
@@ -281,13 +290,9 @@ Item {
 
         const cur = currentPos()
         const nextTarget = Math.max(minScroll, Math.min(maxScroll, absolutePos))
-        const step = nextTarget - cur
         targetPos = nextTarget
 
-        if (Math.abs(step) > 0.5) {
-            const f = root.friction
-            const impulse = step * ((1.0 - f) / f)
-            velocity = impulse
+        if (Math.abs(nextTarget - cur) > 0.5) {
             if (!frameAnim.running) {
                 frameAnim.start()
             }
