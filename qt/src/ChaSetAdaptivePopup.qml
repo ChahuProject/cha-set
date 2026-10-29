@@ -118,7 +118,9 @@ Popup {
     readonly property real hostAvailableHeight: {
         let usable
         if (root.hostBandHeight <= 0) {
-            usable = 0
+            // 宿主空间不可知（尚未挂到窗口 / 无父项）→ 不封顶，按内容自然展开。
+            // 绝不可退化成 minHeight：那会把内容挤成一团并凭空多出滚动条。
+            usable = root.desiredHeight
         } else if (root.useFullHostBand) {
             usable = root.hostBandHeight - root.edgeMargin * 2
         } else {
