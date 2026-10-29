@@ -142,6 +142,7 @@ qt_add_qml_module(ChaSet
     QML_FILES
         src/ChaSetScrollBar.qml
         src/ChaSetScrollArea.qml
+        src/ChaSetAdaptivePopup.qml
         src/ChaSetButton.qml
         src/ChaSetCircularProgress.qml
         src/ChaSetTabs.qml
