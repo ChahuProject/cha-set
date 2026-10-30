@@ -3,7 +3,7 @@
 // Automatically discovers local Qt 6 installations, configures CMake, builds with Ninja/MSVC,
 // and runs QtChaSetDemo.exe.
 
-import { existsSync } from 'node:fs';
+import { existsSync, readdirSync } from 'node:fs';
 import { spawnSync, spawn } from 'node:child_process';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -185,9 +185,25 @@ if (hotReload) {
     : [];
   const qmlPreview = qmlPreviewCandidates.find((p) => existsSync(p));
   if (qmlPreview) {
-    console.log('[qt-showcase] Hot reload active: QML edits apply live (C++ edits still need a rebuild).');
+    console.log('[qt-showcase] Hot reload active: QML edits apply live in-place (C++ edits still need a rebuild).');
     launchPath = qmlPreview;
-    launchArgs = [exePath, ...forwardArgs];
+
+    // Collect all generated QRC resource files across ChaSet and QtChaSetDemo so
+    // qmlpreview maps qrc: URIs back to disk files for all components and showcase pages.
+    const resourceFlags = [];
+    const rccDir = resolve(buildDir, '.qt', 'rcc');
+    if (existsSync(rccDir)) {
+      const qrcFiles = readdirSync(rccDir).filter((f) => f.endsWith('.qrc'));
+      for (const qrc of qrcFiles) {
+        resourceFlags.push('--resource', resolve(rccDir, qrc));
+      }
+    }
+
+    const verbose = forwardArgs.includes('--verbose');
+    const appArgs = forwardArgs.filter((a) => a !== '--verbose');
+    const previewFlags = verbose ? ['--verbose'] : [];
+
+    launchArgs = [...previewFlags, ...resourceFlags, exePath, ...(verbose ? ['--verbose', ...appArgs] : appArgs)];
   } else {
     console.warn('[qt-showcase] Warning: qmlpreview tool not found; running without live reload.');
   }

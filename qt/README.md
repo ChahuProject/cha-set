@@ -19,7 +19,13 @@ checked against the same single source of truth as the React implementation:
 ### One-Command Runner (Recommended)
 From the repository root:
 ```bash
+# Standard release build
 pnpm showcase:qt
+
+# Native QML Hot Reload (Live editing QML/JS in qt/src without recompiling or restarting)
+pnpm dev:qt
+# or
+pnpm showcase:qt --hot
 ```
 
 ### Manual Build via CMake

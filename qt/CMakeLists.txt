@@ -30,6 +30,21 @@ qt_policy(SET QTP0001 NEW)
 qt_policy(SET QTP0004 NEW)
 
 # -------------------------------------------------------------
+# QML Hot Reload Option (Dev Only)
+# -------------------------------------------------------------
+# CHASET_QML_HOT_RELOAD=ON injects QT_QML_DEBUG into the demo and component
+# library, disables ahead-of-time bytecode compilation (QT_QML_NO_CACHEGEN=ON),
+# and wires all QRC resource mappings so the official qmlpreview live-reload
+# tooling can attach and hot-swap QML in place (see `pnpm dev:qt` / `pnpm showcase:qt --hot`).
+# Dev-only: never enable for release/CI builds.
+option(CHASET_QML_HOT_RELOAD "Enable QML debugging infrastructure for qmlpreview live reload (dev only)" OFF)
+
+if(CHASET_QML_HOT_RELOAD)
+    set(QT_QML_NO_CACHEGEN ON)
+    message(STATUS "ChaSet: QML hot reload enabled (QT_QML_DEBUG + NO_CACHEGEN)")
+endif()
+
+# -------------------------------------------------------------
 # Singletons & Resources for the Reusable Component Library
 # -------------------------------------------------------------
 set_source_files_properties(src/ThemeTokens.generated.qml PROPERTIES
@@ -265,15 +280,13 @@ target_include_directories(ChaSet PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
 )
 
+if(CHASET_QML_HOT_RELOAD)
+    target_compile_definitions(ChaSet PRIVATE QT_QML_DEBUG)
+endif()
+
 # -------------------------------------------------------------
 # 2. Standalone Demo & Test Harness (only built if top-level)
 # -------------------------------------------------------------
-# CHASET_QML_HOT_RELOAD=ON injects QT_QML_DEBUG into the demo executable so the
-# official qmlpreview live-reload tooling can attach (see `pnpm showcase:qt
-# --hot`). Dev-only: never enable for release/CI builds (prints a QML
-# debugging warning banner and disables QML caching optimizations).
-option(CHASET_QML_HOT_RELOAD "Enable QML debugging infrastructure for qmlpreview live reload (dev only)" OFF)
-
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
     find_package(Qt6 6.5 REQUIRED COMPONENTS Test)
 
@@ -395,6 +408,10 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
 
     if(CHASET_QML_HOT_RELOAD)
         target_compile_definitions(QtChaSetDemo PRIVATE QT_QML_DEBUG)
-        message(STATUS "ChaSet: QML hot reload enabled (QT_QML_DEBUG on QtChaSetDemo)")
+        get_target_property(_chaset_qrcs ChaSet _qt_generated_qrc_files)
+        if(_chaset_qrcs)
+            set_property(TARGET QtChaSetDemo APPEND PROPERTY _qt_generated_qrc_files ${_chaset_qrcs})
+        endif()
+        message(STATUS "ChaSet: QML hot reload enabled (QT_QML_DEBUG on ChaSet and QtChaSetDemo)")
     endif()
 endif()
