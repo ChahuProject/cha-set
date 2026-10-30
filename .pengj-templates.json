@@ -6,7 +6,8 @@
     "common",
     "lefthook",
     "agent",
-    "vscode"
+    "vscode",
+    "bque"
   ],
   "options": {
     "channel": "stable",
@@ -32,7 +33,7 @@
     ".agents\\skills\\arch-align\\references\\GENERATE-DOC.md": "22e2dc3856f70700aa6b2e6308e1917f7d760dd81e8f4b867328302876525597",
     ".agents\\skills\\arch-align\\references\\GENERATE-INDEX.md": "42cbf1e09650fb29a681d7f653685a83055882ea78240e8ad2e07e2e4996975f",
     ".agents\\skills\\caveman\\SKILL.md": "ad046cafde3ee094136ce091b7dfde5c09bcf25914734c249f9c54e17b4bdf4b",
-    ".agents\\skills\\git-workflow\\SKILL.md": "925041656bbd70b776d1f607761da3a83b5485d42f642577a03e35e6fd55c5a6",
+    ".agents\\skills\\git-workflow\\SKILL.md": "0d9e4e661ca9641313ea6218b8e6cc99489f6939c10a5e8d7ed006a9cc1cd7c2",
     ".agents\\skills\\git-workflow\\references\\branch-sync.md": "5c5b862bc8315e541e0d00a20a6df03395985374387311cfe35eed888a9d3fbc",
     ".agents\\skills\\git-workflow\\references\\commit.md": "435487c0338e4bebc41e8dbc2ca947fc66735657bc0e1913850a9c93d37c72c4",
     ".agents\\skills\\git-workflow\\references\\non-interactive.md": "c1132bb6989f527671e538eac25bf7cc46753990cb60f7c454769d5a0eee4aa1",
@@ -51,8 +52,9 @@
     ".gitattributes": "269bd23209da05b77373f5f13adf48536b6ca8f5025570f1a2e5cce289a60b26",
     ".gitignore": "487365bb2c4b334d0ee18412bd102d728349dc86700e9527abf7617303a3b660",
     ".vscode\\settings.json": "59588125b818b5bd3689b1f4f86e592e2808ba526961c5f857c273b64290f701",
-    "AGENTS.md": "b1e4040492498aeab66edbcc2513df252f7966e360c6183e659786cae8d49120",
+    "AGENTS.md": "41aec92036ec8003975baeaae2bc0074a2caed6738fd892429129b90d2bf7ba4",
     "commitlint.base.js": "7a6e2a5ae12b31ee0da5104b3d3ef321ea55aa07c8fa630e0aa11e7e3195a4f2",
-    "package.json": "5dc8a80c59d6023a9b05da5f607843e27935000b59b820feb12b02b778b44a6e"
+    "package.json": "c44830b122325f3d80d1e66b0b5fa61aa94b90a07567ab5dfc3ccf440e05ad7e",
+    "tools\\bque-runner.ps1": "14cb64c8f18963df6b44bfc398be3ec7f5835e7c813e71e6cd6a03b05c17b965"
   }
 }
