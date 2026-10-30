@@ -435,6 +435,12 @@
         "title": "Language Settings",
         "href": "#/components/language-settings",
         "desc": "Cross-stack language configuration card with system detection and cultural poetry quotes."
+      },
+      {
+        "id": "keybinding-manager",
+        "title": "Keybinding Manager",
+        "href": "#/components/keybinding-manager",
+        "desc": "Cross-stack keybinding and shortcut manager with reverse key search, conflict detection, and reset."
       }
     ]
   }

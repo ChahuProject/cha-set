@@ -445,6 +445,18 @@
       "hoverZoom": { "requirement": "must", "description": "gently zooms component scale on hover to improve readability" },
       "dismissible": { "requirement": "must", "description": "renders close button on active notice on hover" },
       "customContent": { "requirement": "must", "description": "supports rendering custom shell content or slots" }
+    },
+    "keybindingManager": {
+      "rendersActions": { "requirement": "must", "description": "renders list of configurable keybinding actions grouped by section" },
+      "searchAndFilter": { "requirement": "must", "description": "filters actions by keyword, scope, and reverse shortcut query" },
+      "recordBinding": { "requirement": "must", "description": "records physical key combinations into action chords" },
+      "conflictDetection": { "requirement": "must", "description": "detects and displays visual conflict badges for overlapping chords" },
+      "conflictResolution": { "requirement": "must", "description": "provides conflict detail popover or dialog for inspection" },
+      "resetAction": { "requirement": "must", "description": "reverts individual action binding to its factory default" },
+      "resetAll": { "requirement": "must", "description": "reverts all action bindings to factory defaults" },
+      "exportCheatSheet": { "requirement": "should", "description": "exports human-readable shortcut reference sheet" },
+      "multiChord": { "requirement": "should", "description": "supports binding multiple alternative shortcuts per action" },
+      "keyboard": { "requirement": "should", "description": "keyboard navigation across actions and controls" }
     }
   }
 }

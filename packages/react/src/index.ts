@@ -58,6 +58,7 @@ export * from './table-of-contents';
 export * from './kbd';
 export * from './scale-osd';
 export * from './floating-notice';
+export * from './keybinding-manager';
 export * from './hover-copy';
 export * from './i18n';
 export * from './typography';

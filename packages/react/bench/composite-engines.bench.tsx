@@ -4,6 +4,7 @@ import { render } from '@testing-library/react';
 import {
   AddressBar,
   CodeBlock,
+  KeybindingManager,
   LanguageSettings,
   MediaProgressBar,
   PipelineView,
@@ -14,7 +15,7 @@ import {
   DEFAULT_THEME_CONFIG,
 } from '../src';
 
-describe('Performance Suite: Composite Engines (9 Components)', () => {
+describe('Performance Suite: Composite Engines (10 Components)', () => {
   bench('AddressBar (20x batch mount)', () => {
     const { unmount } = render(
       <div>
@@ -39,6 +40,42 @@ export function Counter() {
       <div>
         {Array.from({ length: 20 }, (_, i) => (
           <CodeBlock key={i} language="tsx" code={sampleTsx} />
+        ))}
+      </div>
+    );
+    unmount();
+  });
+
+  const sampleKeybindingActions = [
+    {
+      id: 'app.save',
+      name: 'Save',
+      description: 'Save current document',
+      scopeId: 'editor',
+      sectionId: 'general',
+      chords: [{ keyString: 'Ctrl+S', isUserModified: false, isMasked: false }],
+      defaultChords: ['Ctrl+S'],
+      hasConflict: false,
+      conflictOccupiers: [],
+    },
+    {
+      id: 'app.undo',
+      name: 'Undo',
+      description: 'Undo last change',
+      scopeId: 'global',
+      sectionId: 'general',
+      chords: [{ keyString: 'Ctrl+Z', isUserModified: false, isMasked: false }],
+      defaultChords: ['Ctrl+Z'],
+      hasConflict: false,
+      conflictOccupiers: [],
+    },
+  ];
+
+  bench('KeybindingManager (15x batch mount)', () => {
+    const { unmount } = render(
+      <div>
+        {Array.from({ length: 15 }, (_, i) => (
+          <KeybindingManager key={i} actions={sampleKeybindingActions} />
         ))}
       </div>
     );

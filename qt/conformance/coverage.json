@@ -405,5 +405,17 @@
     "hoverZoom": true,
     "dismissible": true,
     "customContent": true
+  },
+  "keybindingManager": {
+    "rendersActions": true,
+    "searchAndFilter": true,
+    "recordBinding": true,
+    "conflictDetection": true,
+    "conflictResolution": true,
+    "resetAction": true,
+    "resetAll": true,
+    "exportCheatSheet": true,
+    "multiChord": true,
+    "keyboard": true
   }
 }

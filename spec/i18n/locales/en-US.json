@@ -595,7 +595,8 @@
     "pipeline-view": "Pipeline View",
     "address-bar": "Address Bar",
     "theme-settings": "Theme Settings",
-    "language-settings": "Language Settings"
+    "language-settings": "Language Settings",
+    "keybinding-manager": "Keybinding Manager"
   },
   "exportTheme": {
     "title": "Export & Copy Theme Configuration",

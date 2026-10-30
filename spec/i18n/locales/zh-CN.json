@@ -595,7 +595,8 @@
     "pipeline-view": "流水线视图",
     "address-bar": "地址栏",
     "theme-settings": "主题设置",
-    "language-settings": "语言设置"
+    "language-settings": "语言设置",
+    "keybinding-manager": "快捷键管理器"
   },
   "exportTheme": {
     "title": "导出主题配置",

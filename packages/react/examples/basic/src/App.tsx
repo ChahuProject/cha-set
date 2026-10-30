@@ -74,6 +74,7 @@ import { FloatingNoticeDocPage } from './pages/components/FloatingNoticeDocPage'
 import { ReadOnlyInputDocPage } from './pages/components/ReadOnlyInputDocPage';
 import { PresetNumberInputDocPage } from './pages/components/PresetNumberInputDocPage';
 import { KeybindingRecorderDocPage } from './pages/components/KeybindingRecorderDocPage';
+import { KeybindingManagerDocPage } from './pages/components/KeybindingManagerDocPage';
 import { VirtualListDocPage } from './pages/components/VirtualListDocPage';
 import { VirtualTreeDocPage } from './pages/components/VirtualTreeDocPage';
 import { VirtualGridDocPage } from './pages/components/VirtualGridDocPage';
@@ -107,6 +108,28 @@ import { TokensPage } from './pages/get-started/TokensPage';
 import { ThemeTunerPage } from './pages/get-started/ThemeTunerPage';
 import { TypographyPage } from './pages/get-started/TypographyPage';
 import { IconsPage } from './pages/get-started/IconsPage';
+import { showcaseShortcuts } from './services/showcaseShortcuts';
+
+function matchesKeyboardEvent(e: KeyboardEvent, chordString: string): boolean {
+  if (!chordString) return false;
+  const parts = chordString.split('+').map((s) => s.trim().toLowerCase());
+  const hasCtrl = parts.includes('ctrl') || parts.includes('control');
+  const hasAlt = parts.includes('alt');
+  const hasShift = parts.includes('shift');
+  const hasMeta = parts.includes('meta') || parts.includes('cmd') || parts.includes('win');
+
+  if (e.ctrlKey !== hasCtrl) return false;
+  if (e.altKey !== hasAlt) return false;
+  if (e.shiftKey !== hasShift) return false;
+  if (e.metaKey !== hasMeta) return false;
+
+  const keyPart = parts.find((p) => !['ctrl', 'control', 'alt', 'shift', 'meta', 'cmd', 'win'].includes(p));
+  if (!keyPart) return false;
+
+  const eventKey = e.key.toLowerCase();
+  const eventCode = e.code.replace(/^Key/, '').replace(/^Digit/, '').toLowerCase();
+  return eventKey === keyPart || eventCode === keyPart;
+}
 
 /**
  * Deterministic CodeBlock harness source. Mirrored verbatim in
@@ -745,6 +768,52 @@ export function App() {
     localStorage.setItem('cs-uiscale', String(uiScale));
   }, [mode, effectiveIsDark, accent, overrides, uiScale]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      const isEditing = target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable);
+
+      const matchesAction = (actionId: string) => {
+        const chords = showcaseShortcuts.getShortcutFor(actionId);
+        return chords.some((c) => matchesKeyboardEvent(e, c));
+      };
+
+      if (matchesAction('showcase.search')) {
+        e.preventDefault();
+        setSearchModalOpen((prev) => !prev);
+        return;
+      }
+
+      if (isEditing) return;
+
+      if (matchesAction('showcase.toggleSidebar')) {
+        e.preventDefault();
+        setMobileNavOpen((prev) => !prev);
+      } else if (matchesAction('showcase.toggleTheme')) {
+        e.preventDefault();
+        setMode((m) => (m === 'light' ? 'dark' : m === 'dark' ? 'system' : 'light'));
+      } else if (matchesAction('showcase.zoomIn')) {
+        e.preventDefault();
+        scaleOsd.zoomIn();
+      } else if (matchesAction('showcase.zoomOut')) {
+        e.preventDefault();
+        scaleOsd.zoomOut();
+      } else if (matchesAction('showcase.zoomReset')) {
+        e.preventDefault();
+        scaleOsd.reset();
+      } else if (matchesAction('showcase.navBack')) {
+        e.preventDefault();
+        window.history.back();
+      } else if (matchesAction('showcase.navForward')) {
+        e.preventDefault();
+        window.history.forward();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [scaleOsd]);
+
   const themeKey = `${mode}:${effectiveIsDark}:${accent}:${JSON.stringify(overrides)}:${uiScale}`;
 
   const renderActivePage = () => {
@@ -892,6 +961,8 @@ export function App() {
         );
       case '#/components/language-settings':
         return <LanguageSettingsDocPage />;
+      case '#/components/keybinding-manager':
+        return <KeybindingManagerDocPage />;
       case '#/components/table-of-contents':
         return <TableOfContentsDocPage />;
       case '#/components/kbd':

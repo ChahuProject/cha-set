@@ -1560,6 +1560,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "href": "#/components/language-settings",
         "desc": "Cross-stack language configuration card with system detection and cultural poetry quotes.",
         "description": "Cross-stack language configuration card with system detection and cultural poetry quotes."
+      },
+      {
+        "id": "keybinding-manager",
+        "title": "Keybinding Manager",
+        "href": "#/components/keybinding-manager",
+        "desc": "Cross-stack keybinding and shortcut manager with reverse key search, conflict detection, and reset.",
+        "description": "Cross-stack keybinding and shortcut manager with reverse key search, conflict detection, and reset."
       }
     ]
   }
@@ -1614,6 +1621,241 @@ export const TYPOGRAPHY_RAMP_DATA: TypographyRampData = {
       "native": "한국어",
       "text": "“나는 나의 운명의 주인이며, 나는 나의 영혼의 선장이다.”",
       "attribution": "헨리 데이비드 소로"
+    }
+  ]
+};
+export const SHORTCUTS_DATA = {
+  "scopes": [
+    {
+      "id": "global",
+      "name": "Global Application",
+      "description": "Global application-wide hotkeys active across all showcase views"
+    },
+    {
+      "id": "preview",
+      "name": "Component Sandbox",
+      "description": "Hotkeys scoped specifically to the interactive sandbox canvas"
+    }
+  ],
+  "sections": [
+    {
+      "id": "navigation",
+      "name": "Navigation & Search",
+      "order": 1
+    },
+    {
+      "id": "view",
+      "name": "View & UI Scaling",
+      "order": 2
+    },
+    {
+      "id": "system",
+      "name": "System & Preferences",
+      "order": 3
+    }
+  ],
+  "actions": [
+    {
+      "id": "showcase.search",
+      "name": "Global Command Search",
+      "description": "Opens the spotlight-style command and component search palette.",
+      "scopeId": "global",
+      "sectionId": "navigation",
+      "chords": [
+        {
+          "keyString": "Ctrl+K",
+          "isUserModified": false,
+          "isMasked": false
+        }
+      ],
+      "defaultChords": [
+        "Ctrl+K"
+      ],
+      "hasConflict": false,
+      "conflictOccupiers": [],
+      "tags": [
+        "Essential"
+      ]
+    },
+    {
+      "id": "showcase.navBack",
+      "name": "Navigate Back",
+      "description": "Returns to previously visited living showcase documentation page.",
+      "scopeId": "global",
+      "sectionId": "navigation",
+      "chords": [
+        {
+          "keyString": "Alt+Left",
+          "isUserModified": false,
+          "isMasked": false
+        }
+      ],
+      "defaultChords": [
+        "Alt+Left"
+      ],
+      "hasConflict": false,
+      "conflictOccupiers": [],
+      "tags": []
+    },
+    {
+      "id": "showcase.navForward",
+      "name": "Navigate Forward",
+      "description": "Navigates forward in the showcase page navigation history stack.",
+      "scopeId": "global",
+      "sectionId": "navigation",
+      "chords": [
+        {
+          "keyString": "Alt+Right",
+          "isUserModified": false,
+          "isMasked": false
+        }
+      ],
+      "defaultChords": [
+        "Alt+Right"
+      ],
+      "hasConflict": false,
+      "conflictOccupiers": [],
+      "tags": []
+    },
+    {
+      "id": "showcase.toggleSidebar",
+      "name": "Toggle Sidebar",
+      "description": "Collapses or expands the primary showcase component navigation sidebar.",
+      "scopeId": "global",
+      "sectionId": "navigation",
+      "chords": [
+        {
+          "keyString": "Ctrl+B",
+          "isUserModified": false,
+          "isMasked": false
+        }
+      ],
+      "defaultChords": [
+        "Ctrl+B"
+      ],
+      "hasConflict": false,
+      "conflictOccupiers": [],
+      "tags": []
+    },
+    {
+      "id": "showcase.zoomIn",
+      "name": "Zoom In UI",
+      "description": "Increases global UI scale density step with on-screen OSD feedback.",
+      "scopeId": "global",
+      "sectionId": "view",
+      "chords": [
+        {
+          "keyString": "Ctrl+=",
+          "isUserModified": false,
+          "isMasked": false
+        }
+      ],
+      "defaultChords": [
+        "Ctrl+="
+      ],
+      "hasConflict": false,
+      "conflictOccupiers": [],
+      "tags": []
+    },
+    {
+      "id": "showcase.zoomOut",
+      "name": "Zoom Out UI",
+      "description": "Decreases global UI scale density step with on-screen OSD feedback.",
+      "scopeId": "global",
+      "sectionId": "view",
+      "chords": [
+        {
+          "keyString": "Ctrl+-",
+          "isUserModified": false,
+          "isMasked": false
+        }
+      ],
+      "defaultChords": [
+        "Ctrl+-"
+      ],
+      "hasConflict": false,
+      "conflictOccupiers": [],
+      "tags": []
+    },
+    {
+      "id": "showcase.zoomReset",
+      "name": "Reset UI Zoom",
+      "description": "Restores display scaling factor to default 100% (1.0x).",
+      "scopeId": "global",
+      "sectionId": "view",
+      "chords": [
+        {
+          "keyString": "Ctrl+0",
+          "isUserModified": false,
+          "isMasked": false
+        }
+      ],
+      "defaultChords": [
+        "Ctrl+0"
+      ],
+      "hasConflict": false,
+      "conflictOccupiers": [],
+      "tags": []
+    },
+    {
+      "id": "showcase.toggleTelemetry",
+      "name": "Toggle Performance Telemetry HUD",
+      "description": "Toggles floating real-time 60fps frame rate, render time, and heap memory monitor.",
+      "scopeId": "global",
+      "sectionId": "view",
+      "chords": [
+        {
+          "keyString": "Ctrl+Alt+P",
+          "isUserModified": false,
+          "isMasked": false
+        }
+      ],
+      "defaultChords": [
+        "Ctrl+Alt+P"
+      ],
+      "hasConflict": false,
+      "conflictOccupiers": [],
+      "tags": []
+    },
+    {
+      "id": "showcase.toggleTheme",
+      "name": "Cycle Theme Mode",
+      "description": "Cycles interface color appearance between Light, Dark, and System modes.",
+      "scopeId": "global",
+      "sectionId": "system",
+      "chords": [
+        {
+          "keyString": "Ctrl+Shift+T",
+          "isUserModified": false,
+          "isMasked": false
+        }
+      ],
+      "defaultChords": [
+        "Ctrl+Shift+T"
+      ],
+      "hasConflict": false,
+      "conflictOccupiers": [],
+      "tags": []
+    },
+    {
+      "id": "showcase.copySelection",
+      "name": "Copy Active Selection",
+      "description": "Copies currently highlighted code block snippet or text selection to OS clipboard.",
+      "scopeId": "global",
+      "sectionId": "system",
+      "chords": [
+        {
+          "keyString": "Ctrl+C",
+          "isUserModified": false,
+          "isMasked": false
+        }
+      ],
+      "defaultChords": [
+        "Ctrl+C"
+      ],
+      "hasConflict": false,
+      "conflictOccupiers": [],
+      "tags": []
     }
   ]
 };

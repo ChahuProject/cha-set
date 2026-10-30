@@ -64,7 +64,9 @@
     "./theme-settings": "./components/theme-settings.ts",
     "./table-of-contents": "./components/table-of-contents.ts",
     "./kbd": "./components/kbd.ts",
-    "./floating-notice": "./components/floating-notice.ts"
+    "./floating-notice": "./components/floating-notice.ts",
+    "./keybinding-manager": "./components/keybinding-manager.ts",
+    "./showcase/shortcuts.json": "./showcase/shortcuts.json"
   },
   "dependencies": {
     "zod": "^4.0.0"

@@ -195,6 +195,8 @@ qt_add_qml_module(ChaSet
         src/ChaSetReadOnlyInput.qml
         src/ChaSetPresetNumberInput.qml
         src/ChaSetKeybindingRecorder.qml
+        src/ChaSetKeybindingManager.qml
+        src/ChaSetKeybindingConflictPopup.qml
         src/ChaSetVirtualList.qml
         src/ChaSetReorderableList.qml
         src/ChaSetVirtualTree.qml
@@ -334,6 +336,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/ReadOnlyInputDocPage.qml
             src/PresetNumberInputDocPage.qml
             src/KeybindingRecorderDocPage.qml
+            src/KeybindingManagerDocPage.qml
             src/VirtualListDocPage.qml
             src/VirtualTreeDocPage.qml
             src/VirtualGridDocPage.qml

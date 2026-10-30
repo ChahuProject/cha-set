@@ -11,6 +11,7 @@ const changelog = JSON.parse(fs.readFileSync(path.join(showcaseDir, 'changelog.j
 const featureCards = JSON.parse(fs.readFileSync(path.join(showcaseDir, 'feature-cards.json'), 'utf8'));
 const navigation = JSON.parse(fs.readFileSync(path.join(showcaseDir, 'navigation.json'), 'utf8'));
 const typographyRamp = JSON.parse(fs.readFileSync(path.join(showcaseDir, 'typography-ramp.json'), 'utf8'));
+const shortcuts = JSON.parse(fs.readFileSync(path.join(showcaseDir, 'shortcuts.json'), 'utf8'));
 
 const navigationWithDesc = navigation.map(group => ({
   ...group,
@@ -75,6 +76,7 @@ export const FEATURE_CARDS_DATA: FeatureCardItem[] = ${JSON.stringify(featureCar
 export const NAVIGATION_DATA: NavCategory[] = ${JSON.stringify(navigationWithDesc, null, 2)};
 export const NAVIGATION_CONFIG: NavCategory[] = NAVIGATION_DATA;
 export const TYPOGRAPHY_RAMP_DATA: TypographyRampData = ${JSON.stringify(typographyRamp, null, 2)};
+export const SHORTCUTS_DATA = ${JSON.stringify(shortcuts, null, 2)};
 `;
 
 fs.writeFileSync(path.join(reactOutDir, 'showcaseData.generated.ts'), reactCode, 'utf8');
@@ -93,6 +95,7 @@ QtObject {
     readonly property var featureCards: ${JSON.stringify(featureCards)}
     readonly property var navigation: ${JSON.stringify(navigation)}
     readonly property var typographyRamp: ${JSON.stringify(typographyRamp)}
+    readonly property var shortcuts: ${JSON.stringify(shortcuts)}
 }
 `;
 

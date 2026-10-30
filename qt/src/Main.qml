@@ -452,6 +452,7 @@ ApplicationWindow {
         case "address-bar": return "AddressBarDocPage.qml";
         case "theme-settings": return "ThemeSettingsDocPage.qml";
         case "language-settings": return "LanguageSettingsDocPage.qml";
+        case "keybinding-manager": return "KeybindingManagerDocPage.qml";
         case "table-of-contents": return "TableOfContentsDocPage.qml";
         case "kbd": return "KbdDocPage.qml";
         case "squircle": return "SquircleDocPage.qml";
@@ -1828,7 +1829,7 @@ ApplicationWindow {
             }
         }
 
-        // Scenario 16: Dynamic QML Component Instantiation Benchmark (All 62 Components)
+        // Scenario 16: Dynamic QML Component Instantiation Benchmark (All 63 Components)
         if (scenario === "all" || scenario === "benchmark" || scenario === "perf") {
             console.log("[qt-scenario] Running dynamic QML component instantiation benchmark for all ChaSet components...");
             var allComponents = [
@@ -1853,6 +1854,7 @@ ApplicationWindow {
                 { id: "inline-editable-text", name: "ChaSetInlineEditableText" },
                 { id: "input", name: "ChaSetInput" },
                 { id: "kbd", name: "ChaSetKbd" },
+                { id: "keybinding-manager", name: "ChaSetKeybindingManager" },
                 { id: "keybinding-recorder", name: "ChaSetKeybindingRecorder" },
                 { id: "label", name: "ChaSetLabel" },
                 { id: "language-settings", name: "ChaSetLanguageSettings" },

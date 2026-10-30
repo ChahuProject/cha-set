@@ -696,7 +696,8 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "pipeline-view": "流水线视图",
     "address-bar": "地址栏",
     "theme-settings": "主题设置",
-    "language-settings": "语言设置"
+    "language-settings": "语言设置",
+    "keybinding-manager": "快捷键管理器"
   },
   "exportTheme": {
     "title": "导出主题配置",
@@ -2039,6 +2040,25 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     },
     "language-settings": {
       "description": "跨端语言偏好设置卡片，提供系统语言自动检测、即时生效切换与文化诗词意境引语。"
+    },
+    "keybinding-manager": {
+      "description": "跨端快捷键与热键管理组件，支持反向按键搜索、多作用域过滤、冲突检测与速查表导出。"
+    },
+    "keybindingManager": {
+      "sandboxTitle": "交互式快捷键管理器",
+      "conflictTitle": "快捷键冲突",
+      "conflictExplanation": "该快捷键在同一作用域内被分配给了多个操作。请选择要保留或重新分配的操作。",
+      "activeResolver": "当前冲突解决",
+      "defaultSection": "常用操作",
+      "searchPlaceholder": "搜索操作名称或快捷键（如 Ctrl+）...",
+      "allScopes": "所有作用域",
+      "sameChord": "相同快捷键：",
+      "export": "导出速查表",
+      "resetAll": "重置全部",
+      "unassigned": "未分配",
+      "userModified": "用户自定义",
+      "defaultSource": "内置默认",
+      "conflict": "冲突"
     },
     "addressBar": {
       "canGoBackDesc": "启用后退历史导航按钮。",
@@ -4541,7 +4561,8 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "pipeline-view": "Pipeline View",
     "address-bar": "Address Bar",
     "theme-settings": "Theme Settings",
-    "language-settings": "Language Settings"
+    "language-settings": "Language Settings",
+    "keybinding-manager": "Keybinding Manager"
   },
   "exportTheme": {
     "title": "Export & Copy Theme Configuration",
@@ -5884,6 +5905,25 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     },
     "language-settings": {
       "description": "Cross-stack language configuration card with system detection and cultural poetry quotes."
+    },
+    "keybinding-manager": {
+      "description": "Cross-stack keybinding and shortcut manager with reverse key search, multi-scope filtering, conflict detection, and reference cheat sheet export."
+    },
+    "keybindingManager": {
+      "sandboxTitle": "Interactive Keybinding Manager",
+      "conflictTitle": "Shortcut Key Conflict",
+      "conflictExplanation": "The shortcut key is assigned to multiple actions in the same active scope. Choose an action to keep or reassign.",
+      "activeResolver": "Active Resolver",
+      "defaultSection": "General Actions",
+      "searchPlaceholder": "Search actions or keys (e.g. Ctrl+)...",
+      "allScopes": "All Scopes",
+      "sameChord": "Same Chord:",
+      "export": "Export Sheet",
+      "resetAll": "Reset All",
+      "unassigned": "Unassigned",
+      "userModified": "User",
+      "defaultSource": "Built-in",
+      "conflict": "Conflict"
     },
     "addressBar": {
       "canGoBackDesc": "Enables the backward history navigation button.",

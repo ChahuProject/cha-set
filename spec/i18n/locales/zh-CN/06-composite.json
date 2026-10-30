@@ -21,6 +21,25 @@
     "language-settings": {
       "description": "跨端语言偏好设置卡片，提供系统语言自动检测、即时生效切换与文化诗词意境引语。"
     },
+    "keybinding-manager": {
+      "description": "跨端快捷键与热键管理组件，支持反向按键搜索、多作用域过滤、冲突检测与速查表导出。"
+    },
+    "keybindingManager": {
+      "sandboxTitle": "交互式快捷键管理器",
+      "conflictTitle": "快捷键冲突",
+      "conflictExplanation": "该快捷键在同一作用域内被分配给了多个操作。请选择要保留或重新分配的操作。",
+      "activeResolver": "当前冲突解决",
+      "defaultSection": "常用操作",
+      "searchPlaceholder": "搜索操作名称或快捷键（如 Ctrl+）...",
+      "allScopes": "所有作用域",
+      "sameChord": "相同快捷键：",
+      "export": "导出速查表",
+      "resetAll": "重置全部",
+      "unassigned": "未分配",
+      "userModified": "用户自定义",
+      "defaultSource": "内置默认",
+      "conflict": "冲突"
+    },
     "addressBar": {
       "canGoBackDesc": "启用后退历史导航按钮。",
       "canGoForwardDesc": "启用前进历史导航按钮。",

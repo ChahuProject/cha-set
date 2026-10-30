@@ -21,6 +21,25 @@
     "language-settings": {
       "description": "Cross-stack language configuration card with system detection and cultural poetry quotes."
     },
+    "keybinding-manager": {
+      "description": "Cross-stack keybinding and shortcut manager with reverse key search, multi-scope filtering, conflict detection, and reference cheat sheet export."
+    },
+    "keybindingManager": {
+      "sandboxTitle": "Interactive Keybinding Manager",
+      "conflictTitle": "Shortcut Key Conflict",
+      "conflictExplanation": "The shortcut key is assigned to multiple actions in the same active scope. Choose an action to keep or reassign.",
+      "activeResolver": "Active Resolver",
+      "defaultSection": "General Actions",
+      "searchPlaceholder": "Search actions or keys (e.g. Ctrl+)...",
+      "allScopes": "All Scopes",
+      "sameChord": "Same Chord:",
+      "export": "Export Sheet",
+      "resetAll": "Reset All",
+      "unassigned": "Unassigned",
+      "userModified": "User",
+      "defaultSource": "Built-in",
+      "conflict": "Conflict"
+    },
     "addressBar": {
       "canGoBackDesc": "Enables the backward history navigation button.",
       "canGoForwardDesc": "Enables the forward history navigation button.",
