@@ -58,21 +58,40 @@ sync:
 
 # ---------- 校验与门禁 ----------
 
+# 静态规范全量检查 (主题边界、自适应、缩放、图标、文档、QML 规范)
+check:
+    @node scripts/check-theme-boundary.mjs
+    @node scripts/check-theme-adaptive.mjs
+    @node scripts/check-derived-parity.mjs
+    @node scripts/check-qt-scaling.mjs
+    @node scripts/check-no-emoji.mjs
+    @node scripts/strip-qml-import-versions.mjs --check
+    @node scripts/check-icon-spec.mjs
+    @node scripts/check-concentric-radii.mjs
+    @node scripts/check-i18n-coverage.mjs
+    @node scripts/check-doc-content.mjs
+    @node scripts/check-showcase-palette.mjs
+
 # TypeScript 类型检查
 typecheck:
     @pwsh -NoProfile -File tools/bque-runner.ps1 -Desc "ChaSet Typecheck" -Cmd "pnpm --filter @chahu/cha-set typecheck"
 
 # 规范与一致性门禁检查 (Parity Gate)
 gate:
-    node gate/parity.mjs
+    @pwsh -NoProfile -File tools/bque-runner.ps1 -Desc "ChaSet Parity Gate" -Cmd "node gate/parity.mjs"
 
-# 视觉对比门禁
+# 视觉对比门禁 (受 bque 排队管控)
 gate-visual:
-    node scripts/visual-diff.mjs
+    @pwsh -NoProfile -File tools/bque-runner.ps1 -Desc "ChaSet Visual Gate" -Cmd "node scripts/visual-diff.mjs"
 
-# 像素级一致性门禁
+# 像素级一致性门禁 (受 bque 排队管控)
 gate-pixel:
-    node scripts/pixel-sync-test.mjs --component all
+    @pwsh -NoProfile -File tools/bque-runner.ps1 -Desc "ChaSet Pixel Gate" -Cmd "node scripts/pixel-sync-test.mjs --component all"
+
+# 一键完整门禁 / CI 校验 (类型检查 + 静态全检 + 规范门禁 + 单元测试)
+ci: typecheck check gate test
+
+alias check-gate := ci
 
 # ---------- 测试与跑分 ----------
 
@@ -87,6 +106,18 @@ test-tokens:
 # 展示台对齐测试
 test-showcase:
     node scripts/verify-showcase-parity.mjs
+
+# React 基准跑分
+bench-react *ARGS:
+    @pwsh -NoProfile -File tools/bque-runner.ps1 -Bench -Desc "ChaSet React Bench" -Cmd "pnpm --filter @chahu/cha-set exec vitest bench --run {{ARGS}}"
+
+# Qt 基准跑分
+bench-qt *ARGS:
+    @pwsh -NoProfile -File tools/bque-runner.ps1 -Bench -Desc "ChaSet Qt Bench" -Cmd "node scripts/run-qt-showcase.mjs --test-scenario benchmark {{ARGS}}"
+
+# 性能画像审计
+bench-audit *ARGS:
+    @pwsh -NoProfile -File tools/bque-runner.ps1 -Bench -Desc "ChaSet Perf Audit" -Cmd "node scripts/perf-audit.mjs {{ARGS}}"
 
 # 专项性能基准测试 (bque bench 自动挂起后台编译以提供纯净 CPU 环境)
 bench *ARGS:
