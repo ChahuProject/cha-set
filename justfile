@@ -9,19 +9,19 @@ default:
 
 # 全局跨工作树编译排队状态
 queue-status:
-    @pwsh -NoProfile -File tools/bque-runner.ps1 -Status
+    @bque status
 
 # 应急清理全局编译锁状态
 queue-clean:
-    @pwsh -NoProfile -File tools/bque-runner.ps1 -Clean
+    @bque clean
 
 # 手动暂停后台编译（让路游戏或交互压测）
 queue-pause:
-    @pwsh -NoProfile -File tools/bque-runner.ps1 -Pause
+    @bque pause
 
 # 手动恢复后台编译
 queue-resume:
-    @pwsh -NoProfile -File tools/bque-runner.ps1 -Resume
+    @bque resume
 
 # ---------- 开发与展示台入口 ----------
 
@@ -40,12 +40,12 @@ build TARGET="all":
     #!pwsh
     $tgt = '{{TARGET}}'.ToLower()
     if ($tgt -eq 'react') {
-        pwsh -NoProfile -File tools/bque-runner.ps1 -Desc 'ChaSet React Build' -Cmd 'pnpm --filter @chahu/cha-set build'
+        bque run -- pnpm --filter @chahu/cha-set build
     } elseif ($tgt -eq 'qt') {
-        pwsh -NoProfile -File tools/bque-runner.ps1 -Desc 'ChaSet Qt Build' -Cmd 'node scripts/run-qt-showcase.mjs --build-only'
+        bque run -- node scripts/run-qt-showcase.mjs --build-only
     } elseif ($tgt -eq 'all') {
-        pwsh -NoProfile -File tools/bque-runner.ps1 -Desc 'ChaSet React Build' -Cmd 'pnpm --filter @chahu/cha-set build'
-        pwsh -NoProfile -File tools/bque-runner.ps1 -Desc 'ChaSet Qt Build' -Cmd 'node scripts/run-qt-showcase.mjs --build-only'
+        bque run -- pnpm --filter @chahu/cha-set build
+        bque run -- node scripts/run-qt-showcase.mjs --build-only
     } else {
         Write-Error "未知构建目标: $tgt。可选目标: react, qt, all"
         exit 1
@@ -163,19 +163,19 @@ check-showcase *ARGS:
 
 # TypeScript 类型检查
 typecheck:
-    @pwsh -NoProfile -File tools/bque-runner.ps1 -Desc "ChaSet Typecheck" -Cmd "pnpm --filter @chahu/cha-set typecheck"
+    @bque run -- pnpm --filter @chahu/cha-set typecheck
 
 # 规范与一致性门禁检查 (Parity Gate，支持透传参数如 --skip-qt)
 gate *ARGS:
-    @pwsh -NoProfile -File tools/bque-runner.ps1 -Desc "ChaSet Parity Gate" -Cmd "node gate/parity.mjs {{ARGS}}"
+    @bque run -- node gate/parity.mjs {{ARGS}}
 
 # 视觉对比门禁
 gate-visual:
-    @pwsh -NoProfile -File tools/bque-runner.ps1 -Desc "ChaSet Visual Gate" -Cmd "node scripts/visual-diff.mjs"
+    @bque run -- node scripts/visual-diff.mjs
 
 # 像素级严格对齐门禁（可透传参数，如 just gate-pixel --component button）
 gate-pixel *ARGS:
-    @pwsh -NoProfile -File tools/bque-runner.ps1 -Desc "ChaSet Pixel Gate" -Cmd "node scripts/pixel-sync-test.mjs {{ARGS}}"
+    @bque run -- node scripts/pixel-sync-test.mjs {{ARGS}}
 
 # 一键完整门禁 / CI 校验 (类型检查 + 静态全检 + 规范门禁 + 单元测试)
 ci: typecheck check gate test
@@ -184,11 +184,11 @@ ci: typecheck check gate test
 
 # 运行单元测试
 test *ARGS:
-    @pwsh -NoProfile -File tools/bque-runner.ps1 -Desc "ChaSet Test" -Cmd "pnpm --filter @chahu/cha-set test {{ARGS}}"
+    @bque run -- pnpm --filter @chahu/cha-set test {{ARGS}}
 
 # 设计令牌与规约测试
 test-tokens:
-    @pwsh -NoProfile -File tools/bque-runner.ps1 -Desc "Tokens Test" -Cmd "pnpm --filter @chahu/cha-set exec vitest run --config ../../spec/vitest.config.mjs"
+    @bque run -- pnpm --filter @chahu/cha-set exec vitest run --config ../../spec/vitest.config.mjs
 
 # 专项性能跑分 (TARGET: react | qt | audit | all，默认 all)
 bench TARGET="all" *ARGS:
@@ -196,14 +196,14 @@ bench TARGET="all" *ARGS:
     $tgt = '{{TARGET}}'.ToLower()
     $extraArgs = '{{ARGS}}'
     if ($tgt -eq 'react') {
-        pwsh -NoProfile -File tools/bque-runner.ps1 -Bench -Desc 'ChaSet React Bench' -Cmd "pnpm --filter @chahu/cha-set exec vitest bench --run $extraArgs"
+        bque bench -- pnpm --filter @chahu/cha-set exec vitest bench --run $extraArgs
     } elseif ($tgt -eq 'qt') {
-        pwsh -NoProfile -File tools/bque-runner.ps1 -Bench -Desc 'ChaSet Qt Bench' -Cmd "node scripts/run-qt-showcase.mjs --test-scenario benchmark $extraArgs"
+        bque bench -- node scripts/run-qt-showcase.mjs --test-scenario benchmark $extraArgs
     } elseif ($tgt -eq 'audit') {
-        pwsh -NoProfile -File tools/bque-runner.ps1 -Bench -Desc 'ChaSet Perf Audit' -Cmd "node scripts/perf-audit.mjs $extraArgs"
+        bque bench -- node scripts/perf-audit.mjs $extraArgs
     } elseif ($tgt -eq 'all') {
-        pwsh -NoProfile -File tools/bque-runner.ps1 -Bench -Desc 'ChaSet React Bench' -Cmd 'pnpm --filter @chahu/cha-set exec vitest bench --run'
-        pwsh -NoProfile -File tools/bque-runner.ps1 -Bench -Desc 'ChaSet Qt Bench' -Cmd 'node scripts/run-qt-showcase.mjs --test-scenario benchmark'
+        bque bench -- pnpm --filter @chahu/cha-set exec vitest bench --run
+        bque bench -- node scripts/run-qt-showcase.mjs --test-scenario benchmark
     } else {
         Write-Error "未知跑分目标: $tgt。可选目标: react, qt, audit, all"
         exit 1

@@ -33,9 +33,9 @@
     ".agents\\skills\\arch-align\\SKILL.md": "05a7b27400a21dc0be0ed0c065211bb43a85ef2f436d09246550af98a7092622",
     ".agents\\skills\\arch-align\\references\\GENERATE-DOC.md": "22e2dc3856f70700aa6b2e6308e1917f7d760dd81e8f4b867328302876525597",
     ".agents\\skills\\arch-align\\references\\GENERATE-INDEX.md": "42cbf1e09650fb29a681d7f653685a83055882ea78240e8ad2e07e2e4996975f",
-    ".agents\\skills\\bque\\SKILL.md": "41e72c476107e8e0e238cf5dea2e51ab74c027fd912408e4c5cf9f1c28cbf6a0",
+    ".agents\\skills\\bque\\SKILL.md": "6d5e248eeda81edbf01b15783f571fb4c481f5639135100f7d60ea109d9da183",
     ".agents\\skills\\bque\\references\\install.md": "0f6982e37cc4938fc92086df3ad41f0df6e5f369bdd4a97c73b84d210e40ca55",
-    ".agents\\skills\\bque\\references\\usage-matrix.md": "1e626caa9a6a84212a516dddf7e0a8849cdf3fd187853d10ffb7089ee833c0ed",
+    ".agents\\skills\\bque\\references\\usage-matrix.md": "d5c3b33fe787015ced22a513c3a3e17d3af46a307b9a05db562cc233372080b9",
     ".agents\\skills\\caveman\\SKILL.md": "ad046cafde3ee094136ce091b7dfde5c09bcf25914734c249f9c54e17b4bdf4b",
     ".agents\\skills\\git-workflow\\SKILL.md": "da26fff7efbd7e797958a35eaacf58840635230d1a0abdb17f1e6ef20a90ee85",
     ".agents\\skills\\git-workflow\\references\\branch-sync.md": "5c5b862bc8315e541e0d00a20a6df03395985374387311cfe35eed888a9d3fbc",
@@ -59,6 +59,6 @@
     "AGENTS.md": "fe9b874abb6ddab5475068bea304a6aee28a5163b1885f087608ed1076a1d739",
     "commitlint.base.js": "7a6e2a5ae12b31ee0da5104b3d3ef321ea55aa07c8fa630e0aa11e7e3195a4f2",
     "package.json": "9289b8181fa5e768a2ae76343dfc307f264d562499f7c03431d3d1b1697b402c",
-    "tools\\bque-runner.ps1": "f4b9c5f42d4ea753aaf2a91539a77995a342e8dc2cc6f400a9e24790979b8591"
+    "tools\\bque-runner.ps1": "4355a1609758f6e5d1720f9f6d29e3b1b98ab96d9cfeaa9ef9fad1b3ff13aa1e"
   }
 }
