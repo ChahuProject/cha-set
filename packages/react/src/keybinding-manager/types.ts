@@ -48,6 +48,8 @@ export interface KeybindingManagerProps extends Omit<React.HTMLAttributes<HTMLDi
   layout?: 'grouped-list' | 'flat-table';
   /** Whether the entire management interface is disabled (default: false) */
   disabled?: boolean;
+  /** Maximum height of the scrollable container (e.g. '32.5rem' or pixel number) */
+  maxHeight?: string | number;
   /** Container CSS class name */
   className?: string;
 }

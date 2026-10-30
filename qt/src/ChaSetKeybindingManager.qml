@@ -286,44 +286,33 @@ FocusScope {
                         }
                     }
 
-                    // Scope filter buttons / pill
-                    Rectangle {
+                    // Scope filter Select dropdown
+                    ChaSetSelect {
+                        id: scopeSelect
                         visible: root.scopes.length > 0
-                        height: ThemeTokens.dp(30)
-                        width: scopeLabelText.implicitWidth + ThemeTokens.dp(18)
-                        radius: ThemeTokens.dp(6)
-                        color: root.scopeFilterId === "all" ? ThemeTokens.panelRaised : ThemeTokens.hover
-                        border.color: ThemeTokens.border
-                        border.width: 1
-
-                        Text {
-                            id: scopeLabelText
-                            anchors.centerIn: parent
-                            text: root.scopeFilterId === "all"
-                                  ? ((typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingManager.allScopes", "All Scopes") : "All Scopes")
-                                  : root.getScopeName(root.scopeFilterId)
-                            color: ThemeTokens.text
-                            font.pixelSize: Typography.sizeSmall
-                        }
-
-                        MouseArea {
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            onClicked: {
-                                // Cycle through scopes
-                                if (root.scopeFilterId === "all" && root.scopes.length > 0) {
-                                    root.scopeFilterId = root.scopes[0].id;
-                                } else {
-                                    var currIdx = -1;
-                                    for (var s = 0; s < root.scopes.length; s++) {
-                                        if (root.scopes[s].id === root.scopeFilterId) { currIdx = s; break; }
-                                    }
-                                    if (currIdx >= 0 && currIdx < root.scopes.length - 1) {
-                                        root.scopeFilterId = root.scopes[currIdx + 1].id;
-                                    } else {
-                                        root.scopeFilterId = "all";
-                                    }
+                        width: ThemeTokens.dp(140)
+                        height: ThemeTokens.dp(32)
+                        value: root.scopeFilterId
+                        placeholder: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingManager.allScopes", "All Scopes") : "All Scopes"
+                        options: {
+                            var _loc = (typeof ChaSetI18n !== "undefined") ? ChaSetI18n.currentLocale : "";
+                            var opts = [
+                                {
+                                    value: "all",
+                                    label: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingManager.allScopes", "All Scopes") : "All Scopes"
                                 }
+                            ];
+                            for (var s = 0; s < root.scopes.length; s++) {
+                                opts.push({
+                                    value: root.scopes[s].id,
+                                    label: root.scopes[s].name
+                                });
+                            }
+                            return opts;
+                        }
+                        onValueChanged: function(val) {
+                            if (val !== undefined && val !== null && root.scopeFilterId !== val) {
+                                root.scopeFilterId = String(val);
                             }
                         }
                     }
@@ -378,7 +367,7 @@ FocusScope {
                         text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingManager.export", "Export Sheet") : "Export Sheet"
                         variant: "outline"
                         size: "sm"
-                        height: ThemeTokens.dp(30)
+                        height: ThemeTokens.dp(32)
                         onClicked: root.exportCheatSheet()
                     }
 
@@ -389,35 +378,50 @@ FocusScope {
                         text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingManager.resetAll", "Reset All") : "Reset All"
                         variant: "outline"
                         size: "sm"
-                        height: ThemeTokens.dp(30)
+                        height: ThemeTokens.dp(32)
                         onClicked: root.resetAllRequested()
                     }
                 }
             }
 
-            // Scrollable Action List
-            ListView {
-                id: actionListView
+            // Divider separating top controls from list
+            ChaSetSeparator {
+                id: sep
                 width: parent.width
-                height: parent.height - topBar.height - parent.spacing
-                clip: true
-                boundsBehavior: Flickable.StopAtBounds
-                model: root.visibleModel
-                spacing: ThemeTokens.dp(4)
-                ScrollBar.vertical: ChaSetScrollBar {}
+            }
 
-                delegate: Item {
-                    id: delegateRoot
-                    required property var modelData
-                    required property int index
+            // Scrollable Action List Container
+            Item {
+                id: listContainer
+                width: parent.width
+                height: parent.height - topBar.height - sep.height - parent.spacing * 2
 
-                    readonly property bool isHeader: modelData && modelData.type === "header"
-                    readonly property var actionData: modelData && modelData.type === "item" ? modelData.action : null
-                    readonly property bool hasConflict: actionData ? root.actionHasConflict(actionData) : false
-                    readonly property bool isModified: actionData ? root.isActionModified(actionData) : false
+                ListView {
+                    id: actionListView
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.left: parent.left
+                    anchors.right: vScrollBar.visible ? vScrollBar.left : parent.right
+                    anchors.rightMargin: vScrollBar.visible ? ThemeTokens.dp(8) : 0
+                    clip: true
+                    boundsBehavior: Flickable.StopAtBounds
+                    model: root.visibleModel
+                    spacing: ThemeTokens.dp(4)
 
-                    width: actionListView.width
-                    height: isHeader ? ThemeTokens.dp(32) : ThemeTokens.dp(56)
+                    ChaSetSmoothWheelHandler {}
+
+                    delegate: Item {
+                        id: delegateRoot
+                        required property var modelData
+                        required property int index
+
+                        readonly property bool isHeader: modelData && modelData.type === "header"
+                        readonly property var actionData: modelData && modelData.type === "item" ? modelData.action : null
+                        readonly property bool hasConflict: actionData ? root.actionHasConflict(actionData) : false
+                        readonly property bool isModified: actionData ? root.isActionModified(actionData) : false
+
+                        width: actionListView.width
+                        height: isHeader ? ThemeTokens.dp(32) : ThemeTokens.dp(56)
 
                     // Section Header
                     Rectangle {
@@ -543,85 +547,37 @@ FocusScope {
                                 spacing: ThemeTokens.dp(6)
 
                                 // Scope Badge
-                                Rectangle {
+                                ChaSetBadge {
                                     visible: root.showScopeBadge
-                                    height: ThemeTokens.dp(20)
-                                    width: scopeText.implicitWidth + ThemeTokens.dp(10)
-                                    radius: ThemeTokens.dp(4)
-                                    color: ThemeTokens.panelRaised
-                                    border.color: ThemeTokens.border
-                                    border.width: 1
+                                    variant: "outline"
+                                    size: "sm"
+                                    text: delegateRoot.actionData ? root.getScopeName(delegateRoot.actionData.scopeId) : ""
                                     anchors.verticalCenter: parent.verticalCenter
-
-                                    Text {
-                                        id: scopeText
-                                        anchors.centerIn: parent
-                                        text: delegateRoot.actionData ? root.getScopeName(delegateRoot.actionData.scopeId) : ""
-                                        color: ThemeTokens.subduedText
-                                        font.pixelSize: Typography.sizeCaption
-                                    }
                                 }
 
                                 // User / Built-in Badge
-                                Rectangle {
+                                ChaSetBadge {
                                     visible: root.showSourceBadge
-                                    height: ThemeTokens.dp(20)
-                                    width: sourceText.implicitWidth + ThemeTokens.dp(10)
-                                    radius: ThemeTokens.dp(4)
-                                    color: delegateRoot.isModified ? Qt.alpha(ThemeTokens.accent, 0.12) : ThemeTokens.panelRaised
-                                    border.color: delegateRoot.isModified ? ThemeTokens.accent : ThemeTokens.border
-                                    border.width: 1
+                                    variant: delegateRoot.isModified ? "secondary" : "outline"
+                                    size: "sm"
+                                    text: delegateRoot.isModified
+                                          ? ((typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingManager.userModified", "User") : "User")
+                                          : ((typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingManager.defaultSource", "Built-in") : "Built-in")
                                     anchors.verticalCenter: parent.verticalCenter
-
-                                    Text {
-                                        id: sourceText
-                                        anchors.centerIn: parent
-                                        text: delegateRoot.isModified
-                                              ? ((typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingManager.userModified", "User") : "User")
-                                              : ((typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingManager.defaultSource", "Built-in") : "Built-in")
-                                        color: delegateRoot.isModified ? ThemeTokens.accent : ThemeTokens.subduedText
-                                        font.pixelSize: Typography.sizeCaption
-                                        font.bold: delegateRoot.isModified
-                                    }
                                 }
 
                                 // Conflict Button
-                                Rectangle {
+                                ChaSetButton {
                                     visible: delegateRoot.hasConflict
-                                    height: ThemeTokens.dp(22)
-                                    width: confText.implicitWidth + ThemeTokens.dp(14)
-                                    radius: ThemeTokens.dp(11)
-                                    color: Qt.alpha(ThemeTokens.conflict, 0.16)
-                                    border.color: ThemeTokens.conflict
-                                    border.width: 1
+                                    variant: "outline"
+                                    size: "sm"
+                                    height: ThemeTokens.dp(24)
+                                    icon: "alert-triangle"
+                                    text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingManager.conflict", "Conflict") : "Conflict"
                                     anchors.verticalCenter: parent.verticalCenter
-
-                                    Row {
-                                        anchors.centerIn: parent
-                                        spacing: ThemeTokens.dp(3)
-                                        ChaSetIcon {
-                                            name: "alert-triangle"
-                                            size: 12
-                                            color: ThemeTokens.conflict
-                                            anchors.verticalCenter: parent.verticalCenter
-                                        }
-                                        Text {
-                                            id: confText
-                                            text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingManager.conflict", "Conflict") : "Conflict"
-                                            color: ThemeTokens.conflict
-                                            font.pixelSize: Typography.sizeCaption
-                                            font.bold: true
-                                            anchors.verticalCenter: parent.verticalCenter
-                                        }
-                                    }
-
-                                    MouseArea {
-                                        anchors.fill: parent
-                                        cursorShape: Qt.PointingHandCursor
-                                        onClicked: {
-                                            if (delegateRoot.actionData) {
-                                                root.openConflictDialog(delegateRoot.actionData);
-                                            }
+                                    onClicked: {
+                                        if (delegateRoot.actionData) {
+                                            root.openConflictDialog(delegateRoot.actionData);
                                         }
                                     }
                                 }
@@ -646,8 +602,29 @@ FocusScope {
                     }
                 }
             }
+
+            // Dedicated scrollbar docked outside the action cards
+            ChaSetScrollBar {
+                id: vScrollBar
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.right: parent.right
+                floating: false
+                size: actionListView.contentHeight > actionListView.height ? (actionListView.height / actionListView.contentHeight) : 1.0
+                position: actionListView.contentHeight > actionListView.height ? (actionListView.contentY / actionListView.contentHeight) : 0.0
+                visible: actionListView.contentHeight > actionListView.height
+                active: pressed || isBarHovered
+
+                onPositionChanged: {
+                    if (pressed) {
+                        var maxY = actionListView.contentHeight - actionListView.height;
+                        actionListView.contentY = Math.max(0, Math.min(maxY, position * actionListView.contentHeight));
+                    }
+                }
+            }
         }
     }
+}
 
     // Modal Conflict Resolver Popup
     ChaSetKeybindingConflictPopup {

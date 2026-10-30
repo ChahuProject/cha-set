@@ -413,7 +413,69 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "examplesVariants": "示例与变体",
     "installation": "安装",
     "interactiveOverview": "交互式概览",
-    "navigation": "导航"
+    "navigation": "导航",
+    "shortcuts": {
+      "scopes": {
+        "global": {
+          "name": "全局应用",
+          "desc": "在所有演示视图中生效的全局快捷键"
+        },
+        "preview": {
+          "name": "组件沙盒",
+          "desc": "仅在交互式沙盒画布中生效的快捷键"
+        }
+      },
+      "sections": {
+        "navigation": "导航与搜索",
+        "view": "视图与缩放",
+        "system": "系统与偏好"
+      },
+      "actions": {
+        "search": {
+          "name": "全局命令搜索",
+          "desc": "打开居中聚焦的命令与组件快速搜索面板。"
+        },
+        "navBack": {
+          "name": "后退导航",
+          "desc": "返回前一个访问过的演示文档页面。"
+        },
+        "navForward": {
+          "name": "前进导航",
+          "desc": "在页面历史记录栈中前进至下一页。"
+        },
+        "toggleSidebar": {
+          "name": "切换侧边栏",
+          "desc": "展开或折叠主组件导航侧边栏。"
+        },
+        "zoomIn": {
+          "name": "放大界面",
+          "desc": "增大全局界面显示缩放比例并触发屏幕 OSD 提示。"
+        },
+        "zoomOut": {
+          "name": "缩小界面",
+          "desc": "减小全局界面显示缩放比例并触发屏幕 OSD 提示。"
+        },
+        "zoomReset": {
+          "name": "重置界面缩放",
+          "desc": "将界面显示缩放比例恢复至默认 100% (1.0x)。"
+        },
+        "toggleTelemetry": {
+          "name": "切换性能监视 HUD",
+          "desc": "开启或关闭实时 60fps 帧率、渲染耗时与堆内存浮动监视面板。"
+        },
+        "toggleTheme": {
+          "name": "轮换外观模式",
+          "desc": "在浅色、深色与跟随系统三种外观模式之间循环切换。"
+        },
+        "copySelection": {
+          "name": "复制当前选中内容",
+          "desc": "将当前高亮选中的代码片段或文本划选复制到操作系统剪贴板。"
+        }
+      },
+      "tags": {
+        "essential": "基础常用"
+      }
+    }
   },
   "keyboard": {
     "actions": {
@@ -4278,7 +4340,69 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "examplesVariants": "Examples & Variants",
     "installation": "Installation",
     "interactiveOverview": "Interactive Overview",
-    "navigation": "Navigation"
+    "navigation": "Navigation",
+    "shortcuts": {
+      "scopes": {
+        "global": {
+          "name": "Global Application",
+          "desc": "Global application-wide hotkeys active across all showcase views"
+        },
+        "preview": {
+          "name": "Component Sandbox",
+          "desc": "Hotkeys scoped specifically to the interactive sandbox canvas"
+        }
+      },
+      "sections": {
+        "navigation": "Navigation & Search",
+        "view": "View & UI Scaling",
+        "system": "System & Preferences"
+      },
+      "actions": {
+        "search": {
+          "name": "Global Command Search",
+          "desc": "Opens the spotlight-style command and component search palette."
+        },
+        "navBack": {
+          "name": "Navigate Back",
+          "desc": "Returns to previously visited living showcase documentation page."
+        },
+        "navForward": {
+          "name": "Navigate Forward",
+          "desc": "Navigates forward in the showcase page navigation history stack."
+        },
+        "toggleSidebar": {
+          "name": "Toggle Sidebar",
+          "desc": "Collapses or expands the primary showcase component navigation sidebar."
+        },
+        "zoomIn": {
+          "name": "Zoom In UI",
+          "desc": "Increases global UI scale density step with on-screen OSD feedback."
+        },
+        "zoomOut": {
+          "name": "Zoom Out UI",
+          "desc": "Decreases global UI scale density step with on-screen OSD feedback."
+        },
+        "zoomReset": {
+          "name": "Reset UI Zoom",
+          "desc": "Restores display scaling factor to default 100% (1.0x)."
+        },
+        "toggleTelemetry": {
+          "name": "Toggle Performance Telemetry HUD",
+          "desc": "Toggles floating real-time 60fps frame rate, render time, and heap memory monitor."
+        },
+        "toggleTheme": {
+          "name": "Cycle Theme Mode",
+          "desc": "Cycles interface color appearance between Light, Dark, and System modes."
+        },
+        "copySelection": {
+          "name": "Copy Active Selection",
+          "desc": "Copies currently highlighted code block snippet or text selection to OS clipboard."
+        }
+      },
+      "tags": {
+        "essential": "Essential"
+      }
+    }
   },
   "keyboard": {
     "actions": {

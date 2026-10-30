@@ -1,4 +1,68 @@
 {
+  "showcase": {
+    "shortcuts": {
+      "scopes": {
+        "global": {
+          "name": "Global Application",
+          "desc": "Global application-wide hotkeys active across all showcase views"
+        },
+        "preview": {
+          "name": "Component Sandbox",
+          "desc": "Hotkeys scoped specifically to the interactive sandbox canvas"
+        }
+      },
+      "sections": {
+        "navigation": "Navigation & Search",
+        "view": "View & UI Scaling",
+        "system": "System & Preferences"
+      },
+      "actions": {
+        "search": {
+          "name": "Global Command Search",
+          "desc": "Opens the spotlight-style command and component search palette."
+        },
+        "navBack": {
+          "name": "Navigate Back",
+          "desc": "Returns to previously visited living showcase documentation page."
+        },
+        "navForward": {
+          "name": "Navigate Forward",
+          "desc": "Navigates forward in the showcase page navigation history stack."
+        },
+        "toggleSidebar": {
+          "name": "Toggle Sidebar",
+          "desc": "Collapses or expands the primary showcase component navigation sidebar."
+        },
+        "zoomIn": {
+          "name": "Zoom In UI",
+          "desc": "Increases global UI scale density step with on-screen OSD feedback."
+        },
+        "zoomOut": {
+          "name": "Zoom Out UI",
+          "desc": "Decreases global UI scale density step with on-screen OSD feedback."
+        },
+        "zoomReset": {
+          "name": "Reset UI Zoom",
+          "desc": "Restores display scaling factor to default 100% (1.0x)."
+        },
+        "toggleTelemetry": {
+          "name": "Toggle Performance Telemetry HUD",
+          "desc": "Toggles floating real-time 60fps frame rate, render time, and heap memory monitor."
+        },
+        "toggleTheme": {
+          "name": "Cycle Theme Mode",
+          "desc": "Cycles interface color appearance between Light, Dark, and System modes."
+        },
+        "copySelection": {
+          "name": "Copy Active Selection",
+          "desc": "Copies currently highlighted code block snippet or text selection to OS clipboard."
+        }
+      },
+      "tags": {
+        "essential": "Essential"
+      }
+    }
+  },
   "components": {
     "generic-data-table": {
       "description": "Full-featured data table with column sorting, filtering, selection, and pagination."

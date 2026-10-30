@@ -9,9 +9,55 @@ DocLayout {
     pageTitle: "Keybinding Manager"
     description: ChaSetI18n.tr("components.keybinding-manager.description", "Cross-stack keybinding and shortcut manager with reverse key search, conflict detection, and reset.")
 
-    readonly property var showcaseScopes: (typeof ShowcaseData !== "undefined" && ShowcaseData.shortcuts) ? ShowcaseData.shortcuts.scopes : []
-    readonly property var showcaseSections: (typeof ShowcaseData !== "undefined" && ShowcaseData.shortcuts) ? ShowcaseData.shortcuts.sections : []
-    property var activeActions: (typeof ShowcaseData !== "undefined" && ShowcaseData.shortcuts) ? ShowcaseData.shortcuts.actions : []
+    // Multi-language reactive bindings
+    readonly property string _activeLocale: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.currentLocale) ? ChaSetI18n.currentLocale : ""
+
+    readonly property var showcaseScopes: {
+        var raw = (typeof ShowcaseData !== "undefined" && ShowcaseData.shortcuts) ? ShowcaseData.shortcuts.scopes : [];
+        var _loc = _activeLocale;
+        return raw.map(function(sc) {
+            return {
+                id: sc.id,
+                name: ChaSetI18n.tr("showcase.shortcuts.scopes." + sc.id + ".name", sc.name),
+                description: ChaSetI18n.tr("showcase.shortcuts.scopes." + sc.id + ".desc", sc.description || "")
+            };
+        });
+    }
+
+    readonly property var showcaseSections: {
+        var raw = (typeof ShowcaseData !== "undefined" && ShowcaseData.shortcuts) ? ShowcaseData.shortcuts.sections : [];
+        var _loc = _activeLocale;
+        return raw.map(function(sec) {
+            return {
+                id: sec.id,
+                name: ChaSetI18n.tr("showcase.shortcuts.sections." + sec.id, sec.name),
+                order: sec.order
+            };
+        });
+    }
+
+    property var customChordsMap: ({})
+
+    readonly property var showcaseActions: {
+        var raw = (typeof ShowcaseData !== "undefined" && ShowcaseData.shortcuts) ? ShowcaseData.shortcuts.actions : [];
+        var _loc = _activeLocale;
+        return raw.map(function(act) {
+            var subId = act.id.replace(/^showcase\./, "");
+            var copy = {};
+            for (var k in act) copy[k] = act[k];
+            copy.name = ChaSetI18n.tr("showcase.shortcuts.actions." + subId + ".name", act.name);
+            copy.description = ChaSetI18n.tr("showcase.shortcuts.actions." + subId + ".desc", act.description || "");
+            if (copy.tags && copy.tags.length > 0) {
+                copy.tags = copy.tags.map(function(tg) {
+                    return tg.toLowerCase() === "essential" ? ChaSetI18n.tr("showcase.shortcuts.tags.essential", tg) : tg;
+                });
+            }
+            if (root.customChordsMap[act.id]) {
+                copy.chords = root.customChordsMap[act.id];
+            }
+            return copy;
+        });
+    }
 
     // Section 1: Interactive Overview
     ComponentPreview {
@@ -57,69 +103,39 @@ DocLayout {
                 ChaSetKeybindingManager {
                     id: managerComp
                     width: parent.width
-                    height: ThemeTokens.dp(480)
+                    height: ThemeTokens.dp(520)
                     scopes: root.showcaseScopes
                     sections: root.showcaseSections
-                    actions: root.activeActions
+                    actions: root.showcaseActions
 
                     onBindingChanged: function(actionId, chordIndex, newKey) {
-                        var acts = [];
-                        for (var i = 0; i < root.activeActions.length; i++) {
-                            var a = root.activeActions[i];
-                            if (a.id === actionId) {
-                                var chs = (a.chords || []).slice();
-                                if (chordIndex >= chs.length) {
-                                    if (newKey) chs.push({ keyString: newKey, isUserModified: true, isMasked: false });
-                                } else if (!newKey) {
-                                    chs.splice(chordIndex, 1);
-                                } else {
-                                    chs[chordIndex] = { keyString: newKey, isUserModified: true, isMasked: false };
-                                }
-                                var updated = {};
-                                for (var k in a) updated[k] = a[k];
-                                updated.chords = chs;
-                                acts.push(updated);
-                            } else {
-                                acts.push(a);
+                        var currentChs = [];
+                        for (var i = 0; i < root.showcaseActions.length; i++) {
+                            if (root.showcaseActions[i].id === actionId) {
+                                currentChs = (root.showcaseActions[i].chords || []).slice();
+                                break;
                             }
                         }
-                        root.activeActions = acts;
+                        if (chordIndex >= currentChs.length) {
+                            if (newKey) currentChs.push({ keyString: newKey, isUserModified: true, isMasked: false });
+                        } else if (!newKey) {
+                            currentChs.splice(chordIndex, 1);
+                        } else {
+                            currentChs[chordIndex] = { keyString: newKey, isUserModified: true, isMasked: false };
+                        }
+                        var m = Object.assign({}, root.customChordsMap);
+                        m[actionId] = currentChs;
+                        root.customChordsMap = m;
                     }
 
                     onActionResetRequested: function(actionId) {
-                        var acts = [];
-                        for (var i = 0; i < root.activeActions.length; i++) {
-                            var a = root.activeActions[i];
-                            if (a.id === actionId) {
-                                var defChords = [];
-                                for (var d = 0; d < (a.defaultChords || []).length; d++) {
-                                    defChords.push({ keyString: a.defaultChords[d], isUserModified: false, isMasked: false });
-                                }
-                                var updated = {};
-                                for (var k in a) updated[k] = a[k];
-                                updated.chords = defChords;
-                                acts.push(updated);
-                            } else {
-                                acts.push(a);
-                            }
-                        }
-                        root.activeActions = acts;
+                        var m = Object.assign({}, root.customChordsMap);
+                        delete m[actionId];
+                        root.customChordsMap = m;
                     }
 
                     onResetAllRequested: function() {
-                        var acts = [];
-                        for (var i = 0; i < root.activeActions.length; i++) {
-                            var a = root.activeActions[i];
-                            var defChords = [];
-                            for (var d = 0; d < (a.defaultChords || []).length; d++) {
-                                defChords.push({ keyString: a.defaultChords[d], isUserModified: false, isMasked: false });
-                            }
-                            var updated = {};
-                            for (var k in a) updated[k] = a[k];
-                            updated.chords = defChords;
-                            acts.push(updated);
-                        }
-                        root.activeActions = acts;
+                        root.customChordsMap = ({});
                     }
                 }
             }

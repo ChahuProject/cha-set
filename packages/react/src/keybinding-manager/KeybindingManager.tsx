@@ -5,6 +5,7 @@ import { Badge } from '../badge';
 import { Input } from '../input';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '../select';
 import { KeybindingRecorder } from '../keybinding-recorder';
+import { ScrollArea } from '../scroll-area';
 import { Tooltip } from '../tooltip';
 import {
   SearchIcon,
@@ -38,7 +39,9 @@ export function KeybindingManager({
   showScopeBadge = true,
   layout = 'grouped-list',
   disabled = false,
+  maxHeight,
   className,
+  style,
   ...props
 }: KeybindingManagerProps) {
   const { t } = useChaSetI18n();
@@ -259,6 +262,10 @@ export function KeybindingManager({
         disabled && 'pointer-events-none opacity-50',
         className,
       )}
+      style={{
+        maxHeight: typeof maxHeight === 'number' ? `${maxHeight * 0.0625}rem` : maxHeight,
+        ...style,
+      }}
       {...props}
     >
       {/* Top Header Controls: Search, Scope Filter, Actions */}
@@ -340,9 +347,10 @@ export function KeybindingManager({
       </div>
 
       {/* Main List Area */}
-      <div className="flex flex-col gap-6">
-        {groupedSections.length === 0 ? (
-          <div className="flex flex-col items-center justify-center gap-2 py-12 text-center text-muted-foreground">
+      <ScrollArea className="flex-1 min-h-0 w-full" floating={false}>
+        <div className="flex flex-col gap-6 pr-3">
+          {groupedSections.length === 0 ? (
+            <div className="flex flex-col items-center justify-center gap-2 py-12 text-center text-muted-foreground">
             <SearchIcon className="size-8 opacity-30" />
             <p className="text-sm font-medium">
               {t('components.keybindingManager.noMatches', 'No matching actions found')}
@@ -366,7 +374,7 @@ export function KeybindingManager({
                 </div>
               )}
 
-              <div className="flex flex-col divide-y divide-border/60 rounded-lg border border-border/70 bg-background/50">
+              <div className="flex flex-col divide-y divide-border/60 rounded-lg border border-border/70 bg-background/50 text-foreground">
                 {section.actions.map((action) => {
                   const isModified = isActionModified(action);
                   const scopeId = action.scopeId || 'global';
@@ -504,7 +512,8 @@ export function KeybindingManager({
             </div>
           ))
         )}
-      </div>
+        </div>
+      </ScrollArea>
 
       {/* Conflict Details Dialog */}
       <KeybindingConflictDialog

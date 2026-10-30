@@ -8,7 +8,7 @@ import { DocText } from '../../components/DocText';
 import { showcaseShortcuts } from '../../services/showcaseShortcuts';
 
 export function KeybindingManagerDocPage() {
-  const { t } = useChaSetI18n();
+  const { t, locale } = useChaSetI18n();
   const [shortcutsState, setShortcutsState] = useState(() => showcaseShortcuts.getState());
 
   useEffect(() => {
@@ -16,6 +16,35 @@ export function KeybindingManagerDocPage() {
       setShortcutsState({ ...showcaseShortcuts.getState() });
     });
   }, []);
+
+  const localizedScopes = React.useMemo(() => {
+    return shortcutsState.scopes.map((sc) => ({
+      ...sc,
+      name: t(`showcase.shortcuts.scopes.${sc.id}.name`, sc.name),
+      description: t(`showcase.shortcuts.scopes.${sc.id}.desc`, sc.description || ''),
+    }));
+  }, [shortcutsState.scopes, t, locale]);
+
+  const localizedSections = React.useMemo(() => {
+    return shortcutsState.sections.map((sec) => ({
+      ...sec,
+      name: t(`showcase.shortcuts.sections.${sec.id}`, sec.name),
+    }));
+  }, [shortcutsState.sections, t, locale]);
+
+  const localizedActions = React.useMemo(() => {
+    return shortcutsState.actions.map((act) => {
+      const subId = act.id.replace(/^showcase\./, '');
+      return {
+        ...act,
+        name: t(`showcase.shortcuts.actions.${subId}.name`, act.name),
+        description: t(`showcase.shortcuts.actions.${subId}.desc`, act.description || ''),
+        tags: (act.tags || []).map((tg) =>
+          tg.toLowerCase() === 'essential' ? t('showcase.shortcuts.tags.essential', tg) : tg
+        ),
+      };
+    });
+  }, [shortcutsState.actions, t, locale]);
 
   const heroReactCode = `<KeybindingManager
   actions={actions}
@@ -62,9 +91,10 @@ export function KeybindingManagerDocPage() {
         >
           <div className="w-full max-w-3xl mx-auto py-2">
             <KeybindingManager
-              actions={shortcutsState.actions}
-              scopes={shortcutsState.scopes}
-              sections={shortcutsState.sections}
+              className="h-[32.5rem]"
+              actions={localizedActions}
+              scopes={localizedScopes}
+              sections={localizedSections}
               onBindingChange={(actionId, chordIndex, newKey) => {
                 showcaseShortcuts.setBinding(actionId, chordIndex, newKey);
               }}
