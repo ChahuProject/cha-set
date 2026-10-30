@@ -41,12 +41,32 @@ FocusScope {
         }
     }
 
+    // Internal focus tracking to avoid premature cancellation on component creation
+    property bool _hasHadActiveFocus: false
+
     // While capturing, Escape cancels the recording — so the overlay registry must stand
     // down, otherwise a window-level Escape consumer would dismiss a host layer instead.
     onRecordingChanged: {
         ChaSetOverlayHub.escapeSuspended = root.recording
         if (root.recording) {
-            recorderRect.forceActiveFocus()
+            root._hasHadActiveFocus = false
+            Qt.callLater(function() {
+                if (root.recording) {
+                    recorderRect.forceActiveFocus()
+                }
+            })
+        } else {
+            root._hasHadActiveFocus = false
+        }
+    }
+
+    Component.onCompleted: {
+        if (root.recording) {
+            Qt.callLater(function() {
+                if (root.recording) {
+                    recorderRect.forceActiveFocus()
+                }
+            })
         }
     }
 
@@ -64,8 +84,11 @@ FocusScope {
         focus: true
 
         onActiveFocusChanged: {
-            if (!activeFocus && root.recording) {
+            if (activeFocus) {
+                root._hasHadActiveFocus = true
+            } else if (root._hasHadActiveFocus && root.recording) {
                 root.recording = false
+                root._hasHadActiveFocus = false
             }
         }
 

@@ -18,6 +18,7 @@ export const keybindingRecorderSchema = z.object({
   size: z.enum(['default', 'sm']).default('default'),
   placeholder: z.string().default('No keybinding set'),
   recordingText: z.string().default('Press key combination (Esc to cancel)...'),
+  autoRecord: z.boolean().default(false),
 });
 
 export type KeybindingValue = z.infer<typeof keybindingValueSchema>;

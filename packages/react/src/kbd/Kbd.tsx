@@ -199,6 +199,46 @@ export function parseShortcutString(shortcutStr: string): string[][] {
   );
 }
 
+/**
+ * Estimate width in pixels for shortcut combinations in full vs compact mode.
+ * Used for responsive auto-compaction without hysteresis or layout thrashing.
+ */
+export function estimateShortcutWidth(
+  shortcutStr: string,
+  size: KbdSize = 'default',
+  compactMode: boolean = false,
+): number {
+  if (!shortcutStr || !shortcutStr.trim()) return 0;
+  const branches = parseShortcutString(shortcutStr);
+  if (branches.length === 0) return 0;
+
+  const charW = size === 'xs' ? 5.5 : size === 'sm' ? 6.5 : 7.5;
+  const keyHeight = size === 'xs' ? 18 : size === 'sm' ? 20 : 24;
+  const paddingH = size === 'xs' ? 8 : size === 'sm' ? 12 : 16;
+  const separatorW = compactMode ? 0 : 10;
+  const interKeyGap = 4;
+  const orDividerW = 20;
+
+  let totalW = 0;
+  for (let b = 0; b < branches.length; b++) {
+    const branch = branches[b];
+    if (!branch) continue;
+    let branchW = 0;
+    for (let k = 0; k < branch.length; k++) {
+      const keyStr = branch[k];
+      if (!keyStr) continue;
+      const token = parseKeyToken(keyStr, compactMode);
+      if (k > 0) branchW += separatorW + interKeyGap;
+      const contentW = token.isMouse ? 12 : Math.ceil(token.text.length * charW);
+      const keyBoxW = Math.max(keyHeight, contentW + paddingH);
+      branchW += keyBoxW;
+    }
+    if (b > 0) totalW += orDividerW;
+    totalW += branchW;
+  }
+  return Math.round(totalW);
+}
+
 const variantClasses: Record<KbdVariant, string> = {
   outline:
     'border border-border/80 bg-muted/60 text-foreground shadow-2xs dark:bg-muted/40 dark:border-border/60',
@@ -236,7 +276,11 @@ export const Kbd = React.forwardRef<HTMLElement, KbdProps>(
     },
     ref,
   ) => {
-    const [autoCompact, setAutoCompact] = React.useState(false);
+    const estimatedFullWidth = React.useMemo(() => {
+      return shortcut ? estimateShortcutWidth(shortcut, size, false) : 0;
+    }, [shortcut, size]);
+
+    const [containerWidth, setContainerWidth] = React.useState<number | null>(null);
     const innerRef = React.useRef<HTMLElement | null>(null);
 
     React.useImperativeHandle(ref, () => innerRef.current as HTMLElement);
@@ -248,25 +292,30 @@ export const Kbd = React.forwardRef<HTMLElement, KbdProps>(
       const parent = el.parentElement;
       if (!parent) return;
 
-      const check = () => {
-        if (typeof availableWidth === 'number' && availableWidth >= 0) {
-          setAutoCompact(el.scrollWidth > availableWidth);
-        } else if (parent.clientWidth > 0 && el.scrollWidth > parent.clientWidth) {
-          setAutoCompact(true);
-        } else {
-          setAutoCompact(false);
-        }
+      const measure = () => {
+        setContainerWidth(parent.clientWidth);
       };
+      measure();
 
-      check();
       if (typeof ResizeObserver !== 'undefined') {
-        const ro = new ResizeObserver(check);
+        const ro = new ResizeObserver(measure);
         ro.observe(parent);
         return () => ro.disconnect();
       }
-    }, [compact, availableWidth, shortcut]);
+    }, [compact]);
 
-    const isCompact = compact === 'always' || (compact === 'auto' && autoCompact);
+    const isCompact = React.useMemo(() => {
+      if (compact === 'always') return true;
+      if (compact === 'never') return false;
+      // compact === 'auto'
+      if (typeof availableWidth === 'number' && availableWidth >= 0) {
+        return availableWidth < estimatedFullWidth;
+      }
+      if (containerWidth !== null && containerWidth > 0 && estimatedFullWidth > 0) {
+        return containerWidth < estimatedFullWidth;
+      }
+      return false;
+    }, [compact, availableWidth, containerWidth, estimatedFullWidth]);
     const isSubtle = variant === 'subtle';
 
     // Overflow handling class

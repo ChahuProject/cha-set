@@ -272,13 +272,13 @@ export function KeybindingManager({
       <div className="flex items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2">
           {searchable && (
-            <div className="relative w-64 max-w-full">
-              <SearchIcon className="absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
+            <div className="w-64 max-w-full">
               <Input
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={t('components.keybindingManager.searchPlaceholder', 'Search actions or keys (e.g. Ctrl+)...')}
-                className="h-8 pl-8 text-xs"
+                leftIcon={<SearchIcon className="size-3.5" />}
+                className="h-8 text-xs"
               />
             </div>
           )}
@@ -386,32 +386,43 @@ export function KeybindingManager({
                     <div
                       key={action.id}
                       className={cn(
-                        'flex items-center justify-between gap-3 rounded-lg border border-border/70 bg-card/60 p-3 text-card-foreground transition-colors duration-quick ease-standard hover:bg-muted/30',
+                        'flex items-center gap-4 rounded-lg border border-border/70 bg-card/60 p-3 text-card-foreground transition-colors duration-quick ease-standard hover:bg-muted/30',
                         hasConflict && 'border-amber-500/60 bg-amber-500/5',
                       )}
                     >
                       {/* Left: Action Title & Description (constrained width, matches Qt 200dp) */}
-                      <div className="flex w-52 shrink-0 flex-col gap-0.5 min-w-0">
-                        <div className="flex items-center gap-2 min-w-0">
-                          <span className="truncate text-xs font-semibold text-foreground" title={action.name}>
-                            {action.name}
-                          </span>
-                          {action.tags && action.tags.length > 0 && (
-                            <div className="flex shrink-0 items-center gap-1">
-                              {action.tags.map((tg) => (
-                                <Badge key={tg} variant="secondary" className="px-1.5 py-0 text-[0.625rem]">
-                                  {tg}
-                                </Badge>
-                              ))}
-                            </div>
+                      <Tooltip
+                        content={
+                          <div className="flex flex-col gap-0.5 max-w-xs text-left">
+                            <span className="font-semibold text-foreground">{action.name}</span>
+                            {action.description && (
+                              <span className="text-caption text-muted-foreground">{action.description}</span>
+                            )}
+                          </div>
+                        }
+                      >
+                        <div className="flex w-52 shrink-0 flex-col gap-0.5 min-w-0 cursor-default">
+                          <div className="flex items-center gap-2 min-w-0">
+                            <span className="truncate text-xs font-semibold text-foreground">
+                              {action.name}
+                            </span>
+                            {action.tags && action.tags.length > 0 && (
+                              <div className="flex shrink-0 items-center gap-1">
+                                {action.tags.map((tg) => (
+                                  <Badge key={tg} variant="secondary" className="px-1.5 py-0 text-[0.625rem]">
+                                    {tg}
+                                  </Badge>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                          {action.description && (
+                            <p className="truncate text-caption text-muted-foreground">
+                              {action.description}
+                            </p>
                           )}
                         </div>
-                        {action.description && (
-                          <p className="truncate text-caption text-muted-foreground" title={action.description}>
-                            {action.description}
-                          </p>
-                        )}
-                      </div>
+                      </Tooltip>
 
                       {/* Middle: Shortcut Capsules */}
                       <div className="flex items-center gap-2 shrink-0">
@@ -449,7 +460,7 @@ export function KeybindingManager({
                               variant="ghost"
                               size="icon-xs"
                               onClick={() => onBindingChange?.(action.id, action.chords.length, '')}
-                              className="size-7 rounded-md border border-dashed border-border hover:border-primary/50"
+                              className="size-7 rounded-md text-muted-foreground hover:text-foreground"
                             >
                               <PlusIcon className="size-3 text-muted-foreground" />
                             </Button>
@@ -458,7 +469,7 @@ export function KeybindingManager({
                       </div>
 
                       {/* Right: Badges & Row Actions */}
-                      <div className="flex items-center gap-2 shrink-0">
+                      <div className="ml-auto flex items-center gap-2 shrink-0">
                         {showScopeBadge && (
                           <Badge variant="outline" className="px-2 py-0.5 text-caption font-normal text-muted-foreground">
                             {scopeName}

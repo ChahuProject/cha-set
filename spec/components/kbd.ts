@@ -24,6 +24,7 @@ export const kbdSchema = z.object({
   overflow: kbdOverflowSchema.default('collapse'),
   shortcut: z.string().optional(),
   separator: z.string().default('+'),
+  availableWidth: z.number().optional(),
 });
 
 export const shortcutItemSchema = z.object({

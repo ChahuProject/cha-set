@@ -462,27 +462,40 @@ FocusScope {
                             spacing: ThemeTokens.dp(12)
 
                             // Left: Action Name & Description
-                            Column {
-                                id: titleCol
+                            Item {
+                                id: titleWrap
                                 width: ThemeTokens.dp(200)
+                                height: titleCol.implicitHeight
                                 anchors.verticalCenter: parent.verticalCenter
-                                spacing: ThemeTokens.dp(2)
 
-                                Text {
-                                    width: parent.width
-                                    text: delegateRoot.actionData ? delegateRoot.actionData.name : ""
-                                    color: ThemeTokens.text
-                                    font.pixelSize: Typography.sizeSmall
-                                    font.bold: true
-                                    elide: Text.ElideRight
+                                Column {
+                                    id: titleCol
+                                    anchors.fill: parent
+                                    spacing: ThemeTokens.dp(2)
+
+                                    Text {
+                                        width: parent.width
+                                        text: delegateRoot.actionData ? delegateRoot.actionData.name : ""
+                                        color: ThemeTokens.text
+                                        font.pixelSize: Typography.sizeSmall
+                                        font.bold: true
+                                        elide: Text.ElideRight
+                                    }
+
+                                    Text {
+                                        width: parent.width
+                                        text: delegateRoot.actionData ? (delegateRoot.actionData.description || "") : ""
+                                        color: ThemeTokens.subduedText
+                                        font.pixelSize: Typography.sizeCaption
+                                        elide: Text.ElideRight
+                                    }
                                 }
 
-                                Text {
-                                    width: parent.width
-                                    text: delegateRoot.actionData ? (delegateRoot.actionData.description || "") : ""
-                                    color: ThemeTokens.subduedText
-                                    font.pixelSize: Typography.sizeCaption
-                                    elide: Text.ElideRight
+                                ChaSetTooltip {
+                                    anchors.fill: parent
+                                    text: delegateRoot.actionData ? (delegateRoot.actionData.name + (delegateRoot.actionData.description ? ("\n" + delegateRoot.actionData.description) : "")) : ""
+                                    side: "top"
+                                    delay: 300
                                 }
                             }
 
