@@ -33,7 +33,7 @@
     ".agents\\skills\\arch-align\\SKILL.md": "05a7b27400a21dc0be0ed0c065211bb43a85ef2f436d09246550af98a7092622",
     ".agents\\skills\\arch-align\\references\\GENERATE-DOC.md": "22e2dc3856f70700aa6b2e6308e1917f7d760dd81e8f4b867328302876525597",
     ".agents\\skills\\arch-align\\references\\GENERATE-INDEX.md": "42cbf1e09650fb29a681d7f653685a83055882ea78240e8ad2e07e2e4996975f",
-    ".agents\\skills\\bque\\SKILL.md": "6d5e248eeda81edbf01b15783f571fb4c481f5639135100f7d60ea109d9da183",
+    ".agents\\skills\\bque\\SKILL.md": "13791f1967c22ad5c3c1d32a4ed7d7c5c1c323aa2fb53915b19648e7ee43347d",
     ".agents\\skills\\bque\\references\\install.md": "0f6982e37cc4938fc92086df3ad41f0df6e5f369bdd4a97c73b84d210e40ca55",
     ".agents\\skills\\bque\\references\\usage-matrix.md": "d5c3b33fe787015ced22a513c3a3e17d3af46a307b9a05db562cc233372080b9",
     ".agents\\skills\\caveman\\SKILL.md": "ad046cafde3ee094136ce091b7dfde5c09bcf25914734c249f9c54e17b4bdf4b",
@@ -56,9 +56,8 @@
     ".gitattributes": "269bd23209da05b77373f5f13adf48536b6ca8f5025570f1a2e5cce289a60b26",
     ".gitignore": "487365bb2c4b334d0ee18412bd102d728349dc86700e9527abf7617303a3b660",
     ".vscode\\settings.json": "59588125b818b5bd3689b1f4f86e592e2808ba526961c5f857c273b64290f701",
-    "AGENTS.md": "fe9b874abb6ddab5475068bea304a6aee28a5163b1885f087608ed1076a1d739",
+    "AGENTS.md": "290e32a607c4c7481370e12b16c148d942d80b46bb8ae42a5f2808b16fff05dd",
     "commitlint.base.js": "7a6e2a5ae12b31ee0da5104b3d3ef321ea55aa07c8fa630e0aa11e7e3195a4f2",
-    "package.json": "9289b8181fa5e768a2ae76343dfc307f264d562499f7c03431d3d1b1697b402c",
-    "tools\\bque-runner.ps1": "4355a1609758f6e5d1720f9f6d29e3b1b98ab96d9cfeaa9ef9fad1b3ff13aa1e"
+    "package.json": "9289b8181fa5e768a2ae76343dfc307f264d562499f7c03431d3d1b1697b402c"
   }
 }
