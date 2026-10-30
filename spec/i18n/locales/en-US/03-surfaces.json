@@ -19,162 +19,41 @@
       "description": "Hierarchical outline navigation tree with guide lines, active indicator, and banner offset support."
     },
     "card": {
-      "childrenDesc": "Card composite subcomponents or custom elements.",
-      "classNameDesc": "Additional CSS class names to apply to the container.",
-      "customRadiusDesc": "Explicit corner radius override (defaults to ThemeTokens.radius).",
-      "description": "Displays a card with header, title, description, content, and footer actions.",
-      "interactiveDesc": "Whether the card provides hover/active elevation styling and cursor pointer.",
-      "sizeDesc": "Density and padding scale of the card and composite containers.",
-      "variantDesc": "Visual presentation style of the card container."
+      "description": "Displays a card with header, title, description, content, and footer actions."
     },
     "collapsible": {
-      "classNameDesc": "Additional custom CSS classes.",
-      "customRadiusDesc": "Corner radius of the header and container.",
-      "defaultOpenDesc": "Initial open state for uncontrolled usage.",
-      "defaultOpenDescQt": "Whether the collapsible is initially expanded on load.",
-      "description": "An interactive component which expands and collapses a panel of content.",
-      "disabledDesc": "Whether user interaction is disabled.",
-      "disabledDescQt": "Whether user interaction and toggling are disabled.",
-      "onOpenChangeDesc": "Callback invoked when open state changes.",
-      "openDesc": "Controlled open state of the collapsible panel.",
-      "openDescQt": "Whether the collapsible content is currently expanded.",
-      "titleDesc": "Title text displayed in the header trigger bar.",
-      "variantDesc": "Visual container styling variant.",
-      "variantDescQt": "Visual container styling variant: 'default' | 'card' | 'ghost'."
+      "description": "An interactive component which expands and collapses a panel of content."
     },
     "panelCard": {
-      "actionsDesc": "Right-aligned header action elements.",
-      "badgeTextDesc": "Optional badge text displayed next to the title.",
-      "collapsedDesc": "Controlled collapsed state.",
-      "collapsibleDesc": "Whether the panel content can be toggled collapsed.",
-      "defaultCollapsedDesc": "Initial collapsed state for uncontrolled mode.",
       "defaultTitle": "Panel Title",
-      "description": "Card surface with integrated collapsible sections and header action slots for desktop sidebars and inspectors.",
-      "onCollapsedChangeDesc": "Collapse change handler.",
-      "radiusDesc": "Corner radius of the card surface.",
-      "sizeDesc": "Sizing scale of the card panel.",
-      "titleDesc": "Panel header title text or element."
+      "description": "Card surface with integrated collapsible sections and header action slots for desktop sidebars and inspectors."
     },
     "resizable": {
-      "collapsibleDesc": "Whether the panel collapses completely past its minimum size.",
-      "defaultSizeDesc": "Initial percentage size allocated to the panel (0-100).",
-      "description": "Accessible resizable panel groups and layout splitters.",
-      "directionDesc": "Direction of panel layout (also supports orientation prop).",
-      "handleColorDesc": "Idle separator line background color.",
-      "handleGripColorDesc": "Grip dot indicator color.",
-      "handleHoverColorDesc": "Hovered or active separator accent color.",
-      "handleThicknessDesc": "Thickness of the divider separator bound.",
-      "maxSizeDesc": "Maximum allowed percentage size constraint.",
-      "minSizeDesc": "Minimum allowed percentage size constraint.",
-      "orientationDesc": "Split layout orientation: Qt.Horizontal or Qt.Vertical.",
-      "withHandleDesc": "Renders an accessible tactile visual grip handle on the separator divider.",
-      "withHandleDescQt": "Whether to render a tactile 6-dot visual grip indicator on the handle."
+      "description": "Accessible resizable panel groups and layout splitters."
     },
     "scrollArea": {
-      "description": "Augments native scroll functionality with custom cross-browser styling, dynamic hot-zone expansion, and interactive stepper navigation buttons.",
-      "floatingDesc": "Whether scrollbars float over viewport content or occupy dedicated gutter layout space.",
-      "pageStepRatioDesc": "Viewport dimension ratio used when clicking page-up/page-down.",
-      "showButtonsDesc": "Whether stepper navigation buttons appear on scrollbar hover.",
-      "showHorizontalDesc": "Whether to render the horizontal scrollbar.",
-      "showVerticalDesc": "Whether to render the vertical scrollbar.",
-      "sizeDesc": "Scrollbar density and scale.",
-      "smoothScrollDesc": "Whether stepper buttons use smooth scrolling behavior.",
-      "viewportClassNameDesc": "Additional CSS classes for the internal scroll viewport element."
-    },
-    "scrollBar": {
-      "collapsedSizeDesc": "Thickness of the visual indicator when idle.",
-      "expandedSizeDesc": "Thickness of the visual indicator when hovered.",
-      "floatingDesc": "Whether the scrollbar floats over viewport content or occupies dedicated gutter layout space.",
-      "hitSizeDesc": "Thickness of the transparent pointer-capture hot-zone.",
-      "orientationDesc": "Scrollbar orientation axis.",
-      "sizeDesc": "Scrollbar density and scale."
+      "description": "Augments native scroll functionality with custom cross-browser styling, dynamic hot-zone expansion, and interactive stepper navigation buttons."
     },
     "settingRow": {
-      "badgeDesc": "Optional trailing badge tag next to title.",
-      "description": "Standardized preferences and settings item row layout with title, description, embedded control zone, and anchor flash highlight.",
-      "descriptionDesc": "Secondary explanatory subtitle text.",
-      "disabledDesc": "Whether the setting row and controls are dimmed and disabled.",
-      "highlightDesc": "Direct boolean override to force active highlight animation.",
-      "highlightIdDesc": "Unique identifier used for anchor jump targeting.",
-      "highlightTargetDesc": "Active target identifier. When matching highlightId, triggers pulse.",
-      "iconDesc": "Optional leading icon or badge avatar.",
-      "nameDesc": "Primary title label for the setting item.",
-      "sizeDesc": "Density size variant ('default' or 'sm')."
+      "description": "Standardized preferences and settings item row layout with title, description, embedded control zone, and anchor flash highlight."
     },
     "sidebar": {
-      "collapsedDesc": "Whether the sidebar is currently collapsed.",
-      "collapsibleDesc": "Collapsing behavior mode when closed on desktop.",
-      "defaultOpenDesc": "Initial expanded state on SidebarProvider.",
-      "description": "Composable, responsive and resizable desktop-grade sidebar navigation system supporting icon-collapse, offcanvas drawers, and custom rem sizing.",
-      "iconWidthDesc": "Width when collapsed in icon mode.",
-      "maxWidthDesc": "Maximum draggable width limit.",
-      "minWidthDesc": "Minimum draggable width limit.",
-      "resizableDesc": "Enables interactive edge dragging rail for dynamic resizing.",
-      "sideDesc": "Docking side for the sidebar layout.",
-      "sidebarWidthDesc": "Expanded width of the sidebar bound.",
-      "variantDesc": "Visual container styling variant."
+      "description": "Composable, responsive and resizable desktop-grade sidebar navigation system supporting icon-collapse, offcanvas drawers, and custom rem sizing."
     },
     "splitter": {
-      "description": "Multi-pane resizable layout container with draggable gutters and collapse limits for IDEs and desktop toolkits.",
-      "gutterSizeDesc": "Interactive divider gutter thickness.",
-      "initialSizeDesc": "Initial size percentage for uncontrolled usage.",
-      "leftItemDesc": "First pane content component.",
-      "maxSizeDesc": "Maximum allowed percentage bound.",
-      "minSizeDesc": "Minimum allowed percentage bound.",
-      "onChangeDesc": "Callback fired on drag with new percentage.",
-      "orientationDesc": "Orientation of the divider.",
-      "rightItemDesc": "Second pane content component.",
-      "sizeDesc": "Controlled percentage width/height (0-100)."
+      "description": "Multi-pane resizable layout container with draggable gutters and collapse limits for IDEs and desktop toolkits."
     },
     "splitterHandle": {
-      "activeVisualThicknessDesc": "Highlighted visible hairline thickness when hovered or dragged.",
-      "defaultSizeDesc": "Size restored when double-clicked or Enter is pressed.",
-      "description": "Edge resize handle with reference item coordinate stabilization, min/max clamping, and keyboard navigation.",
-      "disabledDesc": "Whether handle resizing is disabled.",
-      "edgeDesc": "Which edge of the target panel the resize handle controls.",
-      "hitThicknessDesc": "Interactive mouse hit test zone thickness.",
-      "liveUpdateDesc": "Whether size updates fire continuously during drag.",
-      "maxSizeDesc": "Maximum allowed size bound.",
-      "minSizeDesc": "Minimum allowed size bound.",
-      "targetSizeDesc": "Current size (width or height) of the target element being resized.",
-      "visualThicknessDesc": "Resting visible hairline thickness."
+      "description": "Edge resize handle with reference item coordinate stabilization, min/max clamping, and keyboard navigation."
     },
     "tableOfContents": {
-      "activeIdDesc": "Currently active section ID.",
-      "description": "Hierarchical outline navigation tree with guide lines, active indicator, and banner offset support.",
-      "itemsDesc": "Hierarchical array of outline items with level and nested children.",
-      "onSelectDesc": "Callback fired when an outline item is selected or activated.",
-      "showTitleDesc": "Whether to display the header title label.",
-      "showTrackDesc": "Whether to render the vertical guide track and active indicator marker.",
-      "sizeDesc": "Size density and font scaling of the outline labels.",
-      "targetOffsetDesc": "Safety scroll offset ensuring headings are not occluded by top banners.",
-      "titleDesc": "Header title text displayed above outline items.",
-      "topOffsetDesc": "Top offset for sticky positioning, accommodating global announcement banners.",
-      "variantDesc": "Visual styling variant of the table of contents container."
+      "description": "Hierarchical outline navigation tree with guide lines, active indicator, and banner offset support."
     },
     "tabs": {
-      "badgeDesc": "Optional count badge or text label rendered inside the trigger.",
-      "defaultValueDesc": "The value of the tab that should be active when initially rendered (uncontrolled).",
-      "description": "A set of layered content sections known as tab panels, displayed one at a time.",
-      "disabledDesc": "When true on TabsTrigger, prevents interaction on that tab.",
-      "iconDesc": "Optional leading icon element rendered inside the trigger.",
-      "onValueChangeDesc": "Event handler called when the active tab changes.",
-      "orientationDesc": "The orientation of the tabs (controls keyboard navigation axis).",
-      "sizeDesc": "Size scale of the tabs triggers and container.",
-      "valueDesc": "The controlled value of the active tab.",
-      "variantDesc": "Visual presentation style: pill container (default) or underline tab bar (line)."
+      "description": "A set of layered content sections known as tab panels, displayed one at a time."
     },
     "viewportConstrainedContainer": {
-      "bgDesc": "Background surface fill color.",
-      "borderDesc": "Border outline color.",
-      "childrenDesc": "Elements rendered inside the container.",
-      "classNameDesc": "Custom CSS class names for styling.",
-      "customRadiusDesc": "Corner radius of the container.",
-      "description": "Container that dynamically bounds max-height based on available viewport space below the anchor rect, supporting custom upper limit overrides and smooth vertical scrolling.",
-      "marginDesc": "Reserved margin between container bottom and viewport bottom edge.",
-      "maxHeightDesc": "Optional upper limit on container max-height.",
-      "minHeightDesc": "Minimum allowable height lower bound.",
-      "overflowDesc": "Vertical overflow scrolling strategy."
+      "description": "Container that dynamically bounds max-height based on available viewport space below the anchor rect, supporting custom upper limit overrides and smooth vertical scrolling."
     }
   },
   "desktopComposite": {
@@ -210,10 +89,6 @@
       "sandboxTitle": "Panel Card Sandbox"
     },
     "resizable": {
-      "animationsBullet1": "Separator grip indicator border and hover highlight color transitions animate smoothly over duration-quick (150ms) using ease-standard curve (Qt: ThemeTokens.motionQuick / ThemeTokens.easeStandard).",
-      "animationsBullet2": "Panel resizing kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.",
-      "animationsBullet3": "Respects prefers-reduced-motion on Web and ThemeTokens.animationsEnabled in Qt.",
-      "animationsDesc": "Motion tokens and kinematic timing contracts for Resizable dividers and handles.",
       "horizontalDesc": "Panels automatically adapt to available width and provide interactive drag handles with boundary limits.",
       "horizontalSandboxTitle": "Horizontal Resizable Group",
       "horizontalTitle": "Horizontal Split",
@@ -271,11 +146,6 @@
       "sandboxTitle": "Sidebar Sandbox"
     },
     "splitter": {
-      "animationsBullet1": "Gutter indicator color and opacity transitions animate smoothly over duration-quick (150ms) using ease-standard curve (Qt counterpart: ThemeTokens.motionQuick and ThemeTokens.easeStandard).",
-      "animationsBullet2": "Divider dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.",
-      "animationsBulletQt1": "Gutter indicator color and opacity transitions animate smoothly over ThemeTokens.motionQuick (150ms) using ThemeTokens.easeStandard curve.",
-      "animationsBulletQt3": "All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop.",
-      "animationsDesc": "Motion tokens and kinematic timing contracts for Splitter divider gutters.",
       "fileComponents": "▸ components",
       "fileLayout": "▸ layout",
       "fileSrc": "▾ src",
@@ -287,18 +157,10 @@
       "verticalTitle": "Vertical Splitter"
     },
     "splitterHandle": {
-      "animationsBullet1": "Active indicator color and opacity transitions animate smoothly over duration-quick (150ms) using ease-standard curve (Qt counterpart: ThemeTokens.motionQuick and ThemeTokens.easeStandard).",
-      "animationsBulletQt1": "Active indicator color and opacity transitions animate smoothly over ThemeTokens.motionQuick (150ms) using ThemeTokens.easeStandard curve.",
-      "animationsBulletQt3": "All transitions are guarded by ThemeTokens.animationsEnabled; when disabled, durations resolve to zero and animations stop.",
-      "animationsDesc": "Motion tokens and kinematic timing contracts for SplitterHandle edge indicators.",
-      "dragStaticDesc": "Handle dragging kinematics are strictly un-animated for deterministic, 60fps real-time pointer tracking.",
-      "horizontalDesc": "Handles can also be attached to horizontal edges (top or bottom) for bottom console or drawer resizing.",
       "horizontalPrefix": "Handles can also be attached to horizontal edges (",
       "horizontalSuffix": ") for bottom console or drawer resizing.",
       "overviewDesc": "Drag the right edge handle to resize the sidebar. Double click or press Enter to reset to 200.",
       "overviewHeading": "Interactive Overview",
-      "reducedMotionPrefix": "Respects",
-      "reducedMotionSuffix": "in Qt.",
       "sandboxTitle": "Splitter Handle Sandbox",
       "verticalTitle": "Vertical Edge Handle"
     },
@@ -309,7 +171,6 @@
     },
     "tabs": {
       "examplesDesc": "Visual matrix of tab variants, sizes, badges, and disabled states.",
-      "keyboardDesc": "Tabs support standard horizontal and vertical arrow navigation with automatic selection or manual Space/Enter commit.",
       "overviewDesc": "Test interactive tab switching, pill vs line underline styles, size scaling, and keyboard arrow navigation.",
       "sandboxTitle": "Tabs Sandbox"
     },
@@ -351,12 +212,9 @@
     "collapsible": {
       "card": "Card",
       "collapsed": "Collapsed",
-      "contentPanel": "Collapsible content panel",
       "expanded": "Expanded",
-      "repoDetails": "Repository Details",
       "starredRepos": "@peduarte starred 3 repositories",
-      "state": "State:",
-      "toggleDetails": "Toggle Details"
+      "state": "State:"
     },
     "panelCard": {
       "avgLatency": "Avg Latency:",
@@ -377,22 +235,18 @@
     },
     "resizable": {
       "direction": "Direction:",
-      "dragHandle": "Drag Handle",
       "editorViewport": "Editor Viewport",
       "explorerTree": "Explorer Tree",
       "handleHidden": "Handle: Hidden",
       "handleVisible": "Handle: Visible",
       "horizontal": "Horizontal",
       "integratedTerminal": "Integrated Terminal",
-      "mainRsEditor": "main.rs (Code Editor)",
       "panelAlpha": "Panel Alpha",
       "panelBeta": "Panel Beta",
       "percentHeight": "{{height}}% Height",
       "percentWidth": "{{width}}% Width",
-      "reset4060": "Reset (40/60)",
       "sidebar": "Sidebar",
       "sourceCodeEditor": "Source Code Editor",
-      "terminalOutput": "Terminal Console / Output",
       "vertical": "Vertical"
     },
     "scrollArea": {
@@ -454,8 +308,7 @@
       "navTree": "Navigation Tree",
       "reset35": "Reset (35%)",
       "reset65": "Reset (65%)",
-      "terminalConsole": "Terminal Console",
-      "terminalOutput": "Terminal Console / Output"
+      "terminalConsole": "Terminal Console"
     },
     "splitterHandle": {
       "currentWidth": "Current Width:",
@@ -531,10 +384,8 @@
     "viewportConstrainedContainer": {
       "activeFramebuffers": "Active Framebuffers ({{count}})",
       "alwaysScrollOverflow": "Always Scroll Overflow",
-      "autoBoundOnly": "Auto Bound Only",
       "autoViewport": "Auto Viewport",
       "constrainedItem": "Constrained Item #{{index}}",
-      "customMargin24": "Custom 24 Margin",
       "highMargin48": "High Margin (48)",
       "limit180": "180 Limit",
       "limit260": "260 Limit",

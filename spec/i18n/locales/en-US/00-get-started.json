@@ -118,7 +118,6 @@
       },
       "gallery": {
         "desc": "Every icon of the active specification, rendered by name from the generated registry. Adding an icon to the registry makes it appear here on both stacks at once, and the gate refuses a name that has no geometry behind it.",
-        "searchPlaceholder": "Search icons by name...",
         "title": "Icon Gallery"
       },
       "grids": {
@@ -191,8 +190,7 @@
         "titleReact": "Quick Start (React)",
         "useAppDesc": "Use in your application:",
         "useReactDesc": "Use in your React project:"
-      },
-      "title": "Introduction"
+      }
     },
     "themeTuner": {
       "playground": {

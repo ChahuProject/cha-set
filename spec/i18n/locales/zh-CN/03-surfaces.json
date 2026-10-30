@@ -19,162 +19,41 @@
       "description": "层级大纲导航树，支持引导线、激活指示器与横幅偏移适配。"
     },
     "card": {
-      "childrenDesc": "卡片复合子组件或自定义元素。",
-      "classNameDesc": "应用于容器的额外 CSS 类名。",
-      "customRadiusDesc": "显式圆角覆盖值（默认继承 ThemeTokens.radius）。",
-      "description": "展示包含页眉、标题、描述、正文与底部操作区的卡片容器。",
-      "interactiveDesc": "卡片是否提供悬停／激活态层级阴影与指针光标反馈。",
-      "sizeDesc": "卡片与复合容器的密度及内边距规格。",
-      "variantDesc": "卡片容器的视觉呈现样式。"
+      "description": "展示包含页眉、标题、描述、正文与底部操作区的卡片容器。"
     },
     "collapsible": {
-      "classNameDesc": "额外的自定义 CSS 类。",
-      "customRadiusDesc": "头部与容器的圆角半径。",
-      "defaultOpenDesc": "非受控用法下的初始展开状态。",
-      "defaultOpenDescQt": "折叠面板在加载时是否初始展开。",
-      "description": "可展开与折叠内容面板的交互式组件。",
-      "disabledDesc": "是否禁用用户交互。",
-      "disabledDescQt": "是否禁用用户交互与展开切换。",
-      "onOpenChangeDesc": "展开状态变化时触发的回调。",
-      "openDesc": "折叠面板的受控展开状态。",
-      "openDescQt": "折叠内容当前是否处于展开状态。",
-      "titleDesc": "显示于头部触发栏的标题文本。",
-      "variantDesc": "视觉容器样式变体。",
-      "variantDescQt": "视觉容器样式变体：default、card 或 ghost。"
+      "description": "可展开与折叠内容面板的交互式组件。"
     },
     "panelCard": {
-      "actionsDesc": "右对齐的头部操作元素。",
-      "badgeTextDesc": "显示于标题旁的可选徽标文本。",
-      "collapsedDesc": "受控折叠状态。",
-      "collapsibleDesc": "面板内容是否可折叠切换。",
-      "defaultCollapsedDesc": "非受控模式下的初始折叠状态。",
       "defaultTitle": "面板标题",
-      "description": "带集成可折叠分区与头部操作槽的卡片表面，适用于桌面侧边栏与检查器。",
-      "onCollapsedChangeDesc": "折叠变化处理函数。",
-      "radiusDesc": "卡片表面的圆角半径。",
-      "sizeDesc": "卡片面板的尺寸规格。",
-      "titleDesc": "面板头部标题文本或元素。"
+      "description": "带集成可折叠分区与头部操作槽的卡片表面，适用于桌面侧边栏与检查器。"
     },
     "resizable": {
-      "collapsibleDesc": "面板是否可越过最小尺寸完全折叠。",
-      "defaultSizeDesc": "分配给面板的初始百分比尺寸（0-100）。",
-      "description": "无障碍可调面板分组与布局分隔器。",
-      "directionDesc": "面板布局方向（亦支持 orientation 属性）。",
-      "handleColorDesc": "静息态分隔线背景色。",
-      "handleGripColorDesc": "抓握圆点指示器颜色。",
-      "handleHoverColorDesc": "悬停或激活态分隔条强调色。",
-      "handleThicknessDesc": "分隔条分隔边界的厚度。",
-      "maxSizeDesc": "允许的最大百分比尺寸约束。",
-      "minSizeDesc": "允许的最小百分比尺寸约束。",
-      "orientationDesc": "拆分布局方向：Qt.Horizontal 或 Qt.Vertical。",
-      "withHandleDesc": "是否在分隔条上渲染无障碍触觉可视抓握手柄。",
-      "withHandleDescQt": "是否在手柄上渲染触觉 6 点可视抓握指示器。"
+      "description": "无障碍可调面板分组与布局分隔器。"
     },
     "scrollArea": {
-      "description": "为原生滚动能力注入跨端统一视觉样式、动态双盒热区扩展及交互式步进导航按钮的高性能滚动容器。",
-      "floatingDesc": "滚动条是悬浮于视口内容之上还是占据专用沟槽布局空间。",
-      "pageStepRatioDesc": "点击向上/向下翻页时使用的视口尺寸比例。",
-      "showButtonsDesc": "悬停滚动条时是否显示步进导航按钮。",
-      "showHorizontalDesc": "是否渲染水平滚动条。",
-      "showVerticalDesc": "是否渲染垂直滚动条。",
-      "sizeDesc": "滚动条密度与尺寸。",
-      "smoothScrollDesc": "步进按钮是否使用平滑滚动行为。",
-      "viewportClassNameDesc": "内部滚动视口元素的额外 CSS 类。"
-    },
-    "scrollBar": {
-      "collapsedSizeDesc": "静息时视觉指示器的厚度。",
-      "expandedSizeDesc": "悬停时视觉指示器的厚度。",
-      "floatingDesc": "滚动条是悬浮于视口内容之上还是占据专用沟槽布局空间。",
-      "hitSizeDesc": "透明指针捕获热区的厚度。",
-      "orientationDesc": "滚动条方向轴。",
-      "sizeDesc": "滚动条密度与尺寸。"
+      "description": "为原生滚动能力注入跨端统一视觉样式、动态双盒热区扩展及交互式步进导航按钮的高性能滚动容器。"
     },
     "settingRow": {
-      "badgeDesc": "标题旁可选的尾随徽标标签。",
-      "description": "标准化偏好设置项行布局，含标题、描述、内嵌控件区与锚点闪烁高亮。",
-      "descriptionDesc": "次要说明性副标题文本。",
-      "disabledDesc": "设置行与控件是否置灰禁用。",
-      "highlightDesc": "直接强制激活高亮动画的布尔覆盖。",
-      "highlightIdDesc": "用于锚点跳转定位的唯一标识。",
-      "highlightTargetDesc": "当前激活目标标识；与 highlightId 匹配时触发脉冲。",
-      "iconDesc": "可选的前置图标或徽标头像。",
-      "nameDesc": "设置项的主要标题标签。",
-      "sizeDesc": "密度尺寸变体（'default' 或 'sm'）。"
+      "description": "标准化偏好设置项行布局，含标题、描述、内嵌控件区与锚点闪烁高亮。"
     },
     "sidebar": {
-      "collapsedDesc": "侧边栏当前是否处于折叠状态。",
-      "collapsibleDesc": "桌面端关闭时的折叠行为模式。",
-      "defaultOpenDesc": "SidebarProvider 的初始展开状态。",
-      "description": "可组合、响应式、可调尺寸的桌面级侧边栏导航系统，支持图标折叠、抽屉模式与自定义 rem 尺寸。",
-      "iconWidthDesc": "图标模式折叠时的宽度。",
-      "maxWidthDesc": "可拖拽的最大宽度限制。",
-      "minWidthDesc": "可拖拽的最小宽度限制。",
-      "resizableDesc": "启用边缘拖拽轨道以动态调整尺寸。",
-      "sideDesc": "侧边栏布局的停靠方位。",
-      "sidebarWidthDesc": "侧边栏展开时的绑定宽度。",
-      "variantDesc": "视觉容器样式变体。"
+      "description": "可组合、响应式、可调尺寸的桌面级侧边栏导航系统，支持图标折叠、抽屉模式与自定义 rem 尺寸。"
     },
     "splitter": {
-      "description": "面向 IDE 与桌面工具包的带可拖拽分隔条与折叠限制的多窗格可调布局容器。",
-      "gutterSizeDesc": "可交互分隔条的厚度。",
-      "initialSizeDesc": "非受控用法下的初始尺寸百分比。",
-      "leftItemDesc": "首个窗格内容组件。",
-      "maxSizeDesc": "允许的最大百分比边界。",
-      "minSizeDesc": "允许的最小百分比边界。",
-      "onChangeDesc": "拖拽时携带新百分比触发的回调。",
-      "orientationDesc": "分隔条的方向。",
-      "rightItemDesc": "第二个窗格内容组件。",
-      "sizeDesc": "受控百分比宽度／高度（0-100）。"
+      "description": "面向 IDE 与桌面工具包的带可拖拽分隔条与折叠限制的多窗格可调布局容器。"
     },
     "splitterHandle": {
-      "activeVisualThicknessDesc": "悬停或拖拽时高亮可见细线的厚度。",
-      "defaultSizeDesc": "双击或按 Enter 时恢复的尺寸。",
-      "description": "具备基准坐标防抖、最小／最大钳制与键盘导航的边缘缩放手柄。",
-      "disabledDesc": "是否禁用手柄缩放。",
-      "edgeDesc": "控制目标面板哪条边缘的缩放手柄。",
-      "hitThicknessDesc": "鼠标交互热区的厚度。",
-      "liveUpdateDesc": "拖拽过程中是否连续触发尺寸更新。",
-      "maxSizeDesc": "允许的最大尺寸边界。",
-      "minSizeDesc": "允许的最小尺寸边界。",
-      "targetSizeDesc": "被缩放目标元素的当前尺寸（宽或高）。",
-      "visualThicknessDesc": "静息态可见细线的厚度。"
+      "description": "具备基准坐标防抖、最小／最大钳制与键盘导航的边缘缩放手柄。"
     },
     "tableOfContents": {
-      "activeIdDesc": "当前激活的章节 ID。",
-      "description": "带导轨线、激活指示器与横幅偏移适配的层级大纲导航树。",
-      "itemsDesc": "带层级与嵌套子项的大纲条目数组。",
-      "onSelectDesc": "选中或激活大纲条目时触发的回调。",
-      "showTitleDesc": "是否显示头部标题标签。",
-      "showTrackDesc": "是否渲染垂直导轨与激活指示标记。",
-      "sizeDesc": "大纲标签的尺寸密度与字号缩放。",
-      "targetOffsetDesc": "安全滚动偏移，确保标题不被顶部横幅遮挡。",
-      "titleDesc": "显示于大纲条目上方的头部标题文本。",
-      "topOffsetDesc": "吸顶定位的上方偏移，用于适配全局公告横幅。",
-      "variantDesc": "大纲容器的视觉样式变体。"
+      "description": "带导轨线、激活指示器与横幅偏移适配的层级大纲导航树。"
     },
     "tabs": {
-      "badgeDesc": "在触发器内渲染的可选计数徽章或文本标签。",
-      "defaultValueDesc": "初始渲染时应激活的选项卡值（非受控）。",
-      "description": "一组层叠内容区（称为选项卡面板），一次显示其中之一。",
-      "disabledDesc": "在 TabsTrigger 上为 true 时阻止该选项卡的交互。",
-      "iconDesc": "在触发器内渲染的可选前置图标元素。",
-      "onValueChangeDesc": "激活选项卡变化时调用的事件处理函数。",
-      "orientationDesc": "选项卡的方向（控制键盘导航轴）。",
-      "sizeDesc": "选项卡触发器与容器的尺寸规格。",
-      "valueDesc": "当前激活选项卡的受控值。",
-      "variantDesc": "视觉呈现样式：胶囊容器（default）或下划线选项卡栏（line）。"
+      "description": "一组层叠内容区（称为选项卡面板），一次显示其中之一。"
     },
     "viewportConstrainedContainer": {
-      "bgDesc": "背景表面填充颜色。",
-      "borderDesc": "边框轮廓颜色。",
-      "childrenDesc": "渲染于容器内部的元素。",
-      "classNameDesc": "自定义样式 CSS 类名。",
-      "customRadiusDesc": "容器的圆角半径。",
-      "description": "根据锚点矩形下方可用视口空间动态约束最大高度的容器，支持自定义上限覆盖与平滑垂直滚动。",
-      "marginDesc": "容器底部与视口底边之间的预留边距。",
-      "maxHeightDesc": "容器最大高度的可选上限。",
-      "minHeightDesc": "最小允许高度下限。",
-      "overflowDesc": "垂直溢出滚动策略。"
+      "description": "根据锚点矩形下方可用视口空间动态约束最大高度的容器，支持自定义上限覆盖与平滑垂直滚动。"
     }
   },
   "desktopComposite": {
@@ -210,10 +89,6 @@
       "sandboxTitle": "面板卡片沙盒"
     },
     "resizable": {
-      "animationsBullet1": "分隔条抓握指示器的边框与悬停高亮颜色过渡经由 duration-quick（150ms）与 ease-standard 曲线平滑运行（Qt：ThemeTokens.motionQuick／ThemeTokens.easeStandard）。",
-      "animationsBullet2": "面板尺寸调整运动学严格禁用动画，保证确定性 60fps 实时指针追踪。",
-      "animationsBullet3": "遵循 Web 端 prefers-reduced-motion 与 Qt 端 ThemeTokens.animationsEnabled。",
-      "animationsDesc": "可调分隔条与手柄的动效令牌与运动学时序契约。",
       "horizontalDesc": "面板自动适应可用宽度，并提供带边界限制的交互式拖拽手柄。",
       "horizontalSandboxTitle": "水平可调分组",
       "horizontalTitle": "水平拆分",
@@ -271,11 +146,6 @@
       "sandboxTitle": "侧边栏沙盒"
     },
     "splitter": {
-      "animationsBullet1": "分隔条指示器的颜色与透明度过渡以 duration-quick（150ms）与 ease-standard 曲线平滑呈现（Qt 对应：ThemeTokens.motionQuick 与 ThemeTokens.easeStandard）。",
-      "animationsBullet2": "分隔条拖拽运动学严格无动画，以保证确定性 60fps 实时指针追踪。",
-      "animationsBulletQt1": "分隔条指示器的颜色与透明度过渡以 ThemeTokens.motionQuick（150ms）与 ThemeTokens.easeStandard 曲线平滑呈现。",
-      "animationsBulletQt3": "所有过渡均受 ThemeTokens.animationsEnabled 守卫；禁用时时长归零且动画停止。",
-      "animationsDesc": "针对 Splitter 分隔条的运动令牌与运动学时序契约。",
       "fileComponents": "▸ 组件",
       "fileLayout": "▸ 布局",
       "fileSrc": "▾ 源码",
@@ -287,18 +157,10 @@
       "verticalTitle": "垂直分栏"
     },
     "splitterHandle": {
-      "animationsBullet1": "指示器颜色与透明度过渡以 duration-quick (150ms) 与 ease-standard 曲线平滑呈现（Qt 对应：ThemeTokens.motionQuick 与 ThemeTokens.easeStandard）。",
-      "animationsBulletQt1": "指示器颜色与透明度过渡以 ThemeTokens.motionQuick（150ms）与 ThemeTokens.easeStandard 曲线平滑呈现。",
-      "animationsBulletQt3": "所有过渡均受 ThemeTokens.animationsEnabled 守卫；禁用时时长归零且动画停止。",
-      "animationsDesc": "SplitterHandle 边缘指示器的 motion 令牌与运动学时间契约。",
-      "dragStaticDesc": "手柄拖拽运动学严格禁用动画，以保证确定性 60fps 实时指针追踪。",
-      "horizontalDesc": "手柄亦可吸附于水平边缘（top 或 bottom），用于底部控制台或抽屉调参。",
       "horizontalPrefix": "手柄亦可吸附于水平边缘（",
       "horizontalSuffix": "），用于底部控制台或抽屉调参。",
       "overviewDesc": "拖动右侧边缘手柄调整侧边栏宽度。双击或按 Enter 可重置为 200。",
       "overviewHeading": "交互式概览",
-      "reducedMotionPrefix": "遵循",
-      "reducedMotionSuffix": "（Qt 端）。",
       "sandboxTitle": "分栏手柄沙盒",
       "verticalTitle": "垂直边缘手柄"
     },
@@ -309,7 +171,6 @@
     },
     "tabs": {
       "examplesDesc": "选项卡变体、尺寸、徽章与禁用状态的视觉矩阵。",
-      "keyboardDesc": "Tabs 支持标准水平与垂直方向键导航，可自动选中或手动以 Space／Enter 确认。",
       "overviewDesc": "测试交互式选项卡切换、胶囊与下划线样式、尺寸缩放及键盘方向键导航。",
       "sandboxTitle": "Tabs 沙盒"
     },
@@ -351,12 +212,9 @@
     "collapsible": {
       "card": "卡片",
       "collapsed": "已折叠",
-      "contentPanel": "折叠内容面板",
       "expanded": "已展开",
-      "repoDetails": "仓库详情",
       "starredRepos": "@peduarte 标星了 3 个仓库",
-      "state": "展开状态:",
-      "toggleDetails": "切换详情"
+      "state": "展开状态:"
     },
     "panelCard": {
       "avgLatency": "平均延迟:",
@@ -377,22 +235,18 @@
     },
     "resizable": {
       "direction": "方向:",
-      "dragHandle": "拖动手柄",
       "editorViewport": "编辑器视口",
       "explorerTree": "资源管理器树",
       "handleHidden": "手柄: 隐藏",
       "handleVisible": "手柄: 显示",
       "horizontal": "水平",
       "integratedTerminal": "集成终端",
-      "mainRsEditor": "main.rs (代码编辑器)",
       "panelAlpha": "面板 Alpha",
       "panelBeta": "面板 Beta",
       "percentHeight": "{{height}}% 高度",
       "percentWidth": "{{width}}% 宽度",
-      "reset4060": "重置 (40/60)",
       "sidebar": "侧边栏",
       "sourceCodeEditor": "源代码编辑器",
-      "terminalOutput": "终端控制台 / 输出",
       "vertical": "垂直"
     },
     "scrollArea": {
@@ -454,8 +308,7 @@
       "navTree": "导航树",
       "reset35": "重置 (35%)",
       "reset65": "重置 (65%)",
-      "terminalConsole": "终端控制台",
-      "terminalOutput": "终端控制台 / 输出"
+      "terminalConsole": "终端控制台"
     },
     "splitterHandle": {
       "currentWidth": "当前宽度:",
@@ -531,10 +384,8 @@
     "viewportConstrainedContainer": {
       "activeFramebuffers": "活动帧缓冲区 ({{count}})",
       "alwaysScrollOverflow": "始终滚动溢出",
-      "autoBoundOnly": "仅自动边界",
       "autoViewport": "自动视口",
       "constrainedItem": "受限项目 #{{index}}",
-      "customMargin24": "自定义 24 边距",
       "highMargin48": "大外边距 (48)",
       "limit180": "180 限制",
       "limit260": "260 限制",
