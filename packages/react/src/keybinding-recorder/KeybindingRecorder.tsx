@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { Badge } from '../badge/Badge';
 import { Button } from '../button/Button';
+import { useChaSetI18n } from '../i18n';
 import { Kbd } from '../kbd/Kbd';
 import { KeyboardIcon, XIcon } from '../lib/icons';
 import { cn } from '../lib/utils';
+import { Tooltip } from '../tooltip/Tooltip';
 
 export interface KeybindingValue {
   ctrl: boolean;
@@ -90,10 +92,27 @@ export function KeybindingRecorder({
   autoRecord = false,
   className,
 }: KeybindingRecorderProps) {
+  const { t } = useChaSetI18n();
   const [isRecording, setIsRecording] = React.useState(autoRecord);
   const parsedValue = React.useMemo(() => parseKeybinding(value), [value]);
   const [draft, setDraft] = React.useState<KeybindingValue>(parsedValue);
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const [recorderWidth, setRecorderWidth] = React.useState<number | null>(null);
+
+  React.useLayoutEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const measure = () => {
+      setRecorderWidth(el.clientWidth);
+    };
+    measure();
+
+    if (typeof ResizeObserver !== 'undefined') {
+      const ro = new ResizeObserver(measure);
+      ro.observe(el);
+      return () => ro.disconnect();
+    }
+  }, []);
 
   React.useEffect(() => {
     setDraft(parseKeybinding(value));
@@ -175,19 +194,46 @@ export function KeybindingRecorder({
   );
 
   const isSm = size === 'sm';
+  const hasValue = Boolean(draft.code || draft.ctrl || draft.alt || draft.shift || draft.meta);
+  const showClear = !isRecording && clearable && hasValue && !disabled;
+  const shortcutStr = formatKeybinding(draft);
+
+  const availableBadgeWidth = React.useMemo(() => {
+    if (recorderWidth === null || recorderWidth <= 0) return undefined;
+    const pad = isSm ? 16 : 24;
+    const iconW = isSm ? 22 : 24;
+    const clearW = showClear ? 28 : 0;
+    return Math.max(20, recorderWidth - pad - iconW - clearW);
+  }, [recorderWidth, isSm, showClear]);
+
+  const tooltipTitle = isRecording
+    ? t('components.keybindingRecorder.recordingPrompt', 'Recording key combination (Esc to cancel)')
+    : hasValue
+      ? `${t('components.keybindingRecorder.currentBinding', 'Current shortcut: ')}${shortcutStr}`
+      : t('components.keybindingRecorder.noBinding', 'No keybinding set');
+
+  const tooltipDesc = !isRecording
+    ? t('components.keybindingRecorder.clickToRecordHint', 'Click to record shortcut')
+    : undefined;
+
+  const recorderTooltipContent = (
+    <div className="flex flex-col gap-0.5">
+      <span className="font-semibold text-xs text-popover-foreground">{tooltipTitle}</span>
+      {tooltipDesc && <span className="text-caption text-muted-foreground">{tooltipDesc}</span>}
+    </div>
+  );
 
   const renderBadges = (binding: KeybindingValue) => {
     if (!binding.code && !binding.ctrl && !binding.alt && !binding.shift && !binding.meta) {
-      return <span className="text-xs text-muted-foreground">{placeholder}</span>;
+      return <span className="truncate text-xs text-muted-foreground">{placeholder}</span>;
     }
-
-    const shortcutStr = formatKeybinding(binding);
 
     return (
       <Kbd
         shortcut={shortcutStr}
         size={isSm ? 'sm' : 'default'}
         compact="auto"
+        availableWidth={availableBadgeWidth}
         variant="outline"
       />
     );
@@ -213,33 +259,46 @@ export function KeybindingRecorder({
         className,
       )}
     >
-      <div className="flex min-w-0 items-center gap-2">
-        <KeyboardIcon
-          className={cn(
-            'shrink-0 text-muted-foreground',
-            isSm ? 'size-3.5' : 'size-4',
-            isRecording && 'animate-bounce text-primary',
+      <Tooltip
+        content={recorderTooltipContent}
+        side="top"
+        delayDuration={250}
+        disabled={disabled}
+        className="flex min-w-0 flex-1 items-center gap-2 overflow-hidden"
+      >
+        <div className="flex min-w-0 flex-1 items-center gap-2 overflow-hidden">
+          <KeyboardIcon
+            className={cn(
+              'shrink-0 text-muted-foreground',
+              isSm ? 'size-3.5' : 'size-4',
+              isRecording && 'animate-bounce text-primary',
+            )}
+          />
+          {isRecording ? (
+            <span className="truncate text-xs font-medium text-primary">{recordingText}</span>
+          ) : (
+            renderBadges(draft)
           )}
-        />
-        {isRecording ? (
-          <span className="text-xs font-medium text-primary">{recordingText}</span>
-        ) : (
-          renderBadges(draft)
-        )}
-      </div>
+        </div>
+      </Tooltip>
 
-      {!isRecording && clearable && (draft.code || draft.ctrl || draft.alt || draft.shift || draft.meta) && !disabled && (
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-xs"
-          onClick={handleClear}
-          className="size-5 rounded-full hover:bg-muted"
-          title="Clear keybinding"
-          aria-label="Clear keybinding"
+      {showClear && (
+        <Tooltip
+          content={t('components.keybindingRecorder.clearShortcut', 'Clear keybinding')}
+          side="top"
+          delayDuration={250}
         >
-          <XIcon className="size-3 text-muted-foreground" />
-        </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-xs"
+            onClick={handleClear}
+            className="size-5 rounded-full hover:bg-muted shrink-0"
+            aria-label={t('components.keybindingRecorder.clearShortcut', 'Clear keybinding')}
+          >
+            <XIcon className="size-3 text-muted-foreground" />
+          </Button>
+        </Tooltip>
       )}
     </div>
   );

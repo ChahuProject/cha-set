@@ -167,7 +167,28 @@ FocusScope {
                     root.value = ""
                     root.keybindingRecorded("")
                 }
+
+                ChaSetTooltip {
+                    text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingRecorder.clearShortcut", "Clear shortcut") : "Clear shortcut"
+                    side: "top"
+                    delay: 250
+                }
             }
+        }
+
+        ChaSetTooltip {
+            id: recorderTooltip
+            enabled: !root.disabled && !(clearBtn.visible && clearBtn.hovered)
+            text: root.recording
+                ? ((typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingRecorder.recordingPrompt", "Recording key combination (Esc to cancel)") : "Recording key combination (Esc to cancel)")
+                : (root.keybinding.length > 0
+                    ? (((typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingRecorder.currentBinding", "Current shortcut: ") : "Current shortcut: ") + root.keybinding)
+                    : ((typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingRecorder.noBinding", "No keybinding set") : "No keybinding set"))
+            description: !root.recording
+                ? ((typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingRecorder.clickToRecordHint", "Click to record shortcut") : "Click to record shortcut")
+                : ""
+            side: "top"
+            delay: 250
         }
 
         MouseArea {

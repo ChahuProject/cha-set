@@ -183,10 +183,13 @@
     },
     "keybindingRecorder": {
       "aliasDesc": "value 的别名。",
+      "clearShortcut": "清除快捷键",
       "clearableDesc": "设置快捷键后是否渲染清除按钮。",
       "clickToRecord": "点击录制框并按下快捷键组合:",
+      "clickToRecordHint": "点击录制快捷键",
       "compactSm": "紧凑 sm 尺寸",
       "cornerRadiusDesc": "输入容器的圆角半径。",
+      "currentBinding": "当前快捷键：",
       "defaultWithClear": "默认尺寸 (带清除按钮)",
       "description": "交互式快捷键录制控件，支持捕获桌面应用修饰键组合 (Ctrl, Shift, Alt, Meta/Cmd) 与热键序列。",
       "disabledDesc": "录制器是否禁用。",

@@ -273,75 +273,104 @@ export function KeybindingManager({
         <div className="flex flex-wrap items-center gap-2">
           {searchable && (
             <div className="w-64 max-w-full">
-              <Input
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={t('components.keybindingManager.searchPlaceholder', 'Search actions or keys (e.g. Ctrl+)...')}
-                leftIcon={<SearchIcon className="size-3.5" />}
-                className="h-8 text-xs"
-              />
+              <Tooltip
+                content={t('components.keybindingManager.searchTooltip', 'Search actions or keys (e.g. Ctrl+)...')}
+                side="bottom"
+                delayDuration={300}
+                className="w-full block"
+              >
+                <Input
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder={t('components.keybindingManager.searchPlaceholder', 'Search actions or keys (e.g. Ctrl+)...')}
+                  leftIcon={<SearchIcon className="size-3.5" />}
+                  className="h-8 text-xs"
+                />
+              </Tooltip>
             </div>
           )}
 
           {scopes.length > 0 && (
-            <Select value={selectedScope} onValueChange={setSelectedScope}>
-              <SelectTrigger className="h-8 w-36 text-xs">
-                <SelectValue placeholder={t('components.keybindingManager.allScopes', 'All Scopes')} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">{t('components.keybindingManager.allScopes', 'All Scopes')}</SelectItem>
-                {scopes.map((sc) => (
-                  <SelectItem key={sc.id} value={sc.id}>
-                    {sc.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <Tooltip
+              content={t('components.keybindingManager.scopeFilterTooltip', 'Filter keybinding actions by active scope')}
+              side="bottom"
+              delayDuration={300}
+            >
+              <Select value={selectedScope} onValueChange={setSelectedScope}>
+                <SelectTrigger className="h-8 w-36 text-xs">
+                  <SelectValue placeholder={t('components.keybindingManager.allScopes', 'All Scopes')} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">{t('components.keybindingManager.allScopes', 'All Scopes')}</SelectItem>
+                  {scopes.map((sc) => (
+                    <SelectItem key={sc.id} value={sc.id}>
+                      {sc.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </Tooltip>
           )}
 
           {sameChordFilter && (
-            <div className="flex items-center gap-1 rounded-full border border-border bg-muted/60 px-2.5 py-0.5 text-xs text-foreground">
-              <span>{t('components.keybindingManager.sameChord', 'Same Chord:')}</span>
-              <span className="font-mono font-semibold text-primary">{sameChordFilter}</span>
-              <button
-                type="button"
-                onClick={() => setSameChordFilter('')}
-                className="ml-1 cursor-pointer text-muted-foreground hover:text-foreground"
-                aria-label={t('common.clear', 'Clear')}
-              >
-                <XIcon className="size-3" />
-              </button>
-            </div>
+            <Tooltip
+              content={t('components.keybindingManager.clearSameChord', 'Clear chord filter')}
+              side="bottom"
+              delayDuration={300}
+            >
+              <div className="flex items-center gap-1 rounded-full border border-border bg-muted/60 px-2.5 py-0.5 text-xs text-foreground">
+                <span>{t('components.keybindingManager.sameChord', 'Same Chord:')}</span>
+                <span className="font-mono font-semibold text-primary">{sameChordFilter}</span>
+                <button
+                  type="button"
+                  onClick={() => setSameChordFilter('')}
+                  className="ml-1 cursor-pointer text-muted-foreground hover:text-foreground"
+                  aria-label={t('components.keybindingManager.clearSameChord', 'Clear chord filter')}
+                >
+                  <XIcon className="size-3" />
+                </button>
+              </div>
+            </Tooltip>
           )}
         </div>
 
         <div className="flex items-center gap-2">
           {allowExportCheatSheet && (
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={handleExport}
-              className="h-8 gap-1.5 text-xs"
-              title={t('components.keybindingManager.exportTitle', 'Export Markdown reference cheat sheet')}
+            <Tooltip
+              content={t('components.keybindingManager.exportTitle', 'Export Markdown reference cheat sheet')}
+              side="bottom"
+              delayDuration={300}
             >
-              <DownloadIcon className="size-3.5" />
-              <span>{t('components.keybindingManager.export', 'Export Sheet')}</span>
-            </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={handleExport}
+                className="h-8 gap-1.5 text-xs"
+              >
+                <DownloadIcon className="size-3.5" />
+                <span>{t('components.keybindingManager.export', 'Export Sheet')}</span>
+              </Button>
+            </Tooltip>
           )}
 
           {allowResetAll && onResetAll && (
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={onResetAll}
-              className="h-8 gap-1.5 text-xs hover:border-destructive/60 hover:text-destructive"
-              title={t('components.keybindingManager.resetAllTitle', 'Revert all shortcuts to defaults')}
+            <Tooltip
+              content={t('components.keybindingManager.resetAllTitle', 'Revert all shortcuts to defaults')}
+              side="bottom"
+              delayDuration={300}
             >
-              <RotateCcwIcon className="size-3.5" />
-              <span>{t('components.keybindingManager.resetAll', 'Reset All')}</span>
-            </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={onResetAll}
+                className="h-8 gap-1.5 text-xs hover:border-destructive/60 hover:text-destructive"
+              >
+                <RotateCcwIcon className="size-3.5" />
+                <span>{t('components.keybindingManager.resetAll', 'Reset All')}</span>
+              </Button>
+            </Tooltip>
           )}
         </div>
       </div>
@@ -471,38 +500,37 @@ export function KeybindingManager({
                       {/* Right: Badges & Row Actions */}
                       <div className="ml-auto flex items-center gap-2 shrink-0">
                         {showScopeBadge && (
-                          <Badge variant="outline" className="px-2 py-0.5 text-caption font-normal text-muted-foreground">
-                            {scopeName}
-                          </Badge>
+                          <Tooltip content={`${t('components.keybindingManager.scopeBadgeTooltip', 'Active scope for this action')}: ${scopeName}`}>
+                            <Badge variant="outline" className="px-2 py-0.5 text-caption font-normal text-muted-foreground">
+                              {scopeName}
+                            </Badge>
+                          </Tooltip>
                         )}
 
-                        {showSourceBadge && (
-                          <Badge
-                            variant={isModified ? 'secondary' : 'outline'}
-                            className={cn(
-                              'px-2 py-0.5 text-caption font-semibold',
-                              isModified
-                                ? 'bg-primary/10 text-primary border-primary/20'
-                                : 'text-muted-foreground',
-                            )}
-                          >
-                            {isModified
-                              ? t('components.keybindingManager.userModified', 'User')
-                              : t('components.keybindingManager.defaultSource', 'Built-in')}
-                          </Badge>
+                        {showSourceBadge && isModified && (
+                          <Tooltip content={t('components.keybindingManager.userModifiedTooltip', 'This keybinding has been modified by the user')}>
+                            <Badge
+                              variant="secondary"
+                              className="px-2 py-0.5 text-caption font-semibold bg-primary/10 text-primary border-primary/20"
+                            >
+                              {t('components.keybindingManager.userModified', 'User')}
+                            </Badge>
+                          </Tooltip>
                         )}
 
                         {hasConflict && (
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleOpenConflict(action)}
-                            className="h-6 gap-1 border-amber-500/40 bg-amber-500/10 px-2 text-caption font-semibold text-amber-700 hover:bg-amber-500/20 dark:text-amber-400"
-                          >
-                            <AlertTriangleIcon className="size-3" />
-                            <span>{t('components.keybindingManager.conflict', 'Conflict')}</span>
-                          </Button>
+                          <Tooltip content={t('components.keybindingManager.conflictTooltip', 'Shortcut key conflict detected; click to resolve')}>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleOpenConflict(action)}
+                              className="h-6 gap-1 border-amber-500/40 bg-amber-500/10 px-2 text-caption font-semibold text-amber-700 hover:bg-amber-500/20 dark:text-amber-400"
+                            >
+                              <AlertTriangleIcon className="size-3" />
+                              <span>{t('components.keybindingManager.conflict', 'Conflict')}</span>
+                            </Button>
+                          </Tooltip>
                         )}
 
                         {isModified && onResetAction && !action.disabled && (

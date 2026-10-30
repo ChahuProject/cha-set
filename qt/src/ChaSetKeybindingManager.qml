@@ -284,6 +284,11 @@ FocusScope {
                         onTextChanged: {
                             if (root.searchQuery !== text) root.searchQuery = text;
                         }
+
+                        ChaSetTooltip {
+                            text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingManager.searchTooltip", searchBox.placeholderText) : searchBox.placeholderText
+                            side: "bottom"
+                        }
                     }
 
                     // Scope filter Select dropdown
@@ -314,6 +319,11 @@ FocusScope {
                             if (val !== undefined && val !== null && root.scopeFilterId !== val) {
                                 root.scopeFilterId = String(val);
                             }
+                        }
+
+                        ChaSetTooltip {
+                            text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingManager.scopeFilterTooltip", "Filter keybinding actions by active scope") : "Filter keybinding actions by active scope"
+                            side: "bottom"
                         }
                     }
 
@@ -350,6 +360,11 @@ FocusScope {
                                 width: ThemeTokens.dp(18)
                                 anchors.verticalCenter: parent.verticalCenter
                                 onClicked: root.sameChordFilter = ""
+
+                                ChaSetTooltip {
+                                    text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingManager.clearSameChord", "Clear chord filter") : "Clear chord filter"
+                                    side: "bottom"
+                                }
                             }
                         }
                     }
@@ -369,6 +384,11 @@ FocusScope {
                         size: "sm"
                         height: ThemeTokens.dp(32)
                         onClicked: root.exportCheatSheet()
+
+                        ChaSetTooltip {
+                            text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingManager.exportTitle", "Export Markdown reference cheat sheet") : "Export Markdown reference cheat sheet"
+                            side: "bottom"
+                        }
                     }
 
                     // Reset All button
@@ -380,6 +400,11 @@ FocusScope {
                         size: "sm"
                         height: ThemeTokens.dp(32)
                         onClicked: root.resetAllRequested()
+
+                        ChaSetTooltip {
+                            text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingManager.resetAllTitle", "Revert all shortcuts to defaults") : "Revert all shortcuts to defaults"
+                            side: "bottom"
+                        }
                     }
                 }
             }
@@ -493,7 +518,8 @@ FocusScope {
 
                                 ChaSetTooltip {
                                     anchors.fill: parent
-                                    text: delegateRoot.actionData ? (delegateRoot.actionData.name + (delegateRoot.actionData.description ? ("\n" + delegateRoot.actionData.description) : "")) : ""
+                                    text: delegateRoot.actionData ? delegateRoot.actionData.name : ""
+                                    description: delegateRoot.actionData ? (delegateRoot.actionData.description || "") : ""
                                     side: "top"
                                     delay: 300
                                 }
@@ -545,6 +571,11 @@ FocusScope {
                                             root.bindingChanged(delegateRoot.actionData.id, chordsRow.chordList.length, "");
                                         }
                                     }
+
+                                    ChaSetTooltip {
+                                        text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingManager.addAlternative", "Add alternative shortcut") : "Add alternative shortcut"
+                                        side: "top"
+                                    }
                                 }
                             }
 
@@ -561,17 +592,25 @@ FocusScope {
                                     size: "sm"
                                     text: delegateRoot.actionData ? root.getScopeName(delegateRoot.actionData.scopeId) : ""
                                     anchors.verticalCenter: parent.verticalCenter
+
+                                    ChaSetTooltip {
+                                        text: ((typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingManager.scopeBadgeTooltip", "Active scope for this action") : "Active scope for this action") + ": " + (delegateRoot.actionData ? root.getScopeName(delegateRoot.actionData.scopeId) : "")
+                                        side: "top"
+                                    }
                                 }
 
-                                // User / Built-in Badge
+                                // User Badge (Built-in badge removed per design specification)
                                 ChaSetBadge {
-                                    visible: root.showSourceBadge
-                                    variant: delegateRoot.isModified ? "secondary" : "outline"
+                                    visible: root.showSourceBadge && delegateRoot.isModified
+                                    variant: "secondary"
                                     size: "sm"
-                                    text: delegateRoot.isModified
-                                          ? ((typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingManager.userModified", "User") : "User")
-                                          : ((typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingManager.defaultSource", "Built-in") : "Built-in")
+                                    text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingManager.userModified", "User") : "User"
                                     anchors.verticalCenter: parent.verticalCenter
+
+                                    ChaSetTooltip {
+                                        text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingManager.userModifiedTooltip", "This keybinding has been modified by the user") : "This keybinding has been modified by the user"
+                                        side: "top"
+                                    }
                                 }
 
                                 // Conflict Button
@@ -588,6 +627,11 @@ FocusScope {
                                             root.openConflictDialog(delegateRoot.actionData);
                                         }
                                     }
+
+                                    ChaSetTooltip {
+                                        text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingManager.conflictTooltip", "Shortcut key conflict detected; click to resolve") : "Shortcut key conflict detected; click to resolve"
+                                        side: "top"
+                                    }
                                 }
 
                                 // Action Reset Button
@@ -603,6 +647,11 @@ FocusScope {
                                         if (delegateRoot.actionData) {
                                             root.actionResetRequested(delegateRoot.actionData.id);
                                         }
+                                    }
+
+                                    ChaSetTooltip {
+                                        text: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingManager.resetAction", "Reset to factory default") : "Reset to factory default"
+                                        side: "top"
                                     }
                                 }
                             }

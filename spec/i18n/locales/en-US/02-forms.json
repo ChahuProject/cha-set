@@ -183,10 +183,13 @@
     },
     "keybindingRecorder": {
       "aliasDesc": "Alias for value.",
+      "clearShortcut": "Clear keybinding",
       "clearableDesc": "Whether to display a clear button when a shortcut is set.",
       "clickToRecord": "Click recorder box and press shortcut combination:",
+      "clickToRecordHint": "Click to record shortcut",
       "compactSm": "Compact sm Tier",
       "cornerRadiusDesc": "Corner radius of the input container.",
+      "currentBinding": "Current shortcut: ",
       "defaultWithClear": "Default Size (with Clear)",
       "description": "Interactive keyboard sequence recorder that captures desktop accelerator combinations (Ctrl, Alt, Shift, Meta).",
       "disabledDesc": "Whether the recorder is disabled.",

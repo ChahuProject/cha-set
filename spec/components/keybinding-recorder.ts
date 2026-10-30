@@ -2,6 +2,15 @@ import { z } from 'zod';
 
 /**
  * Neutral API contract for KeybindingRecorder component.
+ *
+ * Behavioral requirements:
+ * 1. Space-constrained auto-compaction: when rendered within narrow containers (e.g. w-36),
+ *    the embedded Kbd switches to symbol representation (⌃⇧P) using availableWidth to prevent
+ *    horizontal layout overflow.
+ * 2. Cross-stack tooltips: hovering on the recorder capsule displays a localized two-tier tooltip
+ *    indicating current shortcut and click-to-record guidance (or recording state).
+ * 3. Clear button: when clearable and populated, renders a dedicated clear button with its own
+ *    decoupled tooltip and cursor semantics.
  */
 export const keybindingValueSchema = z.object({
   ctrl: z.boolean().default(false),

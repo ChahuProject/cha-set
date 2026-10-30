@@ -265,6 +265,7 @@ ChaSetSquircle {
             font.pixelSize: root.isSm ? Typography.sizeSmall : Typography.sizeBody
             color: isDark ? Qt.rgba(148.0 / 255.0, 163.0 / 255.0, 184.0 / 255.0, 1.0) : Qt.rgba(100.0 / 255.0, 116.0 / 255.0, 139.0 / 255.0, 1.0)
             visible: inputInner.text === ""
+            elide: Text.ElideRight
         }
     }
 

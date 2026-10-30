@@ -56,6 +56,18 @@ export const keybindingActionItemSchema = z.object({
 
 /**
  * Neutral API contract for KeybindingManager component.
+ *
+ * Behavioral requirements:
+ * 1. Comprehensive tooltips: all interactive and informational controls (search input, scope
+ *    filter select, cheat sheet export, reset all, action titles/descriptions, keybinding capsules,
+ *    alternative chord addition, scope badges, user-modified status badges, conflict warnings,
+ *    and action reset buttons) MUST provide localized ChaSet tooltips across both React and Qt.
+ * 2. Two-tier action tooltips: action title and description tooltips display bold action names
+ *    with subdued descriptive captions (matching ChaSetTooltip text and description properties).
+ * 3. Search placeholder ellipsis: when the search box placeholder text overflows, it is truncated
+ *    with an ellipsis ('...'), and hovering reveals the full placeholder query guide in a tooltip.
+ * 4. Modified badge semantics: only custom modified bindings display a 'User' status badge;
+ *    unmodified actions represent factory built-ins by omission to maintain visual cleanliness.
  */
 export const keybindingManagerSchema = z.object({
   actions: z.array(keybindingActionItemSchema),
