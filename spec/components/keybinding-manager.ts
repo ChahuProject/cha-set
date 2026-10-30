@@ -50,8 +50,8 @@ export const keybindingActionItemSchema = z.object({
   defaultChords: z.array(z.string()).default([]),
   hasConflict: z.boolean().default(false),
   conflictOccupiers: z.array(keybindingConflictOccupierSchema).default([]),
-  disabled: z.boolean().default(false),
-  tags: z.array(z.string()).default([]),
+  disabled: z.boolean().optional(),
+  tags: z.array(z.string()).optional(),
 });
 
 /**

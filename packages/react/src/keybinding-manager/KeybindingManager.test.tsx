@@ -187,7 +187,7 @@ describe('KeybindingManager', () => {
     fireEvent.click(exportBtn);
 
     expect(handleExport).toHaveBeenCalledTimes(1);
-    expect(handleExport.mock.calls[0][0]).toContain('# Keyboard Shortcuts Reference');
-    expect(handleExport.mock.calls[0][0]).toContain('Save File');
+    expect(handleExport.mock.calls[0]?.[0]).toContain('# Keyboard Shortcuts Reference');
+    expect(handleExport.mock.calls[0]?.[0]).toContain('Save File');
   });
 });

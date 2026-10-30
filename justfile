@@ -23,38 +23,91 @@ queue-pause:
 queue-resume:
     @pwsh -NoProfile -File tools/bque-runner.ps1 -Resume
 
-# ---------- 常用 Showcase 开发入口 ----------
+# ---------- Showcase 开发与调试入口 ----------
 
-# 启动 React 组件展示台 (Showcase / Dev)
-react:
+# 启动 React 组件展示台 (Showcase)
+showcase:
     pnpm --filter @chaset/example-react-button dev
 
-alias showcase := react
-alias dev := react
+# 启动 React 本地开发环境
+dev:
+    pnpm --filter @chaset/example-react-button dev
+
+# 启动 React 组件展示台
+react:
+    pnpm --filter @chaset/example-react-button dev
 
 # 启动 Qt 组件展示台 (Qt C++ / QML Showcase)
 qt *ARGS:
     node scripts/run-qt-showcase.mjs {{ARGS}}
 
+# 启动 Qt 组件展示台
+showcase-qt *ARGS:
+    node scripts/run-qt-showcase.mjs {{ARGS}}
+
+# 启动 Qt 组件展示台热重载开发模式
+dev-qt *ARGS:
+    node scripts/run-qt-showcase.mjs --hot {{ARGS}}
+
 # 纯构建 Qt 展示台 (不拉起窗口)
 build-qt:
     @pwsh -NoProfile -File tools/bque-runner.ps1 -Desc "Build Qt Showcase" -Cmd "node scripts/run-qt-showcase.mjs --build-only"
 
-# ---------- 构建与代码生成 ----------
+# ---------- 构建与包管理 ----------
 
 # 构建组件库包 (由 bque 排队并置于 Idle 优先级)
 build:
     @pwsh -NoProfile -File tools/bque-runner.ps1 -Desc "ChaSet Build" -Cmd "pnpm --filter @chahu/cha-set build"
 
-alias b := build
+# 同步构建产物至下游消费者项目
+sync:
+    node scripts/sync-consumers.mjs
+
+# ---------- 代码与设计资产生成 (Generators) ----------
 
 # 生成设计系统全部衍生资产 (Tokens, CSS, Qt, Icons, Highlight)
 gen:
     node spec/generators/generate-all.mjs
 
-# 同步构建产物至下游消费者项目
-sync:
-    node scripts/sync-consumers.mjs
+# 全量资产生成
+gen-all:
+    node spec/generators/generate-all.mjs
+
+# 构建令牌资产
+build-tokens:
+    node spec/generators/generate-all.mjs
+
+# 生成设计令牌
+gen-tokens:
+    node spec/build-tokens.mjs
+
+# 生成 CSS 样式变量
+gen-css:
+    node spec/generators/generate-css.mjs
+
+# 生成 Qt/QML 设计令牌
+gen-qt:
+    node spec/generators/generate-qt.mjs
+
+# 生成文档角色
+gen-roles:
+    node spec/generators/generate-doc-roles.mjs
+
+# 迁移文档文本
+migrate-doctext:
+    node scripts/migrate-doc-text.mjs
+
+# 生成语法高亮规则
+gen-highlight:
+    node spec/generators/generate-highlight.mjs
+
+# 生成展示台导航与数据
+gen-showcase:
+    node spec/generators/generate-showcase-data.mjs
+
+# 生成双端图标资产
+gen-icons:
+    node spec/generators/generate-icons.mjs
 
 # ---------- 校验与门禁 ----------
 
@@ -71,6 +124,62 @@ check:
     @node scripts/check-i18n-coverage.mjs
     @node scripts/check-doc-content.mjs
     @node scripts/check-showcase-palette.mjs
+
+# 主题边界检查
+check-theme-boundary:
+    node scripts/check-theme-boundary.mjs
+
+# 主题边界自测
+check-theme-boundary-self-test:
+    node scripts/check-theme-boundary.mjs --self-test
+
+# 主题自适应检查
+check-theme-adaptive:
+    node scripts/check-theme-adaptive.mjs
+
+# 衍生对齐检查
+check-derived-parity:
+    node scripts/check-derived-parity.mjs
+
+# Qt 缩放规则检查
+check-scaling:
+    node scripts/check-qt-scaling.mjs
+
+# 严禁 Emoji 扫描
+check-no-emoji:
+    node scripts/check-no-emoji.mjs
+
+# QML 版本导入检查
+check-qml-imports:
+    node scripts/strip-qml-import-versions.mjs --check
+
+# QML 版本导入修复
+fix-qml-imports:
+    node scripts/strip-qml-import-versions.mjs
+
+# 图标规范检查
+check-icons:
+    node scripts/check-icon-spec.mjs
+
+# 同心圆角几何检查
+check-concentric:
+    node scripts/check-concentric-radii.mjs
+
+# 国际化文案覆盖率检查
+check-i18n:
+    node scripts/check-i18n-coverage.mjs
+
+# 文档内容完整性检查
+check-docs:
+    node scripts/check-doc-content.mjs
+
+# 调色板对齐检查
+check-palette:
+    node scripts/check-showcase-palette.mjs
+
+# 展示台规约一致性检查
+check-showcase:
+    node scripts/verify-showcase-parity.mjs
 
 # TypeScript 类型检查
 typecheck:
@@ -91,8 +200,6 @@ gate-pixel:
 # 一键完整门禁 / CI 校验 (类型检查 + 静态全检 + 规范门禁 + 单元测试)
 ci: typecheck check gate test
 
-alias check-gate := ci
-
 # ---------- 测试与跑分 ----------
 
 # 运行单元测试
@@ -106,6 +213,14 @@ test-tokens:
 # 展示台对齐测试
 test-showcase:
     node scripts/verify-showcase-parity.mjs
+
+# 视觉差异回归测试
+test-visual:
+    node scripts/visual-diff.mjs
+
+# 像素级严格对齐测试
+test-pixel *ARGS:
+    node scripts/pixel-sync-test.mjs {{ARGS}}
 
 # React 基准跑分
 bench-react *ARGS:
@@ -121,6 +236,4 @@ bench-audit *ARGS:
 
 # 专项性能基准测试 (bque bench 自动挂起后台编译以提供纯净 CPU 环境)
 bench *ARGS:
-    @pwsh -NoProfile -File tools/bque-runner.ps1 -Bench -Desc "ChaSet Bench" -Cmd "pnpm bench {{ARGS}}"
-
-alias benchmark := bench
+    @pwsh -NoProfile -File tools/bque-runner.ps1 -Bench -Desc "ChaSet Bench" -Cmd "pnpm --filter @chahu/cha-set exec vitest bench --run && node scripts/run-qt-showcase.mjs --test-scenario benchmark"

@@ -25,8 +25,9 @@ function loadInitialShortcuts(): ShowcaseShortcutsState {
 
     // Merge saved custom chords into actions
     const mergedActions = defaults.actions.map((act) => {
-      if (parsed[act.id]) {
-        const customChords = parsed[act.id].map((keyStr) => ({
+      const savedChords = parsed[act.id];
+      if (savedChords) {
+        const customChords = savedChords.map((keyStr) => ({
           keyString: keyStr,
           isUserModified: true,
           isMasked: false,
