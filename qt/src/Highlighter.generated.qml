@@ -4,7 +4,7 @@ import QtQuick
 // GENERATED FILE - DO NOT EDIT.
 // Source: spec/highlight/languages.json + spec/highlight/engine.mjs
 //         via spec/generators/generate-highlight.mjs
-// Refresh: pnpm gen:highlight  (or pnpm gen:all)
+// Refresh: just gen-highlight  (or just gen)
 //
 // Identical lexer source to the React target; only this wrapper differs.
 

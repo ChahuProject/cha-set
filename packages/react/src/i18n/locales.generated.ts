@@ -1875,7 +1875,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
         "weightTitle": "粗细分级"
       },
       "rules": {
-        "desc": "以下每条规则均由 pnpm check:icons 严格检验（该指令同样运行于 pnpm gate 中）。未经机器检验的规则只是口号，因此检验列明确标注了断言失败的具体项。",
+        "desc": "以下每条规则均由 just check-icons 严格检验（该指令同样运行于 just gate 中）。未经机器检验的规则只是口号，因此检验列明确标注了断言失败的具体项。",
         "title": "治理规则"
       },
       "specification": {
@@ -4535,7 +4535,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
         "weightTitle": "Weight"
       },
       "rules": {
-        "desc": "Each rule below is enforced by pnpm check:icons, which also runs inside pnpm gate. A rule that is not machine-checked would only be a slogan, so the enforcement column names the assertion that fails.",
+        "desc": "Each rule below is enforced by just check-icons, which also runs inside just gate. A rule that is not machine-checked would only be a slogan, so the enforcement column names the assertion that fails.",
         "title": "Governance Rules"
       },
       "specification": {

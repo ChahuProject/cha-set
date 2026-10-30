@@ -118,7 +118,7 @@ if (existsSync(componentsDir) && existsSync(navPath)) {
     const genContent = readFileSync(generatedDataPath, 'utf8');
     for (const navId of navIds) {
       if (!genContent.includes(`"id": "${navId}"`)) {
-        console.error(`[gate] FAIL: showcaseData.generated.ts is out of sync with spec/showcase/navigation.json (missing id "${navId}"). Run "pnpm gen:showcase".`);
+        console.error(`[gate] FAIL: showcaseData.generated.ts is out of sync with spec/showcase/navigation.json (missing id "${navId}"). Run "just gen-showcase".`);
         failed = true;
       }
     }
@@ -482,9 +482,9 @@ if (!existsSync(qtExe)) {
     console.error('[gate] FAIL: Qt desktop binary not found at qt/build/QtChaSetDemo.exe');
     console.error('[gate] Dual-stack behavioral verification cannot run without the compiled Qt showcase executable.');
     console.error('[gate] To build QtChaSetDemo:');
-    console.error('       pnpm build:qt');
+    console.error('       just build qt');
     console.error('       (Or see .agents/skills/cross-stack-verify/SKILL.md for MSVC DevShell build instructions)');
-    console.error('[gate] If you intentionally need to run web-only verification without Qt, pass: pnpm gate --skip-qt');
+    console.error('[gate] If you intentionally need to run web-only verification without Qt, pass: just gate --skip-qt');
     process.exit(1);
   }
 } else if (skipQt) {
@@ -632,7 +632,7 @@ if (existsSync(paletteParityTest)) {
     });
     console.log('[gate] OK — all QML imports are versionless (Qt-version agnostic)');
   } catch (err) {
-    console.error('[gate] FAIL: versioned QML imports detected — run `pnpm fix:qml-imports`');
+    console.error('[gate] FAIL: versioned QML imports detected — run `just fix-qml-imports`');
     if (err.stdout) console.error(err.stdout);
     if (err.stderr) console.error(err.stderr);
     process.exit(1);

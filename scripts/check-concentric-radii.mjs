@@ -159,7 +159,7 @@ export function verifyConcentricRadii({ quiet = false } = {}) {
     const tokensContent = readFileSync(tokensQmlPath, 'utf8');
     checkedCount++;
     if (!tokensContent.includes('function innerRadius(outerRadius, padding)')) {
-      errors.push('qt/src/ThemeTokens.generated.qml is missing function innerRadius(outerRadius, padding). Run "pnpm gen:qt".');
+      errors.push('qt/src/ThemeTokens.generated.qml is missing function innerRadius(outerRadius, padding). Run "just gen-qt".');
     }
   }
 

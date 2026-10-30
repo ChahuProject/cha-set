@@ -204,12 +204,12 @@ ChaSetSquircle {
 ```
 
 ### 4.4 Automated Mechanical Parity Gate (`check:concentric`)
-Concentricity is not left to human discretion or manual inspection. ChaSet enforces it automatically through `scripts/check-concentric-radii.mjs`, wired directly into `pnpm gate` (Step 2.14):
+Concentricity is not left to human discretion or manual inspection. ChaSet enforces it automatically through `scripts/check-concentric-radii.mjs`, wired directly into `just gate` (Step 2.14):
 1. **Contract Verification**: Mechanically asserts that all audited nested components declare and compute radii matching $R_{inner} = \max(0, R_{outer} - P)$.
 2. **Static AST Anti-Pattern Scanner**: Scans component source code to detect any container with `rounded-lg` and `p-1` where an inner item inadvertently uses `rounded-md` instead of `rounded-sm`.
 3. **Self-Test Validation**: Executes guard verification prior to code scans, ensuring any potential regressions fail loud immediately.
 
 Run the concentric check anytime via:
 ```bash
-pnpm check:concentric
+just check-concentric
 ```

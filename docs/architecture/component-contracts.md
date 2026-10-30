@@ -41,4 +41,4 @@
 ## 4. Invariants & Forbidden Anti-Patterns
 
 1. **Coverage Must Be Earned**: `coverage.json` flags must never be hardcoded to `true`. They must be set dynamically inside passing test assertions.
-2. **Zero Missing Must-Capabilities**: No PR or release is permitted to pass `pnpm gate` if any `"must"` capability is absent in any implemented stack.
+2. **Zero Missing Must-Capabilities**: No PR or release is permitted to pass `just gate` if any `"must"` capability is absent in any implemented stack.

@@ -124,8 +124,8 @@ ChaSetScrollBar {
 **Versionless imports are mandatory.** Every import above is written without a version specifier and none of them may ever regain one. Qt 6 resolves `import QtQuick` to the newest version the running toolchain offers, so the same sources keep compiling across Qt upgrades (6.10 → 6.12 → …) instead of breaking on each one; pinning `6.x` in 340+ files turned a toolchain bump into a repo-wide edit. The same rule covers `import ChaSet` — the module version lives once, in `qt_add_qml_module(... VERSION 1.0)`.
 
 Enforcement is mechanical, not a review convention:
-- `pnpm fix:qml-imports` (`scripts/strip-qml-import-versions.mjs`) rewrites versioned imports in `.qml` sources, generator templates, doc snippets and markdown examples in one pass.
-- `pnpm check:qml-imports` is the read-only form, and `pnpm gate` runs it as step 5.7 — a version that creeps back in through a generator or a copy-pasted doc fails the gate.
+- `just fix-qml-imports` (`scripts/strip-qml-import-versions.mjs`) rewrites versioned imports in `.qml` sources, generator templates, doc snippets and markdown examples in one pass.
+- `just check-qml-imports` is the read-only form, and `just gate` runs it as step 5.7 — a version that creeps back in through a generator or a copy-pasted doc fails the gate.
 - Tooling locates Qt through `scripts/lib/qt-install.mjs` (`QTDIR` / `CMAKE_PREFIX_PATH` first, then `<root>/current`, then the newest `<root>/<version>`), so build, pixel-sync and visual-diff scripts never hardcode a Qt version either.
 
 ### 3.2 C++ Typed Token Consumption

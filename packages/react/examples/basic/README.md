@@ -14,9 +14,7 @@ An interactive theme customizer, component gallery, and code exporter for `@chah
 From the root directory:
 
 ```bash
-pnpm showcase
-# or
-pnpm dev
+just react
 ```
 
 Or from this directory:

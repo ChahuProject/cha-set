@@ -9,7 +9,7 @@
 
 `cha-set` is designed to guarantee **100% pixel-level, dimensional, and behavioral parity** across different rendering stacks (React web UI and Qt Quick native C++/QML).
 
-Because subjective manual inspection is insufficient for maintaining true parity, `cha-set` introduces an **Automated Visual Regression & Pixel Diff Quality Pipeline** (`pnpm test:visual` / `pnpm gate:visual`).
+Because subjective manual inspection is insufficient for maintaining true parity, `cha-set` introduces an **Automated Visual Regression & Pixel Diff Quality Pipeline** (`just gate-visual` / `just gate-visual`).
 
 ---
 
@@ -54,8 +54,8 @@ flowchart TD
 
 | Command | Purpose |
 | :--- | :--- |
-| `pnpm test:visual` | Runs full test matrix across React and Qt, outputs diff heatmaps to `.visual-diff/`, and prints conformance table. |
-| `pnpm gate:visual` | CI/pre-commit gate checking visual conformance; fails with exit code 1 on regression. |
+| `just gate-visual` | Runs full test matrix across React and Qt, outputs diff heatmaps to `.visual-diff/`, and prints conformance table. |
+| `just gate-visual` | CI/pre-commit gate checking visual conformance; fails with exit code 1 on regression. |
 | `node scripts/run-qt-showcase.mjs` | Launches interactive Qt Studio Showcase. |
 
 ---

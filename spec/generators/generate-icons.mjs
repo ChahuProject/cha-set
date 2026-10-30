@@ -188,7 +188,7 @@ const header = (comment) =>
     `${comment} GENERATED FILE - DO NOT EDIT.`,
     `${comment} Source: spec/icons/registry.json -> active specification "${specId}"`,
     `${comment} Resolved through: ${source}`,
-    `${comment} Regenerate with: pnpm gen:icons`,
+    `${comment} Regenerate with: just gen-icons`,
     '',
   ].join('\n');
 
@@ -572,7 +572,7 @@ if (checkOnly) {
   if (drift.length > 0) {
     console.error('[gen:icons] generated artifacts are out of sync with spec/icons/registry.json:');
     for (const file of drift) console.error(`  - ${file}`);
-    console.error('[gen:icons] run "pnpm gen:icons" to regenerate.');
+    console.error('[gen:icons] run "just gen-icons" to regenerate.');
     process.exit(1);
   }
   console.log(`[gen:icons] OK — generated artifacts match spec "${specId}" (${iconNames.length} icons)`);

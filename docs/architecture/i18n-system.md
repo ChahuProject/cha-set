@@ -29,7 +29,7 @@
 ```
 [spec/i18n/meta.json + locales/*.json]
                │
-               ▼ (pnpm gen:all / generate-i18n.mjs)
+               ▼ (just gen / generate-i18n.mjs)
    ┌───────────┴───────────┐
    ▼                       ▼
 [locales.generated.ts]  [ChaSetI18nData.generated.qml]
@@ -44,7 +44,7 @@
 
 ### 2.1 Specification & Parity Verification
 1. All language definitions originate in `spec/i18n/meta.json` (declaring `defaultLocale`, `fallbackLocale`, language match rules, and cultural preview quotes) and `spec/i18n/locales/<locale>.json` (divided into namespaces: `common`, `theme`, `language`, `showcase`).
-2. `spec/generators/generate-i18n.mjs` verifies 100% key parity and interpolation variable symmetry between `zh-CN.json` and `en-US.json`. Any missing key or mismatched `{{var}}` throws an error and fails `pnpm gate`.
+2. `spec/generators/generate-i18n.mjs` verifies 100% key parity and interpolation variable symmetry between `zh-CN.json` and `en-US.json`. Any missing key or mismatched `{{var}}` throws an error and fails `just gate`.
 3. The generator produces statically-typed artifacts:
    - React: `packages/react/src/i18n/locales.generated.ts`
    - Qt: `qt/src/ChaSetI18nData.generated.qml`

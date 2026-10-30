@@ -259,7 +259,7 @@ produces no error dialog, just an empty area where the prose should be.
 
 | Gate | What it prevents |
 | :--- | :--- |
-| `scripts/check-doc-content.mjs` (`pnpm check:docs`, wired into `pnpm gate`) | dialect errors, missing front matter, locale section drift, one stack consuming sections the other does not, slots implemented on only one stack, authored sections nobody renders |
+| `scripts/check-doc-content.mjs` (`just check-docs`, wired into `just gate`) | dialect errors, missing front matter, locale section drift, one stack consuming sections the other does not, slots implemented on only one stack, authored sections nobody renders |
 | parser self-test inside the same script | a broken detector or a parser regression — heading id, slot fence, inline code, blockquote rejection, inline keycap, both table schemas, escaped pipe, unknown-schema and wrong-column-count rejection |
 | `verify-showcase-parity.mjs` | still guards the native skeleton (previews, anatomy, props tables), and now resolves the outline title of `<DocMarkdown section="x">` / `DocMarkdown { section: "x" }` from `spec/content/`, so a migrated section cannot silently drop out of the 1:1 outline comparison |
 
@@ -273,7 +273,7 @@ produces no error dialog, just an empty area where the prose should be.
    for "no default".
 3. React: replace the footer block with `<DocMarkdown id="<doc-id>" section="<id>" />` per
    section. Qt: `DocMarkdown { width: parent.width; docId: "<doc-id>"; section: "<id>" }`.
-4. `pnpm check:docs` — fails until both stacks consume the same section set.
+4. `just check-docs` — fails until both stacks consume the same section set.
 
 The shortcut rows used to live in a second file, `spec/showcase/keyboard-shortcuts.json`, and
 the props rows in a hand-written table component per stack. All three are gone: the Markdown
@@ -289,7 +289,7 @@ file is the only copy, so there is nothing left to delete after a migration.
   already supplies the monospace treatment, so only authorial accident can notice.
 - **Rendered spacing is not pixel-identical** between stacks, by design: break points, line
   height and block rhythm belong to each platform's typography stack. Living-doc pages are out of
-  scope for `pnpm test:pixel`, which covers atomic components only.
+  scope for `just gate-pixel`, which covers atomic components only.
 - **`ChaSetCopyableBadge` (size `sm`, variant `secondary`) renders light-on-dark chips in dark
   mode**, while React's `Badge variant="secondary"` renders dark chips. Verified as pre-existing
   on `CodeBlockDocPage` — unrelated to this pipeline, tracked separately.

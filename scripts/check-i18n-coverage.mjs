@@ -23,7 +23,7 @@
 //   - gate fails on NEW findings (not in baseline) and on STALE baseline
 //     entries (already fixed but not pruned) — the baseline can only shrink.
 //   - Workflow when fixing translations: land the fix, run
-//     `pnpm check:i18n --update-baseline` to prune the baseline.
+//     `just check-i18n --update-baseline` to prune the baseline.
 //
 // Usage:
 //   node scripts/check-i18n-coverage.mjs                    # audit + table
@@ -530,11 +530,11 @@ export function verifyI18nCoverage(options = {}) {
   }
   if (newOnes.length > 0) {
     errors.push(`Ratchet: ${newOnes.length} new un-internationalized string(s) not present in the baseline.`);
-    errors.push(`Fix the translations, or (only after real translation work) run: pnpm check:i18n --update-baseline`);
+    errors.push(`Fix the translations, or (only after real translation work) run: just check-i18n --update-baseline`);
   }
   if (stale.length > 0) {
     errors.push(`Stale baseline: ${stale.length} baseline entry(ies) no longer match any current finding — the ratchet may only shrink.`);
-    errors.push(`Run: pnpm check:i18n --update-baseline`);
+    errors.push(`Run: just check-i18n --update-baseline`);
   }
 
   if (jsonOut) {

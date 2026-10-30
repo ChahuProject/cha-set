@@ -3,7 +3,7 @@ import { cn } from './utils';
 // GENERATED FILE - DO NOT EDIT.
 // Source: spec/icons/registry.json -> active specification "stroke-monoline"
 // Resolved through: chaset.config.json (icons.spec)
-// Regenerate with: pnpm gen:icons
+// Regenerate with: just gen-icons
 
 export type IconGridId = 'default' | 'chrome';
 
@@ -239,7 +239,7 @@ export const ICON_RULES: IconRule[] = [
     "id": "size-scales",
     "title": "Size follows the interface scale",
     "statement": "Web sizes with utilities or the size prop; desktop multiplies by ThemeTokens.dp. Artwork is never scaled by hand.",
-    "enforcement": "pnpm check:scaling"
+    "enforcement": "just check-scaling"
   },
   {
     "id": "no-motion",
@@ -251,7 +251,7 @@ export const ICON_RULES: IconRule[] = [
     "id": "no-emoji",
     "title": "Vector only",
     "statement": "Emoji are banned repo-wide; an icon is always vector artwork.",
-    "enforcement": "pnpm check:no-emoji"
+    "enforcement": "just check-no-emoji"
   },
   {
     "id": "stroke-floor",

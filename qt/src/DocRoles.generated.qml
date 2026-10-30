@@ -5,7 +5,7 @@ import ChaSet
 // GENERATED FILE - DO NOT EDIT.
 // Source: cha-set spec/doc-roles.json + spec/tokens/primitives.json (schemaVersion 1)
 //         via spec/generators/generate-doc-roles.mjs
-// Refresh: `pnpm gen:roles` regenerates this file in place.
+// Refresh: `just gen-roles` regenerates this file in place.
 //
 // Doc roles are DATA, not components. A role names a slot in the typography
 // scale plus a default tone; DocText.qml is the only consumer. The React

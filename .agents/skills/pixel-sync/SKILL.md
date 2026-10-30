@@ -142,36 +142,36 @@ Open `.pixel-diff/report.html` to inspect side-by-side:
 
 ```bash
 # 1. Run targeted pixel test for button (all variants & states)
-pnpm test:pixel --component button
+just gate-pixel --component button
 
 # 2. Run targeted pixel test for scroll-area (all orientations & states)
-pnpm test:pixel --component scroll-area
+just gate-pixel --component scroll-area
 
 # 3. Run targeted pixel test for tabs (all variants, themes & states)
-pnpm test:pixel --component tabs
+just gate-pixel --component tabs
 
 # 4. Run targeted pixel test for badge (all variants, sizes & states)
-pnpm test:pixel --component badge
+just gate-pixel --component badge
 
 # 5. Run targeted pixel test for card (all variants & themes)
-pnpm test:pixel --component card
+just gate-pixel --component card
 
 # 6. Run targeted pixel test for input (all sizes, states & themes)
-pnpm test:pixel --component input
+just gate-pixel --component input
 
 # 7. Run targeted pixel test for separator (horizontal & vertical, light & dark)
-pnpm test:pixel --component separator
+just gate-pixel --component separator
 
 # 8. Run targeted pixel test for code-block (line pitch geometry, light & dark)
-pnpm test:pixel --component code-block
+just gate-pixel --component code-block
 
 # 9. Run targeted pixel test for all supported L1 components
-pnpm test:pixel --component all
+just gate-pixel --component all
 
 # 9. Run cross-stack parity gate including targeted pixel gate
-pnpm gate:pixel
+just gate-pixel
 # OR
-pnpm gate --pixel
+just gate --pixel
 ```
 
 ---
@@ -184,4 +184,4 @@ pnpm gate --pixel
    - React: states are injected via className (`forceHover`/`forceActive`) without relying on CSS transitions to reach the target; transition utilities resolve to the terminal state at capture time. Never capture an intermediate transition frame.
 3. **DO NOT probe font glyphs for color match**: Font anti-aliasing differs across rendering engines. Background surface colors must be sampled in padding areas, while font rendering is verified via `pixelmatch` spatial tolerance (<= 2.8%). For text-dense components, do **not** rely on the mismatch rate to catch line-height drift — assert the line pitch geometrically (`pitchTolerance`) instead, per principle 1.3.
 4. **Always lock DPI**: Never run visual captures without `QT_ENABLE_HIGHDPI_SCALING=0` and `QT_SCALE_FACTOR=1`.
-5. **Selective Gate Preservation**: Keep standard `pnpm gate` fast. Always use `pnpm gate:pixel` or `pnpm gate --pixel` for targeted visual conformance.
+5. **Selective Gate Preservation**: Keep standard `just gate` fast. Always use `just gate-pixel` or `just gate --pixel` for targeted visual conformance.

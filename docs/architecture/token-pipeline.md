@@ -61,6 +61,6 @@ The Qt library and demo consume `ThemeTokens` (preset `dunting`). The React libr
 | raised surface | `#252d3d` | `#1e293b` |
 | border | `#3c4858` | `#1e293b` |
 
-On the same canvas this reads as "the Qt text is lighter and flatter" — a palette divergence, not a rendering bug. The rule now is: **the React demo mirrors the `dunting` values by hand, and `pnpm check:palette` fails the build when a mirror drifts** (`scripts/check-showcase-palette.mjs`, wired as gate 2.15b). Only `background` is exempt: both demos pin the canvas to the same `#020817` / `#ffffff` outside the token layer.
+On the same canvas this reads as "the Qt text is lighter and flatter" — a palette divergence, not a rendering bug. The rule now is: **the React demo mirrors the `dunting` values by hand, and `just check-palette` fails the build when a mirror drifts** (`scripts/check-showcase-palette.mjs`, wired as gate 2.15b). Only `background` is exempt: both demos pin the canvas to the same `#020817` / `#ffffff` outside the token layer.
 
-When a semantic role is added or retuned, run `pnpm gen:qt` and copy the mapped value into `styles.css`; the gate names the exact property and both colours if you forget.
+When a semantic role is added or retuned, run `just gen-qt` and copy the mapped value into `styles.css`; the gate names the exact property and both colours if you forget.

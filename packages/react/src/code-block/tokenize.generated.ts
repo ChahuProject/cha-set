@@ -2,7 +2,7 @@
 // GENERATED FILE - DO NOT EDIT.
 // Source: spec/highlight/languages.json + spec/highlight/engine.mjs
 //         via spec/generators/generate-highlight.mjs
-// Refresh: pnpm gen:highlight  (or pnpm gen:all)
+// Refresh: just gen-highlight  (or just gen)
 //
 // The embedded lexer is authored once in ES5 so Qt's V4 engine can run the
 // identical source. Only the typed façade at the bottom of this file is

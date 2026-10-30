@@ -122,7 +122,7 @@ spec/qt-mapping.json map         ─┤
                └────────┬────────┘                 │
                         ▼                         │
                git diff --exit-code check         │
-               pnpm gen:all / CI drift gate ◀─────┘
+               just gen / CI drift gate ◀─────┘
 ```
 
 Pipeline: `shards -> loadTokens -> buildSnapshotObject -> spec/tokens.json -> generators`
@@ -130,7 +130,7 @@ Pipeline: `shards -> loadTokens -> buildSnapshotObject -> spec/tokens.json -> ge
 Key invariants:
 
 - Merge order is fixed; shards have no overlapping top-level keys (validator checks overlapping keys).
-- Key order is determined by `spec/token-helpers.mjs: ORDER` + `stringifySorted`, guaranteeing byte-identical `pnpm gen:tokens`.
+- Key order is determined by `spec/token-helpers.mjs: ORDER` + `stringifySorted`, guaranteeing byte-identical `just gen-tokens`.
 - `qt` is not stored in shards, `selector` is not stored in deltas; both are derived at runtime.
 
 ## 4. Artifacts and Exported Targets
@@ -255,9 +255,9 @@ SoT is shards; do not edit `spec/tokens.json` directly.
 #    Scale map changes go to spec/qt-mapping.json (rarely)
 
 # 2) Aggregate snapshot + generate all artifacts
-pnpm gen:tokens    # node spec/build-tokens.mjs  → write spec/tokens.json + print sha256
-pnpm gen:all      # node spec/generators/generate-all.mjs → gen:css + gen:qt
-#  single-step equivalent: pnpm gen:tokens && pnpm gen:css && pnpm gen:qt
+just gen-tokens    # node spec/build-tokens.mjs  → write spec/tokens.json + print sha256
+just gen      # node spec/generators/generate-all.mjs → gen:css + gen:qt
+#  single-step equivalent: just gen-tokens && just gen-css && just gen-qt
 
 # 3) Local drift self-check (same gate as CI)
 node spec/build-tokens.mjs --check
@@ -265,7 +265,7 @@ node spec/validate-tokens.mjs
 git diff --exit-code -- spec/tokens.json packages/react/src/styles/tokens.css qt/src/ThemeTokens.generated.qml dist/consumers/
 
 # One-shot refresh verify (same as CI)
-pnpm gen:tokens && pnpm gen:all && git diff --exit-code -- spec/tokens.json packages/react/src/styles/tokens.css qt/src/ThemeTokens.generated.qml dist/consumers/
+just gen-tokens && just gen && git diff --exit-code -- spec/tokens.json packages/react/src/styles/tokens.css qt/src/ThemeTokens.generated.qml dist/consumers/
 
 # 4) Sync to consumer checkouts (copy if present, skip if missing)
 node scripts/sync-consumers.mjs
@@ -306,7 +306,7 @@ git reset --hard <pre-refactor-base>
 After rollback:
 
 - `spec/tokens/**`, `spec/load-tokens.mjs`, `spec/build-tokens.mjs`, `spec/qt-mapping.json` are removed; single-file `spec/tokens.json` hand-editing is restored.
-- Old generators still read `spec/tokens.json` directly; `pnpm gen:all` remains usable with byte-identical artifacts.
+- Old generators still read `spec/tokens.json` directly; `just gen` remains usable with byte-identical artifacts.
 - Evidence retained at `.omo/evidence/cha-token-refactor/`.
 
 ### Hotfix switch: CHA_TOKENS_FROM
@@ -316,22 +316,22 @@ All reads go through `spec/load-tokens.mjs:loadTokensSync({from})`, which respec
 ```bash
 # Force snapshot read (ignore shards), for shard corruption or emergency hotfix
 CHA_TOKENS_FROM=snapshot node spec/validate-tokens.mjs
-CHA_TOKENS_FROM=snapshot pnpm gen:css
-CHA_TOKENS_FROM=snapshot pnpm gen:qt
-CHA_TOKENS_FROM=snapshot pnpm gen:all
+CHA_TOKENS_FROM=snapshot just gen-css
+CHA_TOKENS_FROM=snapshot just gen-qt
+CHA_TOKENS_FROM=snapshot just gen
 
 # Default (shard-first, snapshot fallback)
 node spec/build-tokens.mjs --check   # verify shards vs snapshot
 ```
 
-Generators internally pin `loadTokensSync({from:"split"})`, but manually launching with `CHA_TOKENS_FROM=snapshot` can bypass shard derivation and ship an emergency release from the committed snapshot; patch shards afterward and re-run `pnpm gen:tokens && pnpm gen:all`.
+Generators internally pin `loadTokensSync({from:"split"})`, but manually launching with `CHA_TOKENS_FROM=snapshot` can bypass shard derivation and ship an emergency release from the committed snapshot; patch shards afterward and re-run `just gen-tokens && just gen`.
 
 ## 9. Design Trade-offs: DTCG + vanilla Node (DTCG vanilla Node rationale)
 
 - Borrows W3C DTCG 2025.10 grouping and `$type` ideas (organize by product and layer, keep `$type` and `$platform`) without pulling in Style Dictionary.
 - Rejects Style Dictionary because of extra dependency, uncontrollable key order and `oklch()`/`color-mix()` transcription, which would change committed artifact bytes and violate the "byte-identical" constraint.
 - Chooses vanilla Node aggregation: `ORDER` + `stringifySorted` guarantees deterministic key order, `oklch()`/`color-mix()` stay verbatim, `fmtChannel` matches the `byte*255` rounding at `spec/generators/generate-qt.mjs:42-45`, and `sha256` snapshot comparison proves byte-identical output.
-- Snapshot strategy: `spec/tokens.json` remains as a committed generated artifact for auditability and one-shot revert; `spec/tokens/**` is SoT; editing shards then `pnpm gen:tokens` rewrites the snapshot; CI locks them together via `--check`.
+- Snapshot strategy: `spec/tokens.json` remains as a committed generated artifact for auditability and one-shot revert; `spec/tokens/**` is SoT; editing shards then `just gen-tokens` rewrites the snapshot; CI locks them together via `--check`.
 
 ## 10. Known Semantic Pitfalls (hit during transcription)
 

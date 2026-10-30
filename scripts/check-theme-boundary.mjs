@@ -5,7 +5,7 @@
 // leaves others alone. That boundary is only real if it is checkable. This script
 // turns spec/theme-controls.json into assertions over spec/schemas/theme-config.schema.json
 // and the token axes, so a future edit that quietly widens the control's reach
-// (or forgets to widen it after a deliberate decision) fails `pnpm gate`.
+// (or forgets to widen it after a deliberate decision) fails `just gate`.
 //
 // Checks:
 //   B1  every covered axis in theme-controls.json has a matching schema property

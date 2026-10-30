@@ -79,7 +79,7 @@ None of them is written down beside the metrics it comes from. A number stored n
 
 ## 3. Generated artifacts
 
-`pnpm gen:icons` compiles the registry into both stacks. The command is also part of `pnpm gen:all`, so the artifacts can never be stale after a token regeneration.
+`just gen-icons` compiles the registry into both stacks. The command is also part of `just gen`, so the artifacts can never be stale after a token regeneration.
 
 | Artifact | Contents |
 | :--- | :--- |
@@ -181,17 +181,17 @@ The registry holds a **list** of specifications, not one hard-coded contract, so
 
 1. Add an entry to `specs[]` with its own `metrics`, `grids`, `weights`, `sizes` and `icons`.
 2. Point `CHASET_ICON_SPEC` or `icons.spec` at its id — or promote it to `activeSpec`.
-3. `pnpm gen:icons` re-emits both artifacts; `pnpm check:icons` proves the new contract holds.
+3. `just gen-icons` re-emits both artifacts; `just check-icons` proves the new contract holds.
 
 `duotone-fill` ships in the registry in exactly this state (`status: "planned"`, no geometry) so the extensibility path is exercised by the gate rather than merely described by it. Nothing in either stack changes, because both stacks consume whichever entry the configuration selects.
 
-**Adding a single icon** is the same shape: append an entry to `icons` with a `grid` and `elements`, add it to a `category`, run `pnpm gen:icons`. It appears in the showcase gallery on both stacks at once, and the gate refuses a name that has no geometry behind it.
+**Adding a single icon** is the same shape: append an entry to `icons` with a `grid` and `elements`, add it to a `category`, run `just gen-icons`. It appears in the showcase gallery on both stacks at once, and the gate refuses a name that has no geometry behind it.
 
 ---
 
 ## 7. Enforcement
 
-`pnpm check:icons` (`scripts/check-icon-spec.mjs`) is wired into `pnpm gate` as block **2.11**, so no icon change can reach a commit without passing it. Every rule published on the showcase page has an assertion here — a rule that is not machine-checked is a slogan.
+`just check-icons` (`scripts/check-icon-spec.mjs`) is wired into `just gate` as block **2.11**, so no icon change can reach a commit without passing it. Every rule published on the showcase page has an assertion here — a rule that is not machine-checked is a slogan.
 
 | Assertion | Fails when |
 | :--- | :--- |
@@ -276,9 +276,9 @@ The scroll-bar case is the sharpest example of why the ratchet alone was not eno
 
 ### Related gates
 
-- `pnpm check:scaling` — every `ChaSet*` Qt component must scale its geometry through `ThemeTokens.dp`/`sp`.
-- `pnpm check:no-emoji` — an icon is always vector artwork; emoji are banned repo-wide.
-- `pnpm gate` block 2.5 (SPAS) — the showcase pages must stay structurally 1:1 across both stacks.
+- `just check-scaling` — every `ChaSet*` Qt component must scale its geometry through `ThemeTokens.dp`/`sp`.
+- `just check-no-emoji` — an icon is always vector artwork; emoji are banned repo-wide.
+- `just gate` block 2.5 (SPAS) — the showcase pages must stay structurally 1:1 across both stacks.
 
 ---
 
@@ -308,11 +308,11 @@ The chrome-grid caption icons (`window-minimize`, `window-maximize`, `window-res
 ## 9. Verification
 
 ```bash
-pnpm gen:icons        # re-emit both stacks from spec/icons/registry.json
-pnpm check:icons      # icon-specific assertions (geometry + ledgers + resolution)
-pnpm gate             # includes 2.11 (icon specification) and 2.5 (showcase parity)
-pnpm test             # React unit + conformance + showcase smoke suite
-pnpm build:qt         # QtChaSetDemo, including the QML runtime scenario sweep
+just gen-icons        # re-emit both stacks from spec/icons/registry.json
+just check-icons      # icon-specific assertions (geometry + ledgers + resolution)
+just gate             # includes 2.11 (icon specification) and 2.5 (showcase parity)
+just test             # React unit + conformance + showcase smoke suite
+just build qt         # QtChaSetDemo, including the QML runtime scenario sweep
 ```
 
 Expected output of the icon gate — a pass plus the standing ledgers. Warnings here are not tolerances to be ignored: each one names work that is deliberately outstanding, and a warning that stops being true should be deleted rather than left standing.

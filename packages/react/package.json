@@ -56,7 +56,7 @@
     "build": "vite build && tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "prepublishOnly": "pnpm build"
+    "prepublishOnly": "just build react"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

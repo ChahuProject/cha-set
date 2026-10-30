@@ -224,7 +224,7 @@ const header = `// theme_tokens.generated.h
 // GENERATED FILE - DO NOT EDIT.
 // Source: cha-set spec/tokens.json (schemaVersion ${spec.meta.schemaVersion})
 //         via spec/generators/generate-qt.mjs
-// Refresh: run \`pnpm gen:qt\` in the cha-set checkout, copy this file into
+// Refresh: run \`just gen-qt\` in the cha-set checkout, copy this file into
 //          <dt-a>/theme/generated/, commit alongside the consuming change.
 // Field names/order mirror ThemeManager::Tokens (theme_manager.h).
 // accentHover/accentPressed are runtime-derived (theme_manager.cpp) - never
@@ -284,7 +284,7 @@ import QtQuick
 // GENERATED FILE - DO NOT EDIT.
 // Source: cha-set spec/tokens.json (schemaVersion ${spec.meta.schemaVersion})
 //         via spec/generators/generate-qt.mjs
-// Refresh: \`pnpm gen:qt\` regenerates this file in place.
+// Refresh: \`just gen-qt\` regenerates this file in place.
 // Flip \`dark\` at runtime to switch every bound color live.
 QtObject {
     id: root
@@ -387,7 +387,7 @@ import ChaSet
 // GENERATED FILE - DO NOT EDIT.
 // Source: cha-set spec/tokens/semantic/core.json (dunting preset) + tokenTypes from
 //         spec/highlight/languages.json, via spec/generators/generate-qt.mjs
-// Refresh: \`pnpm gen:qt\` regenerates this file in place.
+// Refresh: \`just gen-qt\` regenerates this file in place.
 // Syntax palette consumed by ChaSetHighlightedCode. Token type <X> maps to the
 // semantic token \`code-<X>\`; \`plain\` is absent on purpose (plain text uses the
 // host foreground). Theme mode is read live from ThemeTokens so every color
@@ -512,7 +512,7 @@ import ChaSet
 // GENERATED FILE - DO NOT EDIT.
 // Source: cha-set spec/tokens/primitives.json -> primitives.typography / primitives.fontWeight
 //         (schemaVersion ${spec.meta.schemaVersion}) via spec/generators/generate-qt.mjs
-// Refresh: \`pnpm gen:qt\` regenerates this file in place.
+// Refresh: \`just gen-qt\` regenerates this file in place.
 //
 // Cross-platform typography contract. The React side reads the SAME numbers
 // from \`--cs-font-*\` / \`--cs-text-*\` / \`--cs-leading-*\` / \`--cs-tracking-*\`

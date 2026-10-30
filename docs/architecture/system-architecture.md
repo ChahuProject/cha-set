@@ -23,14 +23,14 @@
 │                    spec/tokens/** (Shards)                  │
 │  (meta, primitives, semantic/*, composite/*, themes/*)      │
 └──────────────────────────────┬──────────────────────────────┘
-                               │ pnpm gen:tokens (sha256-gated)
+                               │ just gen-tokens (sha256-gated)
                                ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                      spec/tokens.json                       │
 │                  (Committed Single Source)                  │
 └──────────────┬───────────────────────────────┬──────────────┘
                │                               │
-               ▼ pnpm gen:css                  ▼ pnpm gen:qt
+               ▼ just gen-css                  ▼ just gen-qt
 ┌──────────────────────────────┐ ┌────────────────────────────┐
 │   Web Artifacts (CSS Vars)   │ │ Qt Artifacts (C++ / QML)   │
 │   • packages/react/tokens.css│ │ • qt/include/ChaSet/*.h    │
@@ -70,6 +70,6 @@
 
 ## 4. Invariants & Forbidden Anti-Patterns
 
-1. **Shards are the Sole Authoritative Source**: Never manually edit `spec/tokens.json`, `tokens.generated.css`, or `ThemeTokens.generated.qml`. Always edit `spec/tokens/**` shards or `spec/qt-mapping.json` and run `pnpm gen:all`.
+1. **Shards are the Sole Authoritative Source**: Never manually edit `spec/tokens.json`, `tokens.generated.css`, or `ThemeTokens.generated.qml`. Always edit `spec/tokens/**` shards or `spec/qt-mapping.json` and run `just gen`.
 2. **Parity Gate Invariant**: Any capability marked as `"must"` in `spec/capabilities.json` must be earned via actual passing behavioral tests in every stack's `conformance/coverage.json`.
 3. **No Unilateral Primitive Drift**: Web and Qt must resolve to identical visual tokens for shared semantic roles (e.g. `--primary`, `ThemeTokens.accent`, focus ring dimensions).

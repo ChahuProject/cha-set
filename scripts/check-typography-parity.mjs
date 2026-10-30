@@ -4,7 +4,7 @@
 // React (Web) and Qt (Desktop) must resolve the same font family, size, weight,
 // line height and letter spacing for every text role. The values live once, in
 // spec/tokens/primitives.json -> primitives.typography / primitives.fontWeight,
-// and are fanned out by pnpm gen:all into:
+// and are fanned out by just gen into:
 //
 //   packages/react/src/styles/tokens.css   (custom properties, rem/ratio/em)
 //   qt/src/Typography.generated.qml        (singleton Typography, px/int/real)
@@ -127,7 +127,7 @@ export function verifyTypographyParity({ quiet = false } = {}) {
 
   // ---- artifact presence + value agreement -------------------------------
   if (!existsSync(CSS_PATH)) {
-    errors.push(`missing ${relative(repoRoot, CSS_PATH)} — run "pnpm gen:all"`);
+    errors.push(`missing ${relative(repoRoot, CSS_PATH)} — run "just gen"`);
   } else {
     const vars = parseCssVars(readFileSync(CSS_PATH, 'utf8'));
     for (const [name, want] of expectedCss) {
@@ -139,7 +139,7 @@ export function verifyTypographyParity({ quiet = false } = {}) {
   }
 
   if (!existsSync(QML_PATH)) {
-    errors.push(`missing ${relative(repoRoot, QML_PATH)} — run "pnpm gen:all"`);
+    errors.push(`missing ${relative(repoRoot, QML_PATH)} — run "just gen"`);
   } else {
     const props = parseQmlProps(readFileSync(QML_PATH, 'utf8'));
     for (const [name, want] of expectedQml) {

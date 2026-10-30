@@ -140,7 +140,7 @@
         "weightTitle": "Weight"
       },
       "rules": {
-        "desc": "Each rule below is enforced by pnpm check:icons, which also runs inside pnpm gate. A rule that is not machine-checked would only be a slogan, so the enforcement column names the assertion that fails.",
+        "desc": "Each rule below is enforced by just check-icons, which also runs inside just gate. A rule that is not machine-checked would only be a slogan, so the enforcement column names the assertion that fails.",
         "title": "Governance Rules"
       },
       "specification": {

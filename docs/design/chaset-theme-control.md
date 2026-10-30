@@ -238,7 +238,7 @@
 >
 > `customAccentRamp` 的完整公式（含 ring/chart 的 oklch 混色比例）也已转录进 `theme-controls.json` 的 `axes.palette.subcases.custom.derivation`。
 
-**校验**：`scripts/check-derived-parity.mjs` 用同一组输入（10 档调色板 × light/dark = 20 组动作色）分别算 Qt 路径与 Web 路径，断言 ΔE(CIEDE2000) ≤ 2.0（视觉不可辨阈值）。挂 `pnpm gate`。
+**校验**：`scripts/check-derived-parity.mjs` 用同一组输入（10 档调色板 × light/dark = 20 组动作色）分别算 Qt 路径与 Web 路径，断言 ΔE(CIEDE2000) ≤ 2.0（视觉不可辨阈值）。挂 `just gate`。
 
 ### 3.5 对外接口
 
@@ -344,8 +344,8 @@ crd 侧 `主题.ts` 改造：**不再维护 `外观设置` 这个私有中间类
 6. `docs/design/chaset-theme-control.md`（本文）。
 
 **验收标准**
-- `pnpm gate` 新增 `theme-boundary` 步，本地全绿。[PASSED]（当前输出：`5 covered axes, 9 excluded axes (7 hostOnly + 2 duntingUnique), palette of 10 ids verified`，自检 3/3 通过）
-- 负向测试：故意往 schema 塞 `windowMaterial` → 门禁必须红。[PASSED]（`--self-test` 覆盖，且作为 `pnpm gate` 的前置条件）
+- `just gate` 新增 `theme-boundary` 步，本地全绿。[PASSED]（当前输出：`5 covered axes, 9 excluded axes (7 hostOnly + 2 duntingUnique), palette of 10 ids verified`，自检 3/3 通过）
+- 负向测试：故意往 schema 塞 `windowMaterial` → 门禁必须红。[PASSED]（`--self-test` 覆盖，且作为 `just gate` 的前置条件）
 
 ---
 
@@ -376,10 +376,10 @@ crd 侧 `主题.ts` 改造：**不再维护 `外观设置` 这个私有中间类
 3. `spec/validate-tokens.mjs` — `accentTheme` 断言从「长度 = 8」改为**逐位精确等于 10 档常量**（顺序也锁死，防漂移）；deltas/overrides 数量断言 30 → 34。
 4. `spec/__tests__/palette-parity.test.mjs`（新增，24 个测试）— 断言三方一致（token 轴 / 边界声明 / schema 枚举）、每档都有 light+dark 块、每块都有 `primary`、`neutral` 落到 shadcn 基础值、`custom` 全为 `var()` 且都带 fallback、调色板**不渗入**冻结的 33 字段 Qt 颜色契约。
 5. `spec/__tests__/roundtrip.test.mjs` — 修正硬编码的 `30` 为从声明推导（否则每加一档就要改测试，是脆弱点）。
-6. `pnpm gen:all` 重跑：`packages/react/src/styles/tokens.css` +30 行（4 个新选择器），`dist/consumers/dunting/generated/theme_tokens.generated.h` **无变化**——印证调色板轴不污染 Qt 侧冻结契约。
+6. `just gen` 重跑：`packages/react/src/styles/tokens.css` +30 行（4 个新选择器），`dist/consumers/dunting/generated/theme_tokens.generated.h` **无变化**——印证调色板轴不污染 Qt 侧冻结契约。
 
 **验收标准**
-- `pnpm gate` 全绿（typography 契约 68 值不变）。[PASSED]
+- `just gate` 全绿（typography 契约 68 值不变）。[PASSED]
 - `spec/__tests__/palette-parity.test.mjs` 通过。[PASSED]（24/24；整个 spec 套件 80/80）
 - `spec/validate-tokens.mjs` 通过。[PASSED]（`34 theme overrides`）
 
@@ -408,7 +408,7 @@ crd 侧 `主题.ts` 改造：**不再维护 `外观设置` 这个私有中间类
 7. CI / 构建：本地使用 `-DCHASET_DEV_LOCAL=ON` 零延迟同级联动，构建及 QTest 全部通过。
 
 **验收标准**
-- `pnpm gate` 全绿（涵盖 47+ 组件 SPAS 契约、Click 交互测试、Qt headless `--test-scenario all`）。[PASSED]
+- `just gate` 全绿（涵盖 47+ 组件 SPAS 契约、Click 交互测试、Qt headless `--test-scenario all`）。[PASSED]
 - 手工交互验证：模式切换、10 档调色板逐档切换、装饰程度拖动、重置、导出/导入 JSON 往返一致。[PASSED]
 - 单元测试全绿（C++ Catch2 / QTest 套件全部通过）。[PASSED]
 
@@ -427,9 +427,9 @@ crd 侧 `主题.ts` 改造：**不再维护 `外观设置` 这个私有中间类
 6. `launcher/src/lib/主题.ts` 与 `launcher/src/store/主题状态.ts` 全面接入 `@chahu/cha-set` 规范配置（`ThemeConfig`），提供从存量格式到规范格式的双向无损转换与自动迁移；新增专门测试套件 `launcher/src/lib/主题.test.ts`（5/5 用例通过）。
 
 **验收标准**
-- `pnpm typecheck` 通过（exit 0）。[PASSED]
-- `pnpm exec vitest run`（21 个测试文件，115 个用例全部通过）。[PASSED]
-- `pnpm build` 生产构建通过（exit 0）。[PASSED]
+- `just typecheck` 通过（exit 0）。[PASSED]
+- `just test`（21 个测试文件，115 个用例全部通过）。[PASSED]
+- `just build react` 生产构建通过（exit 0）。[PASSED]
 - 独有项隔离回归验证：修改窗口材质或背景图不影响 ThemeSettings 内部状态，反之亦然。[PASSED]
 - 存量配置迁移验证：`auto` 自动映射为 `system`，`neutral` 映射为默认色，无损平滑。[PASSED]
 
@@ -445,7 +445,7 @@ crd 侧 `主题.ts` 改造：**不再维护 `外观设置` 这个私有中间类
    - 在 `launcher/src/index.css` 引入 `./css/generated/tokens.generated.css`；
    - 移除 `launcher/src/css/shadcn-base.css` 内手写的冗余 `:root` 与 `.dark` 变量声明（行 104-179）；
    - 完全移除已废弃的 `launcher/src/css/themes.css`（其界面风格与 10 档色板全部由 generated tokens 提供）；
-   - Vitest 21 个文件 115 个测试全部通过，生产环境 `pnpm build` 顺利打包。
+   - Vitest 21 个文件 115 个测试全部通过，生产环境 `just build react` 顺利打包。
 2. dt：`theme_manager.cpp` 的 `kDark` 与 `kLight` 直接由 `cha_set_gen::kDark` 和 `cha_set_gen::kLight` 初始化；零手工维护色值；`theme_manager.h` 注释明确指向 cha-set。
 3. 清理已废弃的多余辅助函数与临时中间结构。
 4. 文档与架构规约：
@@ -456,7 +456,7 @@ crd 侧 `主题.ts` 改造：**不再维护 `外观设置` 这个私有中间类
    - `scripts/check-theme-boundary.mjs` 扩充 B8 检查（静态扫描双端 ThemeSettings 组件源码及各宿主外观页，严防独有字段倒灌），自检与实测全绿。
 
 **验收标准**
-- `pnpm check:theme-boundary` 全绿（5 covered axes, 9 excluded axes, 10 palette ids, 4 component/consumer sources verified）。[PASSED]
+- `just check-theme-boundary` 全绿（5 covered axes, 9 excluded axes, 10 palette ids, 4 component/consumer sources verified）。[PASSED]
 - 两项目行为级零回归，类型检查与全量单测全绿。[PASSED]
 - `spec/tokens/meta.json` 同步更新完毕。[PASSED]
 
@@ -482,7 +482,7 @@ crd 侧 `主题.ts` 改造：**不再维护 `外观设置` 这个私有中间类
 派生 token 无法静态生成（C2），但可以**把两条公式锁在一起**：
 - `scripts/check-derived-parity.mjs`：以 10 档调色板 × light/dark = 20 组输入色，分别算 Qt 路径与 Web 路径，断言 ΔE(CIEDE2000) **≤ 2.0**。
 - 同时覆盖 `radiusCard/Panel/Control` 与 `motionFast/Normal` 的插值公式（§3.4）。
-- 挂 `pnpm gate`。
+- 挂 `just gate`。
 
 这是**唯一能防止「改了一边、另一边悄悄漂移」**的机制。
 

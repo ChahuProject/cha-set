@@ -106,7 +106,7 @@ Hovering a peeking strip raises that card **in place** (top z-order + full size 
 ## 8. Verification
 
 - Unit: `packages/react/src/floating-notice/FloatingNotice.test.tsx` — sorting, in-place raise, distance fan + mirror symmetry, hover spread, settle gating (defer/once/instant/cancel), copy text + order + feedback, unlimited stack, no-sideways regression.
-- Contract: `packages/react/conformance/floating-notice.conformance.test.tsx` + `spec/capabilities.json` via `pnpm gate`.
+- Contract: `packages/react/conformance/floating-notice.conformance.test.tsx` + `spec/capabilities.json` via `just gate`.
 - Qt: `cmake --build qt/build` (qmlcache compile) + `QtChaSetDemo.exe --test-scenario all` headless (instantiates `FloatingNoticeDocPage`, zero binding errors).
 - Living docs (React `FloatingNoticeDocPage`, Qt `FloatingNoticeDocPage.qml`, SPAS 1:1) exercise the sandbox; behavior changes here must keep them green.
 

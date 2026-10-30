@@ -109,7 +109,7 @@
           "id": "size-scales",
           "title": "Size follows the interface scale",
           "statement": "Web sizes with utilities or the size prop; desktop multiplies by ThemeTokens.dp. Artwork is never scaled by hand.",
-          "enforcement": "pnpm check:scaling"
+          "enforcement": "just check-scaling"
         },
         {
           "id": "no-motion",
@@ -121,7 +121,7 @@
           "id": "no-emoji",
           "title": "Vector only",
           "statement": "Emoji are banned repo-wide; an icon is always vector artwork.",
-          "enforcement": "pnpm check:no-emoji"
+          "enforcement": "just check-no-emoji"
         },
         {
           "id": "stroke-floor",

@@ -32,8 +32,7 @@ Key order is fixed by `token-helpers.mjs:ORDER` + `stringifySorted`; shards have
 
 ```bash
 # Aggregate snapshot (shards → spec/tokens.json)
-node spec/build-tokens.mjs
-pnpm gen:tokens
+just gen-tokens
 
 # Validate shards match snapshot (same gate as CI, sha256 after normalization)
 node spec/build-tokens.mjs --check
@@ -42,25 +41,25 @@ node spec/build-tokens.mjs --check
 node spec/validate-tokens.mjs
 
 # Generate all artifacts
-pnpm gen:all            # = gen:css + gen:qt
-pnpm gen:css            # → packages/react/src/styles/tokens.css + dist/consumers/launcher/generated/tokens.generated.css
-pnpm gen:qt             # → dist/consumers/dunting/generated/theme_tokens.generated.h + qt/src/ThemeTokens.generated.qml
+just gen
+just gen-css            # → packages/react/src/styles/tokens.css + dist/consumers/launcher/generated/tokens.generated.css
+just gen-qt             # → dist/consumers/dunting/generated/theme_tokens.generated.h + qt/src/ThemeTokens.generated.qml
 
 # Full refresh flow (after editing shards)
-pnpm gen:tokens && pnpm gen:all
+just gen-tokens && just gen
 git diff --exit-code -- spec/tokens.json packages/react/src/styles/tokens.css qt/src/ThemeTokens.generated.qml dist/consumers/
-node scripts/sync-consumers.mjs  # sync to sibling crd-a/dt-a checkouts if present
+just sync               # sync to sibling checkouts if present
 
 # Emergency bypass: ignore shards, use committed snapshot directly
 CHA_TOKENS_FROM=snapshot node spec/validate-tokens.mjs
-CHA_TOKENS_FROM=snapshot pnpm gen:all
+CHA_TOKENS_FROM=snapshot just gen
 ```
 
 ## Validation and Gates
 
 - `node spec/validate-tokens.mjs` green: both `validateSpec` + `validateShards` paths.
 - `node spec/build-tokens.mjs --check` green: aggregated sha256 from shards matches committed `spec/tokens.json`.
-- `pnpm gate` green: `gate/parity.mjs` validates against `spec/capabilities.json`.
+- `just gate` green: `gate/parity.mjs` validates against `spec/capabilities.json`.
 - CI additionally runs `git diff --exit-code -- spec/tokens.json packages/react/src/styles/tokens.css qt/src/ThemeTokens.generated.qml dist/consumers/` to prevent drift.
 
 ## Environment Switches

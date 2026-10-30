@@ -81,7 +81,7 @@
    *
    * Every value below resolves to a generated tokens.css custom property
    * (spec/tokens/primitives.json -> primitives.typography / primitives.fontWeight
-   * via pnpm gen:css). The Qt side reads the same numbers from
+   * via just gen-css). The Qt side reads the same numbers from
    * qt/src/Typography.generated.qml, so families, sizes, weights, line heights
    * and letter spacings cannot drift between the stacks.
    * See docs/architecture/typography-system.md.

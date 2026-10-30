@@ -2,7 +2,7 @@
 // GENERATED FILE - DO NOT EDIT.
 // Source: cha-set spec/tokens.json (schemaVersion 1)
 //         via spec/generators/generate-qt.mjs
-// Refresh: run `pnpm gen:qt` in the cha-set checkout, copy this file into
+// Refresh: run `just gen-qt` in the cha-set checkout, copy this file into
 //          <dt-a>/theme/generated/, commit alongside the consuming change.
 // Field names/order mirror ThemeManager::Tokens (theme_manager.h).
 // accentHover/accentPressed are runtime-derived (theme_manager.cpp) - never

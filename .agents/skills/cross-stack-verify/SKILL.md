@@ -17,14 +17,14 @@ When developing or modifying components across React and Qt, you MUST follow thi
      1. Navigation entry in `spec/showcase/navigation.json`.
      2. **Web (React)**: Living DocPage `packages/react/examples/basic/src/pages/components/<Name>DocPage.tsx` and active route in `packages/react/examples/basic/src/App.tsx`.
      3. **Desktop (Qt/QML)**: Component `qt/src/ChaSet<Name>.qml` + DocPage `qt/src/<Name>DocPage.qml` (both registered in `qt/CMakeLists.txt`) and active route in `qt/src/Main.qml` (`getPageSource`).
-   - **Mechanical Gate**: `pnpm gate` mechanically scans all component specs and enforces 100% dual-stack (React + Qt) living showcase completeness and runs headless scenario tests (`QtChaSetDemo.exe --test-scenario all`) across all routes. The compiled binary `qt/build/QtChaSetDemo.exe` is a mandatory hard gate (missing binary fails gate; pass `--skip-qt` only for isolated web-only debugging).
+   - **Mechanical Gate**: `just gate` mechanically scans all component specs and enforces 100% dual-stack (React + Qt) living showcase completeness and runs headless scenario tests (`QtChaSetDemo.exe --test-scenario all`) across all routes. The compiled binary `qt/build/QtChaSetDemo.exe` is a mandatory hard gate (missing binary fails gate; pass `--skip-qt` only for isolated web-only debugging).
 
 2. **NO Visual-Only Delivery (禁止仅凭静态截图验收)**
    - Screenshots only verify static CSS / QML bounding boxes.
    - An Agent must NEVER declare a task done without executing behavioral tests (wheel scrolling, pointer drag, button clicks, keyboard activation).
 
 3. **Tiered Quality Matrix Compliance (按组件层级实施针对性检验)**
-   - **L1 Atomic Visual Primitives** (`button`, `scroll-area`, `tabs`, `badge`, `card`, `input`, `separator`, `checkbox`, `switch`, `slider`): Bit-exact pixel-sync mandatory (`pnpm test:pixel --component <name>`).
+   - **L1 Atomic Visual Primitives** (`button`, `scroll-area`, `tabs`, `badge`, `card`, `input`, `separator`, `checkbox`, `switch`, `slider`): Bit-exact pixel-sync mandatory (`just gate-pixel --component <name>`).
    - **L2 Floating Overlays**, **L3 Virtualization & Shell**, **L4 Composite Engines**: Focus on semantic token mapping, keyboard flows, 60fps virtualization kinetics, and JSON AST serialization equivalence.
 
 4. **Mandatory Dogfooding & Showcase Self-Hosting (组件自举与演示置换红线)**
@@ -34,7 +34,7 @@ When developing or modifying components across React and Qt, you MUST follow thi
 
 5. **Single Source of Truth for Data (禁止双端手写重复数据)**
    - All component datasets (changelogs, feature matrices, docs hierarchy, token tables) MUST reside in `spec/showcase/*.json` or `spec/tokens/**`.
-   - Run `pnpm gen:showcase` / `pnpm build:tokens` to emit synchronized artifacts. Never duplicate raw arrays in TSX and QML.
+   - Run `just gen-showcase` / `just gen-tokens` to emit synchronized artifacts. Never duplicate raw arrays in TSX and QML.
 
 6. **Desktop Native Idiom & QML Robustness Compliance (遵循 Qt 桌面端物理交互与健壮性规约)**
    - **Wheel Events**: Qt `Flickable` on Windows ignores mouse wheels unless `WheelHandler` is attached. Always use `ChaSetScrollArea` with built-in `WheelHandler`.
@@ -60,7 +60,7 @@ When developing or modifying components across React and Qt, you MUST follow thi
    - **Docs & Descriptions**: Never write `in pixels` or `100px` in props table descriptions or doc text.
 
 10. **Mandatory Motion Token & Animation Determinism Contract (双端动效统一与测试确定性红线)**
-   - **Token-driven only**: Durations (`--cs-motion-quick/short/medium`) and easings (`--cs-ease-standard/emphasized/entrance`, each with a Qt `Easing.*` counterpart) live in `spec/tokens/primitives.json` and are regenerated via `pnpm gen:css && pnpm gen:qt`. Components MUST consume them — `duration-quick`/`ease-*` utilities on React, `ThemeTokens.motion*`/`ThemeTokens.ease*` in QML. Hardcoded `duration-100/150/200`, `ease-in-out`, raw `Easing.*`, or numeric animation durations are forbidden (they silently bypass reduced-motion handling).
+   - **Token-driven only**: Durations (`--cs-motion-quick/short/medium`) and easings (`--cs-ease-standard/emphasized/entrance`, each with a Qt `Easing.*` counterpart) live in `spec/tokens/primitives.json` and are regenerated via `just gen-css && just gen-qt`. Components MUST consume them — `duration-quick`/`ease-*` utilities on React, `ThemeTokens.motion*`/`ThemeTokens.ease*` in QML. Hardcoded `duration-100/150/200`, `ease-in-out`, raw `Easing.*`, or numeric animation durations are forbidden (they silently bypass reduced-motion handling).
    - **animation-aware DocPages**: Every living DocPage MUST include an `Animations` section (React: `<section id="animations">` + `tocItems` entry; Qt: matching text block) describing motion points and the tokens used.
    - **Deterministic headless runs**: `QtChaSetDemo.exe --test-scenario all` / `--harness` / shot captures force `ThemeTokens.animationsEnabled = false` in `qt/src/Main.qml`. Every QML `Behavior` MUST gate on `ThemeTokens.animationsEnabled` (+ force/harness exclusions when those props exist); otherwise scenario assertions and pixel sampling race the animation and turn flaky.
    - **Never animate kinematics**: scroll offsets/contentY and drag positions (virtual lists, scroll areas, splitter, Rnd) must not receive `Behavior`/transition — animating these breaks the 60fps and determinism red lines.
@@ -69,7 +69,7 @@ When developing or modifying components across React and Qt, you MUST follow thi
    - **Declare the layer order first**: any library CSS entry under `packages/react/src/styles/*.css` that opens a bare `@layer <name> { ... }` block MUST declare the canonical order
      `@layer properties, theme, base, components, utilities;` **before** that block.
      Per the CSS Cascade Layers spec a layer's position is fixed by its **first appearance in the whole document**, so with `motion.css` imported before `theme.css` an undeclared `utilities` block pins utilities to the BOTTOM of the order — the `@layer base` preflight (`button { background-color: transparent; border-radius: 0 }`) then silently outranks every Tailwind utility, stripping colour, radius and borders from all components. `properties` must be included in the declaration too: it holds `* { --tw-*: initial }`, which would otherwise float to the top and reset `--tw-shadow` / `--tw-ring-*`.
-   - **Verify in dev, never only in build**: `vite build` concatenates all CSS with theme.css's statement first, so this entire regression class is invisible under `build` / `preview`. Acceptance for any style-touching change MUST include a `pnpm showcase` (dev server) check that a known utility really applies, e.g. `getComputedStyle(document.querySelector('button.bg-primary'))` reports the accent colour and a non-zero `borderRadius`.
+   - **Verify in dev, never only in build**: `vite build` concatenates all CSS with theme.css's statement first, so this entire regression class is invisible under `build` / `preview`. Acceptance for any style-touching change MUST include a `just react` (dev server) check that a known utility really applies, e.g. `getComputedStyle(document.querySelector('button.bg-primary'))` reports the accent colour and a non-zero `borderRadius`.
    - **Layer-ladder probe**: to prove the order, inject one colour per layer on the same selector (`@layer properties{...hotpink} @layer theme{...red} @layer base{...blue} @layer components{...green} @layer utilities{...yellow}`) — `utilities` must win. If `components` wins instead, the order is polluted.
    - **Cold-start check**: re-run the probe after `rm -rf packages/react/examples/basic/node_modules/.vite`; a warm cache can mask stylesheet-injection ordering bugs.
 
@@ -125,17 +125,17 @@ When developing or modifying components across React and Qt, you MUST follow thi
    - **Sandbox Equivalence**: Sandbox layouts, pane titles, mock items, badge calculations, and reset actions MUST match 1:1 between React and Qt showcases.
    - **Multi-Example Cardinality & Sequence Parity (多示例强等价律)**: Every interactive example (`ComponentPreview`) in React MUST have an identical counterpart in Qt. `ComponentPreview` count (`previews.length`), sequence, and preview titles (`title="..."`) MUST match 1:1 bit-for-bit across stacks.
    - **Section & Sub-Anchor Parity (子示例章节与锚点对齐律)**: When a DocPage introduces multiple example sections (e.g. `nested`, `playground`, `variants`, `vertical`), those section IDs and headings MUST be reflected identically in the Table of Contents (`tocItems`) and page structure on both React and Qt.
-   - **Automated Verification**: Run `pnpm check:showcase` (or `pnpm check:showcase --component <name>`) and `pnpm gate` (Stage 2.5) to mechanically enforce structural, multi-example, and code parity.
+   - **Automated Verification**: Run `just check-showcase` (or `just check-showcase --component <name>`) and `just gate` (Stage 2.5) to mechanically enforce structural, multi-example, and code parity.
 
 14. **Mandatory Unified Theme Configuration Contract (统一主题配置入口与边界契约律)**
    - **Single Theme Configuration Entry**: Cross-stack theme configuration across ChaSet consumers MUST be unified through ChaSet's `<ThemeSettings>` (React) and `ChaSetThemeSettings` (Qt QML).
    - **Host-Only Isolation**: Host-only settings MUST NOT leak into the shared ThemeSettings component or schema.
-   - **Automated Boundary Gate**: `pnpm check:theme-boundary` mechanically enforces that only covered axes (mode, palette, decoration, typography, uiScale) exist in the neutral schema.
+   - **Automated Boundary Gate**: `just check-theme-boundary` mechanically enforces that only covered axes (mode, palette, decoration, typography, uiScale) exist in the neutral schema.
 
 15. **Mandatory Zero-Emoji Mandate & Pure-Vector Icon Conformance (严禁使用 Emoji 与纯矢量图标契约红线)**
    - Never use Unicode emojis in component code, showcase pages, demo datasets, documentation, scripts, or commit messages.
    - All visual icons must use pure-vector representations: SVG icon components from `packages/react/src/lib/icons.tsx` on React, and `ChaSetIcon` / `ChaSetStatusIcon` on Qt Quick.
-   - Mechanically enforced via `pnpm check:no-emoji` and `pnpm gate`.
+   - Mechanically enforced via `just check-no-emoji` and `just gate`.
 
 16. **Mandatory High-DPI & UI Scaling Parity Contract (跨端界面缩放体系与 ThemeTokens.dp 强制律 — 禁止非缩放物理像素)**
    - Desktop Qt Quick does NOT scale raw pixel coordinates when `ThemeTokens.uiScale` changes. All geometric dimensions in ChaSet Qt components (`implicitHeight`, `implicitWidth`, `height`, `width`, `radius`, `spacing`, `padding`, `headerHeight`, `rowHeight`, `boxSize`, `estimateSize`, `itemHeight`, `thumbThickness`, `expandedThumbThickness`, `hitThickness`, `buttonLength`) MUST be scaled via `ThemeTokens.dp(val)` or `ThemeTokens.sp(val)` / `Typography.*`. Raw unscaled numbers > 2 are strictly forbidden.
@@ -143,7 +143,7 @@ When developing or modifying components across React and Qt, you MUST follow thi
    - Public component property interfaces accept unscaled logical units (`rowHeight: 36`, `size: 16`); component internals calculate `ThemeTokens.dp(rowHeight)` (callers must NEVER pass `ThemeTokens.dp` to prevent double-scaling).
    - All vector icons (`ChaSetIcon`, `ChaSetStatusIcon`) MUST scale strictly according to `ThemeTokens.dp(size)`.
    - Interactive sandbox containers (`ComponentPreview`, `TabsDocPage`) must never use fixed unscaled heights that clip components under high zoom.
-   - Mechanically enforced via static linter `pnpm check:scaling` (`scripts/check-qt-scaling.mjs`) and headless runtime scenario (`QtChaSetDemo.exe --test-scenario uiscale`), both embedded directly in `pnpm gate`.
+   - Mechanically enforced via static linter `just check-scaling` (`scripts/check-qt-scaling.mjs`) and headless runtime scenario (`QtChaSetDemo.exe --test-scenario uiscale`), both embedded directly in `just gate`.
 
 ## 2. Verification Commands Checklist
 
@@ -151,13 +151,13 @@ Before declaring any component task complete, execute:
 
 ```bash
 # 1. Regenerate tokens & showcase datasets (if contracts or tokens modified)
-pnpm build:tokens
+just gen-tokens
 
 # 2. Run showcase parity assurance system (SPAS)
-pnpm check:showcase
+just check-showcase
 
 # 3. Check UI scaling compliance (ThemeTokens.dp) across all Qt components
-pnpm check:scaling
+just check-scaling
 
 # 3. Build Qt desktop project
 #    The QML components are compiled into QtChaSetDemo.exe, so ANY edit under
@@ -180,24 +180,24 @@ pnpm check:scaling
 #   relink), so repeat build/capture cycles during a pixel investigation are cheap.
 
 # 4. Run full React test suite & cursor conformance
-pnpm test
-pnpm --filter @chahu/cha-set exec vitest run src/__tests__/cursor-conformance.test.tsx
+just test
+just test src/__tests__/cursor-conformance.test.tsx
 
 # 5. Run full cross-stack behavioral, cursor & showcase gate
 # (Checks capability coverage, 100% showcase docs completeness for every component, SPAS parity, and Qt scenarios; requires QtChaSetDemo.exe unless --skip-qt is passed)
-pnpm gate
+just gate
 
 # 6. Run targeted Qt cursor & behavioral scenarios
 .\qt\build\QtChaSetDemo.exe --test-scenario cursor
 .\qt\build\QtChaSetDemo.exe --test-scenario all
 
 # 7. (For L1 Atomic Primitives) Run targeted bit-exact pixel-sync
-pnpm test:pixel --component <name>
+just gate-pixel --component <name>
 # `code-block` is a text-dense case: it asserts line pitch geometrically rather
 # than by mismatch rate (see .agents/skills/pixel-sync). Report a `Line Pitch`
 # column of `<react>px/<qt>px`; aligned renders print `17/17px ok`.
 # OR run all L1 components:
-pnpm gate:pixel
+just gate-pixel
 
 # 7. Interactive Cursor & Text Selection Verification
 # - Verify hover over input boxes, text fields, and code blocks displays IBeamCursor / cursor-text
@@ -220,12 +220,12 @@ before calling it a regression**. Separately, the Ctrl+C clipboard step fails
 intermittently with `OleSetClipboard ... COM error 0x800401d0` when another
 process owns the clipboard — also not a code regression.
 
-`pnpm gate` runs this scenario as step 3 and `process.exit(1)`s there, which
+`just gate` runs this scenario as step 3 and `process.exit(1)`s there, which
 means gate steps 4 and 5 (React showcase pages, cursor conformance) **never run**.
-Do not treat a red `pnpm gate` as your regression until you have ruled this out:
+Do not treat a red `just gate` as your regression until you have ruled this out:
 
 0. Fastest triage: re-run the scenario, then run the tail of the gate directly —
-   `pnpm gate --skip-qt` executes every non-runtime step (including the
+   `just gate --skip-qt` executes every non-runtime step (including the
    versionless-import check) and is deterministic.
 
 1. Run the failing suite directly and compare against a pristine build — back your
@@ -238,5 +238,5 @@ Do not treat a red `pnpm gate` as your regression until you have ruled this out:
    type registry changes — that is noise, not a regression:
    `sed 's/_QMLTYPE_[0-9]*//; s/_QML_[0-9]*//g'`
 3. Re-run gate steps 4 and 5 by hand:
-   `pnpm --filter @chahu/cha-set exec vitest run src/__tests__/showcase-parity.test.tsx src/__tests__/showcase-pages.test.tsx src/__tests__/showcase-sidebar.test.tsx src/__tests__/cursor-conformance.test.tsx`
+   `just test src/__tests__/showcase-parity.test.tsx src/__tests__/showcase-pages.test.tsx src/__tests__/showcase-sidebar.test.tsx src/__tests__/cursor-conformance.test.tsx`
 

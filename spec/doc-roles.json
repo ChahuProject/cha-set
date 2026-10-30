@@ -1,5 +1,5 @@
 {
-  "$comment": "Living-documentation typography roles. Single source of truth for DocText (Qt) / DocText.tsx (React). A role is DATA, not a component: it names a slot in the typography scale (spec/tokens/primitives.json -> primitives.typography) plus the semantic tag and default tone. Adding a role means editing this file and running `pnpm gen:roles` — never adding a component, a DocPage, or a CMake entry.",
+  "$comment": "Living-documentation typography roles. Single source of truth for DocText (Qt) / DocText.tsx (React). A role is DATA, not a component: it names a slot in the typography scale (spec/tokens/primitives.json -> primitives.typography) plus the semantic tag and default tone. Adding a role means editing this file and running `just gen-roles` — never adding a component, a DocPage, or a CMake entry.",
   "schemaVersion": 1,
   "defaultRole": "p",
   "toneVars": {

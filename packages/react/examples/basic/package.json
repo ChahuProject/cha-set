@@ -8,7 +8,7 @@
     "dev": "vite",
     "prebuild": "node ../../../../spec/generators/generate-all.mjs",
     "build": "vite build",
-    "prepreview": "pnpm build",
+    "prepreview": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -5,7 +5,7 @@ import ChaSet
 // GENERATED FILE - DO NOT EDIT.
 // Source: cha-set spec/tokens/primitives.json -> primitives.typography / primitives.fontWeight
 //         (schemaVersion 1) via spec/generators/generate-qt.mjs
-// Refresh: `pnpm gen:qt` regenerates this file in place.
+// Refresh: `just gen-qt` regenerates this file in place.
 //
 // Cross-platform typography contract. The React side reads the SAME numbers
 // from `--cs-font-*` / `--cs-text-*` / `--cs-leading-*` / `--cs-tracking-*`

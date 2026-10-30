@@ -13,7 +13,7 @@
 // canvas (`background`) is deliberately excluded: both demos pin it to the same #020817 /
 // #ffffff outside the token layer, and it is the one surface neither side derives.
 //
-// Regenerate the copy by running `pnpm gen:qt` and copying the mapped values into styles.css.
+// Regenerate the copy by running `just gen-qt` and copying the mapped values into styles.css.
 
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';

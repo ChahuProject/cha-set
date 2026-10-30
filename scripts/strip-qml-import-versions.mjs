@@ -141,7 +141,7 @@ if (checkOnly) {
     `[strip-qml-imports] FAIL — ${totalHits} versioned import(s) in ${changedFiles} file(s):`,
   );
   for (const { rel, count } of offenders) console.error(`  ${rel} (${count})`);
-  console.error('[strip-qml-imports] Run `pnpm fix:qml-imports` to strip the versions.');
+  console.error('[strip-qml-imports] Run `just fix-qml-imports` to strip the versions.');
   process.exit(1);
 }
 

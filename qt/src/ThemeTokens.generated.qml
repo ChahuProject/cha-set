@@ -4,7 +4,7 @@ import QtQuick
 // GENERATED FILE - DO NOT EDIT.
 // Source: cha-set spec/tokens.json (schemaVersion 1)
 //         via spec/generators/generate-qt.mjs
-// Refresh: `pnpm gen:qt` regenerates this file in place.
+// Refresh: `just gen-qt` regenerates this file in place.
 // Flip `dark` at runtime to switch every bound color live.
 QtObject {
     id: root

@@ -5,7 +5,7 @@ import ChaSet
 // GENERATED FILE - DO NOT EDIT.
 // Source: cha-set spec/tokens/semantic/core.json (dunting preset) + tokenTypes from
 //         spec/highlight/languages.json, via spec/generators/generate-qt.mjs
-// Refresh: `pnpm gen:qt` regenerates this file in place.
+// Refresh: `just gen-qt` regenerates this file in place.
 // Syntax palette consumed by ChaSetHighlightedCode. Token type <X> maps to the
 // semantic token `code-<X>`; `plain` is absent on purpose (plain text uses the
 // host foreground). Theme mode is read live from ThemeTokens so every color

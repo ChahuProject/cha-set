@@ -188,5 +188,5 @@ Rich text copy, batch copy, global copy-shortcut interception, built-in tooltip.
 | Shared defaults parity | `spec/__tests__/hover-copy-parity.test.ts` parses `HoverCopy.tsx` + `ChaSetHoverCopy.qml` against `spec/components/hover-copy.ts` |
 | State machine (React) | `packages/react/src/hover-copy/HoverCopy.test.tsx` incl. restore-while-hovering, empty text, disabled, keyboard |
 | State machine (Qt) | `QtChaSetDemo.exe --test-scenario hovercopy` (C++ physical hover/click + `ChaSetClipboard` assertion) |
-| Showcase parity | `pnpm check:showcase --component hover-copy` + `pnpm gate` |
+| Showcase parity | `just check-showcase --component hover-copy` + `just gate` |
 | Capability coverage | `spec/capabilities.json` -> `components.hoverCopy` "must" caps mirrored in both `conformance/coverage.json` |

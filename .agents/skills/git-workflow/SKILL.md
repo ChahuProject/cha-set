@@ -118,7 +118,7 @@ Before committing any component changes in this repository, run the project-defi
 
 1. **Dual-Stack Build & Verification Gate**:
    ```bash
-   cmake --build qt/build && pnpm test && pnpm gate
+   just build qt && just test && just gate
    ```
    - Every test file must pass. The gate prints its own totals — read them from the run, never from this document, and never "correct" a total downwards.
    - Parity gate must verify all capability checks, the living showcase doc pages across React and Qt (1:1), and headless Qt scenario tests (`QtChaSetDemo.exe --test-scenario all`).
@@ -127,9 +127,9 @@ Before committing any component changes in this repository, run the project-defi
    - Verify zero raw `px` units in newly created or modified component files, styles, inline properties, code previews, and props table descriptions.
    - Dynamic measurements must use `rem` (`${val * 0.0625}rem`).
 
-3. **`pnpm build` before `pnpm typecheck`**:
-   - `pnpm typecheck` resolves the workspace package through its built types. Running it on a clean tree (no `dist/`) cascades into ~160 bogus errors (`TS2307 Cannot find module '@chahu/cha-set'` plus downstream `TS2322/TS2345`).
-   - Always `pnpm build && pnpm typecheck`. With a fresh build the real residual count is ~80, concentrated in test files and showcase doc pages — **not** in `src/` component code.
+3. **`just build react` before `just typecheck`**:
+   - `just typecheck` resolves the workspace package through its built types. Running it on a clean tree (no `dist/`) cascades into ~160 bogus errors (`TS2307 Cannot find module '@chahu/cha-set'` plus downstream `TS2322/TS2345`).
+   - Always `just build react && just typecheck`. With a fresh build the real residual count is ~80, concentrated in test files and showcase doc pages — **not** in `src/` component code.
 
 4. **Incremental Pre-Response Commit Gate**:
    - For multi-component tasks, verify and commit each component individually (`feat(<name>): ...`).
@@ -138,6 +138,6 @@ Before committing any component changes in this repository, run the project-defi
 
 5. **Regenerate before verifying when the SSOT changes**:
    - `spec/` holds the sources of truth — the icon registry, component schemas, token definitions — and the committed `*.generated.*` files are their output, not hand-authored code. Editing a product by hand, or editing the source without rerunning its generator, makes the two disagree in a way no other gate can see.
-   - After touching anything under `spec/`, run the matching generator (`pnpm gen:icons`, or `pnpm gen:all` when unsure) **before** `pnpm test` / `pnpm gate`. A stale product fails with errors that point at the consumer, not at the cause that produced it.
+   - After touching anything under `spec/`, run the matching generator (`just gen-icons`, or `just gen` when unsure) **before** `just test` / `just gate`. A stale product fails with errors that point at the consumer, not at the cause that produced it.
    - Treat regeneration as idempotent and check it: rerun the generator on an already-clean tree and confirm the products do not move. A product that keeps changing under an unchanged source is a generator bug, not a diff to commit.
 

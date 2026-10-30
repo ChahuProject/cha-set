@@ -35,8 +35,8 @@ packages/react/             React implementation → @chahu/cha-set
 qt/                         Qt reference implementation (ChaSetButton demo)
 ```
 
-Token flow: edit `spec/tokens/**` shards → `pnpm gen:tokens` builds `spec/tokens.json` snapshot →
-`pnpm gen:all` (css + qt) emits per-stack artifacts (CSS custom properties for web,
+Token flow: edit `spec/tokens/**` shards → `just gen-tokens` builds `spec/tokens.json` snapshot →
+`just gen-all` (css + qt) emits per-stack artifacts (CSS custom properties for web,
 a C++ header + QML singleton for dt-a's ThemeManager) → committed into consumer repos.
 SoT is shards, not the snapshot. See `docs/token-mapping.md` and `spec/README.md`.
 
@@ -69,7 +69,7 @@ ChaSet includes an interactive **Studio & Theme Customizer** for both React and 
 ### 1. Launch React Studio (Web)
 
 ```bash
-pnpm showcase     # or pnpm dev
+just react
 ```
 Open `http://localhost:5173` in your browser to:
 - **Tweak live styles**: Test custom primary colors, border radii, and accent presets.
@@ -80,17 +80,12 @@ Open `http://localhost:5173` in your browser to:
 
 One-command automatic build and launch:
 ```bash
-pnpm showcase:qt
+just qt
 ```
 
-Or manual build via CMake (Windows / Qt 6 MSVC) — set QTDIR to your own Qt kit, the
-version is detected at build time so this never needs updating on a Qt upgrade:
-```bat
-set QTDIR=D:\pengj\qt\current\msvc2022_64
-set PATH=%QTDIR%\bin;%PATH%
-cmake -S qt -B qt/build -G Ninja -DCMAKE_PREFIX_PATH=%QTDIR%
-cmake --build qt/build
-qt\build\QtChaSetDemo.exe
+Or run with hot-reload development mode:
+```bash
+just qt --hot
 ```
 
 ---
@@ -98,16 +93,15 @@ qt\build\QtChaSetDemo.exe
 ## Development & Workflows
 
 ```bash
-pnpm install
-pnpm showcase      # start interactive studio & theme customizer
-pnpm gen:tokens    # aggregate spec/tokens/** + spec/qt-mapping.json → spec/tokens.json (sha256-gated)
-pnpm gen:css       # regenerate packages/react/src/styles/tokens.css + dist/consumers/launcher/generated/tokens.generated.css
-pnpm gen:qt        # regenerate dist/consumers/dunting/generated/theme_tokens.generated.h + qt/src/ThemeTokens.generated.qml
-pnpm gen:all       # gen:tokens + gen:css + gen:qt (also: pnpm gen:tokens && pnpm gen:all)
-pnpm typecheck     # tsc --noEmit
-pnpm test          # vitest (unit + conformance)
-pnpm gate          # parity gate against spec/capabilities.json
-pnpm build         # build @chahu/cha-set (esm + cjs + d.ts + css)
+pnpm install       # install node dependencies
+just react         # start interactive React studio & theme customizer
+just qt            # launch desktop Qt showcase (or just qt --hot)
+just gen           # regenerate all derived assets (tokens, css, qt, highlight, icons)
+just typecheck     # TypeScript check
+just test          # vitest unit & conformance tests
+just gate          # full contract & parity gate
+just build react   # build @chahu/cha-set library
+just build qt      # build desktop Qt showcase binary
 ```
 
 ---

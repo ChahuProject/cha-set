@@ -32,16 +32,16 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
      - Component implementation `qt/src/ChaSet<Name>.qml` registered in `qt/CMakeLists.txt` (`ChaSet` module).
      - Living doc page `qt/src/<Name>DocPage.qml` registered in `qt/CMakeLists.txt` (`QtChaSetDemo` module).
      - Route mapping in `qt/src/Main.qml` (`getPageSource`).
-   - **Mechanical Gate**: `pnpm gate` (Stage 2.5) mechanically executes the SPAS validator (`pnpm check:showcase`), halting with a hard error if any component lacks living documentation, route mapping, or exhibits metadata/TOC/code divergence between React and Qt.
+   - **Mechanical Gate**: `just gate` (Stage 2.5) mechanically executes the SPAS validator (`just check-showcase`), halting with a hard error if any component lacks living documentation, route mapping, or exhibits metadata/TOC/code divergence between React and Qt.
 3. **Tiered Quality Defense Matrix**:
-   - **L1 Atomic Visual Primitives** (`button`, `scroll-area`, `tabs`, `badge`, `card`, `input`, `separator`, `checkbox`, `switch`, `slider`): **MANDATORY Bit-Exact Pixel-Sync** (`pnpm test:pixel --component <name>`). Spatial diff $\le 0.20\%$, surface color $\Delta E \le 4.0$ (solid fill $\Delta E = 0.0$).
+   - **L1 Atomic Visual Primitives** (`button`, `scroll-area`, `tabs`, `badge`, `card`, `input`, `separator`, `checkbox`, `switch`, `slider`): **MANDATORY Bit-Exact Pixel-Sync** (`just gate-pixel --component <name>`). Spatial diff $\le 0.20\%$, surface color $\Delta E \le 4.0$ (solid fill $\Delta E = 0.0$).
    - **L2 Floating Overlays**, **L3 Desktop Virtualization**, and **L4 Composite Engines**: Token conformance, keyboard navigation flows, 60fps virtualization kinetics, and JSON AST serialization round-trips.
 4. **Mandatory Dogfooding & Showcase Migration (零原生标签与全量自举)**:
    - When a component is added to ChaSet, an Agent MUST immediately scan all demo pages, layouts, and dialogs (`packages/react/examples/basic/src/` and `qt/src/`).
    - All corresponding native HTML tags or ad-hoc wrappers (e.g. manual copy buttons -> `<CopyButton>`, divider lines -> `<Separator>`, tooltips -> `<Tooltip>`, mode toggles -> `<SegmentedControl>`, status labels -> `<Badge>`, table layouts -> `<Table>` / `<GenericDataTable>`) MUST be migrated immediately.
    - In Qt QML, delegates and preview headers must similarly dogfood ChaSet primitives (`ChaSetBadge` for status/telemetry/rules, `ChaSetSegmentedControl` for mode toggles, `ChaSetSeparator` for divider lines, and `ChaSetTable` with `badge: true` for status cells).
    - No raw native tags or ad-hoc custom implementations are permitted in the showcase when ChaSet provides that primitive.
-5. **Mandatory Gate Verification**: Run `pnpm gate` which verifies 318 capabilities, 100% Living Showcase completeness (47 components across React and Qt), automated DocPage smoke/click tests, and headless Qt scenario tests (`QtChaSetDemo.exe --test-scenario all`). For L1 components, also verify `pnpm test:pixel --component <name>`.
+5. **Mandatory Gate Verification**: Run `just gate` which verifies 318 capabilities, 100% Living Showcase completeness (47 components across React and Qt), automated DocPage smoke/click tests, and headless Qt scenario tests (`QtChaSetDemo.exe --test-scenario all`). For L1 components, also verify `just gate-pixel --component <name>`.
 6. **Mandatory Color & Contrast Self-Containment (色彩自洽与背景前景成对配对律)**:
    - Any component, variant, or floating overlay declaring a background surface (`bg-background`, `bg-card`, `bg-popover`, `bg-primary`, `bg-secondary`, `bg-muted`, etc.) MUST explicitly pair it with the corresponding text token (`text-foreground`, `text-card-foreground`, `text-popover-foreground`, `ThemeTokens.text`, etc.).
    - Portal overlays (`AlertDialog`, `Dialog`, `Sheet`, `Popover`, `Tooltip`) MUST NEVER rely on host CSS inheritance for text colors (in dark mode, unassigned text falls back to user-agent black `rgb(0,0,0)`, creating invisible black-on-black text).
@@ -61,7 +61,7 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
    - **Neutral Prop Names & Tokens**: Component props and CSS variables must omit `Px` or `pixel` suffixes (`hitThickness`, `visualThickness`, `deltaAmount`, `--sidebar-width` instead of `hitThicknessPx`, `deltaPixels`, `--sidebar-width-px`).
    - **Documentation & Props Tables**: Doc descriptions, code examples, and props tables must never describe measurements as "in pixels" or "100px". Use neutral units, rem scale, or component tokens.
 10. **Pre-Response Commit Gate & Incremental Verification (增量提交门禁与验证壁垒)**:
-    - Every component introduced or modified MUST pass full verification (`cmake --build qt/build && pnpm test && pnpm gate`) and be committed immediately with English Conventional Commits (`feat(<name>): ...`) and pushed to origin BEFORE proceeding to the next component or yielding the turn. Never accumulate uncommitted changes.
+    - Every component introduced or modified MUST pass full verification (`just build qt && just test && just gate`) and be committed immediately with English Conventional Commits (`feat(<name>): ...`) and pushed to origin BEFORE proceeding to the next component or yielding the turn. Never accumulate uncommitted changes.
 11. **Mandatory Motion Tokens & Animation Contract (动效令牌统一约束律 — 新组件必带动画)**:
     - No component ships without motion. Every interactive state transition (hover/pressed/focus/checked/selected/expanded and enter/exit of overlays) MUST be a smooth animation driven by the shared motion tokens — never instant jumps, never component-local hardcoded durations/easings.
     - **Single Source of Truth**: durations `--cs-motion-quick 90ms / short 120ms / medium 180ms` and easings `--cs-ease-standard / emphasized / entrance` are defined in `spec/tokens/primitives.json`; easings carry both a CSS `cubic-bezier(...)` and a Qt `Easing.*` name. Both stacks read from this one spec.
@@ -98,7 +98,7 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
     - Public component property interfaces accept unscaled logical units (`rowHeight: 36`, `size: 16`); component internals calculate `ThemeTokens.dp(rowHeight)` (callers must NEVER pass `ThemeTokens.dp` to prevent double-scaling).
     - All vector icons (`ChaSetIcon`, `ChaSetStatusIcon`) MUST scale strictly according to `ThemeTokens.dp(size)`.
     - Interactive sandbox containers (`ComponentPreview`, `TabsDocPage`) must never use fixed unscaled heights that clip components under high zoom.
-    - Mechanically enforced via static linter `pnpm check:scaling` (`scripts/check-qt-scaling.mjs`) and headless runtime scenario (`QtChaSetDemo.exe --test-scenario uiscale`), both embedded directly in `pnpm gate`.
+    - Mechanically enforced via static linter `just check-scaling` (`scripts/check-qt-scaling.mjs`) and headless runtime scenario (`QtChaSetDemo.exe --test-scenario uiscale`), both embedded directly in `just gate`.
 15. **Mandatory Tooltip Placement Contract (浮层提示默认方位契约 — 严禁上下遮挡纵向同级项)**:
     - **Single Source of Truth**: Follow the canonical placement policy defined in `spec/components/tooltip.ts` header comments.
     - **Dense Vertical Lists → `right` (菜单类一律右侧)**: All menu-like vertical stacks (`dropdown-menu` items, `context-menu` items, `select` options, `sidebar` navigation, `virtual-tree` rows, row actions in `reorderable` / `table`) MUST default to `side="right"` + `align="center"`. Placing tooltips at `top`/`bottom` in vertical menus obscures adjacent items while the pointer travels; `right` leaves the whole stack visible while allowing collision handling (`avoidCollisions: true`) to flip safely to `left` when near the right viewport border.
@@ -216,10 +216,10 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
 
 1. **Rebuild & Verify**:
    ```bash
-   cmake --build qt/build
-   pnpm check:scaling
-   pnpm --filter @chahu/cha-set test
-   pnpm gate
+   just build qt
+   just check-scaling
+   just test
+   just gate
    ```
 2. Ensure `gate/parity.mjs` outputs `[gate] OK — all must capabilities covered` and `[gate] OK — Qt UI Scaling Parity Gate passed`.
 
@@ -240,7 +240,7 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
    - Add `<Name>` mount block when `harnessMode === '<name>'`.
 4. **Execute Verification**:
    ```bash
-   pnpm test:pixel --component <name>
+   just gate-pixel --component <name>
    ```
    Inspect `.pixel-diff/report.html` to confirm 100% PASS with green indicators.
 5. **Update Skill Documentation**:
@@ -260,7 +260,7 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
 ### Phase 6: Showcase, Living Documentation & Parity Verification (100% MANDATORY)
 
 > [!IMPORTANT]
-> **Zero Blindspots & 1:1 Showcase Parity (SPAS)**: An Agent is strictly forbidden from finishing a task without creating the living showcase documentation on both React and Qt, and verifying they pass the Showcase Parity Assurance System (`pnpm check:showcase`). `pnpm gate` mechanically enforces this rule and will fail if skipped!
+> **Zero Blindspots & 1:1 Showcase Parity (SPAS)**: An Agent is strictly forbidden from finishing a task without creating the living showcase documentation on both React and Qt, and verifying they pass the Showcase Parity Assurance System (`just check-showcase`). `just gate` mechanically enforces this rule and will fail if skipped!
 
 1. **Metadata & Single Source of Truth**:
    - Register the component in `spec/showcase/navigation.json` under its category:
@@ -323,14 +323,14 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
      - Copy actions -> `<CopyButton>` / `ChaSetCopyButton`.
 
 8. **Showcase Parity Verification**:
-   - Run `pnpm check:showcase --component <name>` to guarantee zero structural, metadata, or code snippet drift before entering gate verification.
+   - Run `just check-showcase --component <name>` to guarantee zero structural, metadata, or code snippet drift before entering gate verification.
 
 ---
 
 ### Phase 7: Verification Checklist & Commit Gate
 
 1. **Showcase Parity Verification**:
-   - Run `pnpm check:showcase` (or `pnpm check:showcase --component <name>`) and ensure all 5 canonical sections, authentic React snippets, metadata, and keyboard shortcut IDs are 100% aligned across React and Qt.
+   - Run `just check-showcase` (or `just check-showcase --component <name>`) and ensure all 5 canonical sections, authentic React snippets, metadata, and keyboard shortcut IDs are 100% aligned across React and Qt.
 2. **Zero-`px` Verification**:
    - Verify zero raw `px` units in component implementation, styles, virtualizer spacer calculations (must use rem), code snippets, doc page previews, and props table descriptions.
 3. **Motion Token Verification**:
@@ -339,14 +339,14 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
    - Verify the DocPage contains the `Animations` section and `tocItems` entry.
 4. **Execute Full Suite Verification**:
    ```bash
-   pnpm check:showcase
-   cmake --build qt/build
-   pnpm test
-   pnpm gate
+   just check-showcase
+   just build qt
+   just test
+   just gate
    ```
    For L1 Atomic Primitives, also run:
    ```bash
-   pnpm test:pixel --component <name>
+   just gate-pixel --component <name>
    ```
 3. **Pre-Response Commit Gate**:
    - Split commits cleanly per Conventional Commits with English descriptions:

@@ -95,7 +95,7 @@ const forwardArgs = rawArgs.filter((arg) => arg !== '--build-only' && arg !== '-
 const buildDir = hotReload ? resolve(qtDir, 'build-hot') : resolve(qtDir, 'build');
 const buildType = hotReload ? 'Debug' : 'Release';
 
-// 0. Regenerate all spec-derived artifacts first, so `pnpm showcase:qt`
+// 0. Regenerate all spec-derived artifacts first, so `just qt`
 // always launches with the latest tokens / i18n / showcase data / icons.
 // QML itself is compiled from qt/src on every build below, but the
 // *.generated.qml singletons would otherwise lag behind spec/ edits.

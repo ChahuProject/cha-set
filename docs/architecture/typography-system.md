@@ -67,7 +67,7 @@ so `ThemeTokens` / `theme_tokens.generated.h` keep their 21 `size` fields, names
 
 ## 3. Generated artifacts
 
-`pnpm gen:all` (→ `spec/generators/generate-css.mjs` + `generate-qt.mjs`) produces:
+`just gen` (→ `spec/generators/generate-css.mjs` + `generate-qt.mjs`) produces:
 
 | Target | Artifact | Contents |
 | :--- | :--- | :--- |
@@ -167,17 +167,17 @@ Files: `packages/react/src/code-block/{HighlightedCode,CodeBlock,CodeBlockHeader
 ## 7. Preconditions and verification
 
 - **Web root font size must be 16px.** Sizes are emitted as `rem`; Qt is px-fixed. This is the same assumption the existing radius tokens already make (`--cs-radius: 0.5rem` = 8px).
-- `pnpm gen:all` must be re-run after editing `spec/tokens/**`; `pnpm gen:tokens --check` fails on shard/snapshot drift.
+- `just gen` must be re-run after editing `spec/tokens/**`; `just gen-tokens --check` fails on shard/snapshot drift.
 - `node spec/validate-tokens.mjs` enforces: both families present, no comma in `qt`, sizes are positive integer px, line heights positive, letter spacings within ±0.5 em.
 
 ```bash
-pnpm gen:all                 # regenerate tokens.css + Typography.generated.qml
+just gen                 # regenerate tokens.css + Typography.generated.qml
 node spec/validate-tokens.mjs
 node spec/__tests__/...      # token unit tests
-pnpm gate                    # incl. the typography drift checker below
+just gate                    # incl. the typography drift checker below
 ```
 
-The typography drift check (`scripts/check-typography-parity.mjs`, wired into `pnpm gate` as the *Cross-Stack Typography Contract Gate*) asserts that:
+The typography drift check (`scripts/check-typography-parity.mjs`, wired into `just gate` as the *Cross-Stack Typography Contract Gate*) asserts that:
 
 1. every `primitives.typography` value is present in the generated `tokens.css` **and** `Typography.generated.qml`;
 2. no QML file under `qt/src/` sets a **comma-separated** `font.family` literal;
@@ -193,7 +193,7 @@ The Code Block was the component whose line-height originally diverged, so it ge
 - **Gross layout** — `pixelmatch` mismatch rate ≤ 4% (card chrome, header strip, body padding, blank-body detection).
 - **Typography contract** — the vertical **line pitch** of both captures must agree geometrically, measured by autocorrelation of the per-row ink profile (`pitchTolerance: 1px`).
 
-The geometric assertion is the load-bearing one. `pixelmatch` runs with `includeAA: false`, and at 12px mono most glyph pixels are stroke edges, so a line-height regression is largely classified as anti-aliasing and discarded: reverting Qt to a 14px line pitch moved the mismatch rate only **2.61% → 3.08%**, far too thin to gate on. The autocorrelation metric separates the states decisively — **17/17px ok** when aligned versus **17/14px DRIFT** when not — while both healthy ends agree to 0px. Run it with `pnpm test:pixel --component code-block`; it is also part of `pnpm gate:pixel` (`--component all`).
+The geometric assertion is the load-bearing one. `pixelmatch` runs with `includeAA: false`, and at 12px mono most glyph pixels are stroke edges, so a line-height regression is largely classified as anti-aliasing and discarded: reverting Qt to a 14px line pitch moved the mismatch rate only **2.61% → 3.08%**, far too thin to gate on. The autocorrelation metric separates the states decisively — **17/17px ok** when aligned versus **17/14px DRIFT** when not — while both healthy ends agree to 0px. Run it with `just gate-pixel --component code-block`; it is also part of `just gate-pixel` (`--component all`).
 
 ---
 
@@ -369,7 +369,7 @@ behaviour becomes a component, and composition happens at block level**
 
 ### 11.2 Single source of truth
 
-`spec/doc-roles.json` → `pnpm gen:roles` (`spec/generators/generate-doc-roles.mjs`)
+`spec/doc-roles.json` → `just gen-roles` (`spec/generators/generate-doc-roles.mjs`)
 → two artifacts emitted from the same table:
 
 | Target | Artifact | Contents |
@@ -413,7 +413,7 @@ the stacks the moment either side changed. Spacing lives in the block
 
 1. Add the entry to `spec/doc-roles.json` (reference primitive **names** —
    `size: "titleSm"`, `leading: "titleSm"`, not raw numbers).
-2. Run `pnpm gen:roles`. The generator fails loud if a referenced primitive does
+2. Run `just gen-roles`. The generator fails loud if a referenced primitive does
    not exist, so a typo can never silently fall back to `p`.
 3. Nothing else. No component, no DocPage, no CMake line, no gate entry — both
    stacks pick it up, and `DocRole` becomes a compile error at any call site
@@ -453,8 +453,8 @@ sites remain — they are the next authoring decision, not a codemod target.
 ### 11.7 Verification
 
 ```bash
-pnpm gen:all                                     # idempotent; also emits doc roles
+just gen                                     # idempotent; also emits doc roles
 node scripts/migrate-doc-text.mjs --check        # zero raw headings left to migrate
-pnpm --filter @chahu/cha-set typecheck           # no new diagnostics
-pnpm gate                                        # dual-stack showcase completeness
+just typecheck           # no new diagnostics
+just gate                                        # dual-stack showcase completeness
 ```

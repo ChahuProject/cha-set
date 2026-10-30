@@ -24,7 +24,7 @@ ChaSet Performance Audit & Guilt Isolation Tool
 
 Usage:
   node scripts/perf-audit.mjs [options]
-  pnpm bench:audit -- [options]
+  just bench audit [options]
 
 Options:
   --component <id|all>    Target component ID (e.g. "badge", "virtual-list", "button", "all") [default: "all"]
@@ -33,9 +33,9 @@ Options:
   --help, -h              Show this help message
 
 Examples:
-  pnpm bench:audit -- --component badge
-  pnpm bench:audit -- --component virtual-list --stack qt
-  pnpm bench:audit -- --component all
+  just bench audit --component badge
+  just bench audit --component virtual-list --stack qt
+  just bench audit --component all
 `);
   process.exit(0);
 }

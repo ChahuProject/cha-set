@@ -3,7 +3,7 @@
 //
 // SoT is now split shards spec/tokens/** aggregated via spec/build-tokens.mjs
 // into spec/tokens.json (committed snapshot); generators read via spec/load-tokens.mjs.
-// Run `pnpm gen:all` before sync to ensure dist/consumers/** is fresh.
+// Run `just gen` before sync to ensure dist/consumers/** is fresh.
 //
 // Usage: node scripts/sync-consumers.mjs [--dry-run]
 // Behavior: for each consumer whose checkout exists next to this repo, copy
@@ -54,7 +54,7 @@ for (const c of CONSUMERS) {
   }
   for (const cp of c.copies) {
     if (!existsSync(cp.from)) {
-      console.error(`[sync] MISSING artifact (run pnpm gen:all first): ${cp.from}`);
+      console.error(`[sync] MISSING artifact (run just gen first): ${cp.from}`);
       process.exitCode = 1;
       continue;
     }

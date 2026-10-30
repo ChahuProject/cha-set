@@ -35,7 +35,7 @@ qt_policy(SET QTP0004 NEW)
 # CHASET_QML_HOT_RELOAD=ON injects QT_QML_DEBUG into the demo and component
 # library, disables ahead-of-time bytecode compilation (QT_QML_NO_CACHEGEN=ON),
 # and wires all QRC resource mappings so the official qmlpreview live-reload
-# tooling can attach and hot-swap QML in place (see `pnpm dev:qt` / `pnpm showcase:qt --hot`).
+# tooling can attach and hot-swap QML in place (see `just qt --hot`).
 # Dev-only: never enable for release/CI builds.
 option(CHASET_QML_HOT_RELOAD "Enable QML debugging infrastructure for qmlpreview live reload (dev only)" OFF)
 
@@ -59,7 +59,7 @@ set_source_files_properties(src/ShowcaseData.generated.qml PROPERTIES
 )
 
 # Icon specification contract and compiled artwork (emitted from
-# spec/icons/registry.json by pnpm gen:icons). QT_QML_SINGLETON_TYPE is what makes
+# spec/icons/registry.json by just gen-icons). QT_QML_SINGLETON_TYPE is what makes
 # ChaSetIcons.resolveIcon() / shapesFor() callable from other components; the pragma
 # inside the generated file is not enough on its own — without this property the type is
 # registered as an ordinary component and those methods are not reachable at all.
@@ -70,7 +70,7 @@ set_source_files_properties(src/ChaSetIcons.generated.qml PROPERTIES
 )
 
 # Shared syntax lexer + its palette (emitted from spec/highlight/* and
-# spec/tokens/semantic/core.json by pnpm gen:highlight / gen:qt).
+# spec/tokens/semantic/core.json by just gen-highlight / just gen-qt).
 set_source_files_properties(src/Highlighter.generated.qml PROPERTIES
     QT_QML_SINGLETON_TYPE TRUE
     QT_QML_SOURCE_TYPENAME Highlighter
@@ -82,7 +82,7 @@ set_source_files_properties(src/CodeTokens.generated.qml PROPERTIES
 )
 
 # Cross-platform typography contract (emitted from
-# spec/tokens/primitives.json -> primitives.typography by pnpm gen:qt).
+# spec/tokens/primitives.json -> primitives.typography by just gen-qt).
 # Separate from ThemeTokens.generated.qml because that struct mirrors
 # dt-a's ThemeManager::Tokens and is frozen downstream.
 set_source_files_properties(src/Typography.generated.qml PROPERTIES
@@ -95,7 +95,7 @@ set_source_files_properties(src/SelectionHub.qml PROPERTIES
     QT_QML_SOURCE_TYPENAME SelectionHub
 )
 
-# Doc-typography role table (emitted from spec/doc-roles.json by pnpm gen:roles).
+# Doc-typography role table (emitted from spec/doc-roles.json by just gen-roles).
 # Pure data: DocText.qml is the only consumer. Roles live here — not as one QML
 # file per heading level — so the scale stays in one place on both stacks.
 set_source_files_properties(src/DocRoles.generated.qml PROPERTIES

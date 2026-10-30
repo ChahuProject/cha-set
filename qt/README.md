@@ -5,7 +5,7 @@ checked against the same single source of truth as the React implementation:
 
 - Design tokens come from `spec/tokens.json` — `ThemeTokens.generated.qml`
   is a GENERATED singleton (dark/light live switching) refreshed by
-  `pnpm gen:qt`; do not edit by hand.
+  `just gen-qt`; do not edit by hand.
 - `src/ChaSetButton.qml` implements the Button contract;
   `src/Main.qml` is the component showcase gallery and theme studio (interactive
   light/dark switching, accent theme presets, radius tuners, full button matrix,
@@ -19,13 +19,14 @@ checked against the same single source of truth as the React implementation:
 ### One-Command Runner (Recommended)
 From the repository root:
 ```bash
-# Standard release build
-pnpm showcase:qt
+# Standard release build and launch
+just qt
 
 # Native QML Hot Reload (Live editing QML/JS in qt/src without recompiling or restarting)
-pnpm dev:qt
-# or
-pnpm showcase:qt --hot
+just qt --hot
+
+# Pure build via bque queue
+just build qt
 ```
 
 ### Manual Build via CMake
