@@ -40,9 +40,9 @@ Item {
     readonly property int effectiveArrowH: root.arrow ? arrowH : 0
 
     readonly property real scaledPadX: (typeof ThemeTokens !== "undefined" && ThemeTokens)
-            ? ThemeTokens.dp(16) : Math.round(16 * uiScaleFactor)
+            ? ThemeTokens.dp(24) : Math.round(24 * uiScaleFactor)
     readonly property real scaledPadY: (typeof ThemeTokens !== "undefined" && ThemeTokens)
-            ? ThemeTokens.dp(8) : Math.round(8 * uiScaleFactor)
+            ? ThemeTokens.dp(12) : Math.round(12 * uiScaleFactor)
 
     // 单行紧凑内容宽度与高度
     readonly property real contentW: mainContent.implicitWidth
@@ -67,6 +67,17 @@ Item {
         return baseBubbleH
     }
 
+    // Ambient soft drop shadow matching React shadow-md
+    Rectangle {
+        id: shadow
+        anchors.fill: bubble
+        anchors.topMargin: (typeof ThemeTokens !== "undefined" && ThemeTokens) ? ThemeTokens.dp(2) : 2
+        anchors.bottomMargin: (typeof ThemeTokens !== "undefined" && ThemeTokens) ? -ThemeTokens.dp(2) : -2
+        radius: bubble.radius
+        color: Qt.rgba(0, 0, 0, (typeof ThemeTokens !== "undefined" && ThemeTokens && ThemeTokens.dark) ? 0.45 : 0.12)
+        z: -1
+    }
+
     ChaSetSquircle {
         id: bubble
         x: {
@@ -81,7 +92,7 @@ Item {
         height: root.baseBubbleH
 
         radius: (typeof ThemeTokens !== "undefined" && ThemeTokens)
-                ? ThemeTokens.dp(4) : Math.max(1, Math.round(4 * root.uiScaleFactor))
+                ? ThemeTokens.dp(6) : Math.max(1, Math.round(6 * root.uiScaleFactor))
         color: (typeof ThemeTokens !== "undefined" && ThemeTokens)
                 ? (ThemeTokens.dark ? ThemeTokens.color("panelRaised") : "#ffffff")
                 : "#ffffff"
@@ -92,17 +103,21 @@ Item {
         Column {
             id: mainContent
             objectName: "mainContent"
-            anchors.centerIn: parent
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: (root.description !== "") ? parent.left : undefined
+            anchors.leftMargin: (root.description !== "") ? (scaledPadX / 2) : 0
+            anchors.horizontalCenter: (root.description === "") ? parent.horizontalCenter : undefined
             spacing: (typeof ThemeTokens !== "undefined" && ThemeTokens)
-                    ? ThemeTokens.dp(3) : Math.round(3 * root.uiScaleFactor)
+                    ? ThemeTokens.dp(2) : Math.round(2 * root.uiScaleFactor)
 
             Row {
                 id: contentRow
                 objectName: "contentRow"
-                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.left: (root.description !== "") ? parent.left : undefined
+                anchors.horizontalCenter: (root.description === "") ? parent.horizontalCenter : undefined
                 visible: appIcon.visible || bubbleText.visible || shortcutBadge.visible
                 spacing: (typeof ThemeTokens !== "undefined" && ThemeTokens)
-                        ? ThemeTokens.dp(6) : Math.round(6 * root.uiScaleFactor)
+                        ? ThemeTokens.dp(8) : Math.round(8 * root.uiScaleFactor)
 
                 ChaSetIcon {
                     id: appIcon
@@ -125,9 +140,9 @@ Item {
                     font.family: (typeof Typography !== "undefined" && Typography && Typography.familySans)
                             ? Typography.familySans : undefined
                     font.pixelSize: (typeof Typography !== "undefined" && Typography)
-                            ? Typography.sizeCaption : Math.round(11 * root.uiScaleFactor)
-                    font.weight: Font.Medium
-                    horizontalAlignment: Text.AlignHCenter
+                            ? Typography.sizeSmall : Math.round(12 * root.uiScaleFactor)
+                    font.weight: (root.description !== "") ? Font.DemiBold : Font.Medium
+                    horizontalAlignment: (root.description !== "") ? Text.AlignLeft : Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -163,7 +178,8 @@ Item {
                 id: descText
                 objectName: "descText"
                 visible: root.description !== ""
-                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.left: (root.description !== "") ? parent.left : undefined
+                anchors.horizontalCenter: (root.description === "") ? parent.horizontalCenter : undefined
                 text: root.description
                 color: (typeof ThemeTokens !== "undefined" && ThemeTokens)
                         ? ThemeTokens.color("subduedText") : "#b0c5e4"
@@ -174,8 +190,8 @@ Item {
                 wrapMode: Text.Wrap
                 readonly property real maxDescW: (typeof ThemeTokens !== "undefined" && ThemeTokens)
                         ? ThemeTokens.dp(280) : Math.round(280 * root.uiScaleFactor)
-                width: visible ? Math.min(descMetrics.boundingWidth, maxDescW) : 0
-                horizontalAlignment: Text.AlignHCenter
+                width: visible ? Math.min(descMetrics.width, maxDescW) : 0
+                horizontalAlignment: Text.AlignLeft
             }
         }
     }

@@ -402,6 +402,22 @@ Item {
         arrow: root.arrow
     }
 
+    // Ambient soft drop shadow matching React shadow-md
+    Rectangle {
+        id: customShadow
+        parent: root.overlayLayer ? root.overlayLayer : root
+        z: 9998
+        visible: customBubble.effectivelyVisible
+        x: customBubble.x
+        y: customBubble.y + ThemeTokens.dp(2)
+        width: customBubble.width
+        height: customBubble.height
+        radius: customBubble.radius
+        color: Qt.rgba(0, 0, 0, ThemeTokens.dark ? 0.45 : 0.12)
+        opacity: customBubble.opacity
+        scale: customBubble.scale
+    }
+
     // Custom-content local branch (e.g. SegmentedControl tooltipDelegate):
     // same chrome + arrow geometry as the shared bubble, with a Loader in
     // place of the standard content row. Only one of bubble / customBubble is
@@ -430,18 +446,18 @@ Item {
             NumberAnimation { duration: ThemeTokens.motionShort; easing.type: ThemeTokens.easeStandard }
         }
 
-        radius: ThemeTokens.dp(4)
+        radius: ThemeTokens.dp(6)
         color: ThemeTokens.dark ? ThemeTokens.color("panelRaised") : "#ffffff"
         border.color: ThemeTokens.color("border")
         border.width: 1
 
-        implicitWidth: Math.max(ThemeTokens.dp(24), customRow.implicitWidth + ThemeTokens.dp(16))
-        implicitHeight: Math.max(ThemeTokens.dp(20), customRow.implicitHeight + ThemeTokens.dp(8))
+        implicitWidth: Math.max(ThemeTokens.dp(24), customRow.implicitWidth + ThemeTokens.dp(24))
+        implicitHeight: Math.max(ThemeTokens.dp(24), customRow.implicitHeight + ThemeTokens.dp(12))
 
         Row {
             id: customRow
             anchors.centerIn: parent
-            spacing: ThemeTokens.dp(6)
+            spacing: ThemeTokens.dp(8)
 
             Loader {
                 id: customContentLoader
