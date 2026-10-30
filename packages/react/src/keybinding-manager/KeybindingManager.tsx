@@ -269,7 +269,7 @@ export function KeybindingManager({
       {...props}
     >
       {/* Top Header Controls: Search, Scope Filter, Actions */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/70 pb-3">
+      <div className="flex items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2">
           {searchable && (
             <div className="relative w-64 max-w-full">
@@ -347,7 +347,7 @@ export function KeybindingManager({
       </div>
 
       {/* Main List Area */}
-      <ScrollArea className="flex-1 min-h-0 w-full" floating={false}>
+      <ScrollArea className="flex-1 min-h-0 w-full">
         <div className="flex flex-col gap-6 pr-3">
           {groupedSections.length === 0 ? (
             <div className="flex flex-col items-center justify-center gap-2 py-12 text-center text-muted-foreground">
@@ -374,7 +374,7 @@ export function KeybindingManager({
                 </div>
               )}
 
-              <div className="flex flex-col divide-y divide-border/60 rounded-lg border border-border/70 bg-background/50 text-foreground">
+              <div className="flex flex-col gap-1.5 text-foreground">
                 {section.actions.map((action) => {
                   const isModified = isActionModified(action);
                   const scopeId = action.scopeId || 'global';
@@ -386,16 +386,18 @@ export function KeybindingManager({
                     <div
                       key={action.id}
                       className={cn(
-                        'flex flex-wrap items-center justify-between gap-3 p-3 transition-colors duration-quick ease-standard hover:bg-muted/30',
-                        hasConflict && 'bg-amber-500/5',
+                        'flex items-center justify-between gap-3 rounded-lg border border-border/70 bg-card/60 p-3 text-card-foreground transition-colors duration-quick ease-standard hover:bg-muted/30',
+                        hasConflict && 'border-amber-500/60 bg-amber-500/5',
                       )}
                     >
-                      {/* Left: Action Title & Description */}
-                      <div className="flex min-w-[12rem] flex-1 flex-col gap-0.5">
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-semibold text-foreground">{action.name}</span>
+                      {/* Left: Action Title & Description (constrained width, matches Qt 200dp) */}
+                      <div className="flex w-52 shrink-0 flex-col gap-0.5 min-w-0">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span className="truncate text-xs font-semibold text-foreground" title={action.name}>
+                            {action.name}
+                          </span>
                           {action.tags && action.tags.length > 0 && (
-                            <div className="flex items-center gap-1">
+                            <div className="flex shrink-0 items-center gap-1">
                               {action.tags.map((tg) => (
                                 <Badge key={tg} variant="secondary" className="px-1.5 py-0 text-[0.625rem]">
                                   {tg}
@@ -405,14 +407,14 @@ export function KeybindingManager({
                           )}
                         </div>
                         {action.description && (
-                          <p className="line-clamp-1 text-caption text-muted-foreground">
+                          <p className="truncate text-caption text-muted-foreground" title={action.description}>
                             {action.description}
                           </p>
                         )}
                       </div>
 
                       {/* Middle: Shortcut Capsules */}
-                      <div className="flex flex-wrap items-center gap-2">
+                      <div className="flex items-center gap-2 shrink-0">
                         {action.chords.length === 0 ? (
                           <KeybindingRecorder
                             value=""
@@ -430,6 +432,7 @@ export function KeybindingManager({
                                 value={chord.isMasked ? '' : chord.keyString}
                                 size="sm"
                                 clearable={true}
+                                autoRecord={!chord.keyString && chord.isUserModified}
                                 placeholder={t('components.keybindingManager.unassigned', 'Unassigned')}
                                 onChange={(_, str) => onBindingChange?.(action.id, idx, str)}
                                 className={cn('w-36 text-caption', chord.isMasked && 'line-through opacity-60')}
@@ -455,7 +458,7 @@ export function KeybindingManager({
                       </div>
 
                       {/* Right: Badges & Row Actions */}
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 shrink-0">
                         {showScopeBadge && (
                           <Badge variant="outline" className="px-2 py-0.5 text-caption font-normal text-muted-foreground">
                             {scopeName}

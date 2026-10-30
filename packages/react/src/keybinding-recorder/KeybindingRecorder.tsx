@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Badge } from '../badge/Badge';
 import { Button } from '../button/Button';
+import { Kbd } from '../kbd/Kbd';
 import { KeyboardIcon, XIcon } from '../lib/icons';
 import { cn } from '../lib/utils';
 
@@ -71,6 +72,8 @@ export interface KeybindingRecorderProps {
   placeholder?: string;
   /** Prompt displayed during active recording */
   recordingText?: string;
+  /** Auto start recording on mount */
+  autoRecord?: boolean;
   /** Container class name */
   className?: string;
 }
@@ -84,9 +87,10 @@ export function KeybindingRecorder({
   size = 'default',
   placeholder = 'No keybinding set',
   recordingText = 'Press key combination (Esc to cancel)...',
+  autoRecord = false,
   className,
 }: KeybindingRecorderProps) {
-  const [isRecording, setIsRecording] = React.useState(false);
+  const [isRecording, setIsRecording] = React.useState(autoRecord);
   const parsedValue = React.useMemo(() => parseKeybinding(value), [value]);
   const [draft, setDraft] = React.useState<KeybindingValue>(parsedValue);
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -94,6 +98,13 @@ export function KeybindingRecorder({
   React.useEffect(() => {
     setDraft(parseKeybinding(value));
   }, [value]);
+
+  React.useEffect(() => {
+    if (autoRecord && !disabled) {
+      setIsRecording(true);
+      containerRef.current?.focus();
+    }
+  }, [autoRecord, disabled]);
 
   const startRecording = React.useCallback(() => {
     if (disabled) return;
@@ -170,32 +181,15 @@ export function KeybindingRecorder({
       return <span className="text-xs text-muted-foreground">{placeholder}</span>;
     }
 
-    const labels: string[] = [];
-    if (binding.ctrl) labels.push('Ctrl');
-    if (binding.alt) labels.push('Alt');
-    if (binding.shift) labels.push('Shift');
-    if (binding.meta) labels.push('Win');
-
-    const primaryKey = binding.code.replace(/^Key/, '').replace(/^Digit/, '');
-    if (primaryKey) {
-      labels.push(primaryKey);
-    }
+    const shortcutStr = formatKeybinding(binding);
 
     return (
-      <div className="flex flex-wrap items-center gap-1">
-        {labels.map((label, idx) => (
-          <Badge
-            key={`${label}-${idx}`}
-            variant="secondary"
-            className={cn(
-              'font-mono font-semibold shadow-2xs',
-              isSm ? 'px-1.5 py-0 text-caption' : 'px-2 py-0.5 text-xs',
-            )}
-          >
-            {label}
-          </Badge>
-        ))}
-      </div>
+      <Kbd
+        shortcut={shortcutStr}
+        size={isSm ? 'sm' : 'default'}
+        compact="auto"
+        variant="outline"
+      />
     );
   };
 

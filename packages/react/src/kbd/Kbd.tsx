@@ -18,6 +18,8 @@ export interface KbdProps extends React.HTMLAttributes<HTMLElement> {
   shortcut?: string;
   /** Custom separator string between keys in combinations (default '+') */
   separator?: string;
+  /** Explicit available width limit for auto compact calculation */
+  availableWidth?: number;
   /** Test hook for headless hover state */
   forceHover?: boolean;
   /** Test hook for headless active state */
@@ -224,6 +226,7 @@ export const Kbd = React.forwardRef<HTMLElement, KbdProps>(
       overflow = 'collapse',
       shortcut,
       separator = '+',
+      availableWidth,
       className,
       children,
       forceHover,
@@ -233,7 +236,37 @@ export const Kbd = React.forwardRef<HTMLElement, KbdProps>(
     },
     ref,
   ) => {
-    const isCompact = compact === 'always';
+    const [autoCompact, setAutoCompact] = React.useState(false);
+    const innerRef = React.useRef<HTMLElement | null>(null);
+
+    React.useImperativeHandle(ref, () => innerRef.current as HTMLElement);
+
+    React.useLayoutEffect(() => {
+      if (compact !== 'auto') return;
+      const el = innerRef.current;
+      if (!el) return;
+      const parent = el.parentElement;
+      if (!parent) return;
+
+      const check = () => {
+        if (typeof availableWidth === 'number' && availableWidth >= 0) {
+          setAutoCompact(el.scrollWidth > availableWidth);
+        } else if (parent.clientWidth > 0 && el.scrollWidth > parent.clientWidth) {
+          setAutoCompact(true);
+        } else {
+          setAutoCompact(false);
+        }
+      };
+
+      check();
+      if (typeof ResizeObserver !== 'undefined') {
+        const ro = new ResizeObserver(check);
+        ro.observe(parent);
+        return () => ro.disconnect();
+      }
+    }, [compact, availableWidth, shortcut]);
+
+    const isCompact = compact === 'always' || (compact === 'auto' && autoCompact);
     const isSubtle = variant === 'subtle';
 
     // Overflow handling class
@@ -251,7 +284,7 @@ export const Kbd = React.forwardRef<HTMLElement, KbdProps>(
 
       return (
         <span
-          ref={ref as React.Ref<HTMLSpanElement>}
+          ref={innerRef as React.Ref<HTMLSpanElement>}
           data-slot={dataSlot ?? 'kbd-group'}
           data-variant={variant}
           data-size={size}
@@ -329,7 +362,7 @@ export const Kbd = React.forwardRef<HTMLElement, KbdProps>(
     if (isSubtle) {
       return (
         <span
-          ref={ref as React.Ref<HTMLSpanElement>}
+          ref={innerRef as React.Ref<HTMLSpanElement>}
           data-slot={dataSlot ?? 'kbd'}
           data-variant={variant}
           data-size={size}
@@ -348,7 +381,7 @@ export const Kbd = React.forwardRef<HTMLElement, KbdProps>(
 
     return (
       <kbd
-        ref={ref}
+        ref={innerRef as React.Ref<HTMLElement>}
         data-slot={dataSlot ?? 'kbd'}
         data-variant={variant}
         data-size={size}

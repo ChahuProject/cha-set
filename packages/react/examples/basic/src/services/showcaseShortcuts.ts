@@ -69,11 +69,11 @@ class ShowcaseShortcutsManager {
 
       const chords = [...act.chords];
       if (chordIndex >= chords.length) {
-        if (newKey) {
-          chords.push({ keyString: newKey, isUserModified: true, isMasked: false });
-        }
-      } else if (!newKey) {
+        chords.push({ keyString: newKey || '', isUserModified: true, isMasked: false });
+      } else if (!newKey && chordIndex > 0) {
         chords.splice(chordIndex, 1);
+      } else if (!newKey && chordIndex === 0) {
+        chords[0] = { keyString: '', isUserModified: true, isMasked: false };
       } else {
         chords[chordIndex] = { keyString: newKey, isUserModified: true, isMasked: false };
       }

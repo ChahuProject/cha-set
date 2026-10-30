@@ -98,7 +98,7 @@ DocLayout {
                 anchors.top: parent.top
                 anchors.topMargin: ThemeTokens.dp(20)
                 anchors.horizontalCenter: parent.horizontalCenter
-                width: Math.min(parent.width - ThemeTokens.dp(32), ThemeTokens.dp(640))
+                width: Math.min(parent.width - ThemeTokens.dp(32), ThemeTokens.dp(720))
 
                 ChaSetKeybindingManager {
                     id: managerComp
@@ -117,9 +117,11 @@ DocLayout {
                             }
                         }
                         if (chordIndex >= currentChs.length) {
-                            if (newKey) currentChs.push({ keyString: newKey, isUserModified: true, isMasked: false });
-                        } else if (!newKey) {
+                            currentChs.push({ keyString: newKey || "", isUserModified: true, isMasked: false });
+                        } else if (!newKey && chordIndex > 0) {
                             currentChs.splice(chordIndex, 1);
+                        } else if (!newKey && chordIndex === 0) {
+                            currentChs[0] = { keyString: "", isUserModified: true, isMasked: false };
                         } else {
                             currentChs[chordIndex] = { keyString: newKey, isUserModified: true, isMasked: false };
                         }

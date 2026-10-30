@@ -24,7 +24,7 @@ FocusScope {
     signal resetAllRequested()
     signal exportCheatSheetRequested(string markdown)
 
-    implicitWidth: ThemeTokens.dp(640)
+    implicitWidth: ThemeTokens.dp(720)
     implicitHeight: ThemeTokens.dp(520)
     width: parent ? parent.width : implicitWidth
     height: parent ? parent.height : implicitHeight
@@ -384,17 +384,11 @@ FocusScope {
                 }
             }
 
-            // Divider separating top controls from list
-            ChaSetSeparator {
-                id: sep
-                width: parent.width
-            }
-
             // Scrollable Action List Container
             Item {
                 id: listContainer
                 width: parent.width
-                height: parent.height - topBar.height - sep.height - parent.spacing * 2
+                height: parent.height - topBar.height - parent.spacing
 
                 ListView {
                     id: actionListView
@@ -508,12 +502,13 @@ FocusScope {
                                         required property var modelData
                                         required property int index
 
-                                        width: ThemeTokens.dp(150)
+                                        width: ThemeTokens.dp(144)
                                         size: "sm"
                                         keybinding: (typeof modelData === "object" && modelData !== null) ? modelData.keyString : ""
+                                        recording: Boolean(modelData && typeof modelData === "object" && !modelData.keyString && modelData.isUserModified)
                                         placeholder: (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components.keybindingManager.unassigned", "Unassigned") : "Unassigned"
                                         clearable: true
-                                        disabled: delegateRoot.actionData ? delegateRoot.actionData.disabled : false
+                                        disabled: Boolean(delegateRoot.actionData && delegateRoot.actionData.disabled)
 
                                         onKeybindingRecorded: function(newKey) {
                                             if (delegateRoot.actionData) {
@@ -609,7 +604,6 @@ FocusScope {
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 anchors.right: parent.right
-                floating: false
                 size: actionListView.contentHeight > actionListView.height ? (actionListView.height / actionListView.contentHeight) : 1.0
                 position: actionListView.contentHeight > actionListView.height ? (actionListView.contentY / actionListView.contentHeight) : 0.0
                 visible: actionListView.contentHeight > actionListView.height

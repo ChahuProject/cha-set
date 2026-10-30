@@ -95,6 +95,19 @@ FocusScope {
             }
         }
 
+        ChaSetKbd {
+            id: kbdDisplay
+            anchors.left: leadIcon.right
+            anchors.leftMargin: ThemeTokens.dp(6)
+            anchors.verticalCenter: parent.verticalCenter
+            visible: !root.recording && root.keybinding.length > 0
+            shortcut: root.keybinding
+            size: root.isSm ? "sm" : "default"
+            compact: "auto"
+            variant: "outline"
+            availableWidth: parent.width - leadIcon.width - ThemeTokens.dp(root.isSm ? 16 : 20) - (clearBtn.visible ? (btnRow.width + ThemeTokens.dp(6)) : ThemeTokens.dp(6))
+        }
+
         Text {
             id: display
             anchors.left: leadIcon.right
@@ -102,10 +115,11 @@ FocusScope {
             anchors.right: parent.right
             anchors.rightMargin: clearBtn.visible ? btnRow.width + ThemeTokens.dp(6) : ThemeTokens.dp(6)
             anchors.verticalCenter: parent.verticalCenter
-            text: root.recording ? root.recordingText : (root.keybinding.length > 0 ? root.keybinding : root.placeholder)
-            color: root.recording ? ThemeTokens.accent : (root.keybinding.length > 0 ? ThemeTokens.text : ThemeTokens.subduedText)
+            visible: root.recording || root.keybinding.length === 0
+            text: root.recording ? root.recordingText : root.placeholder
+            color: root.recording ? ThemeTokens.accent : ThemeTokens.subduedText
             font.pixelSize: root.isSm ? Typography.sizeCaption : Typography.sizeSmall
-            font.family: Typography.familyMono
+            font.family: root.recording ? Typography.familySans : Typography.familyMono
             font.weight: root.recording ? Font.DemiBold : Font.Normal
             elide: Text.ElideRight
         }
