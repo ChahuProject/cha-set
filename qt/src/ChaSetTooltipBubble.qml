@@ -101,6 +101,7 @@ Item {
 
     ChaSetSquircle {
         id: bubble
+        objectName: "bubble"
         x: {
             if (root.arrow && root.side === "right") return root.effectiveArrowH
             return 0
