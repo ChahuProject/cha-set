@@ -54,19 +54,105 @@ Item {
     readonly property real maxTextW: (typeof ThemeTokens !== "undefined" && ThemeTokens)
             ? ThemeTokens.dp(360) : Math.round(360 * uiScaleFactor)
 
-    // 单行/多行紧凑内容宽度与高度（精确支持折行与显式多行）
-    readonly property real contentW: {
-        var w = 0
-        if (contentRow.visible) w = Math.max(w, contentRow.implicitWidth, contentRow.width)
-        if (descText.visible) w = Math.max(w, descText.width, descText.implicitWidth)
-        return w
+    // Natural single-line text & description measurement off-layout (synchronous, binding-loop free)
+    TextMetrics {
+        id: textMetrics
+        text: root.text
+        font.family: (typeof Typography !== "undefined" && Typography && Typography.familySans)
+                ? Typography.familySans : "Microsoft YaHei UI"
+        font.pixelSize: (typeof Typography !== "undefined" && Typography)
+                ? Typography.sizeSmall : Math.round(12 * root.uiScaleFactor)
+        font.weight: (root.description !== "") ? Font.DemiBold : Font.Medium
     }
+
+    TextMetrics {
+        id: descMetrics
+        text: root.description
+        font.family: (typeof Typography !== "undefined" && Typography && Typography.familySans)
+                ? Typography.familySans : "Microsoft YaHei UI"
+        font.pixelSize: (typeof Typography !== "undefined" && Typography)
+                ? Typography.sizeCaption : Math.round(11 * root.uiScaleFactor)
+    }
+
+    // 单行/多行紧凑内容宽度与高度（首帧同步计算 + TextMetrics 兜底，彻底杜绝 0 宽坍塌与 24dp 空白方块）
+    readonly property real naturalTextW: {
+        if (root.text === "") return 0
+        if (root.text.indexOf("\n") !== -1 || textMetrics.width > root.maxTextW) {
+            return Math.min(textMetrics.width, root.maxTextW)
+        }
+        return textMetrics.width
+    }
+
+    readonly property real naturalRowW: {
+        var w = 0
+        var items = 0
+        if (root.iconName !== "") {
+            w += Math.round(14 * root.uiScaleFactor)
+            items++
+        }
+        if (root.text !== "") {
+            w += naturalTextW
+            items++
+        }
+        if (root.shortcut !== "") {
+            var kbdW = (shortcutBadge.implicitWidth > 0) ? shortcutBadge.implicitWidth : shortcutBadge.width
+            w += (kbdW > 0 ? kbdW : Math.round(30 * root.uiScaleFactor))
+            items++
+        }
+        if (items > 1) {
+            var sp = (typeof ThemeTokens !== "undefined" && ThemeTokens)
+                    ? ThemeTokens.dp(8) : Math.round(8 * root.uiScaleFactor)
+            w += (items - 1) * sp
+        }
+        return Math.max(w, contentRow.implicitWidth, contentRow.width)
+    }
+
+    readonly property real naturalDescW: {
+        if (root.description === "") return 0
+        var maxD = (typeof ThemeTokens !== "undefined" && ThemeTokens)
+                ? ThemeTokens.dp(280) : Math.round(280 * root.uiScaleFactor)
+        return Math.min(descMetrics.width, maxD)
+    }
+
+    readonly property real contentW: Math.max(naturalRowW, naturalDescW, descText.width, descText.implicitWidth)
+
+    readonly property real naturalRowH: {
+        var h = 0
+        if (root.text !== "") {
+            var th = (bubbleText.lineCount > 1)
+                    ? (bubbleText.height > 0 ? bubbleText.height : (bubbleText.lineCount * textMetrics.height))
+                    : textMetrics.height
+            h = Math.max(h, th)
+        }
+        if (root.shortcut !== "") {
+            var kbdH = (typeof ThemeTokens !== "undefined" && ThemeTokens)
+                    ? ThemeTokens.dp(18) : Math.round(18 * root.uiScaleFactor)
+            h = Math.max(h, kbdH)
+        }
+        if (root.iconName !== "") {
+            var iconH = (typeof ThemeTokens !== "undefined" && ThemeTokens)
+                    ? ThemeTokens.dp(14) : Math.round(14 * root.uiScaleFactor)
+            h = Math.max(h, iconH)
+        }
+        return Math.max(h, contentRow.implicitHeight, contentRow.height)
+    }
+
+    readonly property real naturalDescH: {
+        if (root.description === "") return 0
+        return Math.max(descMetrics.height, descText.height, descText.implicitHeight)
+    }
+
     readonly property real contentH: {
         var h = 0
-        if (contentRow.visible) h += Math.max(contentRow.implicitHeight, contentRow.height)
-        if (contentRow.visible && descText.visible) h += mainContent.spacing
-        if (descText.visible) h += Math.max(descText.height, descText.implicitHeight)
-        return h
+        var hasRow = (root.text !== "" || root.shortcut !== "" || root.iconName !== "")
+        var hasDesc = (root.description !== "")
+        if (hasRow) h += naturalRowH
+        if (hasRow && hasDesc) {
+            h += (typeof ThemeTokens !== "undefined" && ThemeTokens)
+                    ? ThemeTokens.dp(2) : Math.round(2 * root.uiScaleFactor)
+        }
+        if (hasDesc) h += naturalDescH
+        return Math.max(h, contentRow.height + (descText.visible ? descText.height : 0))
     }
 
     readonly property real baseBubbleW: Math.max((typeof ThemeTokens !== "undefined" && ThemeTokens)
@@ -150,22 +236,9 @@ Item {
             spacing: (typeof ThemeTokens !== "undefined" && ThemeTokens)
                     ? ThemeTokens.dp(2) : Math.round(2 * root.uiScaleFactor)
 
-            // Natural single-line text measurement off-layout
-            TextMetrics {
-                id: textMetrics
-                text: root.text
-                font.family: (typeof Typography !== "undefined" && Typography && Typography.familySans)
-                        ? Typography.familySans : undefined
-                font.pixelSize: (typeof Typography !== "undefined" && Typography)
-                        ? Typography.sizeSmall : Math.round(12 * root.uiScaleFactor)
-                font.weight: (root.description !== "") ? Font.DemiBold : Font.Medium
-            }
-
             Row {
                 id: contentRow
                 objectName: "contentRow"
-                anchors.left: (root.description !== "" || bubbleText.lineCount > 1) ? parent.left : undefined
-                anchors.horizontalCenter: (root.description === "" && bubbleText.lineCount <= 1) ? parent.horizontalCenter : undefined
                 visible: appIcon.visible || bubbleText.visible || shortcutBadge.visible
                 spacing: (typeof ThemeTokens !== "undefined" && ThemeTokens)
                         ? ThemeTokens.dp(8) : Math.round(8 * root.uiScaleFactor)
@@ -191,7 +264,7 @@ Item {
                     color: (typeof ThemeTokens !== "undefined" && ThemeTokens)
                             ? ThemeTokens.color("text") : "#e6f2ff"
                     font.family: (typeof Typography !== "undefined" && Typography && Typography.familySans)
-                            ? Typography.familySans : undefined
+                            ? Typography.familySans : "Microsoft YaHei UI"
                     font.pixelSize: (typeof Typography !== "undefined" && Typography)
                             ? Typography.sizeSmall : Math.round(12 * root.uiScaleFactor)
                     font.weight: (root.description !== "") ? Font.DemiBold : Font.Medium
@@ -216,32 +289,15 @@ Item {
                 }
             }
 
-            // Natural (unwrapped) description width measured off-layout:
-            // TextMetrics never participates in layout, so feeding it into the
-            // wrapping Text's `width` below cannot form the
-            // width -> implicitWidth -> width feedback cycle that QQuickText
-            // flags as a binding loop now that this subtree stays visible
-            // (opacity-hidden bubble, see ChaSetTooltip).
-            TextMetrics {
-                id: descMetrics
-                text: root.description
-                font.family: (typeof Typography !== "undefined" && Typography && Typography.familySans)
-                        ? Typography.familySans : undefined
-                font.pixelSize: (typeof Typography !== "undefined" && Typography)
-                        ? Typography.sizeCaption : Math.round(11 * root.uiScaleFactor)
-            }
-
             Text {
                 id: descText
                 objectName: "descText"
                 visible: root.description !== ""
-                anchors.left: (root.description !== "" || bubbleText.lineCount > 1) ? parent.left : undefined
-                anchors.horizontalCenter: (root.description === "" && bubbleText.lineCount <= 1) ? parent.horizontalCenter : undefined
                 text: root.description
                 color: (typeof ThemeTokens !== "undefined" && ThemeTokens)
                         ? ThemeTokens.color("subduedText") : "#b0c5e4"
                 font.family: (typeof Typography !== "undefined" && Typography && Typography.familySans)
-                        ? Typography.familySans : undefined
+                        ? Typography.familySans : "Microsoft YaHei UI"
                 font.pixelSize: (typeof Typography !== "undefined" && Typography)
                         ? Typography.sizeCaption : Math.round(11 * root.uiScaleFactor)
                 wrapMode: Text.Wrap
