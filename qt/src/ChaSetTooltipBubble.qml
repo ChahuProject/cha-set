@@ -166,8 +166,7 @@ Item {
 
     readonly property real naturalDescH: {
         if (root.description === "") return 0
-        var maxD = (typeof ThemeTokens !== "undefined" && ThemeTokens)
-                ? ThemeTokens.dp(280) : Math.round(280 * root.uiScaleFactor)
+        var maxD = root.maxDescW
         var lineCount = 1
         if (descMetrics.width > maxD) {
             lineCount = Math.max(1, Math.ceil(descMetrics.width / maxD))
@@ -358,9 +357,7 @@ Item {
                 readonly property real maxDescW: root.maxDescW
                 readonly property bool shouldWrap: (descMetrics.width > maxDescW)
                 wrapMode: shouldWrap ? Text.Wrap : Text.NoWrap
-                width: shouldWrap
-                        ? (mainContent.width > 0 ? Math.min(mainContent.width, maxDescW) : maxDescW)
-                        : undefined
+                width: shouldWrap ? maxDescW : undefined
                 horizontalAlignment: Text.AlignLeft
             }
         }
