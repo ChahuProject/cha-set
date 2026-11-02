@@ -95,58 +95,65 @@ Popup {
                                       ? root.anchorY - root.height
                                       : root.anchorY
 
-    // ---- 宿主可用空间 ----
-    // Popup 不是 Item，禁止对它取 `root.Window.window`（Qt 报
-    // "Window.window only supports types derived from Item"）。合法路径只有
-    // Overlay 浮层（同窗口）或自身是 Item 的父项附加属性。
-    readonly property var hostWindow: {
-        const ov = Overlay.overlay
-        if (ov && ov.Window && ov.Window.window)
-            return ov.Window.window
-        if (root.parent && root.parent.Window)
-            return root.parent.Window.window
-        return null
+    // ---- 宿主可用视口（Viewport）与空间 ----
+    // 弹窗无论挂在多么狭小的按钮（如 36x36 齿轮）上，其可用视口一律为最外层窗口视口。
+    // 优先取 Overlay.overlay（全屏浮层宿主，其几何就是整个窗口视口）；
+    // 若环境无 Overlay，沿着 parent 链回溯到根 Item。
+    readonly property Item hostViewport: {
+        try {
+            if (Overlay.overlay)
+                return Overlay.overlay
+        } catch (e) {}
+        let cur = root.parent
+        while (cur && cur.parent) {
+            cur = cur.parent
+        }
+        return cur ? cur : null
     }
 
     readonly property real hostBandHeight: {
-        const win = root.hostWindow
-        if (win && win.height > 0)
-            return win.height
+        const vp = root.hostViewport
+        if (vp && vp.height > 0)
+            return vp.height
         if (root.parent && root.parent.height > 0)
             return root.parent.height
         return 0
     }
 
     readonly property real hostBandWidth: {
-        const win = root.hostWindow
-        if (win && win.width > 0)
-            return win.width
+        const vp = root.hostViewport
+        if (vp && vp.width > 0)
+            return vp.width
         if (root.parent && root.parent.width > 0)
             return root.parent.width
         return 0
     }
 
-    /// 父项原点在宿主窗口坐标系中的 y。
+    /// 父项原点在宿主视口坐标系中的 y。
     /// 刻意与 anchorX/anchorY **解耦**（恒定值），使宿主可以把 anchorY 写成
     /// `-height - gap` 而不会形成「高度↔位置」绑定回环。
     readonly property real parentOriginInHost: {
-        const win = root.hostWindow
-        if (win && win.contentItem && root.parent && typeof root.parent.mapToItem === "function") {
-            const m = root.parent.mapToItem(win.contentItem, 0, 0)
-            if (m && typeof m.y === "number" && !isNaN(m.y))
-                return m.y
+        const vp = root.hostViewport
+        if (vp && root.parent && typeof root.parent.mapToItem === "function") {
+            try {
+                const m = root.parent.mapToItem(vp, 0, 0)
+                if (m && typeof m.y === "number" && !isNaN(m.y))
+                    return m.y
+            } catch (e) {}
         }
         return 0
     }
 
-    /// 父项原点在宿主窗口坐标系中的 x。
+    /// 父项原点在宿主视口坐标系中的 x。
     /// 刻意与 anchorX/anchorY 解耦（恒定值）。
     readonly property real parentOriginInHostX: {
-        const win = root.hostWindow
-        if (win && win.contentItem && root.parent && typeof root.parent.mapToItem === "function") {
-            const m = root.parent.mapToItem(win.contentItem, 0, 0)
-            if (m && typeof m.x === "number" && !isNaN(m.x))
-                return m.x
+        const vp = root.hostViewport
+        if (vp && root.parent && typeof root.parent.mapToItem === "function") {
+            try {
+                const m = root.parent.mapToItem(vp, 0, 0)
+                if (m && typeof m.x === "number" && !isNaN(m.x))
+                    return m.x
+            } catch (e) {}
         }
         return 0
     }
@@ -189,7 +196,9 @@ Popup {
         const offset = root.parentOriginInHostX
         const minLeft = root.edgeMargin - offset
         const maxLeft = root.hostBandWidth - root.width - root.edgeMargin - offset
-        return Math.max(minLeft, Math.min(root.anchorX, Math.max(minLeft, maxLeft)))
+        if (maxLeft < minLeft)
+            return minLeft
+        return Math.max(minLeft, Math.min(root.anchorX, maxLeft))
     }
     y: {
         const top = root.anchorTop
@@ -199,7 +208,9 @@ Popup {
         const offset = root.parentOriginInHost
         const minTop = root.edgeMargin - offset
         const maxTop = root.hostBandHeight - root.height - root.edgeMargin - offset
-        return Math.max(minTop, Math.min(top, Math.max(minTop, maxTop)))
+        if (maxTop < minTop)
+            return minTop
+        return Math.max(minTop, Math.min(top, maxTop))
     }
 
     padding: 0
