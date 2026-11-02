@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import {
   TableOfContents,
+  ScrollArea,
+  Badge,
   Button,
   Switch,
   SegmentedControl,
   Slider,
   RotateCcwIcon,
+  flattenTocItems,
   type TocItem,
   useChaSetI18n,
 } from '@chahu/cha-set';
@@ -15,6 +18,10 @@ import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocMarkdown } from '../../components/DocMarkdown';
 import { DocText } from '../../components/DocText';
 
+function toCamelCase(str: string): string {
+  return str.replace(/-([a-z])/g, (_, g) => g.toUpperCase());
+}
+
 export function TableOfContentsDocPage() {
   const { t } = useChaSetI18n();
   const [showBanner, setShowBanner] = useState<boolean>(true);
@@ -23,6 +30,10 @@ export function TableOfContentsDocPage() {
   const [size, setSize] = useState<'default' | 'sm'>('default');
   const [showTrack, setShowTrack] = useState<boolean>(true);
   const [activeId, setActiveId] = useState<string>('architecture');
+
+  const scrollAreaRootRef = useRef<HTMLDivElement>(null);
+  const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const isScrollingToRef = useRef<boolean>(false);
 
   const demoItems: TocItem[] = [
     {
@@ -67,13 +78,78 @@ export function TableOfContentsDocPage() {
     },
   ];
 
+  const flatItems = useMemo(() => flattenTocItems(demoItems), [demoItems]);
+
+  const handleTocSelect = (item: TocItem) => {
+    setActiveId(item.id);
+    const targetEl = sectionRefs.current[item.id];
+    const viewport = scrollAreaRootRef.current?.querySelector('.toc-reading-viewport') as HTMLElement | null;
+    if (targetEl && viewport) {
+      isScrollingToRef.current = true;
+      const viewportRect = viewport.getBoundingClientRect();
+      const targetRect = targetEl.getBoundingClientRect();
+      const relativeTop = targetRect.top - viewportRect.top + viewport.scrollTop;
+      const offset = showBanner ? bannerHeight + 16 : 16;
+      viewport.scrollTo({
+        top: Math.max(0, relativeTop - offset),
+        behavior: 'smooth',
+      });
+      setTimeout(() => {
+        isScrollingToRef.current = false;
+      }, 350);
+    }
+  };
+
+  useEffect(() => {
+    const viewport = scrollAreaRootRef.current?.querySelector('.toc-reading-viewport') as HTMLElement | null;
+    if (!viewport) return;
+
+    const handleScroll = () => {
+      if (isScrollingToRef.current) return;
+      const offset = (showBanner ? bannerHeight : 0) + 24;
+      const viewportRect = viewport.getBoundingClientRect();
+
+      // If at bottom, activate last item
+      if (viewport.scrollTop + viewport.clientHeight >= viewport.scrollHeight - 16) {
+        const last = flatItems[flatItems.length - 1];
+        if (last && activeId !== last.id) {
+          setActiveId(last.id);
+        }
+        return;
+      }
+
+      let currentActive = flatItems[0]?.id;
+      for (const item of flatItems) {
+        const el = sectionRefs.current[item.id];
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        const relTop = rect.top - viewportRect.top;
+        if (relTop <= offset) {
+          currentActive = item.id;
+        }
+      }
+      if (currentActive && activeId !== currentActive) {
+        setActiveId(currentActive);
+      }
+    };
+
+    viewport.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      viewport.removeEventListener('scroll', handleScroll);
+    };
+  }, [flatItems, showBanner, bannerHeight, activeId]);
+
   const handleReset = () => {
     setShowBanner(true);
     setBannerHeight(40);
     setVariant('default');
     setSize('default');
     setShowTrack(true);
-    setActiveId('architecture');
+    setActiveId('introduction');
+    const viewport = scrollAreaRootRef.current?.querySelector('.toc-reading-viewport') as HTMLElement | null;
+    if (viewport) {
+      viewport.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const heroReactCode = `<TableOfContents
@@ -171,13 +247,13 @@ export function TableOfContentsDocPage() {
             </div>
           }
         >
-          <div className="w-full max-w-xl mx-auto py-2 space-y-4">
+          <div className="w-full max-w-2xl mx-auto py-2 space-y-4">
             {/* Simulated Banner Container */}
-            <div className="rounded-lg border border-border bg-card/60 overflow-hidden">
+            <div className="rounded-lg border border-border bg-card/60 overflow-hidden text-card-foreground">
               {showBanner && (
                 <div
                   style={{ height: `${bannerHeight * 0.0625}rem` }}
-                  className="w-full bg-primary/10 border-b border-primary/20 text-primary flex items-center justify-between px-4 transition-all duration-quick ease-standard"
+                  className="w-full bg-primary/10 border-b border-primary/20 text-primary flex items-center justify-between px-4 transition-all duration-quick ease-standard shrink-0"
                 >
                   <span className="text-xs font-semibold">
                     {t('surfaces.tableOfContents.bannerText')}
@@ -189,20 +265,89 @@ export function TableOfContentsDocPage() {
               )}
 
               {/* Main Content & TOC Layout Area */}
-              <div className="p-6 flex flex-col md:flex-row gap-8 items-start">
-                <div className="flex-1 space-y-3">
-                  <div className="p-4 rounded-md border border-border/80 bg-background/50 space-y-2">
-                    <DocText role="h3">{t('surfaces.tableOfContents.readingPaneTitle')}</DocText>
-                    <p className="text-xs text-muted-foreground leading-relaxed">
-                      {t('surfaces.tableOfContents.activeOutlineTarget', { target: activeId })}
-                    </p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">
-                      {t('desktopComposite.tableOfContents.readingPanePara', 'Notice how the table of contents tree reflects the nested heading structure, and smoothly aligns with the top banner height offset.')}
-                    </p>
+              <div className="p-6 flex flex-col md:flex-row gap-6 items-start">
+                {/* Scrollable Reading Viewport */}
+                <div className="flex-1 min-w-0 w-full">
+                  <div className="h-[22.5rem] w-full rounded-md border border-border/80 bg-background/50 overflow-hidden flex flex-col text-foreground">
+                    <div className="px-3 py-2 border-b border-border/60 bg-muted/20 flex items-center justify-between shrink-0">
+                      <span className="text-xs font-semibold text-foreground">
+                        {t('surfaces.tableOfContents.readingPaneTitle')}
+                      </span>
+                      <Badge variant="outline" className="text-[0.625rem] font-mono">
+                        #{activeId}
+                      </Badge>
+                    </div>
+                    <ScrollArea
+                      ref={scrollAreaRootRef}
+                      className="flex-1 min-h-0 w-full"
+                      viewportClassName="toc-reading-viewport p-3"
+                      showVerticalScrollBar
+                      showHorizontalScrollBar={false}
+                    >
+                      <div className="space-y-3 pb-32">
+                        {flatItems.map((item) => {
+                          const isH1 = item.level === 1;
+                          const isH2 = item.level === 2;
+                          const isActive = activeId === item.id;
+                          const camelKey = toCamelCase(item.id);
+
+                          return (
+                            <div
+                              key={item.id}
+                              ref={(el) => {
+                                sectionRefs.current[item.id] = el;
+                              }}
+                              id={`toc-section-${item.id}`}
+                              className={`rounded-md p-3 transition-colors duration-quick border ${
+                                isActive
+                                  ? 'bg-primary/5 border-primary/25'
+                                  : 'bg-card/40 border-border/40'
+                              } ${
+                                isH1
+                                  ? 'mt-3 first:mt-0'
+                                  : isH2
+                                  ? 'mt-2 ml-3'
+                                  : 'mt-1.5 ml-6'
+                              }`}
+                            >
+                              <div className="flex items-center justify-between gap-2 mb-1.5">
+                                <div className="flex items-center gap-2 min-w-0">
+                                  <Badge
+                                    variant={isH1 ? 'default' : isH2 ? 'secondary' : 'outline'}
+                                    size="sm"
+                                    className="shrink-0 font-mono text-[0.625rem]"
+                                  >
+                                    {`H${item.level ?? 1}`}
+                                  </Badge>
+                                  <span
+                                    className={`truncate ${
+                                      isH1
+                                        ? 'text-sm font-semibold text-foreground'
+                                        : isH2
+                                        ? 'text-xs font-medium text-foreground'
+                                        : 'text-xs font-normal text-muted-foreground'
+                                    }`}
+                                  >
+                                    {item.title}
+                                  </span>
+                                </div>
+                                <span className="text-[0.625rem] font-mono text-muted-foreground/60 shrink-0">
+                                  #{item.id}
+                                </span>
+                              </div>
+                              <p className="text-xs text-muted-foreground leading-relaxed">
+                                {t(`surfaces.tableOfContents.sections.${camelKey}`)}
+                              </p>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </ScrollArea>
                   </div>
                 </div>
 
-                <div className="w-56 shrink-0 p-3 rounded-md border border-border/60 bg-background/80">
+                {/* Table of Contents Nav Column */}
+                <div className="w-56 shrink-0 p-3 rounded-md border border-border/60 bg-background/80 text-foreground">
                   <TableOfContents
                     items={demoItems}
                     activeId={activeId}
@@ -211,7 +356,7 @@ export function TableOfContentsDocPage() {
                     variant={variant}
                     size={size}
                     showTrack={showTrack}
-                    onSelect={(item) => setActiveId(item.id)}
+                    onSelect={handleTocSelect}
                   />
                 </div>
               </div>

@@ -370,6 +370,20 @@
         "treeRendering": "Tree & Track Rendering"
       },
       "readingPaneTitle": "Document Reading Pane",
+      "sections": {
+        "architecture": "Layered architecture decoupling schemas, design tokens, and dual-stack rendering runtimes.",
+        "bannerOffset": "Dynamic measurement of sticky headers and banner heights to accurately offset scroll targets.",
+        "batching": "Automatic event batching during continuous interactions to maintain fluid frame rates.",
+        "boundary": "Strict isolation between platform-specific implementations and universal component APIs.",
+        "changelog": "Continuous log of version milestones, performance optimizations, and component contract parity.",
+        "dataFlow": "Deterministic unidirectional data flow across platforms ensuring reliable 60fps performance.",
+        "designPrinciples": "Adhering to single-source-of-truth (SSOT), spec-driven contracts, zero raw px, and automated gates.",
+        "implementation": "Technical implementation notes covering anchor targeting, dynamic offset compensation, and track rendering.",
+        "introduction": "Overview of system background and core objectives, establishing a unified foundation for cross-stack UI.",
+        "motivation": "Eliminating visual drift and ergonomic divergence between Web (React) and Desktop (Qt/QML) toolkits.",
+        "signals": "Fine-grained reactive signals preventing unnecessary full-tree layout thrashing and repaints.",
+        "treeRendering": "Flattened tree traversal rendering hierarchical outlines with smooth sliding indicator animation."
+      },
       "showTrack": "Show Track:",
       "small": "Small (sm)",
       "topBanner": "Top Banner:",

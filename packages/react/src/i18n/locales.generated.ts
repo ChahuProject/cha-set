@@ -2451,6 +2451,20 @@ export const BUILTIN_LOCALES: Record<string, any> = {
         "treeRendering": "树形大纲与导轨渲染"
       },
       "readingPaneTitle": "文档阅读窗格",
+      "sections": {
+        "architecture": "分层架构将规约层、样式令牌层与双端渲染运行时严格解耦与映射。",
+        "bannerOffset": "动态测量顶部横幅与导航栏高度，实时补偿滚动视口内目标元素的锚定偏移。",
+        "batching": "对高频连续交互事件自动合批，杜绝高负载下的帧率抖动与通道阻塞。",
+        "boundary": "清晰界定平台特有逻辑与通用抽象，保持组件调用接口高度对称统一。",
+        "changelog": "持续记录各版本跨端组件规范演进、性能优化与能力补齐清单。",
+        "dataFlow": "状态与事件流在两端遵循确定性单向传递，保证 60fps 实时渲染。",
+        "designPrinciples": "坚持单源真理 (SSOT)、规约驱动、无硬编码 Emoji 及全自动跨端门禁校验。",
+        "implementation": "深入探讨双端核心引擎的落地细节，包括大纲锚定、偏移计算与导轨绘制。",
+        "introduction": "本节介绍系统的背景与核心设计目标，为跨端架构提供统一抽象基础。",
+        "motivation": "解决 Web (React) 与桌面 (Qt/QML) 组件库长期存在的视觉漂移与交互割裂问题。",
+        "signals": "细粒度响应式更新机制，确保局部属性变化不引发整树重绘与重排。",
+        "treeRendering": "基于平坦化深度遍历生成多级大纲树，支持平滑滑动的活动指示标尺。"
+      },
       "showTrack": "显示轨道:",
       "small": "紧凑 (sm)",
       "topBanner": "顶部横幅:",
@@ -5156,6 +5170,20 @@ export const BUILTIN_LOCALES: Record<string, any> = {
         "treeRendering": "Tree & Track Rendering"
       },
       "readingPaneTitle": "Document Reading Pane",
+      "sections": {
+        "architecture": "Layered architecture decoupling schemas, design tokens, and dual-stack rendering runtimes.",
+        "bannerOffset": "Dynamic measurement of sticky headers and banner heights to accurately offset scroll targets.",
+        "batching": "Automatic event batching during continuous interactions to maintain fluid frame rates.",
+        "boundary": "Strict isolation between platform-specific implementations and universal component APIs.",
+        "changelog": "Continuous log of version milestones, performance optimizations, and component contract parity.",
+        "dataFlow": "Deterministic unidirectional data flow across platforms ensuring reliable 60fps performance.",
+        "designPrinciples": "Adhering to single-source-of-truth (SSOT), spec-driven contracts, zero raw px, and automated gates.",
+        "implementation": "Technical implementation notes covering anchor targeting, dynamic offset compensation, and track rendering.",
+        "introduction": "Overview of system background and core objectives, establishing a unified foundation for cross-stack UI.",
+        "motivation": "Eliminating visual drift and ergonomic divergence between Web (React) and Desktop (Qt/QML) toolkits.",
+        "signals": "Fine-grained reactive signals preventing unnecessary full-tree layout thrashing and repaints.",
+        "treeRendering": "Flattened tree traversal rendering hierarchical outlines with smooth sliding indicator animation."
+      },
       "showTrack": "Show Track:",
       "small": "Small (sm)",
       "topBanner": "Top Banner:",

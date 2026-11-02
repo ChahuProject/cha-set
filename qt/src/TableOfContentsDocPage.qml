@@ -59,13 +59,67 @@ DocLayout {
         }
     ]
 
+    function flattenDemoItems(items, parentDepth) {
+        if (!items || !items.length) return [];
+        var res = [];
+        var d = parentDepth !== undefined ? parentDepth : 1;
+        for (var i = 0; i < items.length; i++) {
+            var it = items[i];
+            if (!it) continue;
+            var depth = (it.level !== undefined && it.level > 0) ? it.level : d;
+            res.push({
+                id: String(it.id),
+                title: String(it.title),
+                level: depth
+            });
+            if (it.children && it.children.length > 0) {
+                var sub = flattenDemoItems(it.children, depth + 1);
+                for (var j = 0; j < sub.length; j++) {
+                    res.push(sub[j]);
+                }
+            }
+        }
+        return res;
+    }
+
+    readonly property var demoFlatItems: root.flattenDemoItems(root.demoItems, 1)
+
+    function getSectionDesc(id) {
+        var camel = id.replace(/-([a-z])/g, function(_, g) { return g.toUpperCase(); });
+        return ChaSetI18n.tr("surfaces.tableOfContents.sections." + camel);
+    }
+
+    function scrollToSection(id) {
+        for (var i = 0; i < sectionsRepeater.count; i++) {
+            var delegateItem = sectionsRepeater.itemAt(i);
+            if (delegateItem && delegateItem.sectionId === id) {
+                readingScroll.isScrollingTo = true;
+                var offset = (root.showBanner ? root.bannerHeight : 0) + 16;
+                var targetY = Math.max(0, delegateItem.y - ThemeTokens.dp(offset));
+                readingScroll.scrollToY(targetY, true);
+                scrollResetTimer.restart();
+                break;
+            }
+        }
+    }
+
+    Timer {
+        id: scrollResetTimer
+        interval: 350
+        repeat: false
+        onTriggered: {
+            readingScroll.isScrollingTo = false;
+        }
+    }
+
     function resetDemo() {
         root.showBanner = true;
         root.bannerHeight = 40;
         root.variant = "default";
         root.size = "default";
         root.showTrack = true;
-        root.activeId = "architecture";
+        root.activeId = "introduction";
+        readingScroll.scrollToTop(true);
     }
 
     ComponentPreview {
@@ -74,7 +128,7 @@ DocLayout {
         // React's stage is `min-h-[18.75rem] p-8 …` and grows with its content;
         // this stage is a fixed height, so size it so the demo card (banner +
         // p-6 content row) fits without being clipped.
-        stageHeight: 550
+        stageHeight: 580
         reactCode: `<TableOfContents
   items={items}
   activeId="${root.activeId}"
@@ -217,7 +271,7 @@ DocLayout {
             Item {
                 id: demoWrapper
                 anchors.centerIn: parent
-                width: Math.min(parent.width - ThemeTokens.dp(64), ThemeTokens.dp(576))   // max-w-xl = 36rem
+                width: Math.min(parent.width - ThemeTokens.dp(48), ThemeTokens.dp(640))   // max-w-2xl = 40rem
                 implicitHeight: demoCard.implicitHeight + ThemeTokens.dp(16)              // py-2 → 8 + 8
                 height: implicitHeight
 
@@ -289,11 +343,11 @@ DocLayout {
                             }
                         }
 
-                        // Content — React `p-6 flex flex-row gap-8 items-start`.
+                        // Content — React `p-6 flex flex-row gap-6 items-start`.
                         Item {
                             id: contentArea
                             width: parent.width
-                            implicitHeight: contentRow.implicitHeight + ThemeTokens.dp(48)   // p-6 → 24 + 24
+                            implicitHeight: contentRow.height + ThemeTokens.dp(48)   // p-6 → 24 + 24
 
                             Row {
                                 id: contentRow
@@ -301,59 +355,193 @@ DocLayout {
                                 anchors.top: parent.top
                                 anchors.topMargin: ThemeTokens.dp(24)
                                 width: parent.width - ThemeTokens.dp(48)
-                                height: implicitHeight
-                                spacing: ThemeTokens.dp(32)                                  // gap-8
+                                height: Math.max(readingPaneCard.height, tocCard.implicitHeight)
+                                spacing: ThemeTokens.dp(24)                                  // gap-6
 
-                                // flex-1 reading column
+                                // flex-1 scrollable reading column
                                 Rectangle {
-                                    width: contentRow.width - ThemeTokens.dp(32) - ThemeTokens.dp(224)
-                                    implicitHeight: readingCard.implicitHeight
-                                    height: implicitHeight
-                                    color: "transparent"
+                                    id: readingPaneCard
+                                    width: contentRow.width - ThemeTokens.dp(24) - ThemeTokens.dp(224)
+                                    height: ThemeTokens.dp(360)
+                                    color: Qt.rgba(ThemeTokens.background.r, ThemeTokens.background.g, ThemeTokens.background.b, 0.5)
+                                    border.width: 1
+                                    border.color: Qt.rgba(ThemeTokens.border.r, ThemeTokens.border.g, ThemeTokens.border.b, 0.8)
+                                    radius: ThemeTokens.dp(6)
+                                    clip: true
 
-                                    // React `p-4 rounded-md border border-border/80 bg-background/50 space-y-2`
-                                    Rectangle {
-                                        id: readingCard
-                                        width: parent.width
-                                        implicitHeight: readingCol.implicitHeight + ThemeTokens.dp(32)   // p-4 → 16 + 16
-                                        height: implicitHeight
-                                        color: Qt.rgba(ThemeTokens.background.r, ThemeTokens.background.g, ThemeTokens.background.b, 0.5)
-                                        border.width: 1
-                                        border.color: Qt.rgba(ThemeTokens.border.r, ThemeTokens.border.g, ThemeTokens.border.b, 0.8)
-                                        radius: ThemeTokens.dp(6)
+                                    Column {
+                                        anchors.fill: parent
 
-                                        Column {
-                                            id: readingCol
-                                            anchors.horizontalCenter: parent.horizontalCenter
-                                            anchors.verticalCenter: parent.verticalCenter
-                                            width: parent.width - ThemeTokens.dp(32)
-                                            spacing: ThemeTokens.dp(8)                                   // space-y-2
+                                        // Reading pane top bar
+                                        Rectangle {
+                                            width: parent.width
+                                            height: ThemeTokens.dp(36)
+                                            color: Qt.rgba(ThemeTokens.border.r, ThemeTokens.border.g, ThemeTokens.border.b, 0.15)
+
+                                            Rectangle {
+                                                anchors.bottom: parent.bottom
+                                                width: parent.width
+                                                height: 1
+                                                color: Qt.rgba(ThemeTokens.border.r, ThemeTokens.border.g, ThemeTokens.border.b, 0.6)
+                                            }
 
                                             Text {
-                                                width: parent.width
+                                                anchors.left: parent.left
+                                                anchors.leftMargin: ThemeTokens.dp(12)
+                                                anchors.verticalCenter: parent.verticalCenter
                                                 text: ChaSetI18n.tr("surfaces.tableOfContents.readingPaneTitle")
                                                 color: ThemeTokens.text
                                                 font.family: Typography.familySans
-                                                font.pixelSize: Typography.sizeBody
+                                                font.pixelSize: Typography.sizeSmall
                                                 font.weight: Typography.weightSemibold
                                             }
 
-                                            Text {
-                                                width: parent.width
-                                                text: ChaSetI18n.tr("surfaces.tableOfContents.activeOutlineTarget", "Active outline target: {{target}}", { "target": root.activeId })
-                                                color: ThemeTokens.subduedText
-                                                font.family: Typography.familySans
-                                                font.pixelSize: Typography.sizeSmall
-                                                wrapMode: Text.WordWrap
+                                            ChaSetBadge {
+                                                anchors.right: parent.right
+                                                anchors.rightMargin: ThemeTokens.dp(12)
+                                                anchors.verticalCenter: parent.verticalCenter
+                                                variant: "outline"
+                                                size: "sm"
+                                                text: "#" + root.activeId
                                             }
+                                        }
 
-                                            Text {
-                                                width: parent.width
-                                                text: ChaSetI18n.tr("desktopComposite.tableOfContents.readingPanePara", "Notice how the table of contents tree reflects the nested heading structure, and smoothly aligns with the top banner height offset.")
-                                                color: ThemeTokens.subduedText
-                                                font.family: Typography.familySans
-                                                font.pixelSize: Typography.sizeSmall
-                                                wrapMode: Text.WordWrap
+                                        // Scrollable reading viewport
+                                        Item {
+                                            width: parent.width
+                                            height: parent.height - ThemeTokens.dp(36)
+
+                                            ChaSetScrollArea {
+                                                id: readingScroll
+                                                anchors.fill: parent
+                                                showVerticalScrollBar: true
+                                                showHorizontalScrollBar: false
+                                                smoothScroll: true
+
+                                                property bool isScrollingTo: false
+
+                                                onContentYChanged: {
+                                                    if (isScrollingTo) return;
+                                                    var offset = (root.showBanner ? root.bannerHeight : 0) + 24;
+                                                    var curY = readingScroll.contentY;
+                                                    var maxScroll = Math.max(0, readingScroll.contentHeight - readingScroll.availableHeight);
+
+                                                    if (curY >= maxScroll - ThemeTokens.dp(16) && maxScroll > 0) {
+                                                        var lastItem = root.demoFlatItems[root.demoFlatItems.length - 1];
+                                                        if (lastItem && root.activeId !== lastItem.id) {
+                                                            root.activeId = lastItem.id;
+                                                        }
+                                                        return;
+                                                    }
+
+                                                    var bestId = root.demoFlatItems[0] ? root.demoFlatItems[0].id : "";
+                                                    for (var i = 0; i < sectionsRepeater.count; i++) {
+                                                        var child = sectionsRepeater.itemAt(i);
+                                                        if (child && child.sectionId) {
+                                                            if (child.y <= curY + ThemeTokens.dp(offset)) {
+                                                                bestId = child.sectionId;
+                                                            }
+                                                        }
+                                                    }
+                                                    if (bestId && root.activeId !== bestId) {
+                                                        root.activeId = bestId;
+                                                    }
+                                                }
+
+                                                Column {
+                                                    id: sectionsCol
+                                                    width: readingScroll.availableWidth - ThemeTokens.dp(24)
+                                                    x: ThemeTokens.dp(12)
+                                                    y: ThemeTokens.dp(12)
+                                                    spacing: ThemeTokens.dp(10)
+                                                    bottomPadding: ThemeTokens.dp(120)
+
+                                                    Repeater {
+                                                        id: sectionsRepeater
+                                                        model: root.demoFlatItems
+
+                                                        delegate: Rectangle {
+                                                            id: sectionDelegate
+                                                            required property var modelData
+                                                            required property int index
+
+                                                            readonly property string sectionId: modelData.id
+                                                            readonly property int sectionLevel: modelData.level
+                                                            readonly property bool isActive: root.activeId === sectionId
+
+                                                            width: sectionsCol.width
+                                                            implicitHeight: secInnerCol.implicitHeight + ThemeTokens.dp(20)
+                                                            height: implicitHeight
+                                                            radius: ThemeTokens.dp(6)
+                                                            color: isActive ? Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.08) : Qt.rgba(ThemeTokens.panel.r, ThemeTokens.panel.g, ThemeTokens.panel.b, 0.4)
+                                                            border.width: 1
+                                                            border.color: isActive ? Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.3) : Qt.rgba(ThemeTokens.border.r, ThemeTokens.border.g, ThemeTokens.border.b, 0.4)
+
+                                                            Column {
+                                                                id: secInnerCol
+                                                                anchors.horizontalCenter: parent.horizontalCenter
+                                                                anchors.verticalCenter: parent.verticalCenter
+                                                                width: parent.width - ThemeTokens.dp(20)
+                                                                spacing: ThemeTokens.dp(6)
+
+                                                                Item {
+                                                                    width: parent.width
+                                                                    height: Math.max(badgeComp.height, titleText.height)
+
+                                                                    Row {
+                                                                        id: titleRow
+                                                                        anchors.left: parent.left
+                                                                        anchors.leftMargin: (sectionLevel === 1) ? 0 : ((sectionLevel === 2) ? ThemeTokens.dp(12) : ThemeTokens.dp(24))
+                                                                        anchors.right: hashText.left
+                                                                        anchors.rightMargin: ThemeTokens.dp(8)
+                                                                        anchors.verticalCenter: parent.verticalCenter
+                                                                        spacing: ThemeTokens.dp(8)
+
+                                                                        ChaSetBadge {
+                                                                            id: badgeComp
+                                                                            anchors.verticalCenter: parent.verticalCenter
+                                                                            variant: (sectionLevel === 1) ? "default" : ((sectionLevel === 2) ? "secondary" : "outline")
+                                                                            size: "sm"
+                                                                            text: "H" + sectionLevel
+                                                                        }
+
+                                                                        Text {
+                                                                            id: titleText
+                                                                            anchors.verticalCenter: parent.verticalCenter
+                                                                            text: modelData.title
+                                                                            color: ThemeTokens.text
+                                                                            font.family: Typography.familySans
+                                                                            font.pixelSize: (sectionLevel === 1) ? Typography.sizeBody : Typography.sizeSmall
+                                                                            font.weight: (sectionLevel === 1) ? Typography.weightSemibold : ((sectionLevel === 2) ? Typography.weightMedium : Typography.weightRegular)
+                                                                            elide: Text.ElideRight
+                                                                        }
+                                                                    }
+
+                                                                    Text {
+                                                                        id: hashText
+                                                                        anchors.right: parent.right
+                                                                        anchors.verticalCenter: parent.verticalCenter
+                                                                        text: "#" + sectionId
+                                                                        color: Qt.rgba(ThemeTokens.subduedText.r, ThemeTokens.subduedText.g, ThemeTokens.subduedText.b, 0.6)
+                                                                        font.family: Typography.familyMono
+                                                                        font.pixelSize: Typography.sizeMicro
+                                                                    }
+                                                                }
+
+                                                                Text {
+                                                                    width: parent.width - ((sectionLevel === 1) ? 0 : ((sectionLevel === 2) ? ThemeTokens.dp(12) : ThemeTokens.dp(24)))
+                                                                    x: (sectionLevel === 1) ? 0 : ((sectionLevel === 2) ? ThemeTokens.dp(12) : ThemeTokens.dp(24))
+                                                                    text: root.getSectionDesc(sectionId)
+                                                                    color: ThemeTokens.subduedText
+                                                                    font.family: Typography.familySans
+                                                                    font.pixelSize: Typography.sizeSmall
+                                                                    wrapMode: Text.WordWrap
+                                                                    lineHeight: 1.3
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -362,6 +550,7 @@ DocLayout {
                                 // `w-56 shrink-0 p-3` ToC card — React `rounded-md
                                 // border border-border/60 bg-background/80`.
                                 Rectangle {
+                                    id: tocCard
                                     width: ThemeTokens.dp(224)
                                     implicitHeight: tocComp.implicitHeight + ThemeTokens.dp(24)   // p-3 → 12 + 12
                                     height: implicitHeight
@@ -383,6 +572,7 @@ DocLayout {
                                         showTrack: root.showTrack
                                         onSelectItem: function(item) {
                                             root.activeId = item.id;
+                                            root.scrollToSection(item.id);
                                         }
                                     }
                                 }
