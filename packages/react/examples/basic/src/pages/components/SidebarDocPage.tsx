@@ -48,7 +48,8 @@ export function SidebarDocPage() {
     { id: "settings", icon: SettingsIcon, label: t('surfaces.sidebar.preferences', '偏好设置'), group: "configuration" },
   ];
 
-  const currentItem = navItems.find((item) => item.id === activeItem) ?? navItems[0];
+  const currentItem = navItems.find((item) => item.id === activeItem) ?? navItems[0]!;
+  const CurrentIcon = currentItem.icon;
 
   const basicUsageCode = `<SidebarProvider>
   <Sidebar collapsible="icon">
@@ -246,7 +247,7 @@ export function SidebarDocPage() {
                     <div className="flex items-center gap-1.5 text-xs text-muted-foreground truncate font-medium">
                       <span>{t('surfaces.sidebar.studioBreadcrumb', 'ChaSet Studio /')}</span>
                       <span className="text-foreground font-semibold flex items-center gap-1">
-                        <currentItem.icon className="size-3.5 text-primary" />
+                        <CurrentIcon className="size-3.5 text-primary" />
                         {currentItem.label}
                       </span>
                     </div>
@@ -349,10 +350,10 @@ export function SidebarDocPage() {
                         </div>
                         <div>
                           <span className="text-xs font-semibold">cha-set-core</span>
-                          <p className="text-[0.6875rem] text-muted-foreground">TypeScript / QML 统一设计系统资产库</p>
+                          <p className="text-[0.6875rem] text-muted-foreground">{t('surfaces.sidebar.coreDesc', 'TypeScript / QML 统一设计系统资产库')}</p>
                         </div>
                       </div>
-                      <Badge variant="outline" className="text-xs font-mono">v1.4.0</Badge>
+                      <Badge variant="outline" className="text-xs font-mono">{t('surfaces.sidebar.coreVersion', 'v1.4.0 版本')}</Badge>
                     </Card>
 
                     <Card className="p-3 border border-border bg-card text-card-foreground shadow-2xs flex items-center justify-between">
@@ -362,10 +363,10 @@ export function SidebarDocPage() {
                         </div>
                         <div>
                           <span className="text-xs font-semibold">qt-desktop-shell</span>
-                          <p className="text-[0.6875rem] text-muted-foreground">Qt 6.8 高性能桌面客户端外壳与演示程序</p>
+                          <p className="text-[0.6875rem] text-muted-foreground">{t('surfaces.sidebar.qtShellDesc', 'Qt 6.8 高性能桌面客户端外壳与演示程序')}</p>
                         </div>
                       </div>
-                      <Badge variant="secondary" className="text-xs font-mono">v0.2.0</Badge>
+                      <Badge variant="secondary" className="text-xs font-mono">{t('surfaces.sidebar.qtShellVersion', 'v0.2.0 版本')}</Badge>
                     </Card>
                   </div>
                 )}
@@ -374,10 +375,10 @@ export function SidebarDocPage() {
                   <Card className="p-4 border border-border bg-card text-card-foreground shadow-2xs flex flex-col gap-2">
                     <h4 className="text-xs font-semibold text-foreground flex items-center gap-1.5">
                       <ChartIcon className="size-3.5 text-primary" />
-                      系统遥测与合规状态
+                      {t('surfaces.sidebar.analyticsTitle', '系统遥测与合规状态')}
                     </h4>
                     <p className="text-xs text-muted-foreground leading-relaxed">
-                      318 项规范契约通过率 100%，52 个双端演示页面零白屏加载，全量组件通过无闪烁与颜色对齐测试。
+                      {t('surfaces.sidebar.analyticsDesc', '318 项规范契约通过率 100%，52 个双端演示页面零白屏加载，全量组件通过无闪烁与颜色对齐测试。')}
                     </p>
                   </Card>
                 )}
@@ -386,16 +387,16 @@ export function SidebarDocPage() {
                   <Card className="p-4 border border-border bg-card text-card-foreground shadow-2xs flex flex-col gap-2">
                     <h4 className="text-xs font-semibold text-foreground flex items-center gap-1.5">
                       <SlidersIcon className="size-3.5 text-primary" />
-                      主题与布局健康诊断
+                      {t('surfaces.sidebar.diagTitle', '主题与布局健康诊断')}
                     </h4>
                     <div className="space-y-1.5 text-xs text-muted-foreground font-mono">
                       <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
                         <CheckIcon className="size-3.5" />
-                        <span>Theme-adaptive Gate: 0 bare border violations</span>
+                        <span>{t('surfaces.sidebar.diagThemeGate', '主题自适应门禁：0 边框缺陷')}</span>
                       </div>
                       <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
                         <CheckIcon className="size-3.5" />
-                        <span>Zero-px Rule: 100% rem compliant</span>
+                        <span>{t('surfaces.sidebar.diagZeroPx', '零像素规则：100% rem 规范')}</span>
                       </div>
                     </div>
                   </Card>
@@ -405,10 +406,10 @@ export function SidebarDocPage() {
                   <Card className="p-4 border border-border bg-card text-card-foreground shadow-2xs flex flex-col gap-3">
                     <h4 className="text-xs font-semibold text-foreground flex items-center gap-1.5">
                       <SettingsIcon className="size-3.5 text-primary" />
-                      工作区偏好设置
+                      {t('surfaces.sidebar.prefsTitle', '工作区偏好设置')}
                     </h4>
                     <p className="text-xs text-muted-foreground">
-                      侧边栏支持双向拖拽调整、Icon 折叠记忆以及快捷键 Ctrl+B 快速触发。
+                      {t('surfaces.sidebar.prefsDesc', '侧边栏支持双向拖拽调整、Icon 折叠记忆以及快捷键 Ctrl+B 快速触发。')}
                     </p>
                   </Card>
                 )}
