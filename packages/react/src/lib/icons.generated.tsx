@@ -533,12 +533,6 @@ export const ICON_ADOPTION = {
       "reasons": []
     },
     {
-      "file": "packages/react/src/squircle/Squircle.tsx",
-      "count": 2,
-      "exempted": 0,
-      "reasons": []
-    },
-    {
       "file": "packages/react/src/switch/Switch.tsx",
       "count": 1,
       "exempted": 0,

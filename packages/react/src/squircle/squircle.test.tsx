@@ -40,102 +40,89 @@ describe('Squircle mathematical path generator', () => {
     expect(path).toContain('Z');
   });
 
-  it('renders Squircle component with data attributes and style', () => {
+  it('renders Squircle component with native CSS corner-shape and data attributes', () => {
     const { container } = render(
       <Squircle radius={12} smoothing={0.6} data-testid="sq">
         <span>Content</span>
       </Squircle>
     );
-    const el = container.querySelector('[data-corner-shape="squircle"]');
+    const el = container.querySelector('[data-corner-shape="squircle"]') as HTMLElement;
     expect(el).not.toBeNull();
     expect(el?.getAttribute('data-corner-smoothing')).toBe('0.6');
+    expect((el?.style as any).cornerShape).toBe('squircle');
+    expect(el?.style.borderTopLeftRadius).toBe(`${12 * 0.0625}rem`);
   });
 
-  it('renders clipPath SVG defs with computed path', () => {
-    const { container } = render(
-      <Squircle width={100} height={40} radius={8} smoothing={0.6}>
-        <span>Content</span>
-      </Squircle>
-    );
-    const clipPath = container.querySelector('clipPath');
-    expect(clipPath).not.toBeNull();
-    expect(clipPath?.getAttribute('clipPathUnits')).toBe('objectBoundingBox');
-    const clipId = clipPath?.getAttribute('id');
-    expect(clipId).toBeTruthy();
-
-    const pathEl = clipPath?.querySelector('path');
-    expect(pathEl).not.toBeNull();
-    expect(pathEl?.getAttribute('transform')).toContain('scale(');
-    const d = pathEl?.getAttribute('d');
-    expect(d).toContain('M 50 0');
-    expect(d).toContain('C ');
-    expect(d).toContain('Z');
-
-    const rootEl = container.firstElementChild as HTMLElement;
-    expect(rootEl.style.clipPath).toMatch(new RegExp(`(${clipId}|path\\()`));
-  });
-
-  it('renders border stroke path when borderWidth and borderColor are passed', () => {
+  it('renders native CSS styles for dimensions, background, and borders', () => {
     const { container } = render(
       <Squircle
         width={100}
         height={40}
         radius={8}
+        smoothing={0.6}
         borderWidth={2}
         borderColor="#3b82f6"
+        color="rgba(59, 130, 246, 0.15)"
       >
         <span>Content</span>
       </Squircle>
     );
-    const svgs = container.querySelectorAll('svg');
-    expect(svgs.length).toBe(2);
-
-    const borderSvg = svgs[1];
-    expect(borderSvg).toBeDefined();
-    const borderPath = borderSvg?.querySelector('path');
-    expect(borderPath).not.toBeNull();
-    expect(borderPath?.getAttribute('fill')).toBe('none');
-    expect(borderPath?.getAttribute('stroke')).toBe('#3b82f6');
-    expect(borderPath?.getAttribute('stroke-width')).toBe('2');
-    expect(borderPath?.getAttribute('d')).toContain('M 50 1');
+    const rootEl = container.firstElementChild as HTMLElement;
+    expect(rootEl).not.toBeNull();
+    expect(rootEl.style.width).toBe(`${100 * 0.0625}rem`);
+    expect(rootEl.style.height).toBe(`${40 * 0.0625}rem`);
+    expect(rootEl.style.borderWidth).toBe(`${2 * 0.0625}rem`);
+    expect(rootEl.style.borderColor).toBe('rgb(59, 130, 246)');
+    expect(rootEl.style.borderStyle).toBe('solid');
+    expect(rootEl.style.backgroundColor).toBe('rgba(59, 130, 246, 0.15)');
+    expect((rootEl.style as any).cornerShape).toBe('squircle');
   });
 
-  it('does not render border stroke svg when borderWidth is 0 or borderColor is omitted', () => {
-    const { container } = render(
-      <Squircle width={100} height={40} radius={8}>
-        <span>Content</span>
-      </Squircle>
-    );
-    const svgs = container.querySelectorAll('svg');
-    expect(svgs.length).toBe(1);
-    const firstSvg = svgs[0];
-    expect(firstSvg).toBeDefined();
-    expect(firstSvg?.querySelector('clipPath')).not.toBeNull();
-  });
-
-  it('dynamically updates path and attributes when smoothing changes', () => {
+  it('dynamically maps smoothing factor to native corner-shape values', () => {
     const { container, rerender } = render(
-      <Squircle width={120} height={60} radius={16} smoothing={0.2} data-testid="sq">
+      <Squircle radius={16} smoothing={0.0} data-testid="sq">
         <span>Dynamic</span>
       </Squircle>
     );
-    const el = container.querySelector('[data-corner-shape="squircle"]');
-    expect(el?.getAttribute('data-corner-smoothing')).toBe('0.2');
+    const el = container.querySelector('[data-testid="sq"]') as HTMLElement;
+    expect(el?.getAttribute('data-corner-shape')).toBe('round');
+    expect((el?.style as any).cornerShape).toBe('round');
 
-    const path1 = container.querySelector('clipPath path')?.getAttribute('d');
-    expect(path1).toBeTruthy();
-
-    // Rerender with different smoothing
+    // Rerender with standard iOS 0.6 smoothing
     rerender(
-      <Squircle width={120} height={60} radius={16} smoothing={0.8} data-testid="sq">
+      <Squircle radius={16} smoothing={0.6} data-testid="sq">
         <span>Dynamic</span>
       </Squircle>
     );
-    expect(el?.getAttribute('data-corner-smoothing')).toBe('0.8');
+    expect(el?.getAttribute('data-corner-shape')).toBe('squircle');
+    expect((el?.style as any).cornerShape).toBe('squircle');
 
-    const path2 = container.querySelector('clipPath path')?.getAttribute('d');
-    expect(path2).toBeTruthy();
-    expect(path2).not.toBe(path1);
+    // Rerender with 1.0 (full continuous squircle)
+    rerender(
+      <Squircle radius={16} smoothing={1.0} data-testid="sq">
+        <span>Dynamic</span>
+      </Squircle>
+    );
+    expect(el?.getAttribute('data-corner-shape')).toBe('superellipse(2)');
+    expect((el?.style as any).cornerShape).toBe('superellipse(2)');
+  });
+
+  it('handles per-corner selective rounding via native border radii', () => {
+    const { container } = render(
+      <Squircle
+        radius={16}
+        roundLeft={true}
+        roundRight={false}
+        topLeftRadius={24}
+      >
+        <span>Selective</span>
+      </Squircle>
+    );
+    const el = container.firstElementChild as HTMLElement;
+    expect(el.style.borderTopLeftRadius).toBe(`${24 * 0.0625}rem`);
+    expect(el.style.borderBottomLeftRadius).toBe(`${16 * 0.0625}rem`);
+    expect(el.style.borderTopRightRadius).toBe('0rem');
+    expect(el.style.borderBottomRightRadius).toBe('0rem');
   });
 
   it('preserves full smoothing continuous curvature without corner pinching at large radii', () => {

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { getSquircleSvgPath } from './squircle-path';
 
 export interface SquircleProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
@@ -66,11 +65,11 @@ export interface SquircleProps extends React.HTMLAttributes<HTMLDivElement> {
    */
   color?: string;
   /**
-   * Explicit width in logical units (optional, auto-measures via ResizeObserver if omitted).
+   * Explicit width in logical units (optional, uses CSS layout sizing if omitted).
    */
   width?: number;
   /**
-   * Explicit height in logical units (optional, auto-measures via ResizeObserver if omitted).
+   * Explicit height in logical units (optional, uses CSS layout sizing if omitted).
    */
   height?: number;
   /**
@@ -80,11 +79,9 @@ export interface SquircleProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * `<Squircle>` renders an element with iOS-style continuous corner curvature.
+ * `<Squircle>` renders an element with native CSS continuous corner curvature.
  *
- * In modern browsers supporting CSS `corner-shape: squircle`, standard CSS rules apply.
- * This component also generates dynamic SVG clip-path geometry as a progressive
- * enhancement or for canvas/SVG contexts.
+ * Utilizes modern W3C CSS Borders and Box Decorations Module Level 4 `corner-shape: squircle` / `superellipse()`.
  */
 export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
   (
@@ -114,227 +111,66 @@ export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
     },
     ref
   ) => {
-    const rawId = React.useId();
-    const containerRef = React.useRef<HTMLDivElement | null>(null);
-
     const effectiveSmoothing = cornerSmoothing !== undefined ? cornerSmoothing : smoothing;
 
-    const computeOuterPath = React.useCallback(
-      (w: number, h: number) => {
-        if (w <= 0 || h <= 0) return '';
-        return getSquircleSvgPath({
-          x: 0,
-          y: 0,
-          width: w,
-          height: h,
-          cornerRadius: radius,
-          topLeftRadius,
-          topRightRadius,
-          bottomLeftRadius,
-          bottomRightRadius,
-          cornerSmoothing: effectiveSmoothing,
-          preserveSmoothing,
-          roundLeft,
-          roundRight,
-          roundTop,
-          roundBottom,
-        });
-      },
-      [
-        radius,
-        effectiveSmoothing,
-        preserveSmoothing,
-        topLeftRadius,
-        topRightRadius,
-        bottomLeftRadius,
-        bottomRightRadius,
-        roundLeft,
-        roundRight,
-        roundTop,
-        roundBottom,
-      ]
-    );
+    // Resolve per-corner radii (converted from logical units: 1 unit = 0.0625rem)
+    const tl = roundLeft && roundTop ? (topLeftRadius ?? radius) : 0;
+    const tr = roundRight && roundTop ? (topRightRadius ?? radius) : 0;
+    const br = roundRight && roundBottom ? (bottomRightRadius ?? radius) : 0;
+    const bl = roundLeft && roundBottom ? (bottomLeftRadius ?? radius) : 0;
 
-    const computeStrokePath = React.useCallback(
-      (w: number, h: number, bw: number) => {
-        if (w <= 0 || h <= 0 || bw <= 0) return '';
-        const inset = bw / 2;
-        const innerW = Math.max(0, w - 2 * inset);
-        const innerH = Math.max(0, h - 2 * inset);
-        const strRadius = Math.max(0, radius - inset);
-        const strTL = topLeftRadius !== undefined ? Math.max(0, topLeftRadius - inset) : undefined;
-        const strTR = topRightRadius !== undefined ? Math.max(0, topRightRadius - inset) : undefined;
-        const strBL = bottomLeftRadius !== undefined ? Math.max(0, bottomLeftRadius - inset) : undefined;
-        const strBR = bottomRightRadius !== undefined ? Math.max(0, bottomRightRadius - inset) : undefined;
-
-        return getSquircleSvgPath({
-          x: inset,
-          y: inset,
-          width: innerW,
-          height: innerH,
-          cornerRadius: strRadius,
-          topLeftRadius: strTL,
-          topRightRadius: strTR,
-          bottomLeftRadius: strBL,
-          bottomRightRadius: strBR,
-          cornerSmoothing: effectiveSmoothing,
-          preserveSmoothing,
-          roundLeft,
-          roundRight,
-          roundTop,
-          roundBottom,
-        });
-      },
-      [
-        radius,
-        effectiveSmoothing,
-        preserveSmoothing,
-        topLeftRadius,
-        topRightRadius,
-        bottomLeftRadius,
-        bottomRightRadius,
-        roundLeft,
-        roundRight,
-        roundTop,
-        roundBottom,
-      ]
-    );
-
-    const [measuredDimensions, setMeasuredDimensions] = React.useState<{ w: number; h: number }>({
-      w: width ?? 0,
-      h: height ?? 0,
-    });
-
-    const currentW = measuredDimensions.w > 0 ? measuredDimensions.w : (width ?? 0);
-    const currentH = measuredDimensions.h > 0 ? measuredDimensions.h : (height ?? 0);
-
-    const outerPath = React.useMemo(() => {
-      if (currentW > 0 && currentH > 0) {
-        return computeOuterPath(currentW, currentH);
-      }
-      return '';
-    }, [currentW, currentH, computeOuterPath]);
-
-    const strokePath = React.useMemo(() => {
-      if (currentW > 0 && currentH > 0 && borderWidth > 0) {
-        return computeStrokePath(currentW, currentH, borderWidth);
-      }
-      return '';
-    }, [currentW, currentH, borderWidth, computeStrokePath]);
-
-    // Combine forwarded ref and local ref
-    const setRefs = React.useCallback(
-      (node: HTMLDivElement | null) => {
-        containerRef.current = node;
-        if (typeof ref === 'function') {
-          ref(node);
-        } else if (ref) {
-          (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
-        }
-      },
-      [ref]
-    );
-
-    const updateDimensions = React.useCallback(() => {
-      const el = containerRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const w = rect.width > 0 ? rect.width : (width ?? el.offsetWidth);
-      const h = rect.height > 0 ? rect.height : (height ?? el.offsetHeight);
-      setMeasuredDimensions((prev) => {
-        if (Math.abs(prev.w - w) < 0.01 && Math.abs(prev.h - h) < 0.01) return prev;
-        return { w, h };
-      });
-    }, [width, height]);
-
-    React.useEffect(() => {
-      updateDimensions();
-      if (!containerRef.current || typeof ResizeObserver === 'undefined') return;
-      const ro = new ResizeObserver(() => updateDimensions());
-      ro.observe(containerRef.current);
-      return () => ro.disconnect();
-    }, [updateDimensions]);
-
-    // Unique clipId per geometry to prevent Chromium from reusing stale cached clip-path masks
-    const clipId = React.useMemo(() => {
-      const sanitized = rawId.replace(/:/g, '_');
-      return `${sanitized}_${Math.round(currentW)}_${Math.round(currentH)}_${Math.round(radius)}_${Math.round(effectiveSmoothing * 100)}_${preserveSmoothing ? 1 : 0}`;
-    }, [rawId, currentW, currentH, radius, effectiveSmoothing, preserveSmoothing]);
-
-    const clipPathStyle = React.useMemo(() => {
-      if (!outerPath) return undefined;
-      // In modern browsers supporting CSS basic shape path(), use path() directly to avoid SVG clipPath caching issues
-      // and High-DPI/DPR scaling distortion where clipPathUnits="userSpaceOnUse" miscomputes device coordinates.
-      if (typeof CSS !== 'undefined' && typeof CSS.supports === 'function' && CSS.supports('clip-path', 'path("M0 0Z")')) {
-        return `path('${outerPath}')`;
-      }
-      return `url(#${clipId})`;
-    }, [outerPath, clipId]);
+    // Resolve native CSS corner-shape:
+    // - 0.0 -> round (traditional circular arc)
+    // - 0.6 (default iOS standard) -> squircle
+    // - 1.0 (full continuous squircle) -> superellipse(2)
+    // - dynamic numeric -> superellipse(1 + smoothing)
+    const cornerShapeValue = React.useMemo(() => {
+      if (effectiveSmoothing <= 0.001) return 'round';
+      if (Math.abs(effectiveSmoothing - 0.6) < 0.01) return 'squircle';
+      if (Math.abs(effectiveSmoothing - 1.0) < 0.01) return 'superellipse(2)';
+      return `superellipse(${(1 + effectiveSmoothing).toFixed(2)})`;
+    }, [effectiveSmoothing]);
 
     const combinedStyle: React.CSSProperties = {
-      // Prioritize continuous corner shape token
-      ['--cs-corner-shape' as string]: 'squircle',
+      // Native W3C CSS corner-shape & tokens
+      ['cornerShape' as string]: cornerShapeValue,
+      ['--cs-corner-shape' as string]: cornerShapeValue,
       ['--cs-corner-smoothing' as string]: effectiveSmoothing,
-      // Fallback border-radius only when SVG path has not resolved yet
-      borderRadius: outerPath ? undefined : `${radius * 0.0625}rem`,
+
+      // Border radius in rem scale
+      borderTopLeftRadius: `${tl * 0.0625}rem`,
+      borderTopRightRadius: `${tr * 0.0625}rem`,
+      borderBottomRightRadius: `${br * 0.0625}rem`,
+      borderBottomLeftRadius: `${bl * 0.0625}rem`,
+
+      // Background color if specified
+      ...(color ? { backgroundColor: color } : {}),
+
+      // Border styling if specified
+      ...(borderWidth > 0
+        ? {
+            borderWidth: `${borderWidth * 0.0625}rem`,
+            borderStyle: 'solid',
+            ...(borderColor ? { borderColor } : {}),
+          }
+        : {}),
+
+      // Dimensions if explicitly specified
       ...(width !== undefined ? { width: `${width * 0.0625}rem` } : {}),
       ...(height !== undefined ? { height: `${height * 0.0625}rem` } : {}),
+
       ...style,
     };
 
-    const hasSvgDecoration = Boolean(color || (borderWidth > 0 && borderColor));
-
     return (
       <Component
-        ref={setRefs}
-        className={`relative ${className}`}
-        style={{
-          ...combinedStyle,
-          clipPath: clipPathStyle,
-        }}
-        data-corner-shape="squircle"
+        ref={ref}
+        className={className}
+        style={combinedStyle}
+        data-corner-shape={cornerShapeValue}
         data-corner-smoothing={effectiveSmoothing}
         {...rest}
       >
-        <svg
-          className="absolute pointer-events-none w-0 h-0 overflow-hidden"
-          viewBox={`0 0 ${currentW} ${currentH}`}
-          aria-hidden="true"
-        >
-          <defs>
-            <clipPath id={clipId} clipPathUnits="objectBoundingBox">
-              <path
-                d={outerPath}
-                transform={currentW > 0 && currentH > 0 ? `scale(${1 / currentW}, ${1 / currentH})` : undefined}
-              />
-            </clipPath>
-          </defs>
-        </svg>
-        {hasSvgDecoration && outerPath && (
-          <svg
-            className="absolute inset-0 pointer-events-none w-full h-full overflow-hidden"
-            viewBox={`0 0 ${currentW} ${currentH}`}
-            preserveAspectRatio="none"
-            aria-hidden="true"
-          >
-            {color && (
-              <path
-                d={outerPath}
-                fill={color}
-              />
-            )}
-            {borderWidth > 0 && borderColor && strokePath && (
-              <path
-                d={strokePath}
-                fill="none"
-                stroke={borderColor}
-                strokeWidth={borderWidth}
-                strokeLinejoin="round"
-                strokeLinecap="round"
-              />
-            )}
-          </svg>
-        )}
         {children}
       </Component>
     );
