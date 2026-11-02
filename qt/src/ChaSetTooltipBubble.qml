@@ -357,7 +357,11 @@ Item {
                 readonly property real maxDescW: root.maxDescW
                 readonly property bool shouldWrap: (descMetrics.width > maxDescW)
                 wrapMode: shouldWrap ? Text.Wrap : Text.NoWrap
-                width: shouldWrap ? maxDescW : undefined
+                width: shouldWrap
+                        ? (root.width > 0 && root.width - root.scaledPadX >= 100
+                           ? Math.min(maxDescW, root.width - root.scaledPadX)
+                           : maxDescW)
+                        : undefined
                 horizontalAlignment: Text.AlignLeft
             }
         }
