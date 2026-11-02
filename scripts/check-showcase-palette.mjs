@@ -28,12 +28,12 @@ const DEMO_CSS = resolve(root, 'packages/react/examples/basic/src/styles.css');
 /// ThemeTokens role -> the CSS custom properties that must carry the same colour.
 /// Several CSS names collapse onto one role because shadcn-style surfaces reuse a value.
 const PAIRS = [
-  ['text', ['foreground', 'card-foreground', 'popover-foreground', 'secondary-foreground', 'accent-foreground']],
+  ['text', ['foreground', 'card-foreground', 'popover-foreground', 'secondary-foreground', 'accent-foreground', 'sidebar-foreground']],
   ['subduedText', ['muted-foreground']],
-  ['panel', ['card', 'popover']],
-  ['panelRaised', ['secondary', 'muted', 'accent']],
-  ['border', ['border', 'input']],
-  ['accent', ['primary', 'ring']],
+  ['panel', ['card', 'popover', 'sidebar']],
+  ['panelRaised', ['secondary', 'muted', 'accent', 'sidebar-accent']],
+  ['border', ['border', 'input', 'sidebar-border']],
+  ['accent', ['primary', 'ring', 'sidebar-primary', 'sidebar-ring']],
 ];
 
 /// Split the generated singleton into its dark and light halves and read every
