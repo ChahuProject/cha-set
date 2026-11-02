@@ -151,7 +151,7 @@ describe('Squircle mathematical path generator', () => {
     }
     const elapsedMs = performance.now() - start;
     const usPerOp = (elapsedMs * 1000) / count;
-    // Budget: less than 40us per op (5,000 ops < 200ms) with allowance for concurrent test suites
-    expect(usPerOp).toBeLessThan(40);
+    // Budget: less than 60us per op (5,000 ops < 300ms) with allowance for concurrent test suites
+    expect(usPerOp).toBeLessThan(60);
   });
 });

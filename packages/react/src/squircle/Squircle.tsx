@@ -253,11 +253,6 @@ export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
 
     const clipPathStyle = React.useMemo(() => {
       if (!outerPath) return undefined;
-      // In modern browsers supporting CSS basic shape path(), use path() directly to avoid SVG clipPath caching issues.
-      // Fallback to url(#clipId) for environments without path() support or test runners.
-      if (typeof CSS !== 'undefined' && typeof CSS.supports === 'function' && CSS.supports('clip-path', 'path("M0 0Z")')) {
-        return `path('${outerPath}')`;
-      }
       return `url(#${clipId})`;
     }, [outerPath, clipId]);
 
