@@ -42,6 +42,8 @@ describe('Slider conformance (spec contract)', () => {
     for (const v of [0, 25, 50, 75, 100]) {
       expect(() => sliderSchema.parse({ value: v })).not.toThrow();
     }
+    expect(() => sliderSchema.parse({ range: true, value: [20, 80] })).not.toThrow();
+    expect(() => sliderSchema.parse({ commitOnRelease: true })).not.toThrow();
   });
 
   it('rejects unknown orientation and size per the contract', () => {

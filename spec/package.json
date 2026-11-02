@@ -33,7 +33,6 @@
     "./panel-card": "./components/panel-card.ts",
     "./split-button": "./components/split-button.ts",
     "./inline-editable-text": "./components/inline-editable-text.ts",
-    "./range-slider": "./components/range-slider.ts",
     "./read-only-input": "./components/read-only-input.ts",
     "./preset-number-input": "./components/preset-number-input.ts",
     "./keybinding-recorder": "./components/keybinding-recorder.ts",

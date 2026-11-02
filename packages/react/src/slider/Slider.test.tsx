@@ -195,4 +195,95 @@ describe('Slider component', () => {
     expect(tooltip).toBeInTheDocument();
     expect(tooltip).toHaveAttribute('data-slot', 'slider-tooltip');
   });
+
+  it('supports commitOnRelease: commits value and fires callbacks on pointer up', () => {
+    const onValueChange = vi.fn();
+    const onChange = vi.fn();
+    const onValueCommit = vi.fn();
+
+    render(
+      <Slider
+        commitOnRelease
+        defaultValue={20}
+        min={0}
+        max={100}
+        onValueChange={onValueChange}
+        onChange={onChange}
+        onValueCommit={onValueCommit}
+        data-testid="slider"
+      />,
+    );
+
+    const sliderEl = screen.getByTestId('slider');
+    // Mock getBoundingClientRect
+    vi.spyOn(sliderEl, 'getBoundingClientRect').mockReturnValue({
+      left: 0,
+      top: 0,
+      width: 100,
+      height: 20,
+      bottom: 20,
+      right: 100,
+      x: 0,
+      y: 0,
+      toJSON: () => {},
+    });
+
+    // Pointer down at 60%
+    fireEvent.pointerDown(sliderEl, { clientX: 60, clientY: 10, button: 0 });
+    // onValueChange should NOT be fired yet because commitOnRelease is active!
+    expect(onValueChange).not.toHaveBeenCalled();
+    expect(onValueCommit).not.toHaveBeenCalled();
+
+    // Release pointer
+    fireEvent.pointerUp(window);
+    // Now onValueChange, onChange, and onValueCommit should be called with 60
+    expect(onValueChange).toHaveBeenCalledWith(60);
+    expect(onChange).toHaveBeenCalledWith(60);
+    expect(onValueCommit).toHaveBeenCalledWith(60);
+  });
+
+  it('supports range mode with dual thumbs and interval bounding', () => {
+    const onChange = vi.fn();
+    render(
+      <Slider
+        range
+        value={[20, 80]}
+        min={0}
+        max={100}
+        step={1}
+        onChange={onChange}
+        data-testid="slider"
+      />,
+    );
+
+    const thumbs = screen.getAllByRole('slider');
+    expect(thumbs).toHaveLength(2);
+    expect(thumbs[0]).toHaveAttribute('aria-valuenow', '20');
+    expect(thumbs[1]).toHaveAttribute('aria-valuenow', '80');
+
+    // Arrow navigation on low thumb
+    fireEvent.keyDown(thumbs[0]!, { key: 'ArrowRight' });
+    expect(onChange).toHaveBeenCalledWith([21, 80]);
+
+    // Arrow navigation on high thumb
+    fireEvent.keyDown(thumbs[1]!, { key: 'ArrowLeft' });
+    expect(onChange).toHaveBeenCalledWith([20, 79]);
+  });
+
+  it('supports snap mode with labels and annotations', () => {
+    render(
+      <Slider
+        count={5}
+        labels={['1x', '2x', '3x', '4x', '5x']}
+        leftLabel="Slow"
+        rightLabel="Fast"
+        defaultValue={2}
+        data-testid="slider"
+      />,
+    );
+
+    expect(screen.getByText('Slow')).toBeInTheDocument();
+    expect(screen.getByText('3x')).toBeInTheDocument();
+    expect(screen.getByText('Fast')).toBeInTheDocument();
+  });
 });

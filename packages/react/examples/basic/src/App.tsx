@@ -65,8 +65,6 @@ import { CopyButtonDocPage } from './pages/components/CopyButtonDocPage';
 import { PanelCardDocPage } from './pages/components/PanelCardDocPage';
 import { SplitButtonDocPage } from './pages/components/SplitButtonDocPage';
 import { InlineEditableTextDocPage } from './pages/components/InlineEditableTextDocPage';
-import { RangeSliderDocPage } from './pages/components/RangeSliderDocPage';
-import { SnapSliderDocPage } from './pages/components/SnapSliderDocPage';
 import { ScaleOsdDocPage } from './pages/components/ScaleOsdDocPage';
 import { TaskHudDocPage } from './pages/components/TaskHudDocPage';
 import { NotificationStackDocPage } from './pages/components/NotificationStackDocPage';
@@ -894,9 +892,8 @@ export function App() {
       case '#/components/inline-editable-text':
         return <InlineEditableTextDocPage />;
       case '#/components/range-slider':
-        return <RangeSliderDocPage />;
       case '#/components/snap-slider':
-        return <SnapSliderDocPage />;
+        return <SliderDocPage />;
       case '#/components/scale-osd':
         return <ScaleOsdDocPage />;
       case '#/components/task-hud':

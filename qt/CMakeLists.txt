@@ -340,8 +340,6 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/PanelCardDocPage.qml
             src/SplitButtonDocPage.qml
             src/InlineEditableTextDocPage.qml
-            src/RangeSliderDocPage.qml
-            src/SnapSliderDocPage.qml
             src/ScaleOsdDocPage.qml
             src/TaskHudDocPage.qml
             src/NotificationStackDocPage.qml

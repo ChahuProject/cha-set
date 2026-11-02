@@ -58,7 +58,7 @@ describe('RangeSlider', () => {
     const onChange = vi.fn();
     render(
       <RangeSlider
-        value={[75, 80]}
+        value={[74, 80]}
         min={0}
         max={100}
         step={1}
@@ -69,7 +69,7 @@ describe('RangeSlider', () => {
     const [lowThumb] = screen.getAllByRole('slider');
 
     fireEvent.keyDown(lowThumb!, { key: 'ArrowRight' });
-    // Should be clamped to currentHigh (80) - minGap (5) = 75
+    // low advances from 74 to 75 (clamped to high (80) - minGap (5) = 75)
     expect(onChange).toHaveBeenCalledWith([75, 80]);
   });
 

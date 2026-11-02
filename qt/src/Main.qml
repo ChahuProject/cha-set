@@ -422,8 +422,9 @@ ApplicationWindow {
         case "panel-card": return "PanelCardDocPage.qml";
         case "split-button": return "SplitButtonDocPage.qml";
         case "inline-editable-text": return "InlineEditableTextDocPage.qml";
-        case "range-slider": return "RangeSliderDocPage.qml";
-        case "snap-slider": return "SnapSliderDocPage.qml";
+        case "range-slider":
+        case "snap-slider":
+            return "SliderDocPage.qml";
         case "scale-osd": return "ScaleOsdDocPage.qml";
         case "task-hud": return "TaskHudDocPage.qml";
         case "notification-stack": return "NotificationStackDocPage.qml";
@@ -1865,7 +1866,6 @@ ApplicationWindow {
                 { id: "popover", name: "ChaSetPopover" },
                 { id: "preset-number-input", name: "ChaSetPresetNumberInput" },
                 { id: "query-builder", name: "ChaSetQueryBuilder" },
-                { id: "range-slider", name: "ChaSetRangeSlider" },
                 { id: "read-only-input", name: "ChaSetReadOnlyInput" },
                 { id: "resizable", name: "ChaSetResizable" },
                 { id: "scale-osd", name: "ChaSetScaleOsd" },
@@ -1880,7 +1880,6 @@ ApplicationWindow {
                 { id: "skeleton", name: "ChaSetSkeleton" },
                 { id: "slider", name: "ChaSetSlider" },
                 { id: "smooth-wheel-handler", name: "ChaSetSmoothWheelHandler" },
-                { id: "snap-slider", name: "ChaSetSnapSlider" },
                 { id: "split-button", name: "ChaSetSplitButton" },
                 { id: "splitter-handle", name: "ChaSetSplitterHandle" },
                 { id: "splitter", name: "ChaSetSplitter" },

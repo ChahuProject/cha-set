@@ -1216,22 +1216,8 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "id": "slider",
         "title": "Slider",
         "href": "#/components/slider",
-        "desc": "Interactive control that allows selecting a numeric value along a track.",
-        "description": "Interactive control that allows selecting a numeric value along a track."
-      },
-      {
-        "id": "range-slider",
-        "title": "Range Slider",
-        "href": "#/components/range-slider",
-        "desc": "Dual-thumb slider for selecting numeric min-max intervals with collision prevention.",
-        "description": "Dual-thumb slider for selecting numeric min-max intervals with collision prevention."
-      },
-      {
-        "id": "snap-slider",
-        "title": "Snap Slider",
-        "href": "#/components/snap-slider",
-        "desc": "Stepped discrete slider that snaps to defined stops with ticks and label row.",
-        "description": "Stepped discrete slider that snaps to defined stops with ticks and label row."
+        "desc": "Interactive control for single, range, and discrete values along a track.",
+        "description": "Interactive control for single, range, and discrete values along a track."
       },
       {
         "id": "segmented-control",

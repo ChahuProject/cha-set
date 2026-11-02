@@ -25,7 +25,6 @@ import { TaskHudDocPage } from '../../examples/basic/src/pages/components/TaskHu
 import { PanelCardDocPage } from '../../examples/basic/src/pages/components/PanelCardDocPage';
 import { PopoverDocPage } from '../../examples/basic/src/pages/components/PopoverDocPage';
 import { QueryBuilderDocPage } from '../../examples/basic/src/pages/components/QueryBuilderDocPage';
-import { RangeSliderDocPage } from '../../examples/basic/src/pages/components/RangeSliderDocPage';
 import { ReadOnlyInputDocPage } from '../../examples/basic/src/pages/components/ReadOnlyInputDocPage';
 import { PresetNumberInputDocPage } from '../../examples/basic/src/pages/components/PresetNumberInputDocPage';
 import { ScrollAreaDocPage } from '../../examples/basic/src/pages/components/ScrollAreaDocPage';
@@ -78,7 +77,6 @@ const pages = [
   { name: 'PanelCardDocPage', Component: PanelCardDocPage },
   { name: 'PopoverDocPage', Component: PopoverDocPage },
   { name: 'QueryBuilderDocPage', Component: QueryBuilderDocPage },
-  { name: 'RangeSliderDocPage', Component: RangeSliderDocPage },
   { name: 'ReadOnlyInputDocPage', Component: ReadOnlyInputDocPage },
   { name: 'PresetNumberInputDocPage', Component: PresetNumberInputDocPage },
   { name: 'ScrollAreaDocPage', Component: ScrollAreaDocPage },

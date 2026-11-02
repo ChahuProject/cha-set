@@ -89,7 +89,10 @@
     "step": true,
     "disabled": true,
     "thumbDrag": true,
-    "focusRing": true
+    "focusRing": true,
+    "commitOnRelease": true,
+    "dualThumbs": true,
+    "stops": true
   },
   "dialog": {
     "open": true,
@@ -186,11 +189,6 @@
     "displayMode": true,
     "editMode": true,
     "cancel": true
-  },
-  "rangeSlider": {
-    "dualThumbs": true,
-    "dragInteraction": true,
-    "trackClick": true
   },
   "readOnlyInput": {
     "readOnlyValue": true,
@@ -306,13 +304,6 @@
     "statusSummary": true,
     "cancellation": true,
     "filtering": true
-  },
-  "snapSlider": {
-    "stops": true,
-    "labels": true,
-    "ticks": true,
-    "keyboard": true,
-    "disabled": true
   },
   "scaleOsd": {
     "display": true,

@@ -91,8 +91,6 @@
     "preset-number-input": { "semantic": "text", "supportsDisabled": true, "supportsReadOnly": true },
     "read-only-input": { "semantic": "text", "supportsDisabled": true, "supportsReadOnly": true },
     "slider": { "semantic": "slider", "supportsDisabled": true },
-    "range-slider": { "semantic": "slider", "supportsDisabled": true },
-    "snap-slider": { "semantic": "slider", "supportsDisabled": true },
     "scrollbar": { "semantic": "slider", "supportsDisabled": true },
     "splitter": { "semantic": "resize-col", "supportsDisabled": true },
     "splitter-handle": { "semantic": "resize-col", "supportsDisabled": true },

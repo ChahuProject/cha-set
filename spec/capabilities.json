@@ -115,7 +115,10 @@
       "focusRing": { "requirement": "must", "description": "focus ring and keyboard navigation" },
       "size": { "requirement": "should", "description": "supports default and compact sm sizes" },
       "readOnly": { "requirement": "should", "description": "prevents interaction without muted opacity" },
-      "tooltip": { "requirement": "should", "description": "floating value tooltip on thumb hover or drag" }
+      "tooltip": { "requirement": "should", "description": "floating value tooltip on thumb hover or drag" },
+      "commitOnRelease": { "requirement": "should", "description": "dragging only commits value when pointer is released" },
+      "dualThumbs": { "requirement": "should", "description": "supports dual-thumb range interval selection" },
+      "stops": { "requirement": "should", "description": "snaps to discrete stops with optional label row" }
     },
     "dialog": {
       "open": { "requirement": "must", "description": "controlled and uncontrolled open state" },
@@ -226,11 +229,6 @@
       "displayMode": { "requirement": "must", "description": "renders text with hover edit indicator" },
       "editMode": { "requirement": "must", "description": "enters editable input mode on click with save on enter or blur" },
       "cancel": { "requirement": "must", "description": "restores original value on escape key press" }
-    },
-    "rangeSlider": {
-      "dualThumbs": { "requirement": "must", "description": "renders low and high thumbs on shared track with highlighted range" },
-      "dragInteraction": { "requirement": "must", "description": "supports dragging individual thumbs to adjust range boundaries" },
-      "trackClick": { "requirement": "must", "description": "clicking track snaps the nearest thumb to clicked position" }
     },
     "readOnlyInput": {
       "readOnlyValue": { "requirement": "must", "description": "renders readonly text input with auto-select on focus" },
@@ -346,13 +344,6 @@
       "statusSummary": { "requirement": "must", "description": "header summary badge, elapsed duration, and action slots" },
       "cancellation": { "requirement": "should", "description": "triggers cancellation callback with disabled states" },
       "filtering": { "requirement": "should", "description": "filters pipelines by status and keyword search" }
-    },
-    "snapSlider": {
-      "stops": { "requirement": "must", "description": "snaps to discrete stops" },
-      "labels": { "requirement": "must", "description": "renders left, active, and right label annotations" },
-      "ticks": { "requirement": "must", "description": "displays tick marks for stops" },
-      "keyboard": { "requirement": "must", "description": "arrow key step navigation" },
-      "disabled": { "requirement": "must", "description": "disabled state prevents interaction" }
     },
     "scaleOsd": {
       "display": { "requirement": "must", "description": "displays percentage/scale readout" },
