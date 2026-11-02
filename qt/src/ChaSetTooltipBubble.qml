@@ -47,9 +47,9 @@ Item {
     readonly property int effectiveArrowH: root.arrow ? arrowH : 0
 
     readonly property real scaledPadX: (typeof ThemeTokens !== "undefined" && ThemeTokens)
-            ? ThemeTokens.dp(24) : Math.round(24 * uiScaleFactor)
+            ? ThemeTokens.dp(16) : Math.round(16 * uiScaleFactor)
     readonly property real scaledPadY: (typeof ThemeTokens !== "undefined" && ThemeTokens)
-            ? ThemeTokens.dp(12) : Math.round(12 * uiScaleFactor)
+            ? ThemeTokens.dp(8) : Math.round(8 * uiScaleFactor)
 
     readonly property real maxTextW: (typeof ThemeTokens !== "undefined" && ThemeTokens)
             ? ThemeTokens.dp(360) : Math.round(360 * uiScaleFactor)
