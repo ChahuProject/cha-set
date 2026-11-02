@@ -2412,11 +2412,20 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "terminalConsole": "终端控制台"
     },
     "splitterHandle": {
+      "activeItem": "当前选中: {{name}}",
+      "canvasBadge": "画布",
       "currentWidth": "当前宽度:",
       "editorCanvasArea": "编辑器 / 日志画布区",
+      "fluidLayoutDesc": "拖拽分栏手柄调整侧边栏宽度，主视口自适应剩余空间重排，内部 ScrollArea 保持平滑滚动。",
+      "fluidLayoutTitle": "流式视口自适应",
       "focusHint": "聚焦手柄后使用方向键进行微调调整",
+      "logBuildStarted": "[08:00:01] 构建任务启动 --target=desktop",
+      "logClamped": "[08:00:03] 分栏手柄顶部边界已钳制 [60..180]",
+      "logReady": "[08:00:04] 交互式沙盒已就绪，可拖拽调整",
+      "logSchemasLoaded": "[08:00:02] 已加载 47 个跨端组件规范",
       "mainContent": "主内容视口",
       "reset200": "重置为 200",
+      "scrollable": "可滚动",
       "sidebar": "侧边栏",
       "terminalConsole": "终端 / 输出控制台"
     },
@@ -5107,11 +5116,20 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "terminalConsole": "Terminal Console"
     },
     "splitterHandle": {
+      "activeItem": "Active: {{name}}",
+      "canvasBadge": "Canvas",
       "currentWidth": "Current Width:",
       "editorCanvasArea": "Editor / Log Canvas Area",
+      "fluidLayoutDesc": "Resize the sidebar using the splitter handle; the main viewport adapts smoothly while ScrollArea maintains responsive scrolling.",
+      "fluidLayoutTitle": "Fluid Viewport Layout",
       "focusHint": "Focus handle and use arrow keys to resize",
+      "logBuildStarted": "[08:00:01] build started --target=desktop",
+      "logClamped": "[08:00:03] splitter handle edge=top clamped [60..180]",
+      "logReady": "[08:00:04] interactive sandbox ready for drag events",
+      "logSchemasLoaded": "[08:00:02] loaded 47 cross-stack component schemas",
       "mainContent": "Main Content Viewport",
       "reset200": "Reset to 200",
+      "scrollable": "Scrollable",
       "sidebar": "Sidebar",
       "terminalConsole": "Terminal / Output Console"
     },

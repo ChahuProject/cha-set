@@ -332,11 +332,20 @@
       "terminalConsole": "Terminal Console"
     },
     "splitterHandle": {
+      "activeItem": "Active: {{name}}",
+      "canvasBadge": "Canvas",
       "currentWidth": "Current Width:",
       "editorCanvasArea": "Editor / Log Canvas Area",
+      "fluidLayoutDesc": "Resize the sidebar using the splitter handle; the main viewport adapts smoothly while ScrollArea maintains responsive scrolling.",
+      "fluidLayoutTitle": "Fluid Viewport Layout",
       "focusHint": "Focus handle and use arrow keys to resize",
+      "logBuildStarted": "[08:00:01] build started --target=desktop",
+      "logClamped": "[08:00:03] splitter handle edge=top clamped [60..180]",
+      "logReady": "[08:00:04] interactive sandbox ready for drag events",
+      "logSchemasLoaded": "[08:00:02] loaded 47 cross-stack component schemas",
       "mainContent": "Main Content Viewport",
       "reset200": "Reset to 200",
+      "scrollable": "Scrollable",
       "sidebar": "Sidebar",
       "terminalConsole": "Terminal / Output Console"
     },

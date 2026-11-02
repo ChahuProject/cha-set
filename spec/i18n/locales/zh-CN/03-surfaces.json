@@ -332,11 +332,20 @@
       "terminalConsole": "终端控制台"
     },
     "splitterHandle": {
+      "activeItem": "当前选中: {{name}}",
+      "canvasBadge": "画布",
       "currentWidth": "当前宽度:",
       "editorCanvasArea": "编辑器 / 日志画布区",
+      "fluidLayoutDesc": "拖拽分栏手柄调整侧边栏宽度，主视口自适应剩余空间重排，内部 ScrollArea 保持平滑滚动。",
+      "fluidLayoutTitle": "流式视口自适应",
       "focusHint": "聚焦手柄后使用方向键进行微调调整",
+      "logBuildStarted": "[08:00:01] 构建任务启动 --target=desktop",
+      "logClamped": "[08:00:03] 分栏手柄顶部边界已钳制 [60..180]",
+      "logReady": "[08:00:04] 交互式沙盒已就绪，可拖拽调整",
+      "logSchemasLoaded": "[08:00:02] 已加载 47 个跨端组件规范",
       "mainContent": "主内容视口",
       "reset200": "重置为 200",
+      "scrollable": "可滚动",
       "sidebar": "侧边栏",
       "terminalConsole": "终端 / 输出控制台"
     },
