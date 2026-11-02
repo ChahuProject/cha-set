@@ -97,18 +97,31 @@ Popup {
 
     // ---- 宿主可用视口（Viewport）与空间 ----
     // 弹窗无论挂在多么狭小的按钮（如 36x36 齿轮）上，其可用视口一律为最外层窗口视口。
-    // 优先取 Overlay.overlay（全屏浮层宿主，其几何就是整个窗口视口）；
-    // 若环境无 Overlay，沿着 parent 链回溯到根 Item。
+    // 优先沿 parent 链回溯找到几何面积最大（width * height 最大）的容器 Item；
+    // 绝不将局部狭小 Item 误当成整个视口，确保换算坐标系与 hostBandWidth/Height 严格处于同一空间。
     readonly property Item hostViewport: {
+        let maxItem = null
+        let maxArea = 0
+        if (root.parent && root.parent.width > 0 && root.parent.height > 0) {
+            maxItem = root.parent
+            maxArea = root.parent.width * root.parent.height
+        }
+        let cur = root.parent ? root.parent.parent : null
+        while (cur) {
+            const area = cur.width * cur.height
+            if (area > maxArea) {
+                maxArea = area
+                maxItem = cur
+            }
+            cur = cur.parent
+        }
+        if (maxItem)
+            return maxItem
         try {
             if (Overlay.overlay)
                 return Overlay.overlay
         } catch (e) {}
-        let cur = root.parent
-        while (cur && cur.parent) {
-            cur = cur.parent
-        }
-        return cur ? cur : null
+        return root.parent
     }
 
     readonly property real hostBandHeight: {
@@ -197,7 +210,7 @@ Popup {
         const minLeft = root.edgeMargin - offset
         const maxLeft = root.hostBandWidth - root.width - root.edgeMargin - offset
         if (maxLeft < minLeft)
-            return minLeft
+            return root.anchorX
         return Math.max(minLeft, Math.min(root.anchorX, maxLeft))
     }
     y: {
@@ -209,7 +222,7 @@ Popup {
         const minTop = root.edgeMargin - offset
         const maxTop = root.hostBandHeight - root.height - root.edgeMargin - offset
         if (maxTop < minTop)
-            return minTop
+            return top
         return Math.max(minTop, Math.min(top, maxTop))
     }
 
