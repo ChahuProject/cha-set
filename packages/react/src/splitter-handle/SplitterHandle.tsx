@@ -19,10 +19,10 @@ export interface SplitterHandleProps extends React.HTMLAttributes<HTMLDivElement
 }
 
 const edgePositionClasses: Record<SplitterEdge, string> = {
-  left: 'absolute inset-y-0 left-0',
-  right: 'absolute inset-y-0 right-0',
-  top: 'absolute inset-x-0 top-0',
-  bottom: 'absolute inset-x-0 bottom-0',
+  left: 'absolute inset-y-0 left-0 -translate-x-1/2',
+  right: 'absolute inset-y-0 right-0 translate-x-1/2',
+  top: 'absolute inset-x-0 top-0 -translate-y-1/2',
+  bottom: 'absolute inset-x-0 bottom-0 translate-y-1/2',
 };
 
 export const SplitterHandle = React.forwardRef<HTMLDivElement, SplitterHandleProps>(
@@ -51,6 +51,7 @@ export const SplitterHandle = React.forwardRef<HTMLDivElement, SplitterHandlePro
     const isVertical = edge === 'left' || edge === 'right';
     const [isDragging, setIsDragging] = React.useState(false);
     const [isHovered, setIsHovered] = React.useState(false);
+    const isDraggingRef = React.useRef(false);
 
     const dragStartRef = React.useRef<{
       startX: number;
@@ -86,10 +87,49 @@ export const SplitterHandle = React.forwardRef<HTMLDivElement, SplitterHandlePro
           computed = startSize + deltaY;
         }
 
-        return clampSize(computed);
+        return clampSize(Math.round(computed));
       },
       [edge, clampSize],
     );
+
+    // Global drag listeners & body styling during drag
+    React.useEffect(() => {
+      if (!isDragging) return;
+
+      const cursorClass = isVertical ? 'cursor-col-resize' : 'cursor-row-resize';
+      if (typeof document !== 'undefined') {
+        document.body.classList.add('select-none', cursorClass);
+      }
+
+      const onPointerMove = (e: PointerEvent) => {
+        if (!isDraggingRef.current || disabled) return;
+        e.preventDefault();
+        const clamped = calculateSize(e.clientX, e.clientY);
+        dragStartRef.current.lastClamped = clamped;
+        onSizeChanging?.(clamped);
+      };
+
+      const onPointerUp = (e: PointerEvent) => {
+        if (!isDraggingRef.current) return;
+        isDraggingRef.current = false;
+        setIsDragging(false);
+        const clamped = calculateSize(e.clientX, e.clientY);
+        onSizeChanged?.(clamped);
+      };
+
+      window.addEventListener('pointermove', onPointerMove, { passive: false });
+      window.addEventListener('pointerup', onPointerUp);
+      window.addEventListener('pointercancel', onPointerUp);
+
+      return () => {
+        if (typeof document !== 'undefined') {
+          document.body.classList.remove('select-none', cursorClass);
+        }
+        window.removeEventListener('pointermove', onPointerMove);
+        window.removeEventListener('pointerup', onPointerUp);
+        window.removeEventListener('pointercancel', onPointerUp);
+      };
+    }, [isDragging, isVertical, disabled, calculateSize, onSizeChanging, onSizeChanged]);
 
     const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
       if (disabled || e.button !== 0) return;
@@ -106,11 +146,12 @@ export const SplitterHandle = React.forwardRef<HTMLDivElement, SplitterHandlePro
         startSize: targetSize,
         lastClamped: targetSize,
       };
+      isDraggingRef.current = true;
       setIsDragging(true);
     };
 
     const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-      if (!isDragging || disabled) return;
+      if (!isDraggingRef.current || disabled) return;
       e.preventDefault();
       const clamped = calculateSize(e.clientX, e.clientY);
       dragStartRef.current.lastClamped = clamped;
@@ -118,12 +159,13 @@ export const SplitterHandle = React.forwardRef<HTMLDivElement, SplitterHandlePro
     };
 
     const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
-      if (!isDragging) return;
+      if (!isDraggingRef.current) return;
       try {
         e.currentTarget.releasePointerCapture(e.pointerId);
       } catch {
         // Ignored
       }
+      isDraggingRef.current = false;
       setIsDragging(false);
       const clamped = calculateSize(e.clientX, e.clientY);
       onSizeChanged?.(clamped);
@@ -220,26 +262,16 @@ export const SplitterHandle = React.forwardRef<HTMLDivElement, SplitterHandlePro
             isActive ? 'bg-primary opacity-100' : 'bg-border opacity-75',
           )}
           style={{
-            ...(edge === 'left' && {
-              left: 0,
+            ...(isVertical && {
+              left: '50%',
+              transform: 'translateX(-50%)',
               top: 0,
               bottom: 0,
               width: `${currentVisualThickness * 0.0625}rem`,
             }),
-            ...(edge === 'right' && {
-              right: 0,
-              top: 0,
-              bottom: 0,
-              width: `${currentVisualThickness * 0.0625}rem`,
-            }),
-            ...(edge === 'top' && {
-              top: 0,
-              left: 0,
-              right: 0,
-              height: `${currentVisualThickness * 0.0625}rem`,
-            }),
-            ...(edge === 'bottom' && {
-              bottom: 0,
+            ...(!isVertical && {
+              top: '50%',
+              transform: 'translateY(-50%)',
               left: 0,
               right: 0,
               height: `${currentVisualThickness * 0.0625}rem`,
