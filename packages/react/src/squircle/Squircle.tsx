@@ -263,6 +263,11 @@ export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
 
     const clipPathStyle = React.useMemo(() => {
       if (!outerPath) return undefined;
+      // In modern browsers supporting CSS basic shape path(), use path() directly to avoid SVG clipPath caching issues
+      // and High-DPI/DPR scaling distortion where clipPathUnits="userSpaceOnUse" miscomputes device coordinates.
+      if (typeof CSS !== 'undefined' && typeof CSS.supports === 'function' && CSS.supports('clip-path', 'path("M0 0Z")')) {
+        return `path('${outerPath}')`;
+      }
       return `url(#${clipId})`;
     }, [outerPath, clipId]);
 
@@ -291,6 +296,7 @@ export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
       >
         <svg
           className="absolute pointer-events-none w-0 h-0 overflow-hidden"
+          viewBox={`0 0 ${currentW} ${currentH}`}
           aria-hidden="true"
         >
           <defs>

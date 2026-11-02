@@ -71,7 +71,7 @@ describe('Squircle mathematical path generator', () => {
     expect(d).toContain('Z');
 
     const rootEl = container.firstElementChild as HTMLElement;
-    expect(rootEl.style.clipPath).toContain(clipId!);
+    expect(rootEl.style.clipPath).toMatch(new RegExp(`(${clipId}|path\\()`));
   });
 
   it('renders border stroke path when borderWidth and borderColor are passed', () => {
