@@ -134,10 +134,10 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       ? forceFocus
         ? invalid
           ? 'border-destructive'
-          : 'border-ring'
+          : 'border-input'
         : invalid
-        ? 'border-destructive focus-within:border-destructive'
-        : 'border-input focus-within:border-ring'
+        ? 'border-destructive'
+        : 'border-input'
       : 'border-transparent';
 
     return (
@@ -145,7 +145,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         data-slot="input-container"
         data-size={size}
         onClick={() => inputRef.current?.focus()}
-        className={`relative flex items-center w-full rounded-md border bg-transparent dark:bg-input/20 shadow-xs transition-[color,background-color,border-color] duration-quick ease-standard text-foreground ${addonContainerSizeStyles[size]} ${borderClass} ${
+        className={`relative flex items-center w-full rounded-md border overflow-hidden bg-transparent dark:bg-input/20 shadow-xs transition-[color,background-color,border-color] duration-quick ease-standard text-foreground ${addonContainerSizeStyles[size]} ${borderClass} ${
           disabled ? 'cursor-not-allowed opacity-50' : 'cursor-text'
         } ${className}`.trim()}
       >
@@ -244,9 +244,9 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {/* Win11 style bottom focus underline */}
         <div
           data-slot="input-focus-underline"
-          className={`absolute -inset-[0.0625rem] rounded-[inherit] border-b-2 pointer-events-none transition-all duration-quick z-10 ${
-            isFocused ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
-          } ${invalid ? 'border-destructive' : 'border-primary'}`}
+          className={`absolute bottom-0 left-0 right-0 h-[0.125rem] pointer-events-none transition-transform duration-quick ease-standard origin-center z-10 ${
+            isFocused ? 'scale-x-100 opacity-100' : 'scale-x-0 opacity-0'
+          } ${invalid ? 'bg-destructive' : 'bg-primary'}`}
         />
       </div>
     );

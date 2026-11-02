@@ -71,9 +71,6 @@ ChaSetSquircle {
         if (root.invalid) {
             return destructiveColor;
         }
-        if (root.isFocused) {
-            return isDark ? Qt.rgba(48.0 / 255.0, 160.0 / 255.0, 255.0 / 255.0, 1.0) : Qt.rgba(29.0 / 255.0, 122.0 / 255.0, 224.0 / 255.0, 1.0)
-        }
         return isDark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 1.0) : Qt.rgba(226.0 / 255.0, 232.0 / 255.0, 240.0 / 255.0, 1.0)
     }
 
@@ -83,46 +80,26 @@ ChaSetSquircle {
     }
 
     // Win11-style bottom theme underline inside input
-    Shape {
+    Item {
         id: bottomFocusUnderline
-        anchors.fill: parent
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        height: ThemeTokens.dp(2)
+        clip: true
         visible: root.isFocused
         z: 2
-        layer.enabled: true
-        layer.samples: 4
 
-        readonly property real r: (root.bordered && root.effectiveRadius > 1) ? (root.effectiveRadius - 0.5) : 0
-        readonly property real h: root.height
-        readonly property real w: root.width
-
-        ShapePath {
-            strokeWidth: ThemeTokens.dp(2)
-            strokeColor: root.invalid ? root.destructiveColor : ThemeTokens.accent
-            fillColor: "transparent"
-            capStyle: ShapePath.FlatCap
-            joinStyle: ShapePath.RoundJoin
-
-            startX: bottomFocusUnderline.r > 0 ? 1.0 : 0
-            startY: bottomFocusUnderline.r > 0 ? (bottomFocusUnderline.h - bottomFocusUnderline.r) : (bottomFocusUnderline.h - 1)
-
-            PathArc {
-                x: bottomFocusUnderline.r > 0 ? bottomFocusUnderline.r : 0
-                y: bottomFocusUnderline.h - 1
-                radiusX: bottomFocusUnderline.r > 0 ? (bottomFocusUnderline.r - 0.5) : 0
-                radiusY: bottomFocusUnderline.r > 0 ? (bottomFocusUnderline.r - 0.5) : 0
-                direction: PathArc.Counterclockwise
-            }
-            PathLine {
-                x: bottomFocusUnderline.r > 0 ? (bottomFocusUnderline.w - bottomFocusUnderline.r) : bottomFocusUnderline.w
-                y: bottomFocusUnderline.h - 1
-            }
-            PathArc {
-                x: bottomFocusUnderline.r > 0 ? (bottomFocusUnderline.w - 1.0) : bottomFocusUnderline.w
-                y: bottomFocusUnderline.r > 0 ? (bottomFocusUnderline.h - bottomFocusUnderline.r) : (bottomFocusUnderline.h - 1)
-                radiusX: bottomFocusUnderline.r > 0 ? (bottomFocusUnderline.r - 0.5) : 0
-                radiusY: bottomFocusUnderline.r > 0 ? (bottomFocusUnderline.r - 0.5) : 0
-                direction: PathArc.Counterclockwise
-            }
+        ChaSetSquircle {
+            anchors.bottom: parent.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: root.width
+            height: root.height
+            radius: root.effectiveRadius
+            cornerSmoothing: root.cornerSmoothing
+            color: "transparent"
+            border.width: ThemeTokens.dp(2)
+            border.color: root.invalid ? root.destructiveColor : ThemeTokens.accent
         }
     }
 
