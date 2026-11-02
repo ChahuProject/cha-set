@@ -17,6 +17,9 @@ export type ResizableApi = z.infer<typeof resizableSchema>;
 export const splitterSchema = resizableSchema;
 export type SplitterApi = ResizableApi;
 
+export const splitterEdgeSchema = z.enum(['left', 'right', 'top', 'bottom']).default('right');
+export type SplitterEdge = z.infer<typeof splitterEdgeSchema>;
+
 export const splitterHandleSchema = resizableSchema;
 export type SplitterHandleApi = ResizableApi;
 
