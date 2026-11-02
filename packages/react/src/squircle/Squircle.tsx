@@ -205,8 +205,8 @@ export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
       h: height ?? 0,
     });
 
-    const currentW = width ?? measuredDimensions.w;
-    const currentH = height ?? measuredDimensions.h;
+    const currentW = measuredDimensions.w > 0 ? measuredDimensions.w : (width ?? 0);
+    const currentH = measuredDimensions.h > 0 ? measuredDimensions.h : (height ?? 0);
 
     const outerPath = React.useMemo(() => {
       if (currentW > 0 && currentH > 0) {
@@ -239,8 +239,8 @@ export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
       const el = containerRef.current;
       if (!el) return;
       const rect = el.getBoundingClientRect();
-      const w = width ?? (rect.width > 0 ? rect.width : el.offsetWidth);
-      const h = height ?? (rect.height > 0 ? rect.height : el.offsetHeight);
+      const w = rect.width > 0 ? rect.width : (width ?? el.offsetWidth);
+      const h = rect.height > 0 ? rect.height : (height ?? el.offsetHeight);
       setMeasuredDimensions((prev) => {
         if (Math.abs(prev.w - w) < 0.01 && Math.abs(prev.h - h) < 0.01) return prev;
         return { w, h };
@@ -277,6 +277,8 @@ export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
       ['--cs-corner-smoothing' as string]: effectiveSmoothing,
       // Fallback border-radius only when SVG path has not resolved yet
       borderRadius: outerPath ? undefined : `${radius * 0.0625}rem`,
+      ...(width !== undefined ? { width: `${width * 0.0625}rem` } : {}),
+      ...(height !== undefined ? { height: `${height * 0.0625}rem` } : {}),
       ...style,
     };
 
@@ -300,8 +302,11 @@ export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
           aria-hidden="true"
         >
           <defs>
-            <clipPath id={clipId} clipPathUnits="userSpaceOnUse">
-              <path d={outerPath} />
+            <clipPath id={clipId} clipPathUnits="objectBoundingBox">
+              <path
+                d={outerPath}
+                transform={currentW > 0 && currentH > 0 ? `scale(${1 / currentW}, ${1 / currentH})` : undefined}
+              />
             </clipPath>
           </defs>
         </svg>

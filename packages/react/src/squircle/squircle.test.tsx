@@ -59,12 +59,13 @@ describe('Squircle mathematical path generator', () => {
     );
     const clipPath = container.querySelector('clipPath');
     expect(clipPath).not.toBeNull();
-    expect(clipPath?.getAttribute('clipPathUnits')).toBe('userSpaceOnUse');
+    expect(clipPath?.getAttribute('clipPathUnits')).toBe('objectBoundingBox');
     const clipId = clipPath?.getAttribute('id');
     expect(clipId).toBeTruthy();
 
     const pathEl = clipPath?.querySelector('path');
     expect(pathEl).not.toBeNull();
+    expect(pathEl?.getAttribute('transform')).toContain('scale(');
     const d = pathEl?.getAttribute('d');
     expect(d).toContain('M 50 0');
     expect(d).toContain('C ');

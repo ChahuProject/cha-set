@@ -112,8 +112,6 @@ export function PremiumCard({ children }: { children: React.ReactNode }) {
               {/* Active Squircle */}
               <div className="flex flex-col items-center gap-2">
                 <Squircle
-                  width={192}
-                  height={128}
                   radius={radius}
                   smoothing={smoothing}
                   borderWidth={2}
