@@ -137,6 +137,18 @@ Popup {
         return 0
     }
 
+    /// 父项原点在宿主窗口坐标系中的 x。
+    /// 刻意与 anchorX/anchorY 解耦（恒定值）。
+    readonly property real parentOriginInHostX: {
+        const win = root.hostWindow
+        if (win && win.contentItem && root.parent && typeof root.parent.mapToItem === "function") {
+            const m = root.parent.mapToItem(win.contentItem, 0, 0)
+            if (m && typeof m.x === "number" && !isNaN(m.x))
+                return m.x
+        }
+        return 0
+    }
+
     /// 锚点在宿主窗口坐标系中的 y
     readonly property real anchorInHost: root.parentOriginInHost + root.anchorY
 
@@ -171,8 +183,11 @@ Popup {
     x: {
         if (root.hostBandWidth <= 0)
             return root.anchorX
-        const maxX = root.hostBandWidth - root.width - root.edgeMargin
-        return Math.max(root.edgeMargin, Math.min(root.anchorX, Math.max(root.edgeMargin, maxX)))
+        // 把窗口坐标系的左右边界换算回父项坐标系
+        const offset = root.parentOriginInHostX
+        const minLeft = root.edgeMargin - offset
+        const maxLeft = root.hostBandWidth - root.width - root.edgeMargin - offset
+        return Math.max(minLeft, Math.min(root.anchorX, Math.max(minLeft, maxLeft)))
     }
     y: {
         const top = root.anchorTop

@@ -119,10 +119,26 @@ Item {
         return "center"
     }
 
-    implicitWidth: root.cardWidth
-    implicitHeight: frame.implicitHeight
+    readonly property real stackContentWidth: root.cardWidth
+    readonly property real stackContentHeight: frame ? frame.implicitHeight : root.implicitHeight
+
+    implicitWidth: root.stackContentWidth
+    implicitHeight: root.stackContentHeight
     width: implicitWidth
     height: implicitHeight
+
+    Binding {
+        target: root
+        property: "width"
+        value: root.stackContentWidth
+        restoreMode: Binding.RestoreBinding
+    }
+    Binding {
+        target: root
+        property: "height"
+        value: root.stackContentHeight
+        restoreMode: Binding.RestoreBinding
+    }
 
     x: root.anchorX()
     y: root.anchorY()
@@ -166,10 +182,10 @@ Item {
         var offsetDp = ThemeTokens.dp(root.offset)
         if (root.alignMode === "left") return offsetDp
         if (root.alignMode === "right") {
-            var rightX = anchorW - offsetDp - root.width
+            var rightX = anchorW - offsetDp - root.stackContentWidth
             return Math.max(offsetDp, rightX)
         }
-        return Math.max(offsetDp, (anchorW - root.width) / 2)
+        return Math.max(offsetDp, (anchorW - root.stackContentWidth) / 2)
     }
 
     function anchorY() {
@@ -178,16 +194,16 @@ Item {
         var offsetDp = ThemeTokens.dp(root.offset)
         if (root.isTop) return offsetDp
         if (root.placement.indexOf("bottom") === 0) {
-            var bottomY = anchorH - offsetDp - root.height
+            var bottomY = anchorH - offsetDp - root.stackContentHeight
             return Math.max(offsetDp, bottomY)
         }
-        return Math.max(offsetDp, (anchorH - root.height) / 2)
+        return Math.max(offsetDp, (anchorH - root.stackContentHeight) / 2)
     }
 
     function alignOffset(childWidth) {
         if (root.alignMode === "left") return 0
-        if (root.alignMode === "right") return root.width - childWidth
-        return (root.width - childWidth) / 2
+        if (root.alignMode === "right") return root.stackContentWidth - childWidth
+        return (root.stackContentWidth - childWidth) / 2
     }
 
     function badgeColorFor(tone) {
@@ -409,7 +425,7 @@ Item {
         id: frame
         x: 0
         y: 0
-        width: root.width
+        width: root.stackContentWidth
 
         readonly property bool pillVisible: !root.collapsed && !root.expanded && root.hiddenCount > 0
         readonly property real pillExtent: pill.visible ? pill.height + root.gap : 0
