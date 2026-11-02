@@ -111,26 +111,7 @@ describe('Resizable Component Group', () => {
     expect(handle).toHaveClass('custom-handle-class');
   });
 
-  it('renders ResizableHandle with withHandle={true} showing the grip icon', () => {
-    render(
-      <ResizablePanelGroup>
-        <ResizablePanel defaultSize={50}>
-          <div>Left</div>
-        </ResizablePanel>
-        <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={50}>
-          <div>Right</div>
-        </ResizablePanel>
-      </ResizablePanelGroup>
-    );
-
-    const handle = screen.getByRole('separator');
-    const grip = handle.querySelector('[data-slot="resizable-handle-grip"]');
-    expect(grip).toBeInTheDocument();
-    expect(handle.querySelector('svg')).toBeInTheDocument();
-  });
-
-  it('renders ResizableHandle without withHandle not rendering grip', () => {
+  it('renders clean ResizableHandle without grip icon', () => {
     render(
       <ResizablePanelGroup>
         <ResizablePanel defaultSize={50}>
@@ -148,26 +129,23 @@ describe('Resizable Component Group', () => {
     expect(grip).toBeNull();
   });
 
-  it('stops event propagation on pointerDown and click on ResizableHandle', () => {
-    const parentClick = vi.fn();
+  it('allows pointerDown and click handlers on ResizableHandle', () => {
     const handlePointerDown = vi.fn();
     const handleClick = vi.fn();
 
     render(
-      <div onClick={parentClick}>
-        <ResizablePanelGroup>
-          <ResizablePanel defaultSize={50}>
-            <div>A</div>
-          </ResizablePanel>
-          <ResizableHandle
-            onPointerDown={handlePointerDown}
-            onClick={handleClick}
-          />
-          <ResizablePanel defaultSize={50}>
-            <div>B</div>
-          </ResizablePanel>
-        </ResizablePanelGroup>
-      </div>
+      <ResizablePanelGroup>
+        <ResizablePanel defaultSize={50}>
+          <div>A</div>
+        </ResizablePanel>
+        <ResizableHandle
+          onPointerDown={handlePointerDown}
+          onClick={handleClick}
+        />
+        <ResizablePanel defaultSize={50}>
+          <div>B</div>
+        </ResizablePanel>
+      </ResizablePanelGroup>
     );
 
     const handle = screen.getByRole('separator');
@@ -176,6 +154,5 @@ describe('Resizable Component Group', () => {
 
     fireEvent.click(handle);
     expect(handleClick).toHaveBeenCalled();
-    expect(parentClick).not.toHaveBeenCalled();
   });
 });

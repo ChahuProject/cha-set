@@ -6,12 +6,14 @@ export type ResizablePanelGroupProps = React.ComponentProps<
   typeof ResizablePrimitive.Group
 > & {
   direction?: 'horizontal' | 'vertical';
+  disableCursor?: boolean;
 };
 
 export function ResizablePanelGroup({
   className,
   direction,
   orientation = direction ?? 'horizontal',
+  disableCursor = true,
   ...props
 }: ResizablePanelGroupProps) {
   const resolvedOrientation = orientation ?? 'horizontal';
@@ -20,6 +22,7 @@ export function ResizablePanelGroup({
       data-slot="resizable-panel-group"
       orientation={resolvedOrientation}
       aria-orientation={resolvedOrientation}
+      disableCursor={disableCursor}
       className={cn(
         'flex h-full w-full aria-[orientation=vertical]:flex-col',
         className,
@@ -75,8 +78,6 @@ export interface ResizableHandleProps
 export function ResizableHandle({
   withHandle,
   className,
-  onPointerDown,
-  onClick,
   ...props
 }: ResizableHandleProps) {
   return (
@@ -84,44 +85,15 @@ export function ResizableHandle({
       {...props}
       data-slot="resizable-handle"
       className={cn(
-        'relative flex w-[0.0625rem] items-center justify-center bg-border after:absolute after:inset-y-0 after:left-1/2 after:w-3 after:-translate-x-1/2 focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:outline-hidden aria-[orientation=horizontal]:h-[0.0625rem] aria-[orientation=horizontal]:w-full aria-[orientation=horizontal]:after:left-0 aria-[orientation=horizontal]:after:h-3 aria-[orientation=horizontal]:after:w-full aria-[orientation=horizontal]:after:translate-x-0 aria-[orientation=horizontal]:after:-translate-y-1/2 [&[aria-orientation=horizontal]>div]:rotate-90 z-20 cursor-col-resize aria-[orientation=horizontal]:cursor-row-resize',
+        'relative flex w-[0.0625rem] items-center justify-center bg-border transition-colors duration-quick ease-standard',
+        'after:absolute after:inset-y-0 after:left-1/2 after:w-3 after:-translate-x-1/2',
+        'focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:outline-hidden',
+        'aria-[orientation=horizontal]:h-[0.0625rem] aria-[orientation=horizontal]:w-full',
+        'aria-[orientation=horizontal]:after:left-0 aria-[orientation=horizontal]:after:h-3 aria-[orientation=horizontal]:after:w-full aria-[orientation=horizontal]:after:translate-x-0 aria-[orientation=horizontal]:after:-translate-y-1/2',
+        'z-20 cursor-col-resize aria-[orientation=horizontal]:cursor-row-resize select-none',
+        'hover:bg-primary/80 data-[separator-hover=true]:bg-primary/80 data-[state=drag]:bg-primary',
         className,
       )}
-      onPointerDown={(e) => {
-        e.stopPropagation();
-        onPointerDown?.(e);
-      }}
-      onClick={(e) => {
-        e.stopPropagation();
-        onClick?.(e);
-      }}
-    >
-      {withHandle && (
-        // theme-adaptive:allow decorative-grip — resize grip, no text content
-        <div
-          data-slot="resizable-handle-grip"
-          className="z-10 flex h-4 w-3 items-center justify-center rounded-xs border border-border bg-background shadow-xs"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="size-2.5 text-muted-foreground"
-            aria-hidden="true"
-          >
-            <circle cx="9" cy="12" r="1" />
-            <circle cx="9" cy="5" r="1" />
-            <circle cx="9" cy="19" r="1" />
-            <circle cx="15" cy="12" r="1" />
-            <circle cx="15" cy="5" r="1" />
-            <circle cx="15" cy="19" r="1" />
-          </svg>
-        </div>
-      )}
-    </ResizablePrimitive.Separator>
+    />
   );
 }

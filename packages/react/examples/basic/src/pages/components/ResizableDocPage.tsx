@@ -11,7 +11,6 @@ export function ResizableDocPage() {
   const [playgroundDirection, setPlaygroundDirection] = useState<
     'horizontal' | 'vertical'
   >('horizontal');
-  const [playgroundWithHandle, setPlaygroundWithHandle] = useState(true);
 
   // Dynamic real-time panel sizes
   const [horizLeft, setHorizLeft] = useState(35);
@@ -25,7 +24,7 @@ export function ResizableDocPage() {
       <span className="font-semibold text-sm">Navigation Sidebar</span>
     </div>
   </ResizablePanel>
-  <ResizableHandle withHandle />
+  <ResizableHandle />
   <ResizablePanel defaultSize={65} minSize={5} maxSize={95}>
     <div className="flex h-full items-center justify-center p-6">
       <span className="font-semibold text-sm">Editor Workspace</span>
@@ -37,7 +36,6 @@ export function ResizableDocPage() {
   width: 520
   height: 220
   orientation: Qt.Horizontal
-  withHandle: true
 
   Rectangle {
     SplitView.preferredWidth: 180
@@ -56,7 +54,7 @@ export function ResizableDocPage() {
       File Tree
     </div>
   </ResizablePanel>
-  <ResizableHandle withHandle />
+  <ResizableHandle />
   <ResizablePanel defaultSize={72} minSize={5} maxSize={95}>
     <ResizablePanelGroup direction="vertical">
       <ResizablePanel defaultSize={65} minSize={5} maxSize={95}>
@@ -64,7 +62,7 @@ export function ResizableDocPage() {
           main.rs (Code Editor)
         </div>
       </ResizablePanel>
-      <ResizableHandle withHandle />
+      <ResizableHandle />
       <ResizablePanel defaultSize={35} minSize={5} maxSize={95}>
         <div className="flex h-full items-center justify-center p-4 bg-muted/30 text-xs font-mono">
           Terminal Console / Output
@@ -78,7 +76,6 @@ export function ResizableDocPage() {
   width: 520
   height: 240
   orientation: Qt.Horizontal
-  withHandle: true
 
   Rectangle {
     SplitView.preferredWidth: 140
@@ -87,7 +84,6 @@ export function ResizableDocPage() {
   ChaSetResizable {
     SplitView.fillWidth: true
     orientation: Qt.Vertical
-    withHandle: true
 
     Rectangle {
       SplitView.preferredHeight: 140
@@ -106,7 +102,7 @@ export function ResizableDocPage() {
       Panel Alpha
     </div>
   </ResizablePanel>
-  <ResizableHandle withHandle={${playgroundWithHandle}} />
+  <ResizableHandle />
   <ResizablePanel defaultSize={60} minSize={5} maxSize={95}>
     <div className="flex h-full items-center justify-center p-4 text-sm">
       Panel Beta
@@ -118,7 +114,6 @@ export function ResizableDocPage() {
   width: parent.width
   height: 220
   orientation: ${playgroundDirection === 'horizontal' ? 'Qt.Horizontal' : 'Qt.Vertical'}
-  withHandle: ${playgroundWithHandle}
 
   Rectangle {
     SplitView.preferredWidth: 150
@@ -170,7 +165,7 @@ export function ResizableDocPage() {
                   <Badge variant="outline">{t('surfaces.resizable.percentWidth', { width: horizLeft })}</Badge>
                 </div>
               </ResizablePanel>
-              <ResizableHandle withHandle />
+              <ResizableHandle />
               <ResizablePanel defaultSize={65} minSize={5} maxSize={95}>
                 <div className="flex h-full flex-col justify-center items-center p-6 text-xs text-muted-foreground">
                   <span className="font-semibold text-foreground mb-1.5 text-sm">{t('surfaces.resizable.sourceCodeEditor')}</span>
@@ -189,7 +184,7 @@ export function ResizableDocPage() {
 
 <ResizablePanelGroup direction="horizontal">
   <ResizablePanel defaultSize={30}>Sidebar</ResizablePanel>
-  <ResizableHandle withHandle />
+  <ResizableHandle />
   <ResizablePanel defaultSize={70}>Content</ResizablePanel>
 </ResizablePanelGroup>`}
         qtCode={`import ChaSet
@@ -235,7 +230,7 @@ ChaSetResizable {
                   <Badge variant="outline">{t('surfaces.resizable.percentWidth', { width: nestedSidebar })}</Badge>
                 </div>
               </ResizablePanel>
-              <ResizableHandle withHandle />
+              <ResizableHandle />
               <ResizablePanel defaultSize={72} minSize={5} maxSize={95}>
                 <ResizablePanelGroup direction="vertical">
                   <ResizablePanel
@@ -252,7 +247,7 @@ ChaSetResizable {
                       <Badge variant="secondary">{t('surfaces.resizable.percentHeight', { height: nestedEditor })}</Badge>
                     </div>
                   </ResizablePanel>
-                  <ResizableHandle withHandle />
+                  <ResizableHandle />
                   <ResizablePanel defaultSize={35} minSize={5} maxSize={95}>
                     <div className="flex h-full flex-col justify-center items-center p-4 text-xs text-muted-foreground bg-muted/30">
                       <span className="font-semibold text-foreground mb-1.5">{t('surfaces.resizable.integratedTerminal')}</span>
@@ -272,7 +267,7 @@ ChaSetResizable {
           {t('desktopComposite.resizable.playgroundTitle', 'Interactive Playground')}
         </DocText>
         <DocText role="p" className="mb-4">
-          {t('desktopComposite.resizable.playgroundDesc', 'Toggle between horizontal and vertical orientations and test visual grip handle styles dynamically.')}
+          {t('desktopComposite.resizable.playgroundDesc', 'Toggle between horizontal and vertical orientations and test layout splitters dynamically.')}
         </DocText>
 
         <ComponentPreview
@@ -292,16 +287,6 @@ ChaSetResizable {
                     { label: t('surfaces.resizable.vertical'), value: 'vertical' },
                   ]}
                 />
-              </div>
-
-              <div className="flex items-center gap-2 ml-auto">
-                <Button
-                  size="sm"
-                  variant={playgroundWithHandle ? 'default' : 'outline'}
-                  onClick={() => setPlaygroundWithHandle((v) => !v)}
-                >
-                  {playgroundWithHandle ? t('surfaces.resizable.handleVisible') : t('surfaces.resizable.handleHidden')}
-                </Button>
               </div>
             </div>
           }
@@ -328,7 +313,7 @@ ChaSetResizable {
                   </Badge>
                 </div>
               </ResizablePanel>
-              <ResizableHandle withHandle={playgroundWithHandle} />
+              <ResizableHandle />
               <ResizablePanel defaultSize={60} minSize={5} maxSize={95}>
                 <div className="flex h-full flex-col justify-center items-center p-4 text-xs text-muted-foreground">
                   <span className="font-semibold text-foreground mb-1.5">{t('surfaces.resizable.panelBeta')}</span>
