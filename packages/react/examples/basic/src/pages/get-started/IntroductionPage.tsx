@@ -120,7 +120,7 @@ import '@chahu/cha-set/styles.css';
 
 export function MyView() {
   return (
-    <ScrollArea className="h-80 w-full border rounded-md">
+    <ScrollArea className="h-80 w-full border border-border rounded-md">
       <div className="p-4 space-y-3">
         <Button variant="default">${t('getStarted.intro.quickstart.buttonText', 'Launch Workspace')}</Button>
       </div>

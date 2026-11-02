@@ -16,11 +16,11 @@ export function SmoothWheelHandlerDocPage() {
   scrollOrientation="vertical"
   speedMultiplier={${speed}}
   duration={${duration}}
-  className="h-64 border rounded-lg p-4 bg-muted/20"
+  className="h-64 border border-border rounded-lg p-4 bg-muted/20"
 >
   <div className="space-y-3">
     {Array.from({ length: 25 }, (_, i) => (
-      <div key={i} className="p-3 bg-card border rounded shadow-xs">
+      <div key={i} className="p-3 bg-card border border-border rounded shadow-xs">
         Item #{i + 1} with smooth kinematic momentum
       </div>
     ))}

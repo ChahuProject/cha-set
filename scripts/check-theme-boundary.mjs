@@ -209,7 +209,10 @@ export function selfTest() {
 }
 
 // --- CLI -------------------------------------------------------------------
-const isMain = process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url));
+const isMain = process.argv[1] && (
+  resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url)) ||
+  process.argv[1].replace(/\\/g, '/').endsWith('check-theme-boundary.mjs')
+);
 if (isMain) {
   if (process.argv.includes('--self-test')) {
     const { ok, live } = selfTest();

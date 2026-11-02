@@ -13,7 +13,7 @@ export function CollapsibleDocPage() {
   const [variant, setVariant] = useState<CollapsibleVariant>('default');
 
   const heroReactCode = `<Collapsible open={${open}} onOpenChange={setOpen} variant="${variant}"${disabled ? ' disabled' : ''}>
-  <div className="flex items-center justify-between space-x-4 px-4 py-2 border rounded-md">
+  <div className="flex items-center justify-between space-x-4 px-4 py-2 border border-border rounded-md">
     <h4 className="text-sm font-semibold">@peduarte starred 3 repositories</h4>
     <CollapsibleTrigger asChild>
       <Button variant="ghost" size="sm" className="w-9 p-0"${disabled ? ' disabled' : ''}>
@@ -21,14 +21,14 @@ export function CollapsibleDocPage() {
       </Button>
     </CollapsibleTrigger>
   </div>
-  <div className="rounded-md border px-4 py-2 font-mono text-sm shadow-sm mt-2">
+  <div className="rounded-md border border-border px-4 py-2 font-mono text-sm shadow-sm mt-2">
     @radix-ui/primitives
   </div>
   <CollapsibleContent className="space-y-2 mt-2">
-    <div className="rounded-md border px-4 py-2 font-mono text-sm shadow-sm">
+    <div className="rounded-md border border-border px-4 py-2 font-mono text-sm shadow-sm">
       @radix-ui/colors
     </div>
-    <div className="rounded-md border px-4 py-2 font-mono text-sm shadow-sm">
+    <div className="rounded-md border border-border px-4 py-2 font-mono text-sm shadow-sm">
       @stitches/react
     </div>
   </CollapsibleContent>
@@ -208,7 +208,7 @@ ChaSetCollapsible {
         <Card className="p-6">
           <CardContent className="space-y-4 p-0 max-w-sm">
             <Collapsible defaultOpen>
-              <div className="flex items-center justify-between border px-4 py-2 rounded-md bg-card">
+              <div className="flex items-center justify-between border border-border px-4 py-2 rounded-md bg-card">
                 <span className="text-sm font-medium">{t('desktopComposite.collapsible.advancedSettings', 'Advanced Project Settings')}</span>
                 <CollapsibleTrigger asChild>
                   <Button variant="ghost" size="sm" className="w-8 h-8 p-0">
@@ -217,10 +217,10 @@ ChaSetCollapsible {
                 </CollapsibleTrigger>
               </div>
               <CollapsibleContent className="space-y-2 mt-2">
-                <div className="border rounded-md p-3 text-xs text-muted-foreground">
+                <div className="border border-border rounded-md p-3 text-xs text-muted-foreground">
                   {t('desktopComposite.collapsible.buildFlags', 'Build flags: --release --target=x86_64-pc-windows-msvc')}
                 </div>
-                <div className="border rounded-md p-3 text-xs text-muted-foreground">
+                <div className="border border-border rounded-md p-3 text-xs text-muted-foreground">
                   {t('desktopComposite.collapsible.renderPipeline', 'Render pipeline: Vulkan 1.3 / D3D12 Ultimate')}
                 </div>
               </CollapsibleContent>
@@ -240,7 +240,7 @@ ChaSetCollapsible {
         <Card className="p-6">
           <CardContent className="space-y-4 p-0 max-w-sm">
             <Collapsible disabled>
-              <div className="flex items-center justify-between border px-4 py-2 rounded-md opacity-50 bg-card">
+              <div className="flex items-center justify-between border border-border px-4 py-2 rounded-md opacity-50 bg-card">
                 <span className="text-sm font-medium">{t('desktopComposite.collapsible.lockedSettings', 'Locked Premium Settings')}</span>
                 <CollapsibleTrigger asChild>
                   <Button variant="ghost" size="sm" className="w-8 h-8 p-0" disabled>

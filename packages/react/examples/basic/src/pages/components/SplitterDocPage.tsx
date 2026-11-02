@@ -11,7 +11,7 @@ export function SplitterDocPage() {
   const [size, setSize] = useState(35);
   const [verticalSize, setVerticalSize] = useState(65);
 
-  const horizontalReactCode = `<div className="flex h-48 border rounded-md">
+  const horizontalReactCode = `<div className="flex h-48 border border-border rounded-md">
   <div style={{ width: \`\${size}%\` }} className="p-4 text-xs">
     Left Pane (Sidebar)
   </div>
@@ -32,7 +32,7 @@ export function SplitterDocPage() {
     rightItem: Component { ... }
 }`;
 
-  const verticalReactCode = `<div className="flex flex-col h-64 border rounded-md">
+  const verticalReactCode = `<div className="flex flex-col h-64 border border-border rounded-md">
   <div style={{ height: \`\${verticalSize}%\` }} className="p-4 text-xs">
     Top Pane (Editor Canvas)
   </div>

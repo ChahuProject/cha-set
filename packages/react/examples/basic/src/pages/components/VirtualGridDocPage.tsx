@@ -29,9 +29,9 @@ gridRef.current?.scrollToIndex(20, 'center');
   minColumnWidthRem={10}
   gapRem={0.75}
   estimateSize={96}
-  className="h-72 border rounded-md bg-card overflow-auto p-2"
+  className="h-72 border border-border rounded-md bg-card overflow-auto p-2"
   renderCard={(item) => (
-    <div className="p-3 border rounded-lg bg-muted/20 flex flex-col gap-1">
+    <div className="p-3 border border-border rounded-lg bg-muted/20 flex flex-col gap-1">
       <div className="flex justify-between items-center">
         <span className="font-mono text-xs font-semibold">{item.title}</span>
         <Badge size="sm" variant="outline">{item.status}</Badge>

@@ -105,7 +105,7 @@ export function ScaleOsdDocPage() {
           }
         >
           <div className="w-full max-w-md mx-auto py-12 flex flex-col items-center justify-center relative min-h-[16rem]">
-            <Card className="w-full p-8 bg-card border flex flex-col items-center justify-center gap-4 relative overflow-hidden min-h-[16rem]">
+            <Card className="w-full p-8 bg-card border border-border flex flex-col items-center justify-center gap-4 relative overflow-hidden min-h-[16rem]">
               <div className="flex flex-col items-center gap-2 mb-2">
                 <Badge
                   variant={delayedCommit && Math.abs(pendingScale - scale) > 0.001 ? "secondary" : "outline"}

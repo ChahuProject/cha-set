@@ -27,7 +27,7 @@ listRef.current?.scrollToIndex(500, 'center');
   ref={listRef}
   items={items}
   estimateSize={36}
-  className="h-64 border rounded-md"
+  className="h-64 border border-border rounded-md"
   renderItem={(item, index) => (
     <div className="flex items-center justify-between px-3 h-9 border-b border-border/50 text-xs">
       <span>{item.title}</span>

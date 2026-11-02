@@ -90,7 +90,7 @@ export function ContextMenuDocPage() {
         reactCode={`import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem } from '@chahu/cha-set';
 
 <ContextMenu>
-  <ContextMenuTrigger className="p-8 border rounded">
+  <ContextMenuTrigger className="p-8 border border-border rounded">
     Right click here
   </ContextMenuTrigger>
   <ContextMenuContent>

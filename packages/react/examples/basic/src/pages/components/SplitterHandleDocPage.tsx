@@ -11,7 +11,7 @@ export function SplitterHandleDocPage() {
   const [sidebarWidth, setSidebarWidth] = useState(240);
   const [bottomHeight, setBottomHeight] = useState(120);
 
-  const heroReactCode = `<div className="flex h-64 border rounded overflow-hidden">
+  const heroReactCode = `<div className="flex h-64 border border-border rounded overflow-hidden">
   <div style={{ width: \`\${sidebarWidth * 0.0625}rem\` }} className="relative bg-muted/30 p-4">
     Sidebar Content (\${sidebarWidth})
     <SplitterHandle
@@ -91,7 +91,7 @@ export function SplitterHandleDocPage() {
           }
         >
           <div className="w-full max-w-xl mx-auto py-4">
-            <Card className="flex h-64 border rounded-md overflow-hidden bg-card">
+            <Card className="flex h-64 border border-border rounded-md overflow-hidden bg-card">
               <div
                 style={{ width: `${sidebarWidth * 0.0625}rem` }}
                 className="relative bg-muted/40 p-4 flex flex-col justify-center items-center text-sm font-medium shrink-0"

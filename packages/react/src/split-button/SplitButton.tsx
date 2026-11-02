@@ -116,6 +116,7 @@ export function SplitButton({
           <Button
             size={chevronSize}
             variant={variant}
+            // theme-adaptive:allow dynamic-border-class — separatorColorMap supplies paired border color
             className={cn('rounded-r-lg rounded-l-none border-l px-1.5', separatorColor)}
             style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
             disabled={disabled}

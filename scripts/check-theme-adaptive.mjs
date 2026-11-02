@@ -20,7 +20,7 @@ import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { resolve, dirname, join, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-export const RULES_VERSION = 2;
+export const RULES_VERSION = 3;
 
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -49,7 +49,7 @@ const RE_R1_BG_OPACITY = tok('bg-(white|black)\\/\\d+');
 const RE_R2_BG_BRACKET = /bg-\[#[0-9a-fA-F]{3,8}[^\]]*\]/;
 const RE_R2_RGBA_WHITE = /rgba\(\s*255\s*,\s*255\s*,\s*255/;
 const RE_R2_RGBA_GRAY = /rgba\(\s*203\s*,\s*213\s*,\s*225/;
-const RE_BARE_BORDER = tok('border');
+const RE_BARE_BORDER = tok('border(?:-[trblxy])?');
 // Paired border colour = any border colour token (not a width/radius utility).
 const RE_BORDER_PAIRED = /border-(border|transparent|current|input|ring|primary|secondary|accent|muted|destructive|sidebar|background|card|popover|foreground|warning|success|info|danger)/;
 const RE_R4_BG = tok('bg-(background|card|popover|sidebar)');
@@ -130,8 +130,8 @@ function listFiles(root, componentFilter) {
     const ext = extname(rel).toLowerCase();
     if (BINARY_EXTENSIONS.has(ext)) continue;
     if (SKIP_FILE_SUBSTR.some((s) => rel.includes(s))) continue;
-    const isReact = rel.startsWith('packages/react/src/') && (rel.endsWith('.tsx') || rel.endsWith('.ts') || rel.endsWith('.css'));
-    const isQml = rel.startsWith('qt/src/') && rel.endsWith('.qml');
+    const isReact = (rel.startsWith('packages/react/src/') || rel.startsWith('packages/react/examples/basic/src/')) && (rel.endsWith('.tsx') || rel.endsWith('.ts') || rel.endsWith('.css'));
+    const isQml = (rel.startsWith('qt/src/') || rel.startsWith('qt/')) && rel.endsWith('.qml');
     if (!isReact && !isQml) continue;
     if (componentFilter && !rel.toLowerCase().includes(componentFilter.toLowerCase())) continue;
     out.push(rel);
@@ -139,8 +139,8 @@ function listFiles(root, componentFilter) {
   return out;
 }
 
-// Extract cn()/cva()/clsx() arg blocks with paren-depth scan (single pass).
-function extractCnBlocks(content) {
+// Extract cn()/cva()/clsx() arg blocks and JSX className attributes (single pass).
+function extractClassBlocks(content) {
   const blocks = [];
   let m;
   RE_CN_CALL.lastIndex = 0;
@@ -160,6 +160,15 @@ function extractCnBlocks(content) {
     blocks.push({ text: content.slice(startIdx, endIdx), startLine });
     if (i >= content.length) break;
   }
+
+  // Also extract JSX className attributes (className="..." or className='...' or className={`...`})
+  const reClassName = /\bclassName\s*=\s*(?:\{`([^`]*)`\}|"([^"]*)"|'([^']*)')/g;
+  while ((m = reClassName.exec(content)) !== null) {
+    const text = m[1] ?? m[2] ?? m[3] ?? '';
+    const startLine = content.slice(0, m.index).split('\n').length;
+    blocks.push({ text, startLine });
+  }
+
   return blocks;
 }
 
@@ -170,12 +179,15 @@ function checkReactFile(rel, lines, blocks, nextLinesAreText, errors, warnings) 
   if (isTestFile(rel)) return;
   const isColorPicker = lower.includes('color-picker') || lower.includes('colorpicker');
   const isSvgIconFile = lower.endsWith('icons.tsx') || lower.includes('/lib/icons');
+  const isExample = rel.startsWith('packages/react/examples/');
 
-  // R3: bare border only fails inside cn/cva blocks lacking paired border color.
+  // R3: bare border or bare directional border fails inside cn/cva blocks or JSX className attributes lacking paired border color.
   for (const b of blocks) {
     if (RE_ALLOW_ESCAPE.test(b.text) || allowAt(lines, b.startLine - 2)) continue;
     if (RE_BARE_BORDER.test(b.text) && !RE_BORDER_PAIRED.test(b.text)) {
-      errors.push(`[R3 bare-border ${rel}:L${b.startLine}] bare "border" in cn()/cva() block without border-border/transparent/primary/current/input pairing (dark-mode currentColor fallback)`);
+      // allow dynamic border variable interpolation like ${borderClass} or ${variantBorderClass}
+      if (/\$\{[^}]*border[^}]*\}/i.test(b.text) || /\$\{[^}]*variant[^}]*\}/i.test(b.text) || /\$\{[^}]*separator[^}]*\}/i.test(b.text)) continue;
+      errors.push(`[R3 bare-border ${rel}:L${b.startLine}] bare "border" or "border-[trblxy]" without border-border/transparent/primary/current/input/sidebar pairing (dark-mode currentColor fallback)`);
     }
   }
 
@@ -233,7 +245,11 @@ function checkReactFile(rel, lines, blocks, nextLinesAreText, errors, warnings) 
         for (const b of blocks) {
           if (b.text.includes(line.trim().slice(0, 40)) && RE_TEXT_ANY.test(b.text)) { paired = true; break; }
         }
-        if (!paired) errors.push(`[R4 bg-without-text ${rel}:L${idx + 1}] surface without text pairing "${line.trim().slice(0, 120)}" — add text-foreground (same block or next 3 lines)`);
+        if (!paired) {
+          const msg = `[R4 bg-without-text ${rel}:L${idx + 1}] surface without text pairing "${line.trim().slice(0, 120)}" — add text-foreground (same block or next 3 lines)`;
+          if (isExample) warnings.push(msg);
+          else errors.push(msg);
+        }
       }
     }
     // R5: hardcoded text colors
@@ -363,7 +379,7 @@ export function verifyThemeAdaptive({ quiet = false, rootOverride = null } = {})
     if (rel.endsWith('.qml')) {
       checkQmlFile(rel, content, lines, errors, warnings);
     } else {
-      const blocks = extractCnBlocks(content);
+      const blocks = extractClassBlocks(content);
       checkReactFile(rel, lines, blocks, null, errors, warnings);
     }
   }
@@ -387,7 +403,7 @@ function runRuleOnReactSnippet(snippetLines, rel = 'packages/react/src/test/Snip
   const errors = [];
   const warnings = [];
   const content = snippetLines.join('\n');
-  checkReactFile(rel, snippetLines, extractCnBlocks(content), null, errors, warnings);
+  checkReactFile(rel, snippetLines, extractClassBlocks(content), null, errors, warnings);
   return { errors, warnings };
 }
 
@@ -476,6 +492,18 @@ export function selfTest() {
   const q4Zero = runRuleOnQmlSnippet(['Rectangle {', '  color: Qt.rgba(1, 1, 1, 0)', '}']);
   push('v2: Q4 allows α=0 transparent stop', !q4Zero.errors.some((e) => e.startsWith('[Q4')));
 
+  // --- v3 bare-border & directional-border in JSX className -----------------
+  r = runRuleOnReactSnippet(['<div className="border rounded-md">hello</div>']);
+  push('v3: bare border in className is caught by R3', r.errors.some((e) => e.startsWith('[R3')));
+  r = runRuleOnReactSnippet(['<Sidebar className="border-r">hello</Sidebar>']);
+  push('v3: bare border-r in className is caught by R3', r.errors.some((e) => e.startsWith('[R3')));
+  r = runRuleOnReactSnippet(['const c = cn("border-t p-2");']);
+  push('v3: bare border-t in cn() is caught by R3', r.errors.some((e) => e.startsWith('[R3')));
+  r = runRuleOnReactSnippet(['<div className="border border-border rounded-md">hello</div>']);
+  push('v3: paired border border-border in className passes', !r.errors.some((e) => e.startsWith('[R3')));
+  r = runRuleOnReactSnippet(['<Sidebar className="border-r border-sidebar-border/50">hello</Sidebar>']);
+  push('v3: paired border-r border-sidebar-border in className passes', !r.errors.some((e) => e.startsWith('[R3')));
+
   const ok = results.every(([, p]) => p);
   if (ok) console.log('[theme-adaptive] self-test PASS — all synthetic violations caught, clean fixtures pass');
   else console.log('[theme-adaptive] self-test FAIL — a rule no longer fires');
@@ -483,7 +511,10 @@ export function selfTest() {
 }
 
 // --- CLI -------------------------------------------------------------------
-const isMain = process.argv[1] && fileURLToPath(import.meta.url).toLowerCase() === resolve(process.argv[1]).toLowerCase();
+const isMain = process.argv[1] && (
+  fileURLToPath(import.meta.url).toLowerCase() === resolve(process.argv[1]).toLowerCase() ||
+  process.argv[1].replace(/\\/g, '/').endsWith('check-theme-adaptive.mjs')
+);
 if (isMain) {
   if (process.argv.includes('--self-test')) {
     const { ok } = selfTest();

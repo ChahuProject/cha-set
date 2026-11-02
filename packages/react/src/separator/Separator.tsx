@@ -43,7 +43,7 @@ export const Separator = React.forwardRef<HTMLDivElement, SeparatorProps>(
         'border-border shrink transition-colors',
         variant === 'solid'
           ? 'h-[1px] bg-border'
-          : cn('border-t bg-transparent', variantBorderClass),
+          : cn('border-t border-border bg-transparent', variantBorderClass),
       );
 
       return (
