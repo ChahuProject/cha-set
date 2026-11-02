@@ -484,7 +484,7 @@ DocLayout {
                                             width: 6
                                             height: 6
                                             radius: 3
-                                            color: ThemeTokens.success
+                                            color: Qt.rgba(16/255, 185/255, 129/255, 1.0)
                                             anchors.verticalCenter: parent.verticalCenter
                                         }
                                         DocText {
@@ -633,15 +633,17 @@ DocLayout {
                                                 font.pixelSize: Typography.sizeCaption
                                             }
 
-                                            Row {
+                                            Item {
                                                 width: parent.width
+                                                height: ThemeTokens.dp(24)
                                                 DocText {
+                                                    anchors.left: parent.left
+                                                    anchors.verticalCenter: parent.verticalCenter
                                                     text: "12"
                                                     color: ThemeTokens.text
                                                     font.pixelSize: Typography.sizeHeading
                                                     font.weight: Typography.weightBold
                                                 }
-                                                Item { width: 1; height: 1 }
                                                 ChaSetBadge {
                                                     anchors.right: parent.right
                                                     anchors.verticalCenter: parent.verticalCenter
@@ -671,9 +673,12 @@ DocLayout {
                                                 font.pixelSize: Typography.sizeCaption
                                             }
 
-                                            Row {
+                                            Item {
                                                 width: parent.width
+                                                height: ThemeTokens.dp(24)
                                                 DocText {
+                                                    anchors.left: parent.left
+                                                    anchors.verticalCenter: parent.verticalCenter
                                                     text: "1.2s"
                                                     color: ThemeTokens.text
                                                     font.pixelSize: Typography.sizeHeading
@@ -708,9 +713,12 @@ DocLayout {
                                                 font.pixelSize: Typography.sizeCaption
                                             }
 
-                                            Row {
+                                            Item {
                                                 width: parent.width
+                                                height: ThemeTokens.dp(24)
                                                 DocText {
+                                                    anchors.left: parent.left
+                                                    anchors.verticalCenter: parent.verticalCenter
                                                     text: "42 MB"
                                                     color: ThemeTokens.text
                                                     font.pixelSize: Typography.sizeHeading
@@ -1017,7 +1025,7 @@ DocLayout {
 
                                     Row {
                                         spacing: 6
-                                        ChaSetIcon { name: "check"; size: 14; color: ThemeTokens.success }
+                                        ChaSetIcon { name: "check"; size: 14; color: Qt.rgba(16/255, 185/255, 129/255, 1.0) }
                                         DocText {
                                             text: ChaSetI18n.tr("surfaces.sidebar.diagThemeGate")
                                             color: ThemeTokens.subduedText
@@ -1028,7 +1036,7 @@ DocLayout {
 
                                     Row {
                                         spacing: 6
-                                        ChaSetIcon { name: "check"; size: 14; color: ThemeTokens.success }
+                                        ChaSetIcon { name: "check"; size: 14; color: Qt.rgba(16/255, 185/255, 129/255, 1.0) }
                                         DocText {
                                             text: ChaSetI18n.tr("surfaces.sidebar.diagZeroPx")
                                             color: ThemeTokens.subduedText

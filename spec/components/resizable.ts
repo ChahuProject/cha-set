@@ -19,3 +19,5 @@ export type SplitterApi = ResizableApi;
 
 export const splitterHandleSchema = resizableSchema;
 export type SplitterHandleApi = ResizableApi;
+
+export type SplitterEdge = 'left' | 'right' | 'top' | 'bottom';

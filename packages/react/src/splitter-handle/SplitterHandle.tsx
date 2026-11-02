@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { cn } from '../lib/utils';
-import type { SplitterEdge } from '@chahu/spec/splitter-handle';
+import type { SplitterEdge } from '@chahu/spec/resizable';
 
 export interface SplitterHandleProps extends React.HTMLAttributes<HTMLDivElement> {
   edge?: SplitterEdge;
