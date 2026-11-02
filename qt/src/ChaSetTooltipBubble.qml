@@ -51,8 +51,10 @@ Item {
     readonly property real scaledPadY: (typeof ThemeTokens !== "undefined" && ThemeTokens)
             ? ThemeTokens.dp(8) : Math.round(8 * uiScaleFactor)
 
-    readonly property real maxTextW: (typeof ThemeTokens !== "undefined" && ThemeTokens)
-            ? ThemeTokens.dp(360) : Math.round(360 * uiScaleFactor)
+    readonly property real maxContentW: (typeof ThemeTokens !== "undefined" && ThemeTokens)
+            ? ThemeTokens.dp(380) : Math.round(380 * uiScaleFactor)
+    readonly property real maxTextW: maxContentW
+    readonly property real maxDescW: maxContentW
 
     // Natural single-line text & description measurement off-layout (synchronous, binding-loop free)
     TextMetrics {
@@ -118,28 +120,25 @@ Item {
 
     readonly property real naturalDescW: {
         if (root.description === "") return 0
-        var maxD = (typeof ThemeTokens !== "undefined" && ThemeTokens)
-                ? ThemeTokens.dp(280) : Math.round(280 * root.uiScaleFactor)
-        if (descText.shouldWrap) {
-            return maxD
+        var maxD = root.maxDescW
+        if (!descText.shouldWrap && root.description.indexOf("\n") === -1) {
+            var w = descMetrics.width
+            if (descText.implicitWidth > w) w = descText.implicitWidth
+            return Math.min(w, maxD)
         }
-        var w = descMetrics.width
+        if (descText.paintedWidth > 0) {
+            return Math.min(Math.ceil(descText.paintedWidth), maxD)
+        }
         if (root.description.indexOf("\n") !== -1 && descText.implicitWidth > 0) {
-            w = descText.implicitWidth
-        } else if (descText.implicitWidth > w) {
-            w = descText.implicitWidth
+            return Math.min(descText.implicitWidth, maxD)
         }
-        return Math.min(w, maxD)
+        return Math.min(descMetrics.width, maxD)
     }
 
     readonly property real contentW: {
         var dw = naturalDescW
-        if (descText.visible) {
-            if (descText.shouldWrap) {
-                dw = Math.max(dw, descText.width)
-            } else {
-                dw = Math.max(dw, descText.width, descText.implicitWidth)
-            }
+        if (descText.visible && !descText.shouldWrap) {
+            dw = Math.max(dw, descText.implicitWidth)
         }
         return Math.max(naturalRowW, dw)
     }
@@ -356,11 +355,12 @@ Item {
                         ? Typography.familySans : "Microsoft YaHei UI"
                 font.pixelSize: (typeof Typography !== "undefined" && Typography)
                         ? Typography.sizeCaption : Math.round(11 * root.uiScaleFactor)
-                readonly property real maxDescW: (typeof ThemeTokens !== "undefined" && ThemeTokens)
-                        ? ThemeTokens.dp(280) : Math.round(280 * root.uiScaleFactor)
+                readonly property real maxDescW: root.maxDescW
                 readonly property bool shouldWrap: (descMetrics.width > maxDescW)
                 wrapMode: shouldWrap ? Text.Wrap : Text.NoWrap
-                width: shouldWrap ? maxDescW : undefined
+                width: shouldWrap
+                        ? (mainContent.width > 0 ? Math.min(mainContent.width, maxDescW) : maxDescW)
+                        : undefined
                 horizontalAlignment: Text.AlignLeft
             }
         }
