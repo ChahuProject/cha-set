@@ -218,7 +218,7 @@ DocLayout {
                             { label: ChaSetI18n.tr("formsA.slider.modeRange", "Range"), value: "range" },
                             { label: ChaSetI18n.tr("formsA.slider.modeSnap", "Snap"), value: "snap" }
                         ]
-                        onSelectionChanged: (val) => root.demoMode = val
+                        onValueSelected: (val) => root.demoMode = val
                     }
                 }
 
@@ -239,7 +239,7 @@ DocLayout {
                             { label: ChaSetI18n.tr("formsA.slider.sizeDefault", "Default"), value: "default" },
                             { label: ChaSetI18n.tr("formsA.slider.sizeSm", "Small (sm)"), value: "sm" }
                         ]
-                        onSelectionChanged: (val) => root.demoSize = val
+                        onValueSelected: (val) => root.demoSize = val
                     }
                 }
 
@@ -260,7 +260,7 @@ DocLayout {
                             { label: ChaSetI18n.tr("formsA.slider.horizontal", "Horizontal"), value: "horizontal" },
                             { label: ChaSetI18n.tr("formsA.slider.vertical", "Vertical"), value: "vertical" }
                         ]
-                        onSelectionChanged: (val) => root.demoOrientation = val
+                        onValueSelected: (val) => root.demoOrientation = val
                     }
                 }
 
@@ -283,7 +283,7 @@ DocLayout {
                             { label: "10", value: "10" },
                             { label: "25", value: "25" }
                         ]
-                        onSelectionChanged: (val) => root.demoStep = parseFloat(val)
+                        onValueSelected: (val) => root.demoStep = parseFloat(val)
                     }
                 }
             },
