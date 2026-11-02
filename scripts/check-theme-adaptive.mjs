@@ -20,7 +20,7 @@ import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { resolve, dirname, join, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-export const RULES_VERSION = 3;
+export const RULES_VERSION = 4;
 
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -51,7 +51,10 @@ const RE_R2_RGBA_WHITE = /rgba\(\s*255\s*,\s*255\s*,\s*255/;
 const RE_R2_RGBA_GRAY = /rgba\(\s*203\s*,\s*213\s*,\s*225/;
 const RE_BARE_BORDER = tok('border(?:-[trblxy])?');
 // Paired border colour = any border colour token (not a width/radius utility).
-const RE_BORDER_PAIRED = /border-(border|transparent|current|input|ring|primary|secondary|accent|muted|destructive|sidebar|background|card|popover|foreground|warning|success|info|danger)/;
+// Tokens MUST be delimited at end by word boundary or opacity slash:
+// e.g. border-border, border-sidebar-border/50, border-primary.
+// "sidebar" is NOT a border color (surface only) — only "sidebar-border" is a valid border token.
+const RE_BORDER_PAIRED = /(?:^|[\s"'`:.])border-(border|transparent|current|input|ring|primary|secondary|accent|muted|destructive|sidebar-border|background|card|popover|foreground|warning|success|info|danger)(?:\/\d+)?(?![\w-])/;
 const RE_R4_BG = tok('bg-(background|card|popover|sidebar)');
 const RE_TEXT_ANY = /text-/;
 const RE_SCHEME_TEXT = /scheme\.text/;
@@ -358,6 +361,71 @@ function checkQmlFile(rel, content, lines, errors, warnings) {
   }
 }
 
+// T1: Check theme mapping completeness for all semantic color tokens.
+// In Tailwind v4, utilities like `border-sidebar-border` or `bg-sidebar` only exist if
+// `--color-<token>` is declared under `@theme inline` in packages/react/src/styles/theme.css.
+// If a token is omitted, Tailwind silently drops the class at compile time, causing borders
+// to fall back to `currentColor` (which renders near-white in dark mode).
+export function checkThemeMappingCompleteness(root, errors, { injectMissing = null } = {}) {
+  const themeCssPath = resolve(root, 'packages/react/src/styles/theme.css');
+  const demoCssPath = resolve(root, 'packages/react/examples/basic/src/styles.css');
+  const launcherTokensPath = resolve(root, 'spec/tokens/semantic/launcher.json');
+  const coreTokensPath = resolve(root, 'spec/tokens/semantic/core.json');
+
+  if (!existsSync(themeCssPath) || !existsSync(demoCssPath)) return;
+
+  const themeCss = readFileSync(themeCssPath, 'utf8');
+  const demoCss = readFileSync(demoCssPath, 'utf8');
+
+  const semanticTokens = new Set();
+  const extractTokens = (path) => {
+    if (!existsSync(path)) return;
+    try {
+      const data = JSON.parse(readFileSync(path, 'utf8'));
+      const semantic = data.semantic ?? {};
+      for (const [k, v] of Object.entries(semantic)) {
+        if (v?.$type === 'color' || (!v?.$type && typeof v === 'object' && !k.includes('.') && !k.startsWith('corner-') && k !== 'radius')) {
+          if (!k.includes('.')) semanticTokens.add(k);
+        }
+      }
+    } catch {
+      // ignore parse error
+    }
+  };
+
+  extractTokens(coreTokensPath);
+  extractTokens(launcherTokensPath);
+
+  const extractThemeColors = (css) => {
+    const colors = new Set();
+    const m = /@theme\s+inline\s*\{([^}]*)\}/s.exec(css);
+    if (!m) return colors;
+    const block = m[1];
+    const re = /--color-([a-z0-9-]+)\s*:/g;
+    let match;
+    while ((match = re.exec(block)) !== null) {
+      colors.add(match[1]);
+    }
+    return colors;
+  };
+
+  const themeColors = extractThemeColors(themeCss);
+  const demoColors = extractThemeColors(demoCss);
+
+  if (injectMissing) {
+    themeColors.delete(injectMissing);
+  }
+
+  for (const token of semanticTokens) {
+    if (!themeColors.has(token)) {
+      errors.push(`[T1 theme-missing-token] semantic token "${token}" is defined in spec/tokens/semantic/ but missing from packages/react/src/styles/theme.css under @theme inline. Tailwind will drop utilities like border-${token} or bg-${token}, causing currentColor fallback (white lines in dark mode).`);
+    }
+    if (!demoColors.has(token)) {
+      errors.push(`[T1 demo-theme-missing-token] semantic token "${token}" is missing from packages/react/examples/basic/src/styles.css under @theme inline.`);
+    }
+  }
+}
+
 export function verifyThemeAdaptive({ quiet = false, rootOverride = null } = {}) {
   const root = rootOverride || rootDir;
   const compFilter = (() => {
@@ -368,6 +436,11 @@ export function verifyThemeAdaptive({ quiet = false, rootOverride = null } = {})
   const errors = [];
   const warnings = [];
   let checkedCount = 0;
+
+  // Run T1 completeness check when scanning the entire repo
+  if (!compFilter) {
+    checkThemeMappingCompleteness(root, errors);
+  }
 
   for (const rel of files) {
     checkedCount++;
@@ -503,6 +576,24 @@ export function selfTest() {
   push('v3: paired border border-border in className passes', !r.errors.some((e) => e.startsWith('[R3')));
   r = runRuleOnReactSnippet(['<Sidebar className="border-r border-sidebar-border/50">hello</Sidebar>']);
   push('v3: paired border-r border-sidebar-border in className passes', !r.errors.some((e) => e.startsWith('[R3')));
+
+  // --- v4 exact token pairing & theme completeness ---------------------------
+  r = runRuleOnReactSnippet(['<Sidebar className="border-r border-sidebar">hello</Sidebar>']);
+  push('v4: border-sidebar (surface instead of border token) is caught by R3', r.errors.some((e) => e.startsWith('[R3')));
+  r = runRuleOnReactSnippet(['<SidebarFooter className="border-t border-sidebar-border/50 p-2.5">x</SidebarFooter>']);
+  push('v4: paired border-t border-sidebar-border/50 passes R3', !r.errors.some((e) => e.startsWith('[R3')));
+  r = runRuleOnReactSnippet(['<SidebarHeader className="border-b border-sidebar-border/50 p-3">x</SidebarHeader>']);
+  push('v4: paired border-b border-sidebar-border/50 passes R3', !r.errors.some((e) => e.startsWith('[R3')));
+
+  // T1 theme completeness check
+  const t1Errors = [];
+  checkThemeMappingCompleteness(rootDir, t1Errors);
+  push('v4: T1 theme mapping completeness passes on current repo', t1Errors.length === 0);
+  if (t1Errors.length > 0) for (const e of t1Errors) console.log(`  - unexpected T1: ${e}`);
+
+  const t1Injected = [];
+  checkThemeMappingCompleteness(rootDir, t1Injected, { injectMissing: 'sidebar-border' });
+  push('v4: T1 catches injected missing sidebar-border token', t1Injected.some((e) => e.includes('sidebar-border')));
 
   const ok = results.every(([, p]) => p);
   if (ok) console.log('[theme-adaptive] self-test PASS — all synthetic violations caught, clean fixtures pass');
