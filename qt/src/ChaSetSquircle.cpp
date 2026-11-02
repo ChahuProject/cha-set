@@ -1,5 +1,6 @@
 #include "ChaSetSquircle.h"
 
+#include <QQuickWindow>
 #include <QSGNode>
 #include <QSGGeometryNode>
 #include <QSGVertexColorMaterial>
@@ -48,6 +49,7 @@ public:
         bool tl = false, tr = false, br = false, bl = false;
         bool hasFill = false, hasBorder = false;
         bool isAA = false;
+        qreal dpr = 1.0;
 
         static bool fuzzy(qreal a, qreal b) {
             return qFuzzyCompare(a + 1.0, b + 1.0);
@@ -56,6 +58,7 @@ public:
             return fuzzy(w, o.w) && fuzzy(h, o.h) && fuzzy(rTL, o.rTL) &&
                    fuzzy(rTR, o.rTR) && fuzzy(rBR, o.rBR) && fuzzy(rBL, o.rBL) &&
                    fuzzy(smoothing, o.smoothing) && fuzzy(penWidth, o.penWidth) &&
+                   fuzzy(dpr, o.dpr) &&
                    color == o.color && penColor == o.penColor && tl == o.tl &&
                    tr == o.tr && br == o.br && bl == o.bl &&
                    hasFill == o.hasFill && hasBorder == o.hasBorder &&
@@ -645,6 +648,8 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
     const bool br = m_roundRight && m_roundBottom && m_roundBottomRight;
     const bool bl = m_roundLeft && m_roundBottom && m_roundBottomLeft;
     const bool isAA = antialiasing();
+    const qreal dpr = window() ? window()->devicePixelRatio() : 1.0;
+    const qreal effectiveDpr = dpr > 0.0 ? dpr : 1.0;
 
     // 参数未变 → 直接复用旧节点：不重算多边形、不重写顶点、不 markDirty。
     // 这是滚动回收路径上最常见的分支（同尺寸卡片反复 rebind）。
@@ -657,6 +662,7 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
         p.tl = tl; p.tr = tr; p.br = br; p.bl = bl;
         p.hasFill = hasFill; p.hasBorder = hasBorder;
         p.isAA = isAA;
+        p.dpr = effectiveDpr;
         if (node->hasCache && node->cached == p)
             return node;
         node->cached = p;
@@ -674,33 +680,11 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
 
     QVector<QPointF> outerNormals = computeClockwiseNormals(outerPoints);
 
-    QVector<QPointF> innerPoints;
-    QVector<QPointF> innerNormals;
-    bool actualBorder = false;
-    if (hasBorder) {
-        const qreal inset = bw;
-        if (2.0 * inset < W && 2.0 * inset < H) {
-            const qreal innerW = W - 2.0 * inset;
-            const qreal innerH = H - 2.0 * inset;
-            QRectF strokeRect(inset, inset, innerW, innerH);
-            const qreal strTL = std::max(0.0, rTL - inset);
-            const qreal strTR = std::max(0.0, rTR - inset);
-            const qreal strBR = std::max(0.0, rBR - inset);
-            const qreal strBL = std::max(0.0, rBL - inset);
+    const qreal inset = bw;
+    const bool actualBorder = hasBorder && (2.0 * inset < W && 2.0 * inset < H);
+    const qreal f = isAA ? (0.5 / effectiveDpr) : 0.0;
+    const bool isThinBorder = isAA && (bw <= 2.0 * f + 1e-4);
 
-            innerPoints = generateSquirclePolygon(strokeRect, strTL, strTR, strBR, strBL, m_cornerSmoothing, tl, tr, br, bl, steps);
-            if (innerPoints.size() == N) {
-                innerNormals = computeClockwiseNormals(innerPoints);
-                actualBorder = true;
-            }
-        }
-    }
-
-    const qreal f = isAA ? 0.75 : 0.0;
-
-    // 内环不可用时统一按实心绘制（几何上等价：描边环已铺满整个外形）。
-    // 触发条件：线宽 ≥ 半宽高（内环整体塌缩），或内外轮廓顶点数不配对。
-    // 纯描边退化时取描边色，绝不能带着空的内轮廓去逐点成环。
     const bool solid = !actualBorder;
     const QColor solidColor = hasFill ? m_color : bc;
 
@@ -711,11 +695,11 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
         numVerts = (isAA ? (2 * N + 1) : (N + 1));
         numIndices = (isAA ? (9 * N) : (3 * N));
     } else if (hasFill) {
-        numVerts = (isAA ? (4 * N + 1) : (3 * N + 1));
-        numIndices = (isAA ? (21 * N) : (9 * N));
+        numVerts = isAA ? (isThinBorder ? (3 * N + 1) : (4 * N + 1)) : (2 * N + 1);
+        numIndices = isAA ? (isThinBorder ? (15 * N) : (21 * N)) : (9 * N);
     } else {
-        numVerts = (isAA ? (4 * N) : (2 * N));
-        numIndices = (isAA ? (18 * N) : (6 * N));
+        numVerts = isAA ? (isThinBorder ? (3 * N) : (4 * N)) : (2 * N);
+        numIndices = isAA ? (isThinBorder ? (12 * N) : (18 * N)) : (6 * N);
     }
 
     QSGGeometry *geom = node->geometry();
@@ -740,14 +724,14 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
         return {r, g, b, na};
     };
 
-    auto addQuad = [&](quint16 a1, quint16 b1, quint16 a2, quint16 b2) {
-        indices[idxOffset++] = a1;
-        indices[idxOffset++] = b1;
-        indices[idxOffset++] = a2;
+    auto addQuad = [&](quint16 in1, quint16 out1, quint16 in2, quint16 out2) {
+        indices[idxOffset++] = in1;
+        indices[idxOffset++] = out1;
+        indices[idxOffset++] = in2;
 
-        indices[idxOffset++] = a2;
-        indices[idxOffset++] = b1;
-        indices[idxOffset++] = b2;
+        indices[idxOffset++] = in2;
+        indices[idxOffset++] = out1;
+        indices[idxOffset++] = out2;
     };
 
     if (solid) {
@@ -786,82 +770,57 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
                 addQuad(c1, o1, c2, o2);
             }
         }
-    } else if (hasFill) {
-        const auto [fr, fg, fb, fa] = makePremul(m_color, 1.0f);
-        const auto [br, bg, bb, ba] = makePremul(bc, 1.0f);
-        const auto [zr, zg, zb, za] = makePremul(bc, 0.0f);
-
-        const qreal fIn = isAA ? std::min(f, bw * 0.35) : 0.0;
-
-        // 1. Fill center fan
-        const QPointF center(W / 2.0, H / 2.0);
-        v[vertOffset + 0].set(static_cast<float>(center.x()), static_cast<float>(center.y()), fr, fg, fb, fa);
-
-        const int fillBase = vertOffset + 1;
-        for (int i = 0; i < N; ++i) {
-            const QPointF pt = innerPoints[i] - fIn * innerNormals[i];
-            v[fillBase + i].set(static_cast<float>(pt.x()), static_cast<float>(pt.y()), fr, fg, fb, fa);
-        }
-
-        for (int i = 0; i < N; ++i) {
-            const quint16 c1 = static_cast<quint16>(fillBase + i);
-            const quint16 c2 = static_cast<quint16>(fillBase + ((i + 1 == N) ? 0 : (i + 1)));
-            indices[idxOffset++] = static_cast<quint16>(vertOffset + 0);
-            indices[idxOffset++] = c1;
-            indices[idxOffset++] = c2;
-        }
-
-        // 2. Inner transition band (Fill -> Border AA)
-        const int borderInBase = fillBase + N;
-        const int borderOutBase = borderInBase + N;
-        for (int i = 0; i < N; ++i) {
-            const QPointF ptIn = innerPoints[i] + fIn * innerNormals[i];
-            v[borderInBase + i].set(static_cast<float>(ptIn.x()), static_cast<float>(ptIn.y()), br, bg, bb, ba);
-            const QPointF ptOut = outerPoints[i] - f * outerNormals[i];
-            v[borderOutBase + i].set(static_cast<float>(ptOut.x()), static_cast<float>(ptOut.y()), br, bg, bb, ba);
-        }
-
-        if (isAA) {
-            for (int i = 0; i < N; ++i) {
-                const quint16 in1 = static_cast<quint16>(fillBase + i);
-                const quint16 in2 = static_cast<quint16>(fillBase + ((i + 1 == N) ? 0 : (i + 1)));
-                const quint16 out1 = static_cast<quint16>(borderInBase + i);
-                const quint16 out2 = static_cast<quint16>(borderInBase + ((i + 1 == N) ? 0 : (i + 1)));
-                addQuad(in1, out1, in2, out2);
-            }
-        }
-
-        // 3. Border body
-        for (int i = 0; i < N; ++i) {
-            const quint16 in1 = static_cast<quint16>(borderInBase + i);
-            const quint16 in2 = static_cast<quint16>(borderInBase + ((i + 1 == N) ? 0 : (i + 1)));
-            const quint16 out1 = static_cast<quint16>(borderOutBase + i);
-            const quint16 out2 = static_cast<quint16>(borderOutBase + ((i + 1 == N) ? 0 : (i + 1)));
-            addQuad(in1, out1, in2, out2);
-        }
-
-        // 4. Outer fringe (AA)
-        if (isAA) {
-            const int fringeBase = borderOutBase + N;
-            for (int i = 0; i < N; ++i) {
-                const QPointF pt = outerPoints[i] + f * outerNormals[i];
-                v[fringeBase + i].set(static_cast<float>(pt.x()), static_cast<float>(pt.y()), zr, zg, zb, za);
-            }
-
-            for (int i = 0; i < N; ++i) {
-                const quint16 out1 = static_cast<quint16>(borderOutBase + i);
-                const quint16 out2 = static_cast<quint16>(borderOutBase + ((i + 1 == N) ? 0 : (i + 1)));
-                const quint16 fr1 = static_cast<quint16>(fringeBase + i);
-                const quint16 fr2 = static_cast<quint16>(fringeBase + ((i + 1 == N) ? 0 : (i + 1)));
-                addQuad(out1, fr1, out2, fr2);
-            }
-        }
-    } else {
+    } else if (!hasFill) {
         // Outline stroke only
         const auto [br, bg, bb, ba] = makePremul(bc, 1.0f);
         const auto [zr, zg, zb, za] = makePremul(bc, 0.0f);
 
-        if (isAA) {
+        if (!isAA) {
+            const int outBase = vertOffset;
+            const int inBase = outBase + N;
+            for (int i = 0; i < N; ++i) {
+                v[outBase + i].set(static_cast<float>(outerPoints[i].x()), static_cast<float>(outerPoints[i].y()), br, bg, bb, ba);
+                const QPointF pIn = outerPoints[i] - bw * outerNormals[i];
+                v[inBase + i].set(static_cast<float>(pIn.x()), static_cast<float>(pIn.y()), br, bg, bb, ba);
+            }
+            for (int i = 0; i < N; ++i) {
+                const quint16 o1 = static_cast<quint16>(outBase + i);
+                const quint16 o2 = static_cast<quint16>(outBase + ((i + 1 == N) ? 0 : (i + 1)));
+                const quint16 i1 = static_cast<quint16>(inBase + i);
+                const quint16 i2 = static_cast<quint16>(inBase + ((i + 1 == N) ? 0 : (i + 1)));
+                addQuad(i1, o1, i2, o2);
+            }
+        } else if (isThinBorder) {
+            // Thin stroke (bw <= 2f): outer fringe (0) -> center line (1) -> inner fringe (0)
+            const int outFringeBase = vertOffset;
+            const int centerBase = outFringeBase + N;
+            const int inFringeBase = centerBase + N;
+
+            for (int i = 0; i < N; ++i) {
+                const QPointF pOutFr = outerPoints[i] + f * outerNormals[i];
+                const QPointF pCenter = outerPoints[i] - 0.5 * bw * outerNormals[i];
+                const QPointF pInFr = outerPoints[i] - (bw + f) * outerNormals[i];
+
+                v[outFringeBase + i].set(static_cast<float>(pOutFr.x()), static_cast<float>(pOutFr.y()), zr, zg, zb, za);
+                v[centerBase + i].set(static_cast<float>(pCenter.x()), static_cast<float>(pCenter.y()), br, bg, bb, ba);
+                v[inFringeBase + i].set(static_cast<float>(pInFr.x()), static_cast<float>(pInFr.y()), zr, zg, zb, za);
+            }
+
+            for (int i = 0; i < N; ++i) {
+                const quint16 oFr1 = static_cast<quint16>(outFringeBase + i);
+                const quint16 oFr2 = static_cast<quint16>(outFringeBase + ((i + 1 == N) ? 0 : (i + 1)));
+                const quint16 c1 = static_cast<quint16>(centerBase + i);
+                const quint16 c2 = static_cast<quint16>(centerBase + ((i + 1 == N) ? 0 : (i + 1)));
+                const quint16 iFr1 = static_cast<quint16>(inFringeBase + i);
+                const quint16 iFr2 = static_cast<quint16>(inFringeBase + ((i + 1 == N) ? 0 : (i + 1)));
+
+                // Outer fringe: center (alpha 1) to outer fringe (alpha 0)
+                addQuad(c1, oFr1, c2, oFr2);
+                // Inner fringe: inner fringe (alpha 0) to center (alpha 1)
+                addQuad(iFr1, c1, iFr2, c2);
+            }
+        } else {
+            // Thick stroke (bw > 2f): outer fringe (0) -> outer core (1) -> inner core (1) -> inner fringe (0)
             const int outFringeBase = vertOffset;
             const int outCoreBase = outFringeBase + N;
             const int inCoreBase = outCoreBase + N;
@@ -870,8 +829,8 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
             for (int i = 0; i < N; ++i) {
                 const QPointF pOutFr = outerPoints[i] + f * outerNormals[i];
                 const QPointF pOutCo = outerPoints[i] - f * outerNormals[i];
-                const QPointF pInCo = innerPoints[i] + f * innerNormals[i];
-                const QPointF pInFr = innerPoints[i] - f * innerNormals[i];
+                const QPointF pInCo = outerPoints[i] - (bw - f) * outerNormals[i];
+                const QPointF pInFr = outerPoints[i] - (bw + f) * outerNormals[i];
 
                 v[outFringeBase + i].set(static_cast<float>(pOutFr.x()), static_cast<float>(pOutFr.y()), zr, zg, zb, za);
                 v[outCoreBase + i].set(static_cast<float>(pOutCo.x()), static_cast<float>(pOutCo.y()), br, bg, bb, ba);
@@ -884,7 +843,6 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
                 const quint16 oFr2 = static_cast<quint16>(outFringeBase + ((i + 1 == N) ? 0 : (i + 1)));
                 const quint16 oCo1 = static_cast<quint16>(outCoreBase + i);
                 const quint16 oCo2 = static_cast<quint16>(outCoreBase + ((i + 1 == N) ? 0 : (i + 1)));
-
                 const quint16 iCo1 = static_cast<quint16>(inCoreBase + i);
                 const quint16 iCo2 = static_cast<quint16>(inCoreBase + ((i + 1 == N) ? 0 : (i + 1)));
                 const quint16 iFr1 = static_cast<quint16>(inFringeBase + i);
@@ -892,26 +850,138 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
 
                 // Outer fringe
                 addQuad(oCo1, oFr1, oCo2, oFr2);
-                // Border body
+                // Solid body
                 addQuad(iCo1, oCo1, iCo2, oCo2);
                 // Inner fringe
                 addQuad(iFr1, iCo1, iFr2, iCo2);
             }
-        } else {
-            const int outCoreBase = vertOffset;
-            const int inCoreBase = outCoreBase + N;
+        }
+    } else {
+        // Both Fill and Border
+        const auto [fr, fg, fb, fa] = makePremul(m_color, 1.0f);
+        const auto [br, bg, bb, ba] = makePremul(bc, 1.0f);
+        const auto [zr, zg, zb, za] = makePremul(bc, 0.0f);
+
+        // 1. Center vertex
+        const QPointF center(W / 2.0, H / 2.0);
+        v[vertOffset + 0].set(static_cast<float>(center.x()), static_cast<float>(center.y()), fr, fg, fb, fa);
+
+        const int fillBase = vertOffset + 1;
+
+        if (!isAA) {
+            const int outBase = fillBase + N;
+            for (int i = 0; i < N; ++i) {
+                const QPointF pFill = outerPoints[i] - bw * outerNormals[i];
+                v[fillBase + i].set(static_cast<float>(pFill.x()), static_cast<float>(pFill.y()), fr, fg, fb, fa);
+                v[outBase + i].set(static_cast<float>(outerPoints[i].x()), static_cast<float>(outerPoints[i].y()), br, bg, bb, ba);
+            }
+            for (int i = 0; i < N; ++i) {
+                const quint16 c1 = static_cast<quint16>(fillBase + i);
+                const quint16 c2 = static_cast<quint16>(fillBase + ((i + 1 == N) ? 0 : (i + 1)));
+                indices[idxOffset++] = static_cast<quint16>(vertOffset + 0);
+                indices[idxOffset++] = c1;
+                indices[idxOffset++] = c2;
+            }
+            for (int i = 0; i < N; ++i) {
+                const quint16 i1 = static_cast<quint16>(fillBase + i);
+                const quint16 i2 = static_cast<quint16>(fillBase + ((i + 1 == N) ? 0 : (i + 1)));
+                const quint16 o1 = static_cast<quint16>(outBase + i);
+                const quint16 o2 = static_cast<quint16>(outBase + ((i + 1 == N) ? 0 : (i + 1)));
+                addQuad(i1, o1, i2, o2);
+            }
+        } else if (isThinBorder) {
+            // Fill + Thin border: center -> fill perimeter (m_color) -> mid border (bc) -> outer fringe (bc, alpha 0)
+            const int borderMidBase = fillBase + N;
+            const int outFringeBase = borderMidBase + N;
 
             for (int i = 0; i < N; ++i) {
-                v[outCoreBase + i].set(static_cast<float>(outerPoints[i].x()), static_cast<float>(outerPoints[i].y()), br, bg, bb, ba);
-                v[inCoreBase + i].set(static_cast<float>(innerPoints[i].x()), static_cast<float>(innerPoints[i].y()), br, bg, bb, ba);
+                const QPointF pFill = outerPoints[i] - bw * outerNormals[i];
+                const QPointF pMid = outerPoints[i] - 0.5 * bw * outerNormals[i];
+                const QPointF pOutFr = outerPoints[i] + f * outerNormals[i];
+
+                v[fillBase + i].set(static_cast<float>(pFill.x()), static_cast<float>(pFill.y()), fr, fg, fb, fa);
+                v[borderMidBase + i].set(static_cast<float>(pMid.x()), static_cast<float>(pMid.y()), br, bg, bb, ba);
+                v[outFringeBase + i].set(static_cast<float>(pOutFr.x()), static_cast<float>(pOutFr.y()), zr, zg, zb, za);
             }
 
+            // Fill fan
             for (int i = 0; i < N; ++i) {
-                const quint16 out1 = static_cast<quint16>(outCoreBase + i);
-                const quint16 out2 = static_cast<quint16>(outCoreBase + ((i + 1 == N) ? 0 : (i + 1)));
-                const quint16 in1 = static_cast<quint16>(inCoreBase + i);
-                const quint16 in2 = static_cast<quint16>(inCoreBase + ((i + 1 == N) ? 0 : (i + 1)));
-                addQuad(in1, out1, in2, out2);
+                const quint16 c1 = static_cast<quint16>(fillBase + i);
+                const quint16 c2 = static_cast<quint16>(fillBase + ((i + 1 == N) ? 0 : (i + 1)));
+                indices[idxOffset++] = static_cast<quint16>(vertOffset + 0);
+                indices[idxOffset++] = c1;
+                indices[idxOffset++] = c2;
+            }
+
+            // Inner transition band (fill -> border)
+            for (int i = 0; i < N; ++i) {
+                const quint16 f1 = static_cast<quint16>(fillBase + i);
+                const quint16 f2 = static_cast<quint16>(fillBase + ((i + 1 == N) ? 0 : (i + 1)));
+                const quint16 m1 = static_cast<quint16>(borderMidBase + i);
+                const quint16 m2 = static_cast<quint16>(borderMidBase + ((i + 1 == N) ? 0 : (i + 1)));
+                addQuad(f1, m1, f2, m2);
+            }
+
+            // Outer fringe (border -> background)
+            for (int i = 0; i < N; ++i) {
+                const quint16 m1 = static_cast<quint16>(borderMidBase + i);
+                const quint16 m2 = static_cast<quint16>(borderMidBase + ((i + 1 == N) ? 0 : (i + 1)));
+                const quint16 o1 = static_cast<quint16>(outFringeBase + i);
+                const quint16 o2 = static_cast<quint16>(outFringeBase + ((i + 1 == N) ? 0 : (i + 1)));
+                addQuad(m1, o1, m2, o2);
+            }
+        } else {
+            // Fill + Thick border: center -> fill perimeter (m_color) -> inner core (bc) -> outer core (bc) -> outer fringe (0)
+            const int inCoreBase = fillBase + N;
+            const int outCoreBase = inCoreBase + N;
+            const int outFringeBase = outCoreBase + N;
+
+            for (int i = 0; i < N; ++i) {
+                const QPointF pFill = outerPoints[i] - bw * outerNormals[i];
+                const QPointF pInCo = outerPoints[i] - (bw - f) * outerNormals[i];
+                const QPointF pOutCo = outerPoints[i] - f * outerNormals[i];
+                const QPointF pOutFr = outerPoints[i] + f * outerNormals[i];
+
+                v[fillBase + i].set(static_cast<float>(pFill.x()), static_cast<float>(pFill.y()), fr, fg, fb, fa);
+                v[inCoreBase + i].set(static_cast<float>(pInCo.x()), static_cast<float>(pInCo.y()), br, bg, bb, ba);
+                v[outCoreBase + i].set(static_cast<float>(pOutCo.x()), static_cast<float>(pOutCo.y()), br, bg, bb, ba);
+                v[outFringeBase + i].set(static_cast<float>(pOutFr.x()), static_cast<float>(pOutFr.y()), zr, zg, zb, za);
+            }
+
+            // Fill fan
+            for (int i = 0; i < N; ++i) {
+                const quint16 c1 = static_cast<quint16>(fillBase + i);
+                const quint16 c2 = static_cast<quint16>(fillBase + ((i + 1 == N) ? 0 : (i + 1)));
+                indices[idxOffset++] = static_cast<quint16>(vertOffset + 0);
+                indices[idxOffset++] = c1;
+                indices[idxOffset++] = c2;
+            }
+
+            // Inner transition band (fill -> border)
+            for (int i = 0; i < N; ++i) {
+                const quint16 f1 = static_cast<quint16>(fillBase + i);
+                const quint16 f2 = static_cast<quint16>(fillBase + ((i + 1 == N) ? 0 : (i + 1)));
+                const quint16 i1 = static_cast<quint16>(inCoreBase + i);
+                const quint16 i2 = static_cast<quint16>(inCoreBase + ((i + 1 == N) ? 0 : (i + 1)));
+                addQuad(f1, i1, f2, i2);
+            }
+
+            // Solid border body
+            for (int i = 0; i < N; ++i) {
+                const quint16 i1 = static_cast<quint16>(inCoreBase + i);
+                const quint16 i2 = static_cast<quint16>(inCoreBase + ((i + 1 == N) ? 0 : (i + 1)));
+                const quint16 o1 = static_cast<quint16>(outCoreBase + i);
+                const quint16 o2 = static_cast<quint16>(outCoreBase + ((i + 1 == N) ? 0 : (i + 1)));
+                addQuad(i1, o1, i2, o2);
+            }
+
+            // Outer fringe
+            for (int i = 0; i < N; ++i) {
+                const quint16 o1 = static_cast<quint16>(outCoreBase + i);
+                const quint16 o2 = static_cast<quint16>(outCoreBase + ((i + 1 == N) ? 0 : (i + 1)));
+                const quint16 fr1 = static_cast<quint16>(outFringeBase + i);
+                const quint16 fr2 = static_cast<quint16>(outFringeBase + ((i + 1 == N) ? 0 : (i + 1)));
+                addQuad(o1, fr1, o2, fr2);
             }
         }
     }
