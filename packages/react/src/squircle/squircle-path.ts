@@ -17,6 +17,7 @@ export interface SquircleParams {
   bottomLeftRadius?: number;
   bottomRightRadius?: number;
   cornerSmoothing?: number; // 0.0 to 1.0 (0.6 is the Apple iOS standard)
+  preserveSmoothing?: boolean;
   roundTopLeft?: boolean;
   roundTopRight?: boolean;
   roundBottomLeft?: boolean;
@@ -41,27 +42,29 @@ interface CornerMath {
 
 const DEG2RAD = Math.PI / 180;
 
-function calcCorner(radius: number, s: number, shortest_l: number): CornerMath {
-  const r = Math.max(0, Math.min(radius, shortest_l / 2));
+function calcCorner(
+  radius: number,
+  s: number,
+  shortest_l: number,
+  preserveSmoothing = true
+): CornerMath {
+  const budget = shortest_l / 2;
+  const r = Math.max(0, Math.min(radius, budget));
   if (r <= 0.001) {
     return { p: 0, a: 0, b: 0, c: 0, d: 0, theta: 0, beta: 0, k: 0, r: 0 };
   }
 
-  const smoothing = Math.max(0, Math.min(1, s));
-  const p = Math.min(shortest_l / 2, (1 + smoothing) * r);
+  let smoothing = Math.max(0, Math.min(1, s));
+  let p = (1 + smoothing) * r;
 
-  let angle_beta_deg: number;
-  let angle_alpha_deg: number;
-
-  if (r > shortest_l / 4) {
-    const cp = (r - shortest_l / 4) / (shortest_l / 4);
-    angle_beta_deg = 90 * (1 - smoothing * (1 - cp));
-    angle_alpha_deg = 45 * smoothing * (1 - cp);
-  } else {
-    angle_beta_deg = 90 * (1 - smoothing);
-    angle_alpha_deg = 45 * smoothing;
+  if (!preserveSmoothing) {
+    const maxCornerSmoothing = Math.max(0, budget / r - 1);
+    smoothing = Math.min(smoothing, maxCornerSmoothing);
+    p = Math.min(p, budget);
   }
 
+  const angle_beta_deg = 90 * (1 - smoothing);
+  const angle_alpha_deg = 45 * smoothing;
   const angle_theta_deg = (90 - angle_beta_deg) / 2;
 
   const theta = angle_theta_deg * DEG2RAD;
@@ -73,9 +76,19 @@ function calcCorner(radius: number, s: number, shortest_l: number): CornerMath {
   const l = Math.sin(beta / 2) * r * Math.SQRT2;
   const c = h_longest * Math.cos(alpha);
   const d = c * d_div_c;
-  const b = ((p - l) - (1 + d_div_c) * c) / 3;
-  const a = 2 * b;
-  const k = (4 / 3) * Math.tan(beta / 4);
+  let b = ((p - l) - (1 + d_div_c) * c) / 3;
+  let a = 2 * b;
+
+  if (preserveSmoothing && p > budget) {
+    const maxDist = budget - d - l - c;
+    const minA = maxDist / 6;
+    const maxB = maxDist - minA;
+    b = Math.min(b, maxB);
+    a = maxDist - b;
+    p = budget;
+  }
+
+  const k = beta > 0.0001 ? (4 / 3) * Math.tan(beta / 4) : 0;
 
   return { p, a, b, c, d, theta, beta, k, r };
 }
@@ -96,6 +109,7 @@ export function getSquircleSvgPath(params: SquircleParams): string {
     bottomLeftRadius,
     bottomRightRadius,
     cornerSmoothing = 0.6,
+    preserveSmoothing = true,
     roundTopLeft = true,
     roundTopRight = true,
     roundBottomLeft = true,
@@ -120,10 +134,10 @@ export function getSquircleSvgPath(params: SquircleParams): string {
   const brActive = roundRight && roundBottom && roundBottomRight;
   const blActive = roundLeft && roundBottom && roundBottomLeft;
 
-  const mTL = tlActive ? calcCorner(rTL, cornerSmoothing, shortest_l) : calcCorner(0, 0, shortest_l);
-  const mTR = trActive ? calcCorner(rTR, cornerSmoothing, shortest_l) : calcCorner(0, 0, shortest_l);
-  const mBR = brActive ? calcCorner(rBR, cornerSmoothing, shortest_l) : calcCorner(0, 0, shortest_l);
-  const mBL = blActive ? calcCorner(rBL, cornerSmoothing, shortest_l) : calcCorner(0, 0, shortest_l);
+  const mTL = tlActive ? calcCorner(rTL, cornerSmoothing, shortest_l, preserveSmoothing) : calcCorner(0, 0, shortest_l, preserveSmoothing);
+  const mTR = trActive ? calcCorner(rTR, cornerSmoothing, shortest_l, preserveSmoothing) : calcCorner(0, 0, shortest_l, preserveSmoothing);
+  const mBR = brActive ? calcCorner(rBR, cornerSmoothing, shortest_l, preserveSmoothing) : calcCorner(0, 0, shortest_l, preserveSmoothing);
+  const mBL = blActive ? calcCorner(rBL, cornerSmoothing, shortest_l, preserveSmoothing) : calcCorner(0, 0, shortest_l, preserveSmoothing);
 
   const parts: string[] = [];
 

@@ -67,8 +67,8 @@ DocLayout {
                         spacing: ThemeTokens.dp(8)
 
                         ChaSetSquircle {
-                            width: ThemeTokens.dp(180)
-                            height: ThemeTokens.dp(120)
+                            width: ThemeTokens.dp(192)
+                            height: ThemeTokens.dp(128)
                             radius: ThemeTokens.dp(root.customRadius)
                             cornerSmoothing: root.customSmoothing
                             color: Qt.rgba(48/255, 160/255, 255/255, 0.15)
@@ -101,8 +101,8 @@ DocLayout {
                         spacing: ThemeTokens.dp(8)
 
                         Rectangle {
-                            width: ThemeTokens.dp(180)
-                            height: ThemeTokens.dp(120)
+                            width: ThemeTokens.dp(192)
+                            height: ThemeTokens.dp(128)
                             radius: ThemeTokens.dp(root.customRadius)
                             color: Qt.rgba(48/255, 160/255, 255/255, 0.15)
                             border.color: ThemeTokens.accent

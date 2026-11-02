@@ -137,6 +137,31 @@ describe('Squircle mathematical path generator', () => {
     expect(path2).not.toBe(path1);
   });
 
+  it('preserves full smoothing continuous curvature without corner pinching at large radii', () => {
+    // When width=192, height=128, cornerRadius=48, cornerSmoothing=1.0:
+    // budget is 64. preserveSmoothing preserves G2 continuous curvature.
+    const pathPreserved = getSquircleSvgPath({
+      width: 192,
+      height: 128,
+      cornerRadius: 48,
+      cornerSmoothing: 1.0,
+      preserveSmoothing: true,
+    });
+    expect(pathPreserved).toContain('M 96 0');
+    expect(pathPreserved).toContain('C ');
+    expect(pathPreserved).toContain('Z');
+
+    // When preserveSmoothing is false, smoothing is clamped to budget/r - 1 = 64/48 - 1 = 0.333
+    const pathClamped = getSquircleSvgPath({
+      width: 192,
+      height: 128,
+      cornerRadius: 48,
+      cornerSmoothing: 1.0,
+      preserveSmoothing: false,
+    });
+    expect(pathClamped).not.toBe(pathPreserved);
+  });
+
   it('benchmarks mass squircle generation performance (5,000 runs within budget)', () => {
     const start = performance.now();
     const count = 5000;

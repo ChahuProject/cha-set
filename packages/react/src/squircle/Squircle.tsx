@@ -17,6 +17,11 @@ export interface SquircleProps extends React.HTMLAttributes<HTMLDivElement> {
    */
   cornerSmoothing?: number;
   /**
+   * Whether to preserve smoothing curvature profile at large radii instead of collapsing.
+   * Defaults to true.
+   */
+  preserveSmoothing?: boolean;
+  /**
    * Top-left corner radius override.
    */
   topLeftRadius?: number;
@@ -87,6 +92,7 @@ export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
       radius = 8,
       smoothing = 0.6,
       cornerSmoothing,
+      preserveSmoothing = true,
       topLeftRadius,
       topRightRadius,
       bottomLeftRadius,
@@ -127,6 +133,7 @@ export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
           bottomLeftRadius,
           bottomRightRadius,
           cornerSmoothing: effectiveSmoothing,
+          preserveSmoothing,
           roundLeft,
           roundRight,
           roundTop,
@@ -136,6 +143,7 @@ export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
       [
         radius,
         effectiveSmoothing,
+        preserveSmoothing,
         topLeftRadius,
         topRightRadius,
         bottomLeftRadius,
@@ -170,6 +178,7 @@ export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
           bottomLeftRadius: strBL,
           bottomRightRadius: strBR,
           cornerSmoothing: effectiveSmoothing,
+          preserveSmoothing,
           roundLeft,
           roundRight,
           roundTop,
@@ -179,6 +188,7 @@ export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
       [
         radius,
         effectiveSmoothing,
+        preserveSmoothing,
         topLeftRadius,
         topRightRadius,
         bottomLeftRadius,
@@ -248,8 +258,8 @@ export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
     // Unique clipId per geometry to prevent Chromium from reusing stale cached clip-path masks
     const clipId = React.useMemo(() => {
       const sanitized = rawId.replace(/:/g, '_');
-      return `${sanitized}_${Math.round(currentW)}_${Math.round(currentH)}_${Math.round(radius)}_${Math.round(effectiveSmoothing * 100)}`;
-    }, [rawId, currentW, currentH, radius, effectiveSmoothing]);
+      return `${sanitized}_${Math.round(currentW)}_${Math.round(currentH)}_${Math.round(radius)}_${Math.round(effectiveSmoothing * 100)}_${preserveSmoothing ? 1 : 0}`;
+    }, [rawId, currentW, currentH, radius, effectiveSmoothing, preserveSmoothing]);
 
     const clipPathStyle = React.useMemo(() => {
       if (!outerPath) return undefined;

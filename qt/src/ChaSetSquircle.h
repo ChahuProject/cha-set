@@ -44,6 +44,7 @@ class ChaSetSquircle : public QQuickItem
     Q_PROPERTY(qreal bottomLeftRadius READ bottomLeftRadius WRITE setBottomLeftRadius NOTIFY bottomLeftRadiusChanged)
     Q_PROPERTY(qreal bottomRightRadius READ bottomRightRadius WRITE setBottomRightRadius NOTIFY bottomRightRadiusChanged)
     Q_PROPERTY(qreal cornerSmoothing READ cornerSmoothing WRITE setCornerSmoothing NOTIFY cornerSmoothingChanged)
+    Q_PROPERTY(bool preserveSmoothing READ preserveSmoothing WRITE setPreserveSmoothing NOTIFY preserveSmoothingChanged)
     Q_PROPERTY(ChaSetSquirclePen *border READ border CONSTANT)
 
     Q_PROPERTY(bool roundLeft READ roundLeft WRITE setRoundLeft NOTIFY roundLeftChanged)
@@ -80,6 +81,9 @@ public:
     qreal cornerSmoothing() const { return m_cornerSmoothing; }
     void setCornerSmoothing(qreal s);
 
+    bool preserveSmoothing() const { return m_preserveSmoothing; }
+    void setPreserveSmoothing(bool v);
+
     ChaSetSquirclePen *border() { return &m_pen; }
 
     bool roundLeft() const { return m_roundLeft; }
@@ -110,7 +114,8 @@ public:
         const QRectF &rect,
         qreal rTL, qreal rTR, qreal rBR, qreal rBL,
         qreal smoothing,
-        bool tl = true, bool tr = true, bool br = true, bool bl = true
+        bool tl = true, bool tr = true, bool br = true, bool bl = true,
+        bool preserveSmoothing = true
     );
 
     static QVector<QPointF> generateSquirclePolygon(
@@ -118,7 +123,8 @@ public:
         qreal rTL, qreal rTR, qreal rBR, qreal rBL,
         qreal smoothing,
         bool tl = true, bool tr = true, bool br = true, bool bl = true,
-        int stepsPerSegment = 24
+        int stepsPerSegment = 24,
+        bool preserveSmoothing = true
     );
 
 protected:
@@ -133,6 +139,7 @@ signals:
     void bottomLeftRadiusChanged();
     void bottomRightRadiusChanged();
     void cornerSmoothingChanged();
+    void preserveSmoothingChanged();
     void roundLeftChanged();
     void roundRightChanged();
     void roundTopChanged();
@@ -150,6 +157,7 @@ private:
     qreal m_bottomLeftRadius = -1.0;
     qreal m_bottomRightRadius = -1.0;
     qreal m_cornerSmoothing = 0.6; // Apple iOS continuous corner standard
+    bool m_preserveSmoothing = true;
 
     bool m_roundLeft = true;
     bool m_roundRight = true;

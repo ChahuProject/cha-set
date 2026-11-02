@@ -43,6 +43,7 @@ public:
         qreal w = 0, h = 0;
         qreal rTL = 0, rTR = 0, rBR = 0, rBL = 0;
         qreal smoothing = 0;
+        bool preserveSmoothing = true;
         qreal penWidth = 0;
         QColor color;
         QColor penColor;
@@ -57,8 +58,8 @@ public:
         bool operator==(const Params &o) const {
             return fuzzy(w, o.w) && fuzzy(h, o.h) && fuzzy(rTL, o.rTL) &&
                    fuzzy(rTR, o.rTR) && fuzzy(rBR, o.rBR) && fuzzy(rBL, o.rBL) &&
-                   fuzzy(smoothing, o.smoothing) && fuzzy(penWidth, o.penWidth) &&
-                   fuzzy(dpr, o.dpr) &&
+                   fuzzy(smoothing, o.smoothing) && preserveSmoothing == o.preserveSmoothing &&
+                   fuzzy(penWidth, o.penWidth) && fuzzy(dpr, o.dpr) &&
                    color == o.color && penColor == o.penColor && tl == o.tl &&
                    tr == o.tr && br == o.br && bl == o.bl &&
                    hasFill == o.hasFill && hasBorder == o.hasBorder &&
@@ -284,6 +285,15 @@ void ChaSetSquircle::setRoundBottomRight(bool v)
     update();
 }
 
+void ChaSetSquircle::setPreserveSmoothing(bool v)
+{
+    if (m_preserveSmoothing == v)
+        return;
+    m_preserveSmoothing = v;
+    emit preserveSmoothingChanged();
+    update();
+}
+
 struct CornerMath {
     qreal p = 0.0;
     qreal a = 0.0;
@@ -296,27 +306,25 @@ struct CornerMath {
     qreal r = 0.0;
 };
 
-static CornerMath calcCorner(qreal radius, qreal s, qreal shortest_l)
+static CornerMath calcCorner(qreal radius, qreal s, qreal shortest_l, bool preserveSmoothing = true)
 {
     CornerMath m;
-    m.r = std::max(0.0, std::min(radius, shortest_l / 2.0));
+    const qreal budget = shortest_l / 2.0;
+    m.r = std::max(0.0, std::min(radius, budget));
     if (m.r <= 0.001)
         return m;
 
     s = std::clamp(s, 0.0, 1.0);
-    m.p = std::min(shortest_l / 2.0, (1.0 + s) * m.r);
+    m.p = (1.0 + s) * m.r;
 
-    qreal angle_beta_deg;
-    qreal angle_alpha_deg;
-    if (m.r > shortest_l / 4.0) {
-        qreal cp = (m.r - shortest_l / 4.0) / (shortest_l / 4.0);
-        angle_beta_deg = 90.0 * (1.0 - s * (1.0 - cp));
-        angle_alpha_deg = 45.0 * s * (1.0 - cp);
-    } else {
-        angle_beta_deg = 90.0 * (1.0 - s);
-        angle_alpha_deg = 45.0 * s;
+    if (!preserveSmoothing) {
+        qreal max_s = std::max(0.0, budget / m.r - 1.0);
+        s = std::min(s, max_s);
+        m.p = std::min(m.p, budget);
     }
 
+    qreal angle_beta_deg = 90.0 * (1.0 - s);
+    qreal angle_alpha_deg = 45.0 * s;
     qreal angle_theta_deg = (90.0 - angle_beta_deg) / 2.0;
 
     m.theta = qDegreesToRadians(angle_theta_deg);
@@ -330,7 +338,17 @@ static CornerMath calcCorner(qreal radius, qreal s, qreal shortest_l)
     m.d = m.c * d_div_c;
     m.b = ((m.p - l) - (1.0 + d_div_c) * m.c) / 3.0;
     m.a = 2.0 * m.b;
-    m.k = (4.0 / 3.0) * std::tan(m.beta / 4.0);
+
+    if (preserveSmoothing && m.p > budget) {
+        qreal maxDist = budget - m.d - l - m.c;
+        qreal minA = maxDist / 6.0;
+        qreal maxB = maxDist - minA;
+        m.b = std::min(m.b, maxB);
+        m.a = maxDist - m.b;
+        m.p = budget;
+    }
+
+    m.k = m.beta > 0.0001 ? (4.0 / 3.0) * std::tan(m.beta / 4.0) : 0.0;
 
     return m;
 }
@@ -367,7 +385,8 @@ QVector<QPointF> ChaSetSquircle::generateSquirclePolygon(
     qreal rTL, qreal rTR, qreal rBR, qreal rBL,
     qreal smoothing,
     bool tl, bool tr, bool br, bool bl,
-    int stepsPerSegment)
+    int stepsPerSegment,
+    bool preserveSmoothing)
 {
     QVector<QPointF> pts;
     const qreal W = rect.width();
@@ -379,10 +398,10 @@ QVector<QPointF> ChaSetSquircle::generateSquirclePolygon(
         return pts;
 
     const qreal shortest_l = std::min(W, H);
-    CornerMath mTL = (tl && rTL > 0.001) ? calcCorner(rTL, smoothing, shortest_l) : CornerMath{};
-    CornerMath mTR = (tr && rTR > 0.001) ? calcCorner(rTR, smoothing, shortest_l) : CornerMath{};
-    CornerMath mBR = (br && rBR > 0.001) ? calcCorner(rBR, smoothing, shortest_l) : CornerMath{};
-    CornerMath mBL = (bl && rBL > 0.001) ? calcCorner(rBL, smoothing, shortest_l) : CornerMath{};
+    CornerMath mTL = (tl && rTL > 0.001) ? calcCorner(rTL, smoothing, shortest_l, preserveSmoothing) : CornerMath{};
+    CornerMath mTR = (tr && rTR > 0.001) ? calcCorner(rTR, smoothing, shortest_l, preserveSmoothing) : CornerMath{};
+    CornerMath mBR = (br && rBR > 0.001) ? calcCorner(rBR, smoothing, shortest_l, preserveSmoothing) : CornerMath{};
+    CornerMath mBL = (bl && rBL > 0.001) ? calcCorner(rBL, smoothing, shortest_l, preserveSmoothing) : CornerMath{};
 
     pts.reserve(256);
 
@@ -501,7 +520,8 @@ QPainterPath ChaSetSquircle::createSquirclePath(
     const QRectF &rect,
     qreal rTL, qreal rTR, qreal rBR, qreal rBL,
     qreal smoothing,
-    bool tl, bool tr, bool br, bool bl)
+    bool tl, bool tr, bool br, bool bl,
+    bool preserveSmoothing)
 {
     QPainterPath path;
     const qreal W = rect.width();
@@ -514,10 +534,10 @@ QPainterPath ChaSetSquircle::createSquirclePath(
 
     const qreal shortest_l = std::min(W, H);
 
-    CornerMath mTL = (tl && rTL > 0.001) ? calcCorner(rTL, smoothing, shortest_l) : CornerMath{};
-    CornerMath mTR = (tr && rTR > 0.001) ? calcCorner(rTR, smoothing, shortest_l) : CornerMath{};
-    CornerMath mBR = (br && rBR > 0.001) ? calcCorner(rBR, smoothing, shortest_l) : CornerMath{};
-    CornerMath mBL = (bl && rBL > 0.001) ? calcCorner(rBL, smoothing, shortest_l) : CornerMath{};
+    CornerMath mTL = (tl && rTL > 0.001) ? calcCorner(rTL, smoothing, shortest_l, preserveSmoothing) : CornerMath{};
+    CornerMath mTR = (tr && rTR > 0.001) ? calcCorner(rTR, smoothing, shortest_l, preserveSmoothing) : CornerMath{};
+    CornerMath mBR = (br && rBR > 0.001) ? calcCorner(rBR, smoothing, shortest_l, preserveSmoothing) : CornerMath{};
+    CornerMath mBL = (bl && rBL > 0.001) ? calcCorner(rBL, smoothing, shortest_l, preserveSmoothing) : CornerMath{};
 
     // Start at top edge center
     path.moveTo(X + W / 2.0, Y);
@@ -658,6 +678,7 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
         p.w = W; p.h = H;
         p.rTL = rTL; p.rTR = rTR; p.rBR = rBR; p.rBL = rBL;
         p.smoothing = m_cornerSmoothing;
+        p.preserveSmoothing = m_preserveSmoothing;
         p.penWidth = bw; p.color = m_color; p.penColor = bc;
         p.tl = tl; p.tr = tr; p.br = br; p.bl = bl;
         p.hasFill = hasFill; p.hasBorder = hasBorder;
@@ -671,7 +692,7 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
 
     const int steps = 24;
     QRectF fillRect(0, 0, W, H);
-    QVector<QPointF> outerPoints = generateSquirclePolygon(fillRect, rTL, rTR, rBR, rBL, m_cornerSmoothing, tl, tr, br, bl, steps);
+    QVector<QPointF> outerPoints = generateSquirclePolygon(fillRect, rTL, rTR, rBR, rBL, m_cornerSmoothing, tl, tr, br, bl, steps, m_preserveSmoothing);
     const int N = outerPoints.size();
     if (N < 3) {
         delete node;
