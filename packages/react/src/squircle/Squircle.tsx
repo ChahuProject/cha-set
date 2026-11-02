@@ -109,7 +109,6 @@ export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
     ref
   ) => {
     const rawId = React.useId();
-    const clipId = React.useMemo(() => rawId.replace(/:/g, '_'), [rawId]);
     const containerRef = React.useRef<HTMLDivElement | null>(null);
 
     const effectiveSmoothing = cornerSmoothing !== undefined ? cornerSmoothing : smoothing;
@@ -246,6 +245,22 @@ export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
       return () => ro.disconnect();
     }, [updateDimensions]);
 
+    // Unique clipId per geometry to prevent Chromium from reusing stale cached clip-path masks
+    const clipId = React.useMemo(() => {
+      const sanitized = rawId.replace(/:/g, '_');
+      return `${sanitized}_${Math.round(currentW)}_${Math.round(currentH)}_${Math.round(radius)}_${Math.round(effectiveSmoothing * 100)}`;
+    }, [rawId, currentW, currentH, radius, effectiveSmoothing]);
+
+    const clipPathStyle = React.useMemo(() => {
+      if (!outerPath) return undefined;
+      // In modern browsers supporting CSS basic shape path(), use path() directly to avoid SVG clipPath caching issues.
+      // Fallback to url(#clipId) for environments without path() support or test runners.
+      if (typeof CSS !== 'undefined' && typeof CSS.supports === 'function' && CSS.supports('clip-path', 'path("M0 0Z")')) {
+        return `path('${outerPath}')`;
+      }
+      return `url(#${clipId})`;
+    }, [outerPath, clipId]);
+
     const combinedStyle: React.CSSProperties = {
       // Prioritize continuous corner shape token
       ['--cs-corner-shape' as string]: 'squircle',
@@ -263,7 +278,7 @@ export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
         className={`relative ${className}`}
         style={{
           ...combinedStyle,
-          clipPath: outerPath ? `url(#${clipId})` : undefined,
+          clipPath: clipPathStyle,
         }}
         data-corner-shape="squircle"
         data-corner-smoothing={effectiveSmoothing}
