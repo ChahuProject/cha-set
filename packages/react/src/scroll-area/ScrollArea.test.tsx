@@ -128,15 +128,24 @@ describe('ScrollArea and ScrollBar', () => {
     expect(toRightBtn).toBeInTheDocument();
   });
 
-  it('constrains thumb to track runway between stepper buttons', () => {
-    // 1. With showButtons=true (default): vertical scrollbar container has flex structure with stepper clusters
+  it('provides full-length thumb drag runway with floating stepper buttons and proximity hiding', () => {
+    // 1. With showButtons=true (default): vertical scrollbar contains full-length track and floating stepper clusters
     const { container: c1 } = render(
       <ScrollArea className="h-64 w-64" showButtons={true}>
         <div style={{ height: 1000 }}>Long Content</div>
       </ScrollArea>,
     );
     const vScrollbar = c1.querySelector('[data-orientation="vertical"]') as HTMLElement;
-    expect(vScrollbar.children.length).toBe(3); // StartCluster, BaseScrollArea.Scrollbar, EndCluster
+    expect(vScrollbar.children.length).toBe(3); // BaseScrollArea.Scrollbar, StartCluster, EndCluster
+
+    // Track spans full length (size-full) so dragging range includes button areas
+    const track = vScrollbar.querySelector('[data-id$="-scrollbar"]') as HTMLElement;
+    expect(track).toHaveClass('size-full');
+
+    // Stepper buttons float over the scrollbar without restricting layout flow
+    const toTopBtn = screen.getByRole('button', { name: /scroll to top/i });
+    // When thumb is at top boundary (scrollTop = 0), top buttons auto-hide
+    expect(toTopBtn).toHaveClass('opacity-0', 'pointer-events-none');
 
     // 2. With showButtons=false: vertical scrollbar container only contains BaseScrollArea.Scrollbar
     const { container: c2 } = render(
@@ -217,26 +226,28 @@ describe('ScrollArea and ScrollBar', () => {
     );
 
     const scrollbar = container.querySelector('[data-orientation="vertical"]') as HTMLElement;
-    const track = scrollbar?.querySelector('.flex-1') as HTMLElement;
+    const track = (scrollbar?.querySelector('[data-id$="-scrollbar"]') ||
+      scrollbar?.querySelector('.size-full') ||
+      scrollbar?.querySelector('.flex-1')) as HTMLElement;
     const thumb = scrollbar?.querySelector('[data-state]') as HTMLElement;
     const viewport = container.querySelector('[data-id$="-viewport"]') as HTMLElement;
 
     if (viewport && track) {
       Object.defineProperty(viewport, 'scrollHeight', { value: 1000, configurable: true });
       Object.defineProperty(viewport, 'clientHeight', { value: 256, configurable: true });
-      Object.defineProperty(track, 'offsetHeight', { value: 216, configurable: true });
+      Object.defineProperty(track, 'offsetHeight', { value: 256, configurable: true });
       if (thumb) {
         Object.defineProperty(thumb, 'offsetHeight', { value: 40, configurable: true });
       }
       track.getBoundingClientRect = () => ({
-        top: 20,
+        top: 0,
         left: 0,
-        bottom: 236,
+        bottom: 256,
         right: 8,
         width: 8,
-        height: 216,
+        height: 256,
         x: 0,
-        y: 20,
+        y: 0,
         toJSON: () => {},
       });
 

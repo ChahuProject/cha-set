@@ -106,6 +106,11 @@ export interface ScrollBarStepperProps {
   pageStepRatio?: number;
   smoothScroll?: boolean;
   forceState?: 'idle' | 'hover' | 'active';
+  isParentExpanded?: boolean;
+  hideToStart?: boolean;
+  hidePageBack?: boolean;
+  hidePageForward?: boolean;
+  hideToEnd?: boolean;
 }
 
 export function ScrollBarStartCluster({
@@ -113,14 +118,28 @@ export function ScrollBarStartCluster({
   pageStepRatio = 0.85,
   smoothScroll = true,
   forceState,
+  isParentExpanded = false,
+  hideToStart = false,
+  hidePageBack = false,
 }: ScrollBarStepperProps) {
   const ctx = useScrollAreaContext();
+
+  const getButtonVisibility = (hide: boolean) =>
+    cn(
+      'transition-opacity duration-short ease-standard',
+      hide
+        ? 'opacity-0 pointer-events-none'
+        : cn(
+            'opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto',
+            isParentExpanded && 'opacity-100 pointer-events-auto',
+          ),
+    );
 
   if (orientation === 'vertical') {
     const isAtTop = ctx ? ctx.scrollState.isAtTop : false;
     return (
       <div
-        className="flex flex-col items-center justify-between pointer-events-auto select-none py-0.5 h-5 w-full"
+        className="flex flex-col items-center justify-between select-none py-0.5 h-5 w-full pointer-events-none"
         onPointerDown={(e) => e.stopPropagation()}
         onPointerUp={(e) => e.stopPropagation()}
         onMouseDown={(e) => e.stopPropagation()}
@@ -131,6 +150,7 @@ export function ScrollBarStartCluster({
           disabled={isAtTop}
           forceHover={forceState === 'hover'}
           forceActive={forceState === 'active'}
+          className={getButtonVisibility(hideToStart)}
           onClick={(e) => {
             e.stopPropagation();
             ctx?.scrollToTop(smoothScroll);
@@ -144,6 +164,7 @@ export function ScrollBarStartCluster({
           disabled={isAtTop}
           forceHover={forceState === 'hover'}
           forceActive={forceState === 'active'}
+          className={getButtonVisibility(hidePageBack)}
           onClick={(e) => {
             e.stopPropagation();
             ctx?.scrollPageUp(pageStepRatio, smoothScroll);
@@ -158,7 +179,7 @@ export function ScrollBarStartCluster({
   const isAtLeft = ctx ? ctx.scrollState.isAtLeft : false;
   return (
     <div
-      className="flex flex-row items-center justify-between pointer-events-auto select-none px-0.5 w-5 h-full"
+      className="flex flex-row items-center justify-between select-none px-0.5 w-5 h-full pointer-events-none"
       onPointerDown={(e) => e.stopPropagation()}
       onPointerUp={(e) => e.stopPropagation()}
       onMouseDown={(e) => e.stopPropagation()}
@@ -169,6 +190,7 @@ export function ScrollBarStartCluster({
         disabled={isAtLeft}
         forceHover={forceState === 'hover'}
         forceActive={forceState === 'active'}
+        className={getButtonVisibility(hideToStart)}
         onClick={(e) => {
           e.stopPropagation();
           ctx?.scrollToLeft(smoothScroll);
@@ -182,6 +204,7 @@ export function ScrollBarStartCluster({
         disabled={isAtLeft}
         forceHover={forceState === 'hover'}
         forceActive={forceState === 'active'}
+        className={getButtonVisibility(hidePageBack)}
         onClick={(e) => {
           e.stopPropagation();
           ctx?.scrollPageLeft(pageStepRatio, smoothScroll);
@@ -198,14 +221,28 @@ export function ScrollBarEndCluster({
   pageStepRatio = 0.85,
   smoothScroll = true,
   forceState,
+  isParentExpanded = false,
+  hidePageForward = false,
+  hideToEnd = false,
 }: ScrollBarStepperProps) {
   const ctx = useScrollAreaContext();
+
+  const getButtonVisibility = (hide: boolean) =>
+    cn(
+      'transition-opacity duration-short ease-standard',
+      hide
+        ? 'opacity-0 pointer-events-none'
+        : cn(
+            'opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto',
+            isParentExpanded && 'opacity-100 pointer-events-auto',
+          ),
+    );
 
   if (orientation === 'vertical') {
     const isAtBottom = ctx ? ctx.scrollState.isAtBottom : false;
     return (
       <div
-        className="flex flex-col items-center justify-between pointer-events-auto select-none py-0.5 h-5 w-full"
+        className="flex flex-col items-center justify-between select-none py-0.5 h-5 w-full pointer-events-none"
         onPointerDown={(e) => e.stopPropagation()}
         onPointerUp={(e) => e.stopPropagation()}
         onMouseDown={(e) => e.stopPropagation()}
@@ -216,6 +253,7 @@ export function ScrollBarEndCluster({
           disabled={isAtBottom}
           forceHover={forceState === 'hover'}
           forceActive={forceState === 'active'}
+          className={getButtonVisibility(hidePageForward)}
           onClick={(e) => {
             e.stopPropagation();
             ctx?.scrollPageDown(pageStepRatio, smoothScroll);
@@ -229,6 +267,7 @@ export function ScrollBarEndCluster({
           disabled={isAtBottom}
           forceHover={forceState === 'hover'}
           forceActive={forceState === 'active'}
+          className={getButtonVisibility(hideToEnd)}
           onClick={(e) => {
             e.stopPropagation();
             ctx?.scrollToBottom(smoothScroll);
@@ -243,7 +282,7 @@ export function ScrollBarEndCluster({
   const isAtRight = ctx ? ctx.scrollState.isAtRight : false;
   return (
     <div
-      className="flex flex-row items-center justify-between pointer-events-auto select-none px-0.5 w-5 h-full"
+      className="flex flex-row items-center justify-between select-none px-0.5 w-5 h-full pointer-events-none"
       onPointerDown={(e) => e.stopPropagation()}
       onPointerUp={(e) => e.stopPropagation()}
       onMouseDown={(e) => e.stopPropagation()}
@@ -254,6 +293,7 @@ export function ScrollBarEndCluster({
         disabled={isAtRight}
         forceHover={forceState === 'hover'}
         forceActive={forceState === 'active'}
+        className={getButtonVisibility(hidePageForward)}
         onClick={(e) => {
           e.stopPropagation();
           ctx?.scrollPageRight(pageStepRatio, smoothScroll);
@@ -267,6 +307,7 @@ export function ScrollBarEndCluster({
         disabled={isAtRight}
         forceHover={forceState === 'hover'}
         forceActive={forceState === 'active'}
+        className={getButtonVisibility(hideToEnd)}
         onClick={(e) => {
           e.stopPropagation();
           ctx?.scrollToRight(smoothScroll);

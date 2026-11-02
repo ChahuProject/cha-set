@@ -71,7 +71,7 @@ export function ScrollAreaDocPage() {
     heroMode === 'horizontal'
       ? `<div className="flex gap-4 p-4 w-max">
     {cards.map((card) => (
-      <div key={card.id} className="w-64 p-4 rounded-lg border bg-card shrink-0">
+      <div key={card.id} className="w-64 p-4 rounded-lg border border-border bg-card shrink-0">
         <span className="text-xs font-semibold text-primary">{card.tag}</span>
         <h5 className="font-bold text-sm mt-1">{card.title}</h5>
         <p className="text-xs text-muted-foreground mt-1">{card.desc}</p>
@@ -85,7 +85,7 @@ export function ScrollAreaDocPage() {
       : `<div className="p-4">
     <DocText role="h4" className="mb-4">Release Changelog</DocText>
     {tags.map((tag) => (
-      <div key={tag.version} className="text-sm py-2 border-b">
+      <div key={tag.version} className="text-sm py-2 border-b border-border/50">
         {tag.version} — {tag.desc}
       </div>
     ))}
@@ -292,7 +292,7 @@ export function ScrollAreaDocPage() {
       {/* 2. Anatomy */}
       <DocAnatomy
         id="anatomy"
-        reactCode={`import { ScrollArea } from "@chahu/cha-set";\n\n<ScrollArea className="h-48 w-full border rounded">\n  <div className="p-4">Scrollable content area...</div>\n</ScrollArea>`}
+        reactCode={`import { ScrollArea } from "@chahu/cha-set";\n\n<ScrollArea className="h-48 w-full border border-border rounded">\n  <div className="p-4">Scrollable content area...</div>\n</ScrollArea>`}
         qtCode={`import ChaSet\n\nChaSetScrollArea {\n    width: 300\n    height: 200\n    contentWidth: 300\n    contentHeight: 600\n}`}
       />
 
@@ -328,10 +328,10 @@ export function ScrollAreaDocPage() {
         </div>
 
         <CodeBlock
-          code={`<ScrollArea className="w-full border rounded-md" showHorizontalScrollBar showVerticalScrollBar={false}>
+          code={`<ScrollArea className="w-full border border-border rounded-md" showHorizontalScrollBar showVerticalScrollBar={false}>
   <div className="flex gap-4 p-4 w-max">
     {cards.map((card) => (
-      <div key={card.id} className="w-60 p-4 border rounded-xl bg-card shrink-0">
+      <div key={card.id} className="w-60 p-4 border border-border rounded-xl bg-card shrink-0">
         <h4>{card.title}</h4>
         <p>{card.desc}</p>
       </div>

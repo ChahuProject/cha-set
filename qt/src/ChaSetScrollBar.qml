@@ -55,10 +55,21 @@ T.ScrollBar {
 
     readonly property bool _hasSpaceForButtons: showButtons && ((vertical ? height : width) >= (buttonLength * 4 + ThemeTokens.dp(24)))
 
-    topPadding: (vertical && _hasSpaceForButtons) ? (buttonLength * 2) : 0
-    bottomPadding: (vertical && _hasSpaceForButtons) ? (buttonLength * 2) : 0
-    leftPadding: (horizontal && _hasSpaceForButtons) ? (buttonLength * 2) : 0
-    rightPadding: (horizontal && _hasSpaceForButtons) ? (buttonLength * 2) : 0
+    // Track & Visual Thumb Coordinates for Full-Length Dragging & Proximity Hiding
+    readonly property real _trackLength: vertical ? height : width
+    readonly property real _actualThumbLength: size * _trackLength
+    readonly property real _displayThumbLength: Math.max(minThumbLength, _actualThumbLength)
+    readonly property real _thumbRawPos: position * _trackLength
+    readonly property real _thumbOffsetDelta: (_actualThumbLength < minThumbLength) ? (_actualThumbLength - minThumbLength) / 2 : 0
+    readonly property real _visualThumbStart: Math.max(0, _thumbRawPos + _thumbOffsetDelta)
+    readonly property real _visualThumbEnd: Math.min(_trackLength, _visualThumbStart + _displayThumbLength)
+    readonly property real _proximityBuffer: ThemeTokens.dp(2)
+
+    // Full-length dragging runway: Stepper buttons float over the scrollbar without restricting thumb travel
+    topPadding: 0
+    bottomPadding: 0
+    leftPadding: 0
+    rightPadding: 0
     padding: 0
     hoverEnabled: true
 
@@ -177,9 +188,11 @@ T.ScrollBar {
             id: thumbRect
             readonly property real actualLength: control.vertical ? parent.height : parent.width
             readonly property real displayLength: Math.max(control.minThumbLength, actualLength)
+            readonly property real clampedY: Math.max(0, Math.min(control.height - control.minThumbLength, parent.y + (actualLength - control.minThumbLength) / 2)) - parent.y
+            readonly property real clampedX: Math.max(0, Math.min(control.width - control.minThumbLength, parent.x + (actualLength - control.minThumbLength) / 2)) - parent.x
 
-            y: control.vertical ? ((actualLength < control.minThumbLength) ? (actualLength - control.minThumbLength) / 2 : 0) : Math.round((parent.height - height) / 2)
-            x: control.horizontal ? ((actualLength < control.minThumbLength) ? (actualLength - control.minThumbLength) / 2 : 0) : Math.round((parent.width - width) / 2)
+            y: control.vertical ? ((actualLength < control.minThumbLength) ? clampedY : 0) : Math.round((parent.height - height) / 2)
+            x: control.horizontal ? ((actualLength < control.minThumbLength) ? clampedX : 0) : Math.round((parent.width - width) / 2)
 
             width: control.vertical ? (control._isExpanded ? control.expandedThumbThickness : control.thumbThickness) : displayLength
             height: control.horizontal ? (control._isExpanded ? control.expandedThumbThickness : control.thumbThickness) : displayLength
@@ -202,6 +215,7 @@ T.ScrollBar {
         // kind: 0: ToStart (ToTop/ToLeft), 1: PageBack (PageUp/PageLeft), 2: PageForward (PageDown/PageRight), 3: ToEnd (ToBottom/ToRight)
         property int kind: 0
         property bool isEnabled: true
+        property bool isNearThumb: false
         property string tooltipText: ""
         signal triggered()
 
@@ -210,15 +224,15 @@ T.ScrollBar {
         radius: ThemeTokens.dp(2)
         z: 2
 
-        readonly property bool _isHovered: (control.forceButtonState === "hover") || (_ma.containsMouse && isEnabled)
-        readonly property bool _isPressed: (control.forceButtonState === "active") || (_ma.pressed && isEnabled)
+        readonly property bool _isHovered: (control.forceButtonState === "hover") || (_ma.containsMouse && isEnabled && !isNearThumb)
+        readonly property bool _isPressed: (control.forceButtonState === "active") || (_ma.pressed && isEnabled && !isNearThumb)
 
         color: !isEnabled ? "transparent" :
                _isPressed ? (ThemeTokens.dark ? "#334155" : "#e2e8f0") :
                _isHovered ? (ThemeTokens.dark ? Qt.rgba(30/255, 41/255, 59/255, 0.8) : Qt.rgba(241/255, 245/255, 249/255, 0.8)) :
                (ThemeTokens.dark ? Qt.rgba(30/255, 41/255, 59/255, 0.0) : Qt.rgba(241/255, 245/255, 249/255, 0.0))
 
-        opacity: !control._isExpanded ? 0.0 : (!isEnabled ? 0.20 : 1.0)
+        opacity: (!control._isExpanded || isNearThumb) ? 0.0 : (!isEnabled ? 0.20 : 1.0)
         Behavior on opacity { enabled: ThemeTokens.animationsEnabled; NumberAnimation { duration: ThemeTokens.motionShort } }
         Behavior on color { enabled: ThemeTokens.animationsEnabled; ColorAnimation { duration: ThemeTokens.motionShort } }
 
@@ -311,12 +325,12 @@ T.ScrollBar {
             id: _ma
             anchors.fill: parent
             hoverEnabled: true
-            enabled: btn.isEnabled
-            cursorShape: btn.isEnabled ? Qt.PointingHandCursor : undefined
+            enabled: btn.isEnabled && !btn.isNearThumb && control._isExpanded
+            cursorShape: (btn.isEnabled && !btn.isNearThumb && control._isExpanded) ? Qt.PointingHandCursor : undefined
             acceptedButtons: Qt.LeftButton
 
             onPressed: {
-                if (btn.isEnabled) {
+                if (btn.isEnabled && !btn.isNearThumb) {
                     btn.triggered()
                     if (control.autoRepeat && (btn.kind === 1 || btn.kind === 2)) {
                         repeatDelayTimer.restart()
@@ -340,6 +354,7 @@ T.ScrollBar {
         objectName: "btnStartTo"
         kind: 0
         visible: control.showButtons && control._hasSpaceForButtons && control.hasOverflow
+        isNearThumb: control._visualThumbStart <= (control.buttonLength + control._proximityBuffer)
         isEnabled: control.canScrollBack
         tooltipText: control.vertical ? ChaSetI18n.tr("desktopComposite.scrollBar.toTop", "到顶") : ChaSetI18n.tr("desktopComposite.scrollBar.toLeft", "到最左")
         x: 0
@@ -352,6 +367,7 @@ T.ScrollBar {
         objectName: "btnStartPage"
         kind: 1
         visible: control.showButtons && control._hasSpaceForButtons && control.hasOverflow
+        isNearThumb: control._visualThumbStart <= (control.buttonLength * 2 + control._proximityBuffer)
         isEnabled: control.canScrollBack
         tooltipText: control.vertical ? ChaSetI18n.tr("desktopComposite.scrollBar.pageUp", "向上翻一页") : ChaSetI18n.tr("desktopComposite.scrollBar.pageLeft", "向左翻一页")
         x: control.vertical ? 0 : control.buttonLength
@@ -365,6 +381,7 @@ T.ScrollBar {
         objectName: "btnEndPage"
         kind: 2
         visible: control.showButtons && control._hasSpaceForButtons && control.hasOverflow
+        isNearThumb: control._visualThumbEnd >= (control._trackLength - control.buttonLength * 2 - control._proximityBuffer)
         isEnabled: control.canScrollForward
         tooltipText: control.vertical ? ChaSetI18n.tr("desktopComposite.scrollBar.pageDown", "向下翻一页") : ChaSetI18n.tr("desktopComposite.scrollBar.pageRight", "向右翻一页")
         x: control.vertical ? 0 : (control.width - control.buttonLength * 2)
@@ -377,6 +394,7 @@ T.ScrollBar {
         objectName: "btnEndTo"
         kind: 3
         visible: control.showButtons && control._hasSpaceForButtons && control.hasOverflow
+        isNearThumb: control._visualThumbEnd >= (control._trackLength - control.buttonLength - control._proximityBuffer)
         isEnabled: control.canScrollForward
         tooltipText: control.vertical ? ChaSetI18n.tr("desktopComposite.scrollBar.toBottom", "到底") : ChaSetI18n.tr("desktopComposite.scrollBar.toEnd", "到最右")
         x: control.vertical ? 0 : (control.width - control.buttonLength)

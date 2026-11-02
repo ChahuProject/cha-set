@@ -68,6 +68,20 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
   ) {
     const isVertical = orientation === 'vertical';
     const ctx = useScrollAreaContext();
+    const localRef = React.useRef<HTMLDivElement | null>(null);
+    const [trackSize, setTrackSize] = React.useState<number>(0);
+
+    const setRef = React.useCallback(
+      (node: HTMLDivElement | null) => {
+        localRef.current = node;
+        if (typeof ref === 'function') {
+          ref(node);
+        } else if (ref) {
+          (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+        }
+      },
+      [ref],
+    );
 
     const hasOverflow = ctx
       ? isVertical
@@ -75,15 +89,70 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
         : ctx.scrollState.hasOverflowX
       : true;
 
+    React.useEffect(() => {
+      const el = localRef.current;
+      if (!el) return;
+      const measure = () => {
+        setTrackSize(isVertical ? el.clientHeight : el.clientWidth);
+      };
+      measure();
+      if (typeof ResizeObserver !== 'undefined') {
+        const ro = new ResizeObserver(measure);
+        ro.observe(el);
+        return () => ro.disconnect();
+      }
+    }, [isVertical]);
+
+    const isExpanded = forceHover || forceActive;
+
+    const effectiveTrackSize =
+      trackSize || (ctx ? (isVertical ? ctx.scrollState.clientHeight : ctx.scrollState.clientWidth) : 0) || 100;
+    const isAtStart = ctx ? (isVertical ? ctx.scrollState.isAtTop : ctx.scrollState.isAtLeft) : false;
+    const isAtEnd = ctx ? (isVertical ? ctx.scrollState.isAtBottom : ctx.scrollState.isAtRight) : false;
+
+    // Calculate thumb position and bounds for proximity hiding of floating stepper buttons
+    const { isStartToNear, isStartPageNear, isEndPageNear, isEndToNear } = React.useMemo(() => {
+      if (!ctx) {
+        return { isStartToNear: false, isStartPageNear: false, isEndPageNear: false, isEndToNear: false };
+      }
+      if (isAtStart) {
+        return { isStartToNear: true, isStartPageNear: true, isEndPageNear: false, isEndToNear: false };
+      }
+      if (isAtEnd) {
+        return { isStartToNear: false, isStartPageNear: false, isEndPageNear: true, isEndToNear: true };
+      }
+
+      const viewportSize = isVertical ? ctx.scrollState.clientHeight : ctx.scrollState.clientWidth;
+      const contentSize = isVertical ? ctx.scrollState.scrollHeight : ctx.scrollState.scrollWidth;
+      const scrollPos = isVertical ? ctx.scrollState.scrollTop : ctx.scrollState.scrollLeft;
+      const maxScroll = Math.max(1, contentSize - viewportSize);
+      const scrollRatio = Math.max(0, Math.min(1, scrollPos / maxScroll));
+
+      const ratio = viewportSize / Math.max(1, contentSize);
+      const minThumb = 16;
+      const thumbLength = Math.max(minThumb, effectiveTrackSize * ratio);
+      const maxThumbOffset = Math.max(0, effectiveTrackSize - thumbLength);
+      const thumbStart = scrollRatio * maxThumbOffset;
+      const thumbEnd = thumbStart + thumbLength;
+
+      const btnSize = 10;
+      const buffer = 4;
+
+      return {
+        isStartToNear: thumbStart <= btnSize + buffer,
+        isStartPageNear: thumbStart <= btnSize * 2 + buffer,
+        isEndPageNear: thumbEnd >= effectiveTrackSize - btnSize * 2 - buffer,
+        isEndToNear: thumbEnd >= effectiveTrackSize - btnSize - buffer,
+      };
+    }, [ctx, isVertical, isAtStart, isAtEnd, effectiveTrackSize]);
+
     if (autoHide && !hasOverflow && !keepMounted) {
       return null;
     }
 
-    const isExpanded = forceHover || forceActive;
-
     return (
       <div
-        ref={ref}
+        ref={setRef}
         data-orientation={orientation}
         data-size={size}
         data-floating={floating ? 'true' : 'false'}
@@ -116,53 +185,31 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
           ...style,
         }}
         className={cn(
-          'group select-none touch-none transition-colors duration-short ease-standard z-20 flex',
+          'group select-none touch-none transition-colors duration-short ease-standard z-20',
           floating ? 'absolute' : 'relative shrink-0',
           !hasOverflow && 'hidden',
           isVertical
             ? floating
-              ? 'flex-col items-center hover:bg-muted/80'
-              : 'flex-col items-center bg-muted/30 border-l border-border/40 hover:bg-muted/60'
+              ? 'hover:bg-muted/80'
+              : 'bg-muted/30 border-l border-border/40 hover:bg-muted/60'
             : floating
-              ? 'flex-row items-center hover:bg-muted/80'
-              : 'flex-row items-center bg-muted/30 border-t border-border/40 hover:bg-muted/60',
+              ? 'hover:bg-muted/80'
+              : 'bg-muted/30 border-t border-border/40 hover:bg-muted/60',
           isExpanded && (floating ? 'bg-muted/80' : 'bg-muted/60'),
           className,
         )}
         {...props}
       >
-        {showButtons && (
-          <div
-            className={cn(
-              'opacity-0 group-hover:opacity-100 transition-opacity duration-short ease-standard z-30 pointer-events-none group-hover:pointer-events-auto shrink-0',
-              isExpanded && 'opacity-100 pointer-events-auto',
-              isVertical ? 'h-5 w-full' : 'w-5 h-full',
-            )}
-          >
-            <ScrollBarStartCluster
-              orientation={orientation}
-              pageStepRatio={pageStepRatio}
-              smoothScroll={smoothScroll}
-              forceState={forceButtonState}
-            />
-          </div>
-        )}
-
         <BaseScrollArea.Scrollbar
           orientation={orientation}
           keepMounted={true}
           style={{
-            position: 'relative',
-            top: 'auto',
-            bottom: 'auto',
-            left: 'auto',
-            right: 'auto',
-            insetInlineStart: 'auto',
-            insetInlineEnd: 'auto',
-            ...(isVertical ? { width: '100%' } : { height: '100%' }),
+            position: 'absolute',
+            inset: 0,
+            ...(isVertical ? { width: '100%', height: '100%' } : { height: '100%', width: '100%' }),
           }}
           className={cn(
-            'flex-1 cursor-pointer select-none touch-none',
+            'size-full cursor-pointer select-none touch-none',
             isVertical ? 'w-full py-0.5' : 'h-full px-0.5',
           )}
         >
@@ -190,9 +237,29 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
         {showButtons && (
           <div
             className={cn(
-              'opacity-0 group-hover:opacity-100 transition-opacity duration-short ease-standard z-30 pointer-events-none group-hover:pointer-events-auto shrink-0',
-              isExpanded && 'opacity-100 pointer-events-auto',
-              isVertical ? 'h-5 w-full' : 'w-5 h-full',
+              'absolute z-30 transition-opacity duration-short ease-standard',
+              isVertical ? 'top-0 inset-x-0 h-5' : 'left-0 inset-y-0 w-5',
+              isStartToNear && isStartPageNear ? 'pointer-events-none' : 'pointer-events-auto',
+            )}
+          >
+            <ScrollBarStartCluster
+              orientation={orientation}
+              pageStepRatio={pageStepRatio}
+              smoothScroll={smoothScroll}
+              forceState={forceButtonState}
+              isParentExpanded={isExpanded}
+              hideToStart={isStartToNear}
+              hidePageBack={isStartPageNear}
+            />
+          </div>
+        )}
+
+        {showButtons && (
+          <div
+            className={cn(
+              'absolute z-30 transition-opacity duration-short ease-standard',
+              isVertical ? 'bottom-0 inset-x-0 h-5' : 'right-0 inset-y-0 w-5',
+              isEndPageNear && isEndToNear ? 'pointer-events-none' : 'pointer-events-auto',
             )}
           >
             <ScrollBarEndCluster
@@ -200,6 +267,9 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
               pageStepRatio={pageStepRatio}
               smoothScroll={smoothScroll}
               forceState={forceButtonState}
+              isParentExpanded={isExpanded}
+              hidePageForward={isEndPageNear}
+              hideToEnd={isEndToNear}
             />
           </div>
         )}

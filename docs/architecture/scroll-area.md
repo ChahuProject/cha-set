@@ -42,12 +42,13 @@ To ensure desktop-grade ergonomics and cross-stack parity, all implementations M
   - **Repeat Interval**: 100ms.
 - **Tooltips**: Buttons must provide localized tooltips (e.g., "到顶", "向上翻一页", "向下翻一页", "到底").
 
-### 2.4 Track Runway Margin & Hit Isolation
-- **Rule**: The thumb's travel distance is strictly confined to the "runway" between the stepper buttons.
-- **Kinematic Invariant**:
-  - Runway Length = Total Length - (Button Count * Button Length)
-  - Thumb Position = Start Offset + (Relative Position * (Runway Length - Thumb Length))
-- **Track Clicks**: Clicking on the track background must never be intercepted or distorted by stepper button boundaries. Track clicks trigger page-wise or coordinate jumps cleanly within the remaining runway.
+### 2.4 Full-Length Runway & Floating Stepper Buttons (Proximity Auto-Hide)
+- **Rule**: The thumb's dragging track/runway spans the entire length of the scrollbar (`totalLength`), including the end regions where stepper buttons are located. Stepper buttons float on top of the scrollbar track rather than occupying layout space in the track flow.
+- **Proximity Auto-Hide Kinematics**:
+  - When the thumb is dragged or scrolled near the buttons at either end (start cluster or end cluster), the buttons that are approached automatically and smoothly fade out (`opacity: 0`) and relinquish pointer event capture (`pointer-events: none` / `_ma.enabled: false`).
+  - This guarantees an unhindered, full-length thumb dragging experience from boundary to boundary (0 to `totalLength - thumbLength`).
+  - When the thumb moves away from the button zones, the buttons smoothly reappear (subject to hover/expansion state), providing convenient access to stepper actions (To-Start, Page-Back, Page-Forward, To-End).
+  - Track clicks anywhere across the full length map directly to the corresponding scroll offset.
 
 ### 2.5 Expandable Interaction Hot Zone
 - **Resting State**: Subtle visual footprint (	humbThickness: 6px, transparent background).
