@@ -80,6 +80,7 @@ static QVector<QPointF> computeClockwiseNormals(const QVector<QPointF> &pts)
         return normals;
 
     QVector<QPointF> edgeNormals(N);
+    QPointF fallbackNormal(0, -1);
     for (int i = 0; i < N; ++i) {
         const int next = (i + 1 == N) ? 0 : (i + 1);
         const qreal dx = pts[next].x() - pts[i].x();
@@ -87,8 +88,18 @@ static QVector<QPointF> computeClockwiseNormals(const QVector<QPointF> &pts)
         const qreal len = std::hypot(dx, dy);
         if (len > 1e-6) {
             edgeNormals[i] = QPointF(dy / len, -dx / len);
+            fallbackNormal = edgeNormals[i];
         } else {
             edgeNormals[i] = QPointF(0, 0);
+        }
+    }
+
+    // Propagate forward and backward to fill degenerate edges
+    for (int i = 0; i < N; ++i) {
+        if (edgeNormals[i].isNull()) {
+            edgeNormals[i] = fallbackNormal;
+        } else {
+            fallbackNormal = edgeNormals[i];
         }
     }
 
@@ -652,7 +663,7 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
         node->hasCache = true;
     }
 
-    const int steps = 16;
+    const int steps = 24;
     QRectF fillRect(0, 0, W, H);
     QVector<QPointF> outerPoints = generateSquirclePolygon(fillRect, rTL, rTR, rBR, rBL, m_cornerSmoothing, tl, tr, br, bl, steps);
     const int N = outerPoints.size();
@@ -685,7 +696,7 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
         }
     }
 
-    const qreal f = isAA ? 0.5 : 0.0;
+    const qreal f = isAA ? 0.75 : 0.0;
 
     // 内环不可用时统一按实心绘制（几何上等价：描边环已铺满整个外形）。
     // 触发条件：线宽 ≥ 半宽高（内环整体塌缩），或内外轮廓顶点数不配对。
@@ -701,7 +712,7 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
         numIndices = (isAA ? (9 * N) : (3 * N));
     } else if (hasFill) {
         numVerts = (isAA ? (4 * N + 1) : (3 * N + 1));
-        numIndices = (isAA ? (15 * N) : (9 * N));
+        numIndices = (isAA ? (21 * N) : (9 * N));
     } else {
         numVerts = (isAA ? (4 * N) : (2 * N));
         numIndices = (isAA ? (18 * N) : (6 * N));
@@ -780,13 +791,16 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
         const auto [br, bg, bb, ba] = makePremul(bc, 1.0f);
         const auto [zr, zg, zb, za] = makePremul(bc, 0.0f);
 
+        const qreal fIn = isAA ? std::min(f, bw * 0.35) : 0.0;
+
         // 1. Fill center fan
         const QPointF center(W / 2.0, H / 2.0);
         v[vertOffset + 0].set(static_cast<float>(center.x()), static_cast<float>(center.y()), fr, fg, fb, fa);
 
         const int fillBase = vertOffset + 1;
         for (int i = 0; i < N; ++i) {
-            v[fillBase + i].set(static_cast<float>(innerPoints[i].x()), static_cast<float>(innerPoints[i].y()), fr, fg, fb, fa);
+            const QPointF pt = innerPoints[i] - fIn * innerNormals[i];
+            v[fillBase + i].set(static_cast<float>(pt.x()), static_cast<float>(pt.y()), fr, fg, fb, fa);
         }
 
         for (int i = 0; i < N; ++i) {
@@ -797,15 +811,27 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
             indices[idxOffset++] = c2;
         }
 
-        // 2. Border body
+        // 2. Inner transition band (Fill -> Border AA)
         const int borderInBase = fillBase + N;
         const int borderOutBase = borderInBase + N;
         for (int i = 0; i < N; ++i) {
-            v[borderInBase + i].set(static_cast<float>(innerPoints[i].x()), static_cast<float>(innerPoints[i].y()), br, bg, bb, ba);
-            const QPointF pt = outerPoints[i] - f * outerNormals[i];
-            v[borderOutBase + i].set(static_cast<float>(pt.x()), static_cast<float>(pt.y()), br, bg, bb, ba);
+            const QPointF ptIn = innerPoints[i] + fIn * innerNormals[i];
+            v[borderInBase + i].set(static_cast<float>(ptIn.x()), static_cast<float>(ptIn.y()), br, bg, bb, ba);
+            const QPointF ptOut = outerPoints[i] - f * outerNormals[i];
+            v[borderOutBase + i].set(static_cast<float>(ptOut.x()), static_cast<float>(ptOut.y()), br, bg, bb, ba);
         }
 
+        if (isAA) {
+            for (int i = 0; i < N; ++i) {
+                const quint16 in1 = static_cast<quint16>(fillBase + i);
+                const quint16 in2 = static_cast<quint16>(fillBase + ((i + 1 == N) ? 0 : (i + 1)));
+                const quint16 out1 = static_cast<quint16>(borderInBase + i);
+                const quint16 out2 = static_cast<quint16>(borderInBase + ((i + 1 == N) ? 0 : (i + 1)));
+                addQuad(in1, out1, in2, out2);
+            }
+        }
+
+        // 3. Border body
         for (int i = 0; i < N; ++i) {
             const quint16 in1 = static_cast<quint16>(borderInBase + i);
             const quint16 in2 = static_cast<quint16>(borderInBase + ((i + 1 == N) ? 0 : (i + 1)));
@@ -814,7 +840,7 @@ QSGNode *ChaSetSquircle::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *
             addQuad(in1, out1, in2, out2);
         }
 
-        // 3. Outer fringe (AA)
+        // 4. Outer fringe (AA)
         if (isAA) {
             const int fringeBase = borderOutBase + N;
             for (int i = 0; i < N; ++i) {

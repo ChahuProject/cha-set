@@ -13,7 +13,10 @@ export function SquircleDocPage() {
   const heroReactCode = `<Squircle
   radius={${radius}}
   smoothing={${smoothing.toFixed(2)}}
-  className="w-48 h-32 bg-primary/10 border border-primary/30 flex items-center justify-center p-4 text-center text-sm font-medium"
+  borderWidth={2}
+  borderColor="var(--primary)"
+  color="color-mix(in srgb, var(--primary) 15%, transparent)"
+  className="w-48 h-32 flex items-center justify-center p-4 text-center text-sm font-medium text-foreground"
 >
   iOS Continuous Squircle (${Math.round(smoothing * 100)}%)
 </Squircle>`;
@@ -23,9 +26,9 @@ export function SquircleDocPage() {
     height: 128
     radius: ${radius}
     cornerSmoothing: ${smoothing.toFixed(2)}
-    color: Qt.rgba(48/255, 160/255, 255/255, 0.1)
+    color: Qt.rgba(48/255, 160/255, 255/255, 0.15)
     border.color: ThemeTokens.accent
-    border.width: 1
+    border.width: 2
 
     Text {
         anchors.centerIn: parent
@@ -113,18 +116,20 @@ export function PremiumCard({ children }: { children: React.ReactNode }) {
                   smoothing={smoothing}
                   borderWidth={2}
                   borderColor="var(--primary)"
-                  className="w-44 h-28 bg-primary/15 flex items-center justify-center text-center p-3 text-sm font-medium text-foreground shadow-sm"
+                  color="color-mix(in srgb, var(--primary) 15%, transparent)"
+                  className="w-48 h-32 flex items-center justify-center text-center p-3 text-sm font-medium text-foreground shadow-sm"
                 >
                   <span>{t('components.squircle.squircleLabel', 'Squircle (Smoothing: {{smoothing}}%)', { smoothing: (smoothing * 100).toFixed(0) })}</span>
                 </Squircle>
-                <span className="text-xs text-muted-foreground font-mono">{t('components.squircle.radiusLabel', 'Radius: {{radius}}', { radius })} | S: {smoothing.toFixed(2)}</span>
+                <span className="text-xs text-muted-foreground font-mono">{t('components.squircle.g2Label', 'iOS Continuous Curvature (G2)')}</span>
               </div>
 
               {/* Standard Round Comparison */}
               <div className="flex flex-col items-center gap-2">
                 <div
-                  className="w-44 h-28 bg-muted/60 border-2 border-border flex items-center justify-center text-center p-3 text-sm font-medium text-muted-foreground"
+                  className="w-48 h-32 border-2 border-primary flex items-center justify-center text-center p-3 text-sm font-medium text-foreground shadow-sm"
                   style={{
+                    backgroundColor: 'color-mix(in srgb, var(--primary) 15%, transparent)',
                     borderRadius: `${radius * 0.0625}rem`,
                     ['cornerShape' as string]: 'round',
                   }}

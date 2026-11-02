@@ -96,7 +96,7 @@ describe('Squircle mathematical path generator', () => {
     expect(borderPath?.getAttribute('fill')).toBe('none');
     expect(borderPath?.getAttribute('stroke')).toBe('#3b82f6');
     expect(borderPath?.getAttribute('stroke-width')).toBe('2');
-    expect(borderPath?.getAttribute('d')).toContain('M 50 0');
+    expect(borderPath?.getAttribute('d')).toContain('M 50 1');
   });
 
   it('does not render border stroke svg when borderWidth is 0 or borderColor is omitted', () => {

@@ -7,6 +7,8 @@
  */
 
 export interface SquircleParams {
+  x?: number;
+  y?: number;
   width: number;
   height: number;
   cornerRadius?: number;
@@ -84,6 +86,8 @@ function calcCorner(radius: number, s: number, shortest_l: number): CornerMath {
  */
 export function getSquircleSvgPath(params: SquircleParams): string {
   const {
+    x: X = 0,
+    y: Y = 0,
     width: W,
     height: H,
     cornerRadius = 0,
@@ -124,77 +128,77 @@ export function getSquircleSvgPath(params: SquircleParams): string {
   const parts: string[] = [];
 
   // Start at top center
-  parts.push(`M ${W / 2} 0`);
+  parts.push(`M ${X + W / 2} ${Y}`);
 
   // 1. Top Edge -> Top-Right Corner
   if (mTR.r <= 0.001) {
-    parts.push(`L ${W} 0`);
+    parts.push(`L ${X + W} ${Y}`);
   } else {
-    parts.push(`L ${W - mTR.p} 0`);
+    parts.push(`L ${X + W - mTR.p} ${Y}`);
     parts.push(
-      `C ${W - (mTR.p - mTR.a)} 0, ${W - (mTR.p - mTR.a - mTR.b)} 0, ${W - (mTR.p - mTR.a - mTR.b - mTR.c)} ${mTR.d}`
+      `C ${X + W - (mTR.p - mTR.a)} ${Y}, ${X + W - (mTR.p - mTR.a - mTR.b)} ${Y}, ${X + W - (mTR.p - mTR.a - mTR.b - mTR.c)} ${Y + mTR.d}`
     );
-    const cp1x = W - (mTR.p - mTR.a - mTR.b - mTR.c) + mTR.k * mTR.r * Math.cos(mTR.theta);
-    const cp1y = mTR.d + mTR.k * mTR.r * Math.sin(mTR.theta);
-    const cp2x = W - mTR.d - mTR.k * mTR.r * Math.sin(mTR.theta);
-    const cp2y = mTR.p - mTR.a - mTR.b - mTR.c - mTR.k * mTR.r * Math.cos(mTR.theta);
-    parts.push(`C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${W - mTR.d} ${mTR.p - mTR.a - mTR.b - mTR.c}`);
+    const cp1x = X + W - (mTR.p - mTR.a - mTR.b - mTR.c) + mTR.k * mTR.r * Math.cos(mTR.theta);
+    const cp1y = Y + mTR.d + mTR.k * mTR.r * Math.sin(mTR.theta);
+    const cp2x = X + W - mTR.d - mTR.k * mTR.r * Math.sin(mTR.theta);
+    const cp2y = Y + mTR.p - mTR.a - mTR.b - mTR.c - mTR.k * mTR.r * Math.cos(mTR.theta);
+    parts.push(`C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${X + W - mTR.d} ${Y + mTR.p - mTR.a - mTR.b - mTR.c}`);
     parts.push(
-      `C ${W} ${mTR.p - mTR.a - mTR.b}, ${W} ${mTR.p - mTR.a}, ${W} ${mTR.p}`
+      `C ${X + W} ${Y + mTR.p - mTR.a - mTR.b}, ${X + W} ${Y + mTR.p - mTR.a}, ${X + W} ${Y + mTR.p}`
     );
   }
 
   // 2. Right Edge -> Bottom-Right Corner
   if (mBR.r <= 0.001) {
-    parts.push(`L ${W} ${H}`);
+    parts.push(`L ${X + W} ${Y + H}`);
   } else {
-    parts.push(`L ${W} ${H - mBR.p}`);
+    parts.push(`L ${X + W} ${Y + H - mBR.p}`);
     parts.push(
-      `C ${W} ${H - (mBR.p - mBR.a)}, ${W} ${H - (mBR.p - mBR.a - mBR.b)}, ${W - mBR.d} ${H - (mBR.p - mBR.a - mBR.b - mBR.c)}`
+      `C ${X + W} ${Y + H - (mBR.p - mBR.a)}, ${X + W} ${Y + H - (mBR.p - mBR.a - mBR.b)}, ${X + W - mBR.d} ${Y + H - (mBR.p - mBR.a - mBR.b - mBR.c)}`
     );
-    const cp1x = W - mBR.d - mBR.k * mBR.r * Math.sin(mBR.theta);
-    const cp1y = H - (mBR.p - mBR.a - mBR.b - mBR.c) + mBR.k * mBR.r * Math.cos(mBR.theta);
-    const cp2x = W - (mBR.p - mBR.a - mBR.b - mBR.c) + mBR.k * mBR.r * Math.cos(mBR.theta);
-    const cp2y = H - mBR.d - mBR.k * mBR.r * Math.sin(mBR.theta);
-    parts.push(`C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${W - (mBR.p - mBR.a - mBR.b - mBR.c)} ${H - mBR.d}`);
+    const cp1x = X + W - mBR.d - mBR.k * mBR.r * Math.sin(mBR.theta);
+    const cp1y = Y + H - (mBR.p - mBR.a - mBR.b - mBR.c) + mBR.k * mBR.r * Math.cos(mBR.theta);
+    const cp2x = X + W - (mBR.p - mBR.a - mBR.b - mBR.c) + mBR.k * mBR.r * Math.cos(mBR.theta);
+    const cp2y = Y + H - mBR.d - mBR.k * mBR.r * Math.sin(mBR.theta);
+    parts.push(`C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${X + W - (mBR.p - mBR.a - mBR.b - mBR.c)} ${Y + H - mBR.d}`);
     parts.push(
-      `C ${W - (mBR.p - mBR.a - mBR.b)} ${H}, ${W - (mBR.p - mBR.a)} ${H}, ${W - mBR.p} ${H}`
+      `C ${X + W - (mBR.p - mBR.a - mBR.b)} ${Y + H}, ${X + W - (mBR.p - mBR.a)} ${Y + H}, ${X + W - mBR.p} ${Y + H}`
     );
   }
 
   // 3. Bottom Edge -> Bottom-Left Corner
   if (mBL.r <= 0.001) {
-    parts.push(`L 0 ${H}`);
+    parts.push(`L ${X} ${Y + H}`);
   } else {
-    parts.push(`L ${mBL.p} ${H}`);
+    parts.push(`L ${X + mBL.p} ${Y + H}`);
     parts.push(
-      `C ${mBL.p - mBL.a} ${H}, ${mBL.p - mBL.a - mBL.b} ${H}, ${mBL.p - mBL.a - mBL.b - mBL.c} ${H - mBL.d}`
+      `C ${X + mBL.p - mBL.a} ${Y + H}, ${X + mBL.p - mBL.a - mBL.b} ${Y + H}, ${X + mBL.p - mBL.a - mBL.b - mBL.c} ${Y + H - mBL.d}`
     );
-    const cp1x = mBL.p - mBL.a - mBL.b - mBL.c - mBL.k * mBL.r * Math.cos(mBL.theta);
-    const cp1y = H - mBL.d - mBL.k * mBL.r * Math.sin(mBL.theta);
-    const cp2x = mBL.d + mBL.k * mBL.r * Math.sin(mBL.theta);
-    const cp2y = H - (mBL.p - mBL.a - mBL.b - mBL.c) + mBL.k * mBL.r * Math.cos(mBL.theta);
-    parts.push(`C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${mBL.d} ${H - (mBL.p - mBL.a - mBL.b - mBL.c)}`);
+    const cp1x = X + mBL.p - mBL.a - mBL.b - mBL.c - mBL.k * mBL.r * Math.cos(mBL.theta);
+    const cp1y = Y + H - mBL.d - mBL.k * mBL.r * Math.sin(mBL.theta);
+    const cp2x = X + mBL.d + mBL.k * mBL.r * Math.sin(mBL.theta);
+    const cp2y = Y + H - (mBL.p - mBL.a - mBL.b - mBL.c) + mBL.k * mBL.r * Math.cos(mBL.theta);
+    parts.push(`C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${X + mBL.d} ${Y + H - (mBL.p - mBL.a - mBL.b - mBL.c)}`);
     parts.push(
-      `C 0 ${H - (mBL.p - mBL.a - mBL.b)}, 0 ${H - (mBL.p - mBL.a)}, 0 ${H - mBL.p}`
+      `C ${X} ${Y + H - (mBL.p - mBL.a - mBL.b)}, ${X} ${Y + H - (mBL.p - mBL.a)}, ${X} ${Y + H - mBL.p}`
     );
   }
 
   // 4. Left Edge -> Top-Left Corner
   if (mTL.r <= 0.001) {
-    parts.push('L 0 0');
+    parts.push(`L ${X} ${Y}`);
   } else {
-    parts.push(`L 0 ${mTL.p}`);
+    parts.push(`L ${X} ${Y + mTL.p}`);
     parts.push(
-      `C 0 ${mTL.p - mTL.a}, 0 ${mTL.p - mTL.a - mTL.b}, ${mTL.d} ${mTL.p - mTL.a - mTL.b - mTL.c}`
+      `C ${X} ${Y + mTL.p - mTL.a}, ${X} ${Y + mTL.p - mTL.a - mTL.b}, ${X + mTL.d} ${Y + mTL.p - mTL.a - mTL.b - mTL.c}`
     );
-    const cp1x = mTL.d + mTL.k * mTL.r * Math.sin(mTL.theta);
-    const cp1y = mTL.p - mTL.a - mTL.b - mTL.c - mTL.k * mTL.r * Math.cos(mTL.theta);
-    const cp2x = mTL.p - mTL.a - mTL.b - mTL.c - mTL.k * mTL.r * Math.cos(mTL.theta);
-    const cp2y = mTL.d + mTL.k * mTL.r * Math.sin(mTL.theta);
-    parts.push(`C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${mTL.p - mTL.a - mTL.b - mTL.c} ${mTL.d}`);
+    const cp1x = X + mTL.d + mTL.k * mTL.r * Math.sin(mTL.theta);
+    const cp1y = Y + mTL.p - mTL.a - mTL.b - mTL.c - mTL.k * mTL.r * Math.cos(mTL.theta);
+    const cp2x = X + mTL.p - mTL.a - mTL.b - mTL.c - mTL.k * mTL.r * Math.cos(mTL.theta);
+    const cp2y = Y + mTL.d + mTL.k * mTL.r * Math.sin(mTL.theta);
+    parts.push(`C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${X + mTL.p - mTL.a - mTL.b - mTL.c} ${Y + mTL.d}`);
     parts.push(
-      `C ${mTL.p - mTL.a - mTL.b} 0, ${mTL.p - mTL.a} 0, ${mTL.p} 0`
+      `C ${X + mTL.p - mTL.a - mTL.b} ${Y}, ${X + mTL.p - mTL.a} ${Y}, ${X + mTL.p} ${Y}`
     );
   }
 

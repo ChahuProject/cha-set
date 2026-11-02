@@ -23,12 +23,15 @@ DocLayout {
     ComponentPreview {
         id: heroPreview
         width: parent.width
-        stageHeight: 440
+        stageHeight: 460
         title: ChaSetI18n.tr("desktopComposite.squircle.sandboxTitle", "Squircle Sandbox & Curvature Comparison")
         reactCode: `<Squircle
   radius={${root.customRadius}}
   smoothing={${root.customSmoothing.toFixed(2)}}
-  className="w-48 h-32 bg-primary/10 border border-primary/30 flex items-center justify-center p-4 text-center text-sm font-medium"
+  borderWidth={2}
+  borderColor="var(--primary)"
+  color="color-mix(in srgb, var(--primary) 15%, transparent)"
+  className="w-48 h-32 flex items-center justify-center p-4 text-center text-sm font-medium text-foreground"
 >
   iOS Continuous Squircle (${Math.round(root.customSmoothing * 100)}%)
 </Squircle>`
@@ -37,9 +40,9 @@ DocLayout {
     height: 128
     radius: ${root.customRadius}
     cornerSmoothing: ${root.customSmoothing.toFixed(2)}
-    color: Qt.rgba(48/255, 160/255, 255/255, 0.1)
+    color: Qt.rgba(48/255, 160/255, 255/255, 0.15)
     border.color: ThemeTokens.accent
-    border.width: 1
+    border.width: 2
 
     Text {
         anchors.centerIn: parent
@@ -87,7 +90,7 @@ DocLayout {
                         Text {
                             anchors.horizontalCenter: parent.horizontalCenter
                             text: ChaSetI18n.tr("components.squircle.g2Label", "iOS Continuous Curvature (G2)")
-                            color: ThemeTokens.accent
+                            color: ThemeTokens.subduedText
                             font.pixelSize: Typography.sizeCaption
                             font.weight: Font.Medium
                         }
@@ -101,8 +104,8 @@ DocLayout {
                             width: ThemeTokens.dp(180)
                             height: ThemeTokens.dp(120)
                             radius: ThemeTokens.dp(root.customRadius)
-                            color: Qt.rgba(120/255, 130/255, 150/255, 0.15)
-                            border.color: ThemeTokens.border
+                            color: Qt.rgba(48/255, 160/255, 255/255, 0.15)
+                            border.color: ThemeTokens.accent
                             border.width: 2
 
                             Text {
@@ -111,7 +114,7 @@ DocLayout {
                                 horizontalAlignment: Text.AlignHCenter
                                 wrapMode: Text.WordWrap
                                 text: ChaSetI18n.tr("components.squircle.classicArc", "Classic Arc (Smoothing: 0%)")
-                                color: ThemeTokens.subduedText
+                                color: ThemeTokens.text
                                 font.pixelSize: Typography.sizeSmall
                                 font.weight: Font.DemiBold
                             }
@@ -218,7 +221,8 @@ DocLayout {
                         font.weight: Font.Bold
                     }
 
-                    Row {
+                    Flow {
+                        width: parent.width
                         spacing: ThemeTokens.dp(10)
 
                         ChaSetButton {
@@ -234,13 +238,16 @@ DocLayout {
                         ChaSetBadge {
                             text: ChaSetI18n.tr("desktopComposite.squircle.demoPill", "Status Pill")
                             variant: "default"
-                            anchors.verticalCenter: parent.verticalCenter
                         }
 
                         ChaSetBadge {
                             text: ChaSetI18n.tr("desktopComposite.squircle.demoBadge", "Secondary Badge")
                             variant: "secondary"
-                            anchors.verticalCenter: parent.verticalCenter
+                        }
+
+                        ChaSetInput {
+                            width: ThemeTokens.dp(160)
+                            placeholderText: ChaSetI18n.tr("desktopComposite.squircle.demoInput", "Squircle Input...")
                         }
                     }
                 }
