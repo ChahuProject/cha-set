@@ -93,18 +93,21 @@ export function ResizableHandle({
   ...props
 }: ResizableHandleProps) {
   const context = React.useContext(ResizableContext);
+  const ariaOrientation = props['aria-orientation'] ?? (props as any)['ariaOrientation'];
   // In react-resizable-panels, horizontal group has vertical separators, and vertical group has horizontal separators.
-  const isVertical = context.orientation === 'horizontal';
+  const isVertical = ariaOrientation
+    ? ariaOrientation === 'vertical'
+    : context.orientation !== 'vertical';
 
   return (
     <ResizablePrimitive.Separator
       {...props}
       data-slot="resizable-handle"
       className={cn(
-        'group relative flex items-center justify-center z-20 select-none bg-transparent',
+        'group relative flex items-center justify-center z-20 select-none bg-transparent self-stretch',
         // Hit target: 16px hit target with negative margins preserving 1px net layout space
         isVertical
-          ? 'w-4 -mx-[0.46875rem] h-full cursor-col-resize'
+          ? 'w-4 -mx-[0.46875rem] cursor-col-resize'
           : 'w-full h-4 mx-0 -my-[0.46875rem] cursor-row-resize',
         'focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:outline-hidden',
         className,

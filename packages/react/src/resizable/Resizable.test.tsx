@@ -157,7 +157,7 @@ describe('Resizable Component Group', () => {
     );
 
     const handle = screen.getByRole('separator');
-    expect(handle).toHaveClass('w-4', '-mx-[0.46875rem]', 'cursor-col-resize');
+    expect(handle).toHaveClass('w-4', '-mx-[0.46875rem]', 'self-stretch', 'cursor-col-resize');
 
     const line = handle.querySelector('[data-slot="resizable-handle-line"]');
     expect(line).toBeInTheDocument();
@@ -174,7 +174,7 @@ describe('Resizable Component Group', () => {
     );
 
     const handle = screen.getByRole('separator');
-    expect(handle).toHaveClass('h-4', '-my-[0.46875rem]', 'cursor-row-resize');
+    expect(handle).toHaveClass('h-4', '-my-[0.46875rem]', 'self-stretch', 'cursor-row-resize');
 
     const line = handle.querySelector('[data-slot="resizable-handle-line"]');
     expect(line).toBeInTheDocument();
