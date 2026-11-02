@@ -57,15 +57,15 @@ Item {
     // 单行/多行紧凑内容宽度与高度（精确支持折行与显式多行）
     readonly property real contentW: {
         var w = 0
-        if (contentRow.visible) w = Math.max(w, contentRow.width)
-        if (descText.visible) w = Math.max(w, descText.width)
+        if (contentRow.visible) w = Math.max(w, contentRow.implicitWidth, contentRow.width)
+        if (descText.visible) w = Math.max(w, descText.width, descText.implicitWidth)
         return w
     }
     readonly property real contentH: {
         var h = 0
-        if (contentRow.visible) h += contentRow.height
+        if (contentRow.visible) h += Math.max(contentRow.implicitHeight, contentRow.height)
         if (contentRow.visible && descText.visible) h += mainContent.spacing
-        if (descText.visible) h += descText.height
+        if (descText.visible) h += Math.max(descText.height, descText.implicitHeight)
         return h
     }
 
