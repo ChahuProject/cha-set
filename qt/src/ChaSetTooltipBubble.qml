@@ -77,8 +77,12 @@ Item {
     // 单行/多行紧凑内容宽度与高度（首帧同步计算 + TextMetrics 兜底，彻底杜绝 0 宽坍塌与 24dp 空白方块）
     readonly property real naturalTextW: {
         if (root.text === "") return 0
-        if (root.text.indexOf("\n") !== -1 || textMetrics.width > root.maxTextW) {
-            return Math.min(textMetrics.width, root.maxTextW)
+        var maxW = root.maxTextW
+        if (root.text.indexOf("\n") !== -1 && bubbleText.implicitWidth > 0) {
+            return Math.min(bubbleText.implicitWidth, maxW)
+        }
+        if (root.text.indexOf("\n") !== -1 || textMetrics.width > maxW) {
+            return Math.min(textMetrics.width, maxW)
         }
         return textMetrics.width
     }
@@ -106,6 +110,9 @@ Item {
                     ? ThemeTokens.dp(8) : Math.round(8 * root.uiScaleFactor)
             w += (items - 1) * sp
         }
+        if (bubbleText.wrapMode === Text.Wrap) {
+            return w
+        }
         return Math.max(w, contentRow.implicitWidth, contentRow.width)
     }
 
@@ -113,16 +120,35 @@ Item {
         if (root.description === "") return 0
         var maxD = (typeof ThemeTokens !== "undefined" && ThemeTokens)
                 ? ThemeTokens.dp(280) : Math.round(280 * root.uiScaleFactor)
-        return Math.min(descMetrics.width, maxD)
+        if (descText.shouldWrap) {
+            return maxD
+        }
+        var w = descMetrics.width
+        if (root.description.indexOf("\n") !== -1 && descText.implicitWidth > 0) {
+            w = descText.implicitWidth
+        } else if (descText.implicitWidth > w) {
+            w = descText.implicitWidth
+        }
+        return Math.min(w, maxD)
     }
 
-    readonly property real contentW: Math.max(naturalRowW, naturalDescW, descText.width, descText.implicitWidth)
+    readonly property real contentW: {
+        var dw = naturalDescW
+        if (descText.visible) {
+            if (descText.shouldWrap) {
+                dw = Math.max(dw, descText.width)
+            } else {
+                dw = Math.max(dw, descText.width, descText.implicitWidth)
+            }
+        }
+        return Math.max(naturalRowW, dw)
+    }
 
     readonly property real naturalRowH: {
         var h = 0
         if (root.text !== "") {
             var th = (bubbleText.lineCount > 1)
-                    ? (bubbleText.height > 0 ? bubbleText.height : (bubbleText.lineCount * textMetrics.height))
+                    ? Math.max(bubbleText.height, bubbleText.implicitHeight, bubbleText.lineCount * textMetrics.height)
                     : textMetrics.height
             h = Math.max(h, th)
         }
@@ -149,7 +175,14 @@ Item {
         }
         var explicitLines = root.description.split("\n").length
         lineCount = Math.max(lineCount, explicitLines)
-        var estH = lineCount * descMetrics.height
+        if (descText.lineCount > lineCount) {
+            lineCount = descText.lineCount
+        }
+        var singleLineH = descMetrics.height
+        if (descText.implicitHeight > 0 && descText.lineCount > 0) {
+            singleLineH = Math.max(singleLineH, descText.implicitHeight / descText.lineCount)
+        }
+        var estH = lineCount * singleLineH
         return Math.max(estH, descText.height, descText.implicitHeight)
     }
 
@@ -157,13 +190,23 @@ Item {
         var h = 0
         var hasRow = (root.text !== "" || root.shortcut !== "" || root.iconName !== "")
         var hasDesc = (root.description !== "")
+        var sp = (hasRow && hasDesc)
+                ? ((typeof ThemeTokens !== "undefined" && ThemeTokens)
+                    ? ThemeTokens.dp(2) : Math.round(2 * root.uiScaleFactor))
+                : 0
         if (hasRow) h += naturalRowH
-        if (hasRow && hasDesc) {
-            h += (typeof ThemeTokens !== "undefined" && ThemeTokens)
-                    ? ThemeTokens.dp(2) : Math.round(2 * root.uiScaleFactor)
-        }
+        h += sp
         if (hasDesc) h += naturalDescH
-        return Math.max(h, contentRow.height + (descText.visible ? descText.height : 0))
+
+        var renderedH = 0
+        if (contentRow.visible) {
+            renderedH += Math.max(contentRow.height, contentRow.implicitHeight)
+        }
+        renderedH += sp
+        if (descText.visible) {
+            renderedH += Math.max(descText.height, descText.implicitHeight)
+        }
+        return Math.max(h, renderedH, mainContent.implicitHeight, mainContent.height)
     }
 
     readonly property real baseBubbleW: Math.max((typeof ThemeTokens !== "undefined" && ThemeTokens)
@@ -313,10 +356,11 @@ Item {
                         ? Typography.familySans : "Microsoft YaHei UI"
                 font.pixelSize: (typeof Typography !== "undefined" && Typography)
                         ? Typography.sizeCaption : Math.round(11 * root.uiScaleFactor)
-                wrapMode: Text.Wrap
                 readonly property real maxDescW: (typeof ThemeTokens !== "undefined" && ThemeTokens)
                         ? ThemeTokens.dp(280) : Math.round(280 * root.uiScaleFactor)
-                width: visible ? Math.min(descMetrics.width, maxDescW) : 0
+                readonly property bool shouldWrap: (descMetrics.width > maxDescW)
+                wrapMode: shouldWrap ? Text.Wrap : Text.NoWrap
+                width: shouldWrap ? maxDescW : undefined
                 horizontalAlignment: Text.AlignLeft
             }
         }
