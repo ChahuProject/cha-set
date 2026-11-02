@@ -2,6 +2,7 @@
 // 100% Pixel-Perfect & Behavioral Parity with React Input.tsx
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Shapes
 import ChaSet
 
 ChaSetSquircle {
@@ -82,19 +83,47 @@ ChaSetSquircle {
     }
 
     // Win11-style bottom theme underline inside input
-    Rectangle {
+    Shape {
         id: bottomFocusUnderline
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.leftMargin: (root.bordered && root.radius > 0) ? ThemeTokens.dp(2) : 0
-        anchors.rightMargin: (root.bordered && root.radius > 0) ? ThemeTokens.dp(2) : 0
-        anchors.bottomMargin: 0
-        height: ThemeTokens.dp(2)
-        radius: ThemeTokens.dp(1)
-        color: root.invalid ? root.destructiveColor : ThemeTokens.accent
+        anchors.fill: parent
         visible: root.isFocused
         z: 2
+        layer.enabled: true
+        layer.samples: 4
+
+        readonly property real r: (root.bordered && root.effectiveRadius > 1) ? (root.effectiveRadius - 0.5) : 0
+        readonly property real h: root.height
+        readonly property real w: root.width
+
+        ShapePath {
+            strokeWidth: ThemeTokens.dp(2)
+            strokeColor: root.invalid ? root.destructiveColor : ThemeTokens.accent
+            fillColor: "transparent"
+            capStyle: ShapePath.FlatCap
+            joinStyle: ShapePath.RoundJoin
+
+            startX: bottomFocusUnderline.r > 0 ? 1.0 : 0
+            startY: bottomFocusUnderline.r > 0 ? (bottomFocusUnderline.h - bottomFocusUnderline.r) : (bottomFocusUnderline.h - 1)
+
+            PathArc {
+                x: bottomFocusUnderline.r > 0 ? bottomFocusUnderline.r : 0
+                y: bottomFocusUnderline.h - 1
+                radiusX: bottomFocusUnderline.r > 0 ? (bottomFocusUnderline.r - 0.5) : 0
+                radiusY: bottomFocusUnderline.r > 0 ? (bottomFocusUnderline.r - 0.5) : 0
+                direction: PathArc.Counterclockwise
+            }
+            PathLine {
+                x: bottomFocusUnderline.r > 0 ? (bottomFocusUnderline.w - bottomFocusUnderline.r) : bottomFocusUnderline.w
+                y: bottomFocusUnderline.h - 1
+            }
+            PathArc {
+                x: bottomFocusUnderline.r > 0 ? (bottomFocusUnderline.w - 1.0) : bottomFocusUnderline.w
+                y: bottomFocusUnderline.r > 0 ? (bottomFocusUnderline.h - bottomFocusUnderline.r) : (bottomFocusUnderline.h - 1)
+                radiusX: bottomFocusUnderline.r > 0 ? (bottomFocusUnderline.r - 0.5) : 0
+                radiusY: bottomFocusUnderline.r > 0 ? (bottomFocusUnderline.r - 0.5) : 0
+                direction: PathArc.Counterclockwise
+            }
+        }
     }
 
     // Left Icon Slot

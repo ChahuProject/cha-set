@@ -244,9 +244,9 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {/* Win11 style bottom focus underline */}
         <div
           data-slot="input-focus-underline"
-          className={`absolute bottom-0 left-[0.125rem] right-[0.125rem] h-[0.125rem] rounded-full pointer-events-none transition-all duration-quick z-10 ${
+          className={`absolute -inset-[0.0625rem] rounded-[inherit] border-b-2 pointer-events-none transition-all duration-quick z-10 ${
             isFocused ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
-          } ${invalid ? 'bg-destructive' : 'bg-primary'}`}
+          } ${invalid ? 'border-destructive' : 'border-primary'}`}
         />
       </div>
     );
