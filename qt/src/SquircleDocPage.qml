@@ -100,10 +100,11 @@ DocLayout {
                     Column {
                         spacing: ThemeTokens.dp(8)
 
-                        Rectangle {
+                        ChaSetSquircle {
                             width: ThemeTokens.dp(192)
                             height: ThemeTokens.dp(128)
                             radius: ThemeTokens.dp(root.customRadius)
+                            cornerSmoothing: 0.0
                             color: Qt.rgba(48/255, 160/255, 255/255, 0.15)
                             border.color: ThemeTokens.accent
                             border.width: 2

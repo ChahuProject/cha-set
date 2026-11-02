@@ -126,17 +126,17 @@ export function PremiumCard({ children }: { children: React.ReactNode }) {
 
               {/* Standard Round Comparison */}
               <div className="flex flex-col items-center gap-2">
-                <div
-                  className="w-48 h-32 border-2 border-primary flex items-center justify-center text-center p-3 text-sm font-medium text-foreground shadow-sm"
-                  style={{
-                    backgroundColor: 'color-mix(in srgb, var(--primary) 15%, transparent)',
-                    borderRadius: `${radius * 0.0625}rem`,
-                    ['cornerShape' as string]: 'round',
-                  }}
+                <Squircle
+                  radius={radius}
+                  smoothing={0}
+                  borderWidth={2}
+                  borderColor="var(--primary)"
+                  color="color-mix(in srgb, var(--primary) 15%, transparent)"
                   data-shape="round"
+                  className="w-48 h-32 flex items-center justify-center text-center p-3 text-sm font-medium text-foreground shadow-sm"
                 >
                   <span>{t('components.squircle.classicArc', 'Classic Arc (Smoothing: 0%)')}</span>
-                </div>
+                </Squircle>
                 <span className="text-xs text-muted-foreground font-mono">{t('components.squircle.g1Label', 'Standard Circular Arc (G1)')}</span>
               </div>
             </div>
