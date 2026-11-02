@@ -129,6 +129,58 @@ describe('Resizable Component Group', () => {
     expect(grip).toBeNull();
   });
 
+  it('renders decorative grip when withHandle is true', () => {
+    render(
+      <ResizablePanelGroup>
+        <ResizablePanel defaultSize={50}>
+          <div>Left</div>
+        </ResizablePanel>
+        <ResizableHandle withHandle />
+        <ResizablePanel defaultSize={50}>
+          <div>Right</div>
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    );
+
+    const handle = screen.getByRole('separator');
+    const grip = handle.querySelector('[data-slot="resizable-handle-grip"]');
+    expect(grip).toBeInTheDocument();
+  });
+
+  it('renders visual line with hairline and hover/active wider styling classes', () => {
+    render(
+      <ResizablePanelGroup direction="horizontal">
+        <ResizablePanel defaultSize={50}>Left</ResizablePanel>
+        <ResizableHandle />
+        <ResizablePanel defaultSize={50}>Right</ResizablePanel>
+      </ResizablePanelGroup>
+    );
+
+    const handle = screen.getByRole('separator');
+    expect(handle).toHaveClass('w-4', '-mx-[0.46875rem]', 'cursor-col-resize');
+
+    const line = handle.querySelector('[data-slot="resizable-handle-line"]');
+    expect(line).toBeInTheDocument();
+    expect(line).toHaveClass('w-[0.0625rem]', 'group-hover:w-[0.1875rem]', 'bg-border');
+  });
+
+  it('renders horizontal splitter handle with wider styling classes when direction="vertical"', () => {
+    render(
+      <ResizablePanelGroup direction="vertical">
+        <ResizablePanel defaultSize={50}>Top</ResizablePanel>
+        <ResizableHandle />
+        <ResizablePanel defaultSize={50}>Bottom</ResizablePanel>
+      </ResizablePanelGroup>
+    );
+
+    const handle = screen.getByRole('separator');
+    expect(handle).toHaveClass('h-4', '-my-[0.46875rem]', 'cursor-row-resize');
+
+    const line = handle.querySelector('[data-slot="resizable-handle-line"]');
+    expect(line).toBeInTheDocument();
+    expect(line).toHaveClass('h-[0.0625rem]', 'group-hover:h-[0.1875rem]', 'bg-border');
+  });
+
   it('allows pointerDown and click handlers on ResizableHandle', () => {
     const handlePointerDown = vi.fn();
     const handleClick = vi.fn();

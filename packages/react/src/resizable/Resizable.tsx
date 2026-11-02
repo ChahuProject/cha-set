@@ -2,6 +2,10 @@ import * as React from 'react';
 import * as ResizablePrimitive from 'react-resizable-panels';
 import { cn } from '../lib/utils';
 
+const ResizableContext = React.createContext<{
+  orientation: 'horizontal' | 'vertical';
+}>({ orientation: 'horizontal' });
+
 export type ResizablePanelGroupProps = React.ComponentProps<
   typeof ResizablePrimitive.Group
 > & {
@@ -14,23 +18,28 @@ export function ResizablePanelGroup({
   direction,
   orientation = direction ?? 'horizontal',
   disableCursor = true,
-  resizeTargetMinimumSize = { fine: 24, coarse: 24 },
+  resizeTargetMinimumSize = { fine: 16, coarse: 20 },
+  children,
   ...props
 }: ResizablePanelGroupProps) {
   const resolvedOrientation = orientation ?? 'horizontal';
   return (
-    <ResizablePrimitive.Group
-      data-slot="resizable-panel-group"
-      orientation={resolvedOrientation}
-      aria-orientation={resolvedOrientation}
-      disableCursor={disableCursor}
-      resizeTargetMinimumSize={resizeTargetMinimumSize}
-      className={cn(
-        'flex h-full w-full aria-[orientation=vertical]:flex-col',
-        className,
-      )}
-      {...props}
-    />
+    <ResizableContext.Provider value={{ orientation: resolvedOrientation }}>
+      <ResizablePrimitive.Group
+        data-slot="resizable-panel-group"
+        orientation={resolvedOrientation}
+        aria-orientation={resolvedOrientation}
+        disableCursor={disableCursor}
+        resizeTargetMinimumSize={resizeTargetMinimumSize}
+        className={cn(
+          'flex h-full w-full aria-[orientation=vertical]:flex-col',
+          className,
+        )}
+        {...props}
+      >
+        {children}
+      </ResizablePrimitive.Group>
+    </ResizableContext.Provider>
   );
 }
 
@@ -80,22 +89,67 @@ export interface ResizableHandleProps
 export function ResizableHandle({
   withHandle,
   className,
+  children,
   ...props
 }: ResizableHandleProps) {
+  const context = React.useContext(ResizableContext);
+  // In react-resizable-panels, horizontal group has vertical separators, and vertical group has horizontal separators.
+  const isVertical = context.orientation === 'horizontal';
+
   return (
     <ResizablePrimitive.Separator
       {...props}
       data-slot="resizable-handle"
       className={cn(
-        'relative flex w-[0.0625rem] items-center justify-center bg-border transition-colors duration-quick ease-standard',
-        'after:absolute after:inset-y-0 after:left-1/2 after:w-4 after:-translate-x-1/2',
+        'group relative flex items-center justify-center z-20 select-none bg-transparent',
+        // Hit target: 16px hit target with negative margins preserving 1px net layout space
+        isVertical
+          ? 'w-4 -mx-[0.46875rem] h-full cursor-col-resize'
+          : 'w-full h-4 mx-0 -my-[0.46875rem] cursor-row-resize',
         'focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:outline-hidden',
-        'aria-[orientation=horizontal]:h-[0.0625rem] aria-[orientation=horizontal]:w-full',
-        'aria-[orientation=horizontal]:after:left-0 aria-[orientation=horizontal]:after:top-1/2 aria-[orientation=horizontal]:after:h-4 aria-[orientation=horizontal]:after:w-full aria-[orientation=horizontal]:after:translate-x-0 aria-[orientation=horizontal]:after:-translate-y-1/2',
-        'z-20 cursor-col-resize aria-[orientation=horizontal]:cursor-row-resize select-none',
-        'hover:bg-primary/80 data-[separator-hover=true]:bg-primary/80 data-[state=drag]:bg-primary',
         className,
       )}
-    />
+    >
+      <div
+        data-slot="resizable-handle-line"
+        className={cn(
+          'pointer-events-none transition-all duration-quick ease-standard',
+          'bg-border group-hover:bg-primary group-data-[separator=hover]:bg-primary group-data-[separator=active]:bg-primary',
+          isVertical
+            ? 'h-full w-[0.0625rem] group-hover:w-[0.1875rem] group-data-[separator=hover]:w-[0.1875rem] group-data-[separator=active]:w-[0.1875rem]'
+            : 'w-full h-[0.0625rem] group-hover:h-[0.1875rem] group-data-[separator=hover]:h-[0.1875rem] group-data-[separator=active]:h-[0.1875rem]',
+        )}
+      />
+      {withHandle && (
+        <div
+          data-slot="resizable-handle-grip"
+          className={cn(
+            'z-10 flex items-center justify-center rounded-xs border border-border bg-card text-card-foreground shadow-xs transition-colors duration-quick ease-standard pointer-events-none',
+            'group-hover:border-primary group-data-[separator=hover]:border-primary group-data-[separator=active]:border-primary',
+            isVertical ? 'h-4 w-3' : 'h-3 w-4',
+          )}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="size-2.5 text-muted-foreground group-hover:text-primary transition-colors"
+            aria-hidden="true"
+          >
+            <circle cx="9" cy="12" r="1" />
+            <circle cx="9" cy="5" r="1" />
+            <circle cx="9" cy="19" r="1" />
+            <circle cx="15" cy="12" r="1" />
+            <circle cx="15" cy="5" r="1" />
+            <circle cx="15" cy="19" r="1" />
+          </svg>
+        </div>
+      )}
+      {children}
+    </ResizablePrimitive.Separator>
   );
 }

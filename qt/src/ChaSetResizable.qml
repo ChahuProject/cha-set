@@ -36,18 +36,26 @@ SplitView {
             cursorShape: root.orientation === Qt.Horizontal ? Qt.SizeHorCursor : Qt.SizeVerCursor
         }
 
-        // Centered 1px hairline spanning the FULL handle extent, so it runs
-        // edge-to-edge between the caller's border ring (React parity: the
-        // separator's bg-border line stretches the whole panel-group height
-        // and only the container's overflow-hidden rounded corners trim it).
-        // The caller insets this view by 1px, so both ends stop exactly on
-        // the inner edge of the border ring — no T-caps, no broken stubs.
+        readonly property bool isVisualActive: handleDelegate.SplitHandle.pressed || handleDelegate.SplitHandle.hovered
+        readonly property int visualThickness: isVisualActive ? ThemeTokens.dp(3) : 1
+
+        // Hairline visual spanning the FULL handle extent.
+        // At rest: subtle 1px hairline.
+        // On hover/pressed: expands to wider visual thickness (ThemeTokens.dp(3)) with ThemeTokens.accent color.
         Rectangle {
             anchors.centerIn: parent
-            width: root.orientation === Qt.Horizontal ? 1 : parent.width
-            height: root.orientation === Qt.Vertical ? 1 : parent.height
-            color: handleDelegate.SplitHandle.pressed || handleDelegate.SplitHandle.hovered ? root.handleHoverColor : root.handleColor
+            width: root.orientation === Qt.Horizontal ? handleDelegate.visualThickness : parent.width
+            height: root.orientation === Qt.Vertical ? handleDelegate.visualThickness : parent.height
+            color: handleDelegate.isVisualActive ? root.handleHoverColor : root.handleColor
 
+            Behavior on width {
+                enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+            }
+            Behavior on height {
+                enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
+                NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
+            }
             Behavior on color {
                 enabled: ThemeTokens.animationsEnabled && (typeof harnessMode === "undefined" || harnessMode === "")
                 ColorAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
