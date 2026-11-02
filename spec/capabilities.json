@@ -256,10 +256,6 @@
       "dragMove": { "requirement": "must", "description": "allows dragging window position across viewport" },
       "resizeBounds": { "requirement": "must", "description": "allows resizing window dimensions within bounds" }
     },
-    "splitter": {
-      "dragResize": { "requirement": "must", "description": "drags divider to adjust adjacent pane sizes" },
-      "doubleClickReset": { "requirement": "must", "description": "double-clicking divider resets size to initial value" }
-    },
     "resizable": {
       "panelGroup": { "requirement": "must", "description": "arranges child panels in horizontal or vertical orientation" },
       "panelResize": { "requirement": "must", "description": "dynamically allocates width or height percentages to child panels" },
@@ -316,10 +312,6 @@
     "elidedText": {
       "truncation": { "requirement": "must", "description": "detects overflow truncation accurately" },
       "tooltip": { "requirement": "must", "description": "conditionally reveals full text tooltip only upon actual overflow" }
-    },
-    "splitterHandle": {
-      "resize": { "requirement": "must", "description": "drags to resize container dimension with reference item coordinate stabilization" },
-      "edgeOrientation": { "requirement": "must", "description": "supports left, right, top, bottom edge anchors and cursor styling" }
     },
     "durationInput": {
       "timeSegments": { "requirement": "must", "description": "renders hours, minutes, and seconds segments with step buttons" },

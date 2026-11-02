@@ -227,10 +227,6 @@
     "dragMove": true,
     "resizeBounds": true
   },
-  "splitter": {
-    "dragResize": true,
-    "doubleClickReset": true
-  },
   "resizable": {
     "panelGroup": true,
     "panelResize": true,
@@ -287,10 +283,6 @@
   "elidedText": {
     "truncation": true,
     "tooltip": true
-  },
-  "splitterHandle": {
-    "resize": true,
-    "edgeOrientation": true
   },
   "durationInput": {
     "timeSegments": true,

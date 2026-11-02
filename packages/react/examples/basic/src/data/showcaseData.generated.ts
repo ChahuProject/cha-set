@@ -1337,20 +1337,6 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "description": "Composable, responsive and resizable desktop-grade sidebar navigation system."
       },
       {
-        "id": "splitter",
-        "title": "Splitter",
-        "href": "#/components/splitter",
-        "desc": "Multi-pane resizable layout container with draggable gutters and collapse limits.",
-        "description": "Multi-pane resizable layout container with draggable gutters and collapse limits."
-      },
-      {
-        "id": "splitter-handle",
-        "title": "Splitter Handle",
-        "href": "#/components/splitter-handle",
-        "desc": "Edge resize handle with reference item coordinate stabilization and min/max clamping.",
-        "description": "Edge resize handle with reference item coordinate stabilization and min/max clamping."
-      },
-      {
         "id": "resizable",
         "title": "Resizable",
         "href": "#/components/resizable",

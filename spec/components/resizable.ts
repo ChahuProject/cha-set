@@ -10,3 +10,12 @@ export const resizableSchema = z.object({
 });
 
 export type ResizableApi = z.infer<typeof resizableSchema>;
+
+/**
+ * Backward-compatible schemas for components merged into Resizable.
+ */
+export const splitterSchema = resizableSchema;
+export type SplitterApi = ResizableApi;
+
+export const splitterHandleSchema = resizableSchema;
+export type SplitterHandleApi = ResizableApi;
