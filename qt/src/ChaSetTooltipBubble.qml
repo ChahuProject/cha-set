@@ -325,6 +325,8 @@ Item {
                     horizontalAlignment: (root.description !== "" || lineCount > 1) ? Text.AlignLeft : Text.AlignHCenter
                     verticalAlignment: (lineCount <= 1) ? Text.AlignVCenter : Text.AlignTop
                     anchors.verticalCenter: (lineCount <= 1) ? parent.verticalCenter : undefined
+                    anchors.top: (lineCount > 1) ? parent.top : undefined
+                    anchors.topMargin: 0
                     wrapMode: (textMetrics.width > root.maxTextW || root.text.indexOf("\n") !== -1) ? Text.Wrap : Text.NoWrap
                     width: (wrapMode === Text.Wrap) ? Math.min(textMetrics.width, root.maxTextW) : undefined
                 }
