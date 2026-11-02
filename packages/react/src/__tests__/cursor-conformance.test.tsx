@@ -23,8 +23,7 @@ import { ScaleOsd } from '../scale-osd';
 import { Collapsible, CollapsibleTrigger } from '../collapsible';
 import { Badge } from '../badge';
 import { Card } from '../card';
-import { Splitter } from '../splitter';
-import { SplitterHandle } from '../splitter-handle';
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '../resizable';
 import { DraggableModal } from '../draggable-modal';
 import { WindowTitleBar } from '../window-title-bar';
 import {
@@ -369,14 +368,17 @@ describe('Cross-Stack Cursor Semantics Conformance (React vs Contract)', () => {
       }
     });
 
-    it('Splitter and SplitterHandle exhibit col-resize cursor', () => {
+    it('ResizableHandle exhibits col-resize / row-resize cursor', () => {
       const { container } = render(
         <div style={{ position: 'relative', width: 200, height: 200 }}>
-          <Splitter orientation="horizontal" />
-          <SplitterHandle edge="left" />
+          <ResizablePanelGroup direction="horizontal">
+            <ResizablePanel defaultSize={50}><div>Left</div></ResizablePanel>
+            <ResizableHandle />
+            <ResizablePanel defaultSize={50}><div>Right</div></ResizablePanel>
+          </ResizablePanelGroup>
         </div>,
       );
-      const handle = container.querySelector('[data-slot="splitter-handle"]') || container.querySelector('[role="separator"]');
+      const handle = container.querySelector('[data-slot="resizable-handle"]') || container.querySelector('[role="separator"]');
       if (handle) {
         expect(handle.className).toMatch(/cursor-col-resize|cursor-row-resize/);
       }

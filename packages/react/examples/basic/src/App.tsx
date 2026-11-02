@@ -77,7 +77,6 @@ import { VirtualListDocPage } from './pages/components/VirtualListDocPage';
 import { VirtualTreeDocPage } from './pages/components/VirtualTreeDocPage';
 import { VirtualGridDocPage } from './pages/components/VirtualGridDocPage';
 import { DraggableModalDocPage } from './pages/components/DraggableModalDocPage';
-import { SplitterDocPage } from './pages/components/SplitterDocPage';
 import { ResizableDocPage } from './pages/components/ResizableDocPage';
 import { WindowTitleBarDocPage } from './pages/components/WindowTitleBarDocPage';
 import { GenericDataTableDocPage } from './pages/components/GenericDataTableDocPage';
@@ -89,7 +88,6 @@ import { SegmentedControlDocPage } from './pages/components/SegmentedControlDocP
 import { SmoothWheelHandlerDocPage } from './pages/components/SmoothWheelHandlerDocPage';
 import { SettingRowDocPage } from './pages/components/SettingRowDocPage';
 import { ElidedTextDocPage } from './pages/components/ElidedTextDocPage';
-import { SplitterHandleDocPage } from './pages/components/SplitterHandleDocPage';
 import { DurationInputDocPage } from './pages/components/DurationInputDocPage';
 import { CodeBlockDocPage } from './pages/components/CodeBlockDocPage';
 import { PipelineViewDocPage } from './pages/components/PipelineViewDocPage';
@@ -917,7 +915,7 @@ export function App() {
       case '#/components/draggable-modal':
         return <DraggableModalDocPage />;
       case '#/components/splitter':
-        return <SplitterDocPage />;
+      case '#/components/splitter-handle':
       case '#/components/resizable':
         return <ResizableDocPage />;
       case '#/components/window-title-bar':
@@ -938,8 +936,6 @@ export function App() {
         return <SettingRowDocPage />;
       case '#/components/elided-text':
         return <ElidedTextDocPage />;
-      case '#/components/splitter-handle':
-        return <SplitterHandleDocPage />;
       case '#/components/duration-input':
         return <DurationInputDocPage />;
       case '#/components/code-block':

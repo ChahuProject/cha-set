@@ -1163,6 +1163,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "githubRepo": "GitHub 仓库",
       "openNavSidebar": "打开导航侧边栏",
       "queryBuilder": "查询构建器",
+      "resizable": "可调面板",
       "splitter": "分栏",
       "toggleTheme": "切换主题外观",
       "virtualList": "虚拟列表"
@@ -3867,6 +3868,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "githubRepo": "GitHub Repository",
       "openNavSidebar": "Open navigation sidebar",
       "queryBuilder": "Query Builder",
+      "resizable": "Resizable",
       "splitter": "Splitter",
       "toggleTheme": "Toggle theme appearance",
       "virtualList": "Virtual List"

@@ -170,8 +170,8 @@ export function Header({
                   <Maximize2Icon className="size-3.5 mr-2 inline text-muted-foreground" />
                   {t('desktopComposite.header.draggableModal', 'Draggable Modal')}
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => { window.location.hash = '#/components/splitter'; }}>
-                  {t('desktopComposite.header.splitter', 'Splitter')}
+                <DropdownMenuItem onClick={() => { window.location.hash = '#/components/resizable'; }}>
+                  {t('desktopComposite.header.resizable', 'Resizable')}
                 </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>

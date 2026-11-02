@@ -10,8 +10,6 @@ import {
   SegmentedControl,
   SettingRow,
   Sidebar,
-  Splitter,
-  SplitterHandle,
   TableOfContents,
   Tabs,
   TabsList,
@@ -93,31 +91,6 @@ describe('Performance Suite: Layout & Navigation (12 Components)', () => {
           <Sidebar key={i}>
             <div>Sidebar content {i}</div>
           </Sidebar>
-        ))}
-      </div>
-    );
-    unmount();
-  });
-
-  bench('Splitter (20x batch mount)', () => {
-    const { unmount } = render(
-      <div>
-        {Array.from({ length: 20 }, (_, i) => (
-          <Splitter key={i} orientation="horizontal">
-            <div>Panel Left {i}</div>
-            <div>Panel Right {i}</div>
-          </Splitter>
-        ))}
-      </div>
-    );
-    unmount();
-  });
-
-  bench('SplitterHandle (50x batch mount)', () => {
-    const { unmount } = render(
-      <div>
-        {Array.from({ length: 50 }, (_, i) => (
-          <SplitterHandle key={i} orientation="vertical" />
         ))}
       </div>
     );

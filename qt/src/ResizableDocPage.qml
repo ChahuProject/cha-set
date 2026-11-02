@@ -10,7 +10,6 @@ DocLayout {
     description: ChaSetI18n.tr("components.resizable.description", "Accessible resizable panel groups and layout splitters.")
 
     property string playgroundDirection: "horizontal"
-    property bool playgroundWithHandle: true
 
     // 1. Horizontal Split Overview
     Column {
@@ -42,7 +41,7 @@ DocLayout {
       <span className="font-semibold text-sm">Navigation Sidebar</span>
     </div>
   </ResizablePanel>
-  <ResizableHandle withHandle />
+  <ResizableHandle />
   <ResizablePanel defaultSize={65} minSize={5} maxSize={95}>
     <div className="flex h-full items-center justify-center p-6">
       <span className="font-semibold text-sm">Editor Workspace</span>
@@ -53,7 +52,6 @@ DocLayout {
     width: 520
     height: 240
     orientation: Qt.Horizontal
-    withHandle: true
 
     Rectangle {
         SplitView.preferredWidth: 180
@@ -86,7 +84,6 @@ DocLayout {
                     // the parent border ring and would otherwise cover it.
                     anchors.margins: 1
                     orientation: Qt.Horizontal
-                    withHandle: true
 
                     Rectangle {
                         id: navPanel
@@ -166,7 +163,7 @@ ChaSetResizable {
 
 <ResizablePanelGroup direction="horizontal">
   <ResizablePanel defaultSize={30}>Sidebar</ResizablePanel>
-  <ResizableHandle withHandle />
+  <ResizableHandle />
   <ResizablePanel defaultSize={70}>Content</ResizablePanel>
 </ResizablePanelGroup>`
     }
@@ -201,7 +198,7 @@ ChaSetResizable {
       File Tree
     </div>
   </ResizablePanel>
-  <ResizableHandle withHandle />
+  <ResizableHandle />
   <ResizablePanel defaultSize={72} minSize={5} maxSize={95}>
     <ResizablePanelGroup direction="vertical">
       <ResizablePanel defaultSize={65} minSize={5} maxSize={95}>
@@ -209,7 +206,7 @@ ChaSetResizable {
           main.rs (Code Editor)
         </div>
       </ResizablePanel>
-      <ResizableHandle withHandle />
+      <ResizableHandle />
       <ResizablePanel defaultSize={35} minSize={5} maxSize={95}>
         <div className="flex h-full items-center justify-center p-4 bg-muted/30 text-xs font-mono">
           Terminal Console / Output
@@ -222,7 +219,6 @@ ChaSetResizable {
     width: 520
     height: 240
     orientation: Qt.Horizontal
-    withHandle: true
 
     Rectangle {
         SplitView.preferredWidth: 140
@@ -231,7 +227,6 @@ ChaSetResizable {
     ChaSetResizable {
         SplitView.fillWidth: true
         orientation: Qt.Vertical
-        withHandle: true
 
         Rectangle {
             SplitView.preferredHeight: 140
@@ -264,7 +259,6 @@ ChaSetResizable {
                     // the parent border ring and would otherwise cover it.
                     anchors.margins: 1
                     orientation: Qt.Horizontal
-                    withHandle: true
 
                     Rectangle {
                         id: nestedSidebar
@@ -394,7 +388,7 @@ ChaSetResizable {
       Panel Alpha
     </div>
   </ResizablePanel>
-  <ResizableHandle withHandle={${root.playgroundWithHandle}} />
+  <ResizableHandle />
   <ResizablePanel defaultSize={60} minSize={5} maxSize={95}>
     <div className="flex h-full items-center justify-center p-4 text-sm">
       Panel Beta
@@ -405,7 +399,6 @@ ChaSetResizable {
     width: 520
     height: 220
     orientation: ${root.playgroundDirection === "horizontal" ? "Qt.Horizontal" : "Qt.Vertical"}
-    withHandle: ${root.playgroundWithHandle}
 
     Rectangle {
         SplitView.preferredWidth: 200
@@ -440,13 +433,6 @@ ChaSetResizable {
                         onValueSelected: function(val) { root.playgroundDirection = val; }
                     }
                 }
-
-                ChaSetButton {
-                    size: "sm"
-                    variant: root.playgroundWithHandle ? "default" : "outline"
-                    text: root.playgroundWithHandle ? ChaSetI18n.tr("surfaces.resizable.handleVisible") : ChaSetI18n.tr("surfaces.resizable.handleHidden")
-                    onClicked: root.playgroundWithHandle = !root.playgroundWithHandle
-                }
             }
         ]
 
@@ -470,7 +456,6 @@ ChaSetResizable {
                     // the parent border ring and would otherwise cover it.
                     anchors.margins: 1
                     orientation: root.playgroundDirection === "horizontal" ? Qt.Horizontal : Qt.Vertical
-                    withHandle: root.playgroundWithHandle
 
                     Rectangle {
                         id: playPanel1

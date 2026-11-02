@@ -13,8 +13,8 @@ describe('Showcase Parity Assurance System (SPAS)', () => {
     expect(result.checkedCount).toBeGreaterThanOrEqual(47);
   });
 
-  it('validates Splitter specific cross-stack showcase parity and sandbox layout', () => {
-    const result = verifyShowcaseParity({ targetComponent: 'splitter' });
+  it('validates Resizable specific cross-stack showcase parity and sandbox layout', () => {
+    const result = verifyShowcaseParity({ targetComponent: 'resizable' });
     expect(result.errors).toEqual([]);
     expect(result.ok).toBe(true);
   });

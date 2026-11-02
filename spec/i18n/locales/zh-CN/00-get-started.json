@@ -70,6 +70,7 @@
       "githubRepo": "GitHub 仓库",
       "openNavSidebar": "打开导航侧边栏",
       "queryBuilder": "查询构建器",
+      "resizable": "可调面板",
       "splitter": "分栏",
       "toggleTheme": "切换主题外观",
       "virtualList": "虚拟列表"

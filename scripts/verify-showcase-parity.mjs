@@ -681,24 +681,6 @@ export function verifyShowcaseParity(options = {}) {
         errors.push(`[${base}] Qt DocAnatomy[${i}] is missing a non-empty 'qtCode' property`);
       }
     }
-
-    // 6. Component-Specific Parity Gates
-    if (base === 'splitter') {
-      const rIds = reactTocIds.join(',');
-      const qIds = qtTocIds.join(',');
-      if (rIds !== qIds) {
-        errors.push(`[splitter] TOC IDs must match exactly: React=[${rIds}] vs Qt=[${qIds}]`);
-      }
-      if (!qtContent.includes('Editor Workspace')) {
-        errors.push(`[splitter] Qt sandbox must include "Editor Workspace" header to match React`);
-      }
-      if (!qtContent.includes('Navigation Tree')) {
-        errors.push(`[splitter] Qt sandbox must include "Navigation Tree" header to match React`);
-      }
-      if (!qtContent.includes('Reset (35%)')) {
-        errors.push(`[splitter] Qt sandbox must include "Reset (35%)" button to match React`);
-      }
-    }
   }
 
   return {

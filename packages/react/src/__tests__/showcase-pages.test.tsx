@@ -34,7 +34,6 @@ import { SheetDocPage } from '../../examples/basic/src/pages/components/SheetDoc
 import { SkeletonDocPage } from '../../examples/basic/src/pages/components/SkeletonDocPage';
 import { SliderDocPage } from '../../examples/basic/src/pages/components/SliderDocPage';
 import { SplitButtonDocPage } from '../../examples/basic/src/pages/components/SplitButtonDocPage';
-import { SplitterDocPage } from '../../examples/basic/src/pages/components/SplitterDocPage';
 import { ResizableDocPage } from '../../examples/basic/src/pages/components/ResizableDocPage';
 import { SwitchDocPage } from '../../examples/basic/src/pages/components/SwitchDocPage';
 import { TableDocPage } from '../../examples/basic/src/pages/components/TableDocPage';
@@ -48,7 +47,6 @@ import { SegmentedControlDocPage } from '../../examples/basic/src/pages/componen
 import { SmoothWheelHandlerDocPage } from '../../examples/basic/src/pages/components/SmoothWheelHandlerDocPage';
 import { SettingRowDocPage } from '../../examples/basic/src/pages/components/SettingRowDocPage';
 import { ElidedTextDocPage } from '../../examples/basic/src/pages/components/ElidedTextDocPage';
-import { SplitterHandleDocPage } from '../../examples/basic/src/pages/components/SplitterHandleDocPage';
 import { SidebarDocPage } from '../../examples/basic/src/pages/components/SidebarDocPage';
 import { ViewportConstrainedContainerDocPage } from '../../examples/basic/src/pages/components/ViewportConstrainedContainerDocPage';
 import { IconsPage } from '../../examples/basic/src/pages/get-started/IconsPage';
@@ -86,7 +84,6 @@ const pages = [
   { name: 'SkeletonDocPage', Component: SkeletonDocPage },
   { name: 'SliderDocPage', Component: SliderDocPage },
   { name: 'SplitButtonDocPage', Component: SplitButtonDocPage },
-  { name: 'SplitterDocPage', Component: SplitterDocPage },
   { name: 'ResizableDocPage', Component: ResizableDocPage },
   { name: 'SwitchDocPage', Component: SwitchDocPage },
   { name: 'TableDocPage', Component: TableDocPage },
@@ -100,7 +97,6 @@ const pages = [
   { name: 'SmoothWheelHandlerDocPage', Component: SmoothWheelHandlerDocPage },
   { name: 'SettingRowDocPage', Component: SettingRowDocPage },
   { name: 'ElidedTextDocPage', Component: ElidedTextDocPage },
-  { name: 'SplitterHandleDocPage', Component: SplitterHandleDocPage },
   { name: 'SidebarDocPage', Component: SidebarDocPage },
   { name: 'ViewportConstrainedContainerDocPage', Component: ViewportConstrainedContainerDocPage },
   { name: 'IconsPage', Component: IconsPage },

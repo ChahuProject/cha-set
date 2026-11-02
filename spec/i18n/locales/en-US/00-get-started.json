@@ -70,6 +70,7 @@
       "githubRepo": "GitHub Repository",
       "openNavSidebar": "Open navigation sidebar",
       "queryBuilder": "Query Builder",
+      "resizable": "Resizable",
       "splitter": "Splitter",
       "toggleTheme": "Toggle theme appearance",
       "virtualList": "Virtual List"

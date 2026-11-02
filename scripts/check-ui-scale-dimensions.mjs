@@ -19,8 +19,7 @@ const REACT_SRC = resolve(ROOT, 'packages/react/src');
 // Explicit exemptions: Component design props that represent static design units (not runtime DOM measurements)
 // intended to convert to rem via `* 0.0625rem`.
 const ALLOWLISTED_SITES = new Set([
-  // design props: hitThickness, visualThickness, itemWidth, topOffset, sideOffset, toLength
-  'splitter-handle/SplitterHandle.tsx',
+  // design props: itemWidth, topOffset, sideOffset, toLength
   'code-block/CodeBlock.tsx',
   'segmented-control/SegmentedControl.tsx',
   'tooltip/Tooltip.tsx',

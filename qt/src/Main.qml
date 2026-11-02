@@ -343,9 +343,9 @@ ApplicationWindow {
             onSelect: function() { win.activePage = "draggable-modal"; }
         },
         {
-            id: "splitter",
-            label: ChaSetI18n.tr("desktopComposite.header.splitter", "Splitter"),
-            onSelect: function() { win.activePage = "splitter"; }
+            id: "resizable",
+            label: ChaSetI18n.tr("desktopComposite.header.resizable", "Resizable"),
+            onSelect: function() { win.activePage = "resizable"; }
         }
     ]
 
@@ -435,7 +435,7 @@ ApplicationWindow {
         case "virtual-tree": return "VirtualTreeDocPage.qml";
         case "virtual-grid": return "VirtualGridDocPage.qml";
         case "draggable-modal": return "DraggableModalDocPage.qml";
-        case "splitter": return "SplitterDocPage.qml";
+        case "splitter": return "ResizableDocPage.qml";
         case "resizable": return "ResizableDocPage.qml";
         case "window-title-bar": return "WindowTitleBarDocPage.qml";
         case "generic-data-table": return "GenericDataTableDocPage.qml";
@@ -446,7 +446,7 @@ ApplicationWindow {
         case "smooth-wheel-handler": return "SmoothWheelHandlerDocPage.qml";
         case "setting-row": return "SettingRowDocPage.qml";
         case "elided-text": return "ElidedTextDocPage.qml";
-        case "splitter-handle": return "SplitterHandleDocPage.qml";
+        case "splitter-handle": return "ResizableDocPage.qml";
         case "duration-input": return "DurationInputDocPage.qml";
         case "code-block": return "CodeBlockDocPage.qml";
         case "pipeline-view": return "PipelineViewDocPage.qml";
@@ -1881,8 +1881,6 @@ ApplicationWindow {
                 { id: "slider", name: "ChaSetSlider" },
                 { id: "smooth-wheel-handler", name: "ChaSetSmoothWheelHandler" },
                 { id: "split-button", name: "ChaSetSplitButton" },
-                { id: "splitter-handle", name: "ChaSetSplitterHandle" },
-                { id: "splitter", name: "ChaSetSplitter" },
                 { id: "squircle", name: "ChaSetSquircle" },
                 { id: "switch", name: "ChaSetSwitch" },
                 { id: "table-of-contents", name: "ChaSetTableOfContents" },

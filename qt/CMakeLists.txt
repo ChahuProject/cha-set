@@ -352,7 +352,6 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/VirtualTreeDocPage.qml
             src/VirtualGridDocPage.qml
             src/DraggableModalDocPage.qml
-            src/SplitterDocPage.qml
             src/ResizableDocPage.qml
             src/WindowTitleBarDocPage.qml
             src/GenericDataTableDocPage.qml
@@ -363,7 +362,6 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/SmoothWheelHandlerDocPage.qml
             src/SettingRowDocPage.qml
             src/ElidedTextDocPage.qml
-            src/SplitterHandleDocPage.qml
             src/DurationInputDocPage.qml
             src/CodeBlockDocPage.qml
             src/PipelineViewDocPage.qml
