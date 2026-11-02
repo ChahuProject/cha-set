@@ -95,7 +95,9 @@ Item {
             items++
         }
         if (root.shortcut !== "") {
-            var kbdW = (shortcutBadge.implicitWidth > 0) ? shortcutBadge.implicitWidth : shortcutBadge.width
+            var kbdW = (typeof shortcutBadge !== "undefined" && shortcutBadge && shortcutBadge.estimatedFullWidth > 0)
+                    ? shortcutBadge.estimatedFullWidth
+                    : ((shortcutBadge.implicitWidth > 0) ? shortcutBadge.implicitWidth : shortcutBadge.width)
             w += (kbdW > 0 ? kbdW : Math.round(30 * root.uiScaleFactor))
             items++
         }
@@ -139,7 +141,16 @@ Item {
 
     readonly property real naturalDescH: {
         if (root.description === "") return 0
-        return Math.max(descMetrics.height, descText.height, descText.implicitHeight)
+        var maxD = (typeof ThemeTokens !== "undefined" && ThemeTokens)
+                ? ThemeTokens.dp(280) : Math.round(280 * root.uiScaleFactor)
+        var lineCount = 1
+        if (descMetrics.width > maxD) {
+            lineCount = Math.max(1, Math.ceil(descMetrics.width / maxD))
+        }
+        var explicitLines = root.description.split("\n").length
+        lineCount = Math.max(lineCount, explicitLines)
+        var estH = lineCount * descMetrics.height
+        return Math.max(estH, descText.height, descText.implicitHeight)
     }
 
     readonly property real contentH: {
@@ -173,6 +184,9 @@ Item {
         }
         return baseBubbleH
     }
+
+    width: implicitWidth
+    height: implicitHeight
 
     // Ambient soft drop shadow matching React shadow-md
     Rectangle {
@@ -230,9 +244,8 @@ Item {
             id: mainContent
             objectName: "mainContent"
             anchors.verticalCenter: parent.verticalCenter
-            anchors.left: (root.description !== "" || bubbleText.lineCount > 1) ? parent.left : undefined
-            anchors.leftMargin: (root.description !== "" || bubbleText.lineCount > 1) ? (scaledPadX / 2) : 0
-            anchors.horizontalCenter: (root.description === "" && bubbleText.lineCount <= 1) ? parent.horizontalCenter : undefined
+            anchors.left: parent.left
+            anchors.leftMargin: Math.round(scaledPadX / 2)
             spacing: (typeof ThemeTokens !== "undefined" && ThemeTokens)
                     ? ThemeTokens.dp(2) : Math.round(2 * root.uiScaleFactor)
 
