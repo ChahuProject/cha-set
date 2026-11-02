@@ -30,8 +30,15 @@ Item {
     property alias placement: root.side
     property bool arrow: false
 
-    readonly property real uiScaleFactor: (typeof uiScale !== "undefined" && uiScale)
-            ? Number(uiScale.scale) : 1.0
+    readonly property real uiScaleFactor: {
+        if (typeof ThemeTokens !== "undefined" && ThemeTokens && ThemeTokens.uiScale > 0)
+            return Number(ThemeTokens.uiScale);
+        if (typeof UiScale !== "undefined" && UiScale && UiScale.scale > 0)
+            return Number(UiScale.scale);
+        if (typeof uiScale !== "undefined" && uiScale && uiScale.scale > 0)
+            return Number(uiScale.scale);
+        return 1.0;
+    }
 
     readonly property int arrowW: (typeof ThemeTokens !== "undefined" && ThemeTokens)
             ? ThemeTokens.dp(8) : Math.round(8 * uiScaleFactor)
@@ -44,9 +51,23 @@ Item {
     readonly property real scaledPadY: (typeof ThemeTokens !== "undefined" && ThemeTokens)
             ? ThemeTokens.dp(12) : Math.round(12 * uiScaleFactor)
 
-    // 单行紧凑内容宽度与高度
-    readonly property real contentW: mainContent.implicitWidth
-    readonly property real contentH: mainContent.implicitHeight
+    readonly property real maxTextW: (typeof ThemeTokens !== "undefined" && ThemeTokens)
+            ? ThemeTokens.dp(360) : Math.round(360 * uiScaleFactor)
+
+    // 单行/多行紧凑内容宽度与高度（精确支持折行与显式多行）
+    readonly property real contentW: {
+        var w = 0
+        if (contentRow.visible) w = Math.max(w, contentRow.width)
+        if (descText.visible) w = Math.max(w, descText.width)
+        return w
+    }
+    readonly property real contentH: {
+        var h = 0
+        if (contentRow.visible) h += contentRow.height
+        if (contentRow.visible && descText.visible) h += mainContent.spacing
+        if (descText.visible) h += descText.height
+        return h
+    }
 
     readonly property real baseBubbleW: Math.max((typeof ThemeTokens !== "undefined" && ThemeTokens)
             ? ThemeTokens.dp(24) : Math.round(24 * uiScaleFactor), contentW + scaledPadX)
@@ -88,8 +109,26 @@ Item {
             if (root.arrow && root.side === "bottom") return root.effectiveArrowH
             return 0
         }
-        width: root.baseBubbleW
-        height: root.baseBubbleH
+        width: {
+            if (root.width > 0) {
+                var availW = root.width
+                if (root.arrow && (root.side === "left" || root.side === "right")) {
+                    availW -= root.effectiveArrowH
+                }
+                return Math.max(availW, root.baseBubbleW)
+            }
+            return root.baseBubbleW
+        }
+        height: {
+            if (root.height > 0) {
+                var availH = root.height
+                if (root.arrow && (root.side === "top" || root.side === "bottom")) {
+                    availH -= root.effectiveArrowH
+                }
+                return Math.max(availH, root.baseBubbleH)
+            }
+            return root.baseBubbleH
+        }
 
         radius: (typeof ThemeTokens !== "undefined" && ThemeTokens)
                 ? ThemeTokens.dp(6) : Math.max(1, Math.round(6 * root.uiScaleFactor))
@@ -104,17 +143,28 @@ Item {
             id: mainContent
             objectName: "mainContent"
             anchors.verticalCenter: parent.verticalCenter
-            anchors.left: (root.description !== "") ? parent.left : undefined
-            anchors.leftMargin: (root.description !== "") ? (scaledPadX / 2) : 0
-            anchors.horizontalCenter: (root.description === "") ? parent.horizontalCenter : undefined
+            anchors.left: (root.description !== "" || bubbleText.lineCount > 1) ? parent.left : undefined
+            anchors.leftMargin: (root.description !== "" || bubbleText.lineCount > 1) ? (scaledPadX / 2) : 0
+            anchors.horizontalCenter: (root.description === "" && bubbleText.lineCount <= 1) ? parent.horizontalCenter : undefined
             spacing: (typeof ThemeTokens !== "undefined" && ThemeTokens)
                     ? ThemeTokens.dp(2) : Math.round(2 * root.uiScaleFactor)
+
+            // Natural single-line text measurement off-layout
+            TextMetrics {
+                id: textMetrics
+                text: root.text
+                font.family: (typeof Typography !== "undefined" && Typography && Typography.familySans)
+                        ? Typography.familySans : undefined
+                font.pixelSize: (typeof Typography !== "undefined" && Typography)
+                        ? Typography.sizeSmall : Math.round(12 * root.uiScaleFactor)
+                font.weight: (root.description !== "") ? Font.DemiBold : Font.Medium
+            }
 
             Row {
                 id: contentRow
                 objectName: "contentRow"
-                anchors.left: (root.description !== "") ? parent.left : undefined
-                anchors.horizontalCenter: (root.description === "") ? parent.horizontalCenter : undefined
+                anchors.left: (root.description !== "" || bubbleText.lineCount > 1) ? parent.left : undefined
+                anchors.horizontalCenter: (root.description === "" && bubbleText.lineCount <= 1) ? parent.horizontalCenter : undefined
                 visible: appIcon.visible || bubbleText.visible || shortcutBadge.visible
                 spacing: (typeof ThemeTokens !== "undefined" && ThemeTokens)
                         ? ThemeTokens.dp(8) : Math.round(8 * root.uiScaleFactor)
@@ -127,7 +177,9 @@ Item {
                     size: 14
                     color: (typeof ThemeTokens !== "undefined" && ThemeTokens)
                             ? ThemeTokens.color("text") : "#e6f2ff"
-                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.verticalCenter: (bubbleText.lineCount <= 1) ? parent.verticalCenter : undefined
+                    anchors.top: (bubbleText.lineCount > 1) ? parent.top : undefined
+                    anchors.topMargin: (bubbleText.lineCount > 1) ? ((typeof ThemeTokens !== "undefined" && ThemeTokens) ? ThemeTokens.dp(2) : 2) : 0
                 }
 
                 Text {
@@ -142,16 +194,20 @@ Item {
                     font.pixelSize: (typeof Typography !== "undefined" && Typography)
                             ? Typography.sizeSmall : Math.round(12 * root.uiScaleFactor)
                     font.weight: (root.description !== "") ? Font.DemiBold : Font.Medium
-                    horizontalAlignment: (root.description !== "") ? Text.AlignLeft : Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    anchors.verticalCenter: parent.verticalCenter
+                    horizontalAlignment: (root.description !== "" || lineCount > 1) ? Text.AlignLeft : Text.AlignHCenter
+                    verticalAlignment: (lineCount <= 1) ? Text.AlignVCenter : Text.AlignTop
+                    anchors.verticalCenter: (lineCount <= 1) ? parent.verticalCenter : undefined
+                    wrapMode: (textMetrics.width > root.maxTextW || root.text.indexOf("\n") !== -1) ? Text.Wrap : Text.NoWrap
+                    width: (wrapMode === Text.Wrap) ? Math.min(textMetrics.width, root.maxTextW) : undefined
                 }
 
                 ChaSetKbd {
                     id: shortcutBadge
                     objectName: "shortcutBadge"
                     visible: root.shortcut !== ""
-                    anchors.verticalCenter: parent ? parent.verticalCenter : undefined
+                    anchors.verticalCenter: (bubbleText.lineCount <= 1) ? (parent ? parent.verticalCenter : undefined) : undefined
+                    anchors.top: (bubbleText.lineCount > 1) ? (parent ? parent.top : undefined) : undefined
+                    anchors.topMargin: (bubbleText.lineCount > 1) ? ((typeof ThemeTokens !== "undefined" && ThemeTokens) ? ThemeTokens.dp(2) : 2) : 0
                     variant: "outline"
                     size: "xs"
                     compact: "never"
@@ -178,8 +234,8 @@ Item {
                 id: descText
                 objectName: "descText"
                 visible: root.description !== ""
-                anchors.left: (root.description !== "") ? parent.left : undefined
-                anchors.horizontalCenter: (root.description === "") ? parent.horizontalCenter : undefined
+                anchors.left: (root.description !== "" || bubbleText.lineCount > 1) ? parent.left : undefined
+                anchors.horizontalCenter: (root.description === "" && bubbleText.lineCount <= 1) ? parent.horizontalCenter : undefined
                 text: root.description
                 color: (typeof ThemeTokens !== "undefined" && ThemeTokens)
                         ? ThemeTokens.color("subduedText") : "#b0c5e4"
