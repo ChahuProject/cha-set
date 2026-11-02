@@ -46,10 +46,10 @@ describe('Squircle mathematical path generator', () => {
         <span>Content</span>
       </Squircle>
     );
-    const el = container.querySelector('[data-corner-shape="squircle"]') as HTMLElement;
+    const el = container.querySelector('[data-corner-shape="superellipse(1.60)"]') as HTMLElement;
     expect(el).not.toBeNull();
     expect(el?.getAttribute('data-corner-smoothing')).toBe('0.6');
-    expect((el?.style as any).cornerShape).toBe('squircle');
+    expect((el?.style as any).cornerShape).toBe('superellipse(1.60)');
     expect(el?.style.borderTopLeftRadius).toBe(`${12 * 0.0625}rem`);
   });
 
@@ -75,7 +75,7 @@ describe('Squircle mathematical path generator', () => {
     expect(rootEl.style.borderColor).toBe('rgb(59, 130, 246)');
     expect(rootEl.style.borderStyle).toBe('solid');
     expect(rootEl.style.backgroundColor).toBe('rgba(59, 130, 246, 0.15)');
-    expect((rootEl.style as any).cornerShape).toBe('squircle');
+    expect((rootEl.style as any).cornerShape).toBe('superellipse(1.60)');
   });
 
   it('dynamically maps smoothing factor to native corner-shape values', () => {
@@ -94,8 +94,8 @@ describe('Squircle mathematical path generator', () => {
         <span>Dynamic</span>
       </Squircle>
     );
-    expect(el?.getAttribute('data-corner-shape')).toBe('squircle');
-    expect((el?.style as any).cornerShape).toBe('squircle');
+    expect(el?.getAttribute('data-corner-shape')).toBe('superellipse(1.60)');
+    expect((el?.style as any).cornerShape).toBe('superellipse(1.60)');
 
     // Rerender with 1.0 (full continuous squircle)
     rerender(

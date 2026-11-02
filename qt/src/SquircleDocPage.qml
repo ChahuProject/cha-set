@@ -167,7 +167,7 @@ DocLayout {
                                 width: parent.width
                                 min: 0.0
                                 max: 1.0
-                                step: 0.05
+                                step: 0.01
                                 value: root.customSmoothing
                                 onValueMoved: (v) => root.customSmoothing = v
                             }
@@ -201,7 +201,7 @@ DocLayout {
                                 width: parent.width
                                 min: 4
                                 max: 48
-                                step: 2
+                                step: 1
                                 value: root.customRadius
                                 onValueMoved: (v) => root.customRadius = Math.round(v)
                             }

@@ -121,14 +121,13 @@ export const Squircle = React.forwardRef<HTMLDivElement, SquircleProps>(
 
     // Resolve native CSS corner-shape:
     // - 0.0 -> round (traditional circular arc)
-    // - 0.6 (default iOS standard) -> squircle
-    // - 1.0 (full continuous squircle) -> superellipse(2)
-    // - dynamic numeric -> superellipse(1 + smoothing)
+    // - 0.0 < s <= 1.0 -> superellipse(1 + smoothing) strictly monotonic smooth interpolation
+    // - 1.0 -> superellipse(2) (full continuous squircle)
     const cornerShapeValue = React.useMemo(() => {
       if (effectiveSmoothing <= 0.001) return 'round';
-      if (Math.abs(effectiveSmoothing - 0.6) < 0.01) return 'squircle';
-      if (Math.abs(effectiveSmoothing - 1.0) < 0.01) return 'superellipse(2)';
-      return `superellipse(${(1 + effectiveSmoothing).toFixed(2)})`;
+      if (effectiveSmoothing >= 0.999) return 'superellipse(2)';
+      const exponent = (1 + effectiveSmoothing).toFixed(2);
+      return `superellipse(${exponent})`;
     }, [effectiveSmoothing]);
 
     const combinedStyle: React.CSSProperties = {

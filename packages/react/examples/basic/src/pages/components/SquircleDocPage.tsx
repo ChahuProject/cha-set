@@ -152,7 +152,7 @@ export function PremiumCard({ children }: { children: React.ReactNode }) {
                   type="range"
                   min="0"
                   max="1"
-                  step="0.05"
+                  step="0.01"
                   value={smoothing}
                   onChange={(e) => setSmoothing(parseFloat(e.target.value))}
                   className="w-full cursor-pointer accent-primary"
@@ -168,7 +168,7 @@ export function PremiumCard({ children }: { children: React.ReactNode }) {
                   type="range"
                   min="4"
                   max="48"
-                  step="2"
+                  step="1"
                   value={radius}
                   onChange={(e) => setRadius(parseInt(e.target.value, 10))}
                   className="w-full cursor-pointer accent-primary"
