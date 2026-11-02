@@ -218,7 +218,7 @@ DocLayout {
                             { label: ChaSetI18n.tr("formsA.slider.modeRange", "Range"), value: "range" },
                             { label: ChaSetI18n.tr("formsA.slider.modeSnap", "Snap"), value: "snap" }
                         ]
-                        onValueSelected: (val) => root.demoMode = val
+                        onValueSelected: function(val) { root.demoMode = val; }
                     }
                 }
 
@@ -239,7 +239,7 @@ DocLayout {
                             { label: ChaSetI18n.tr("formsA.slider.sizeDefault", "Default"), value: "default" },
                             { label: ChaSetI18n.tr("formsA.slider.sizeSm", "Small (sm)"), value: "sm" }
                         ]
-                        onValueSelected: (val) => root.demoSize = val
+                        onValueSelected: function(val) { root.demoSize = val; }
                     }
                 }
 
@@ -260,7 +260,7 @@ DocLayout {
                             { label: ChaSetI18n.tr("formsA.slider.horizontal", "Horizontal"), value: "horizontal" },
                             { label: ChaSetI18n.tr("formsA.slider.vertical", "Vertical"), value: "vertical" }
                         ]
-                        onValueSelected: (val) => root.demoOrientation = val
+                        onValueSelected: function(val) { root.demoOrientation = val; }
                     }
                 }
 
@@ -283,7 +283,7 @@ DocLayout {
                             { label: "10", value: "10" },
                             { label: "25", value: "25" }
                         ]
-                        onValueSelected: (val) => root.demoStep = parseFloat(val)
+                        onValueSelected: function(val) { root.demoStep = parseFloat(val); }
                     }
                 }
             },
@@ -296,7 +296,7 @@ DocLayout {
                     size: "sm"
                     label: ChaSetI18n.tr("formsA.slider.commitOnRelease", "Commit on Release")
                     checked: root.demoCommitOnRelease
-                    onToggled: (val) => root.demoCommitOnRelease = val
+                    onToggled: function(val) { root.demoCommitOnRelease = val; }
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
@@ -304,7 +304,7 @@ DocLayout {
                     size: "sm"
                     label: ChaSetI18n.tr("formsA.slider.tooltip", "Tooltip")
                     checked: root.demoShowTooltip
-                    onToggled: (val) => root.demoShowTooltip = val
+                    onToggled: function(val) { root.demoShowTooltip = val; }
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
@@ -312,7 +312,7 @@ DocLayout {
                     size: "sm"
                     label: ChaSetI18n.tr("formsA.slider.ticks", "Ticks")
                     checked: root.demoShowTicks
-                    onToggled: (val) => root.demoShowTicks = val
+                    onToggled: function(val) { root.demoShowTicks = val; }
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
@@ -320,7 +320,7 @@ DocLayout {
                     size: "sm"
                     label: ChaSetI18n.tr("formsA.slider.readOnly", "Read-Only")
                     checked: root.demoReadOnly
-                    onToggled: (val) => root.demoReadOnly = val
+                    onToggled: function(val) { root.demoReadOnly = val; }
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
@@ -328,7 +328,7 @@ DocLayout {
                     size: "sm"
                     label: ChaSetI18n.tr("common.disabled", "Disabled")
                     checked: root.demoDisabled
-                    onToggled: (val) => root.demoDisabled = val
+                    onToggled: function(val) { root.demoDisabled = val; }
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }

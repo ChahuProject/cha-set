@@ -446,7 +446,7 @@ Item {
                     color: ThemeTokens.text
                     font.pixelSize: Typography.sizeCaption
                     font.family: Typography.familyMono
-                    font.weight: Font.Medium
+                    font.weight: Typography.weightMedium
                 }
             }
         }
@@ -512,7 +512,7 @@ Item {
                     color: ThemeTokens.text
                     font.pixelSize: Typography.sizeCaption
                     font.family: Typography.familyMono
-                    font.weight: Font.Medium
+                    font.weight: Typography.weightMedium
                 }
             }
         }
@@ -601,7 +601,7 @@ Item {
             }
             color: ThemeTokens.text
             font.pixelSize: Typography.sizeSmall
-            font.weight: Font.DemiBold
+            font.weight: Typography.weightSemibold
             elide: Text.ElideMiddle
         }
 
