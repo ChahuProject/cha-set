@@ -27,7 +27,7 @@ bool isSoftwareRasterizerRequested()
 
 QStringList FontSystem::s_customSansFamilies;
 QStringList FontSystem::s_customMonoFamilies;
-QString FontSystem::s_textRenderPolicyName = QStringLiteral("native");
+QString FontSystem::s_textRenderPolicyName = QStringLiteral("curve");
 
 const char* FontSystem::textRenderEnvVar()
 {
@@ -89,21 +89,22 @@ void FontSystem::applyTextRenderType()
 {
     QString requested = qEnvironmentVariable(textRenderEnvVar()).trimmed().toLower();
     if (requested.isEmpty()) {
-        requested = QStringLiteral("native");
+        requested = QStringLiteral("curve");
     } else if (requested != QLatin1String("curve")
                && requested != QLatin1String("native")
                && requested != QLatin1String("qt")) {
         qWarning() << "[ChaSet][FontSystem] Unknown" << textRenderEnvVar() << "value" << requested
-                   << "- expected one of {curve, native, qt}; falling back to the default (NativeTextRendering).";
-        requested = QStringLiteral("native");
+                   << "- expected one of {curve, native, qt}; falling back to the default (CurveTextRendering).";
+        requested = QStringLiteral("curve");
     }
 
-    // DirectWrite NativeTextRendering is the default on Windows to preserve TrueType
-    // font hinting (grid-fitting) and subpixel antialiasing at 100% display scale (96 DPI).
-    // CurveTextRendering runs outline integration without hinting, which causes 12px
-    // CJK hairline horizontal strokes (~0.6px) to break apart into disconnected dots.
-    QQuickWindow::TextRenderType type = QQuickWindow::NativeTextRendering;
-    QString resolved = QStringLiteral("native");
+    // Curve rasterization is the default because it produces clean, smooth, colourless coverage:
+    // DirectWrite NativeTextRendering outputs ClearType subpixel glyphs, causing red/blue chromatic
+    // fringes on dark backgrounds, and vertical grid-fitting snaps curved strokes into 1px staircases.
+    // CurveTextRendering integrates the vector outline per pixel directly on the GPU: analytic
+    // grayscale coverage, zero chromatic aberration, no grid-fitting staircases, and scale-invariant.
+    QQuickWindow::TextRenderType type = QQuickWindow::CurveTextRendering;
+    QString resolved = QStringLiteral("curve");
 
     if (requested == QLatin1String("curve")) {
         if (isSoftwareRasterizerRequested()) {
@@ -148,13 +149,13 @@ void FontSystem::initialize(QGuiApplication* /*app*/)
     // Register font substitution tables to eliminate SimSun fallback
     applySubstitutions();
 
-    // Configure application-level default font with antialiasing and vertical hinting for CJK stroke clarity
+    // Configure application-level default font with grayscale antialiasing
     const QStringList sans = activeSansFamilies();
     QFont appFont(sans.isEmpty() ? QStringLiteral("Microsoft YaHei UI") : sans.first());
     appFont.setStyleStrategy(static_cast<QFont::StyleStrategy>(
-        QFont::PreferAntialias | QFont::PreferQuality
+        QFont::PreferAntialias | QFont::PreferQuality | QFont::NoSubpixelAntialias
     ));
-    appFont.setHintingPreference(QFont::PreferVerticalHinting);
+    appFont.setHintingPreference(QFont::PreferNoHinting);
     appFont.setPixelSize(14);
     appFont.setWeight(QFont::Normal);
     appFont.setFamilies(sans);

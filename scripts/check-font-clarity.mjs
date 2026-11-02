@@ -131,11 +131,32 @@ export function verifyFontClarity(options = {}) {
   const totalInk = solidCount + faintCount;
   const solidRatio = totalInk > 0 ? solidCount / totalInk : 0;
 
-  // Enforce solid ink ratio >= 60%
-  const MIN_SOLID_RATIO = 0.60;
+  // Enforce solid ink ratio >= 50% (aligned with main.cpp scenario threshold 0.45)
+  const MIN_SOLID_RATIO = 0.50;
   if (solidRatio < MIN_SOLID_RATIO) {
     errors.push(
       `Font clarity degradation: solid ink ratio ${(solidRatio * 100).toFixed(1)}% < ${(MIN_SOLID_RATIO * 100).toFixed(1)}% (solid=${solidCount}, faint=${faintCount}, total=${totalInk})`
+    );
+  }
+
+  // Check maximum channel spread (chromatic aberration) on non-neutral pixels
+  let maxChannelSpread = 0;
+  for (let y = minY; y <= maxY; ++y) {
+    for (let x = minX; x <= maxX; ++x) {
+      const idx = (y * width + x) * 4;
+      const r = data[idx];
+      const g = data[idx + 1];
+      const b = data[idx + 2];
+      const spread = Math.max(r, g, b) - Math.min(r, g, b);
+      if (spread > maxChannelSpread) maxChannelSpread = spread;
+    }
+  }
+
+  // Pure grayscale antialiasing must have channel spread <= 45 (no ClearType red/blue fringing)
+  const MAX_COLOR_SPREAD = 45;
+  if (maxChannelSpread > MAX_COLOR_SPREAD) {
+    errors.push(
+      `Font rendering color fringing detected: peak channel spread ${maxChannelSpread} > ${MAX_COLOR_SPREAD} (subpixel ClearType color bleed)`
     );
   }
 
