@@ -51,8 +51,10 @@ Item {
     readonly property real scaledPadY: (typeof ThemeTokens !== "undefined" && ThemeTokens)
             ? ThemeTokens.dp(8) : Math.round(8 * uiScaleFactor)
 
+    // 单行上限：超过才折行。400dp 级的文件名/路径很常见，旧的 380dp 会在
+    // 「看上去并不长」的内容上强行折行（并让首行右侧留下突兀空白）。
     readonly property real maxContentW: (typeof ThemeTokens !== "undefined" && ThemeTokens)
-            ? ThemeTokens.dp(380) : Math.round(380 * uiScaleFactor)
+            ? ThemeTokens.dp(480) : Math.round(480 * uiScaleFactor)
     readonly property real maxTextW: maxContentW
     readonly property real maxDescW: maxContentW
 
@@ -79,17 +81,17 @@ Item {
     // 声明式单行/多行判定（基于离线 TextMetrics，彻底断绝 Text 内部 lineCount 布局依赖形成的 Binding loop）
     readonly property bool isMultilineText: root.text !== "" && (root.text.indexOf("\n") !== -1 || textMetrics.width > root.maxTextW)
 
-    // 单行/多行紧凑内容宽度与高度（首帧同步计算 + TextMetrics 兜底，彻底杜绝 0 宽坍塌与 24dp 空白方块）
+    // 单行/多行紧凑内容宽度：**纯 TextMetrics 同步推导**。
+    // 严禁掺入 bubbleText.implicitWidth / contentRow.width 这类「上一帧布局
+    // 产物」——它们在新内容写入后仍是旧值（QML 子项尺寸要等 polish 才更新），
+    // 会把气泡锁在旧宽度上，表现为右侧被裁或右侧空一大截。
     readonly property real naturalTextW: {
-        if (root.text === "") return 0
-        var maxW = root.maxTextW
-        if (root.text.indexOf("\n") !== -1 && bubbleText.implicitWidth > 0) {
-            return Math.min(bubbleText.implicitWidth, maxW)
-        }
-        if (root.text.indexOf("\n") !== -1 || textMetrics.width > maxW) {
-            return Math.min(textMetrics.width, maxW)
-        }
-        return textMetrics.width
+        if (root.text === "")
+            return 0
+        // TextMetrics 与 Text 的塑形器存在固有差异（CJK 逐字 1~3px，2.5x 下可达
+        // 12px/4 字），单靠它会算窄气泡，文字就溢出到黑框外面。取两者较大值：
+        // Text.implicitWidth 只会「滞后偏大」，不会偏小，方向安全。
+        return Math.min(Math.max(textMetrics.width, bubbleText.implicitWidth), root.maxTextW)
     }
 
     readonly property real naturalRowW: {
@@ -104,10 +106,17 @@ Item {
             items++
         }
         if (root.shortcut !== "") {
-            var kbdW = (typeof shortcutBadge !== "undefined" && shortcutBadge && shortcutBadge.estimatedFullWidth > 0)
-                    ? shortcutBadge.estimatedFullWidth
-                    : ((shortcutBadge.implicitWidth > 0) ? shortcutBadge.implicitWidth : shortcutBadge.width)
-            w += (kbdW > 0 ? kbdW : Math.round(30 * root.uiScaleFactor))
+            // estimatedFullWidth 由 ChaSetKbd 内部 TextMetrics 同步推导；
+            // 严禁退回 implicitWidth/width —— 那是 Positioner 的布局产物，
+            // 新内容写入后仍是旧值（首帧宽度塌陷 12px 就是这么来的）。
+            // estimatedFullWidth（同步推算）与徽标自身 implicitWidth 取大：
+            // 前者可能在多分支/组合键上略窄，导致徽标悬空脱出黑框右侧。
+            var kbdW = (typeof shortcutBadge !== "undefined" && shortcutBadge)
+                    ? Math.max(shortcutBadge.estimatedFullWidth, shortcutBadge.implicitWidth)
+                    : 0
+            if (!(kbdW > 0))
+                kbdW = Math.round(30 * root.uiScaleFactor)
+            w += kbdW
             items++
         }
         if (items > 1) {
@@ -115,45 +124,37 @@ Item {
                     ? ThemeTokens.dp(8) : Math.round(8 * root.uiScaleFactor)
             w += (items - 1) * sp
         }
-        if (bubbleText.wrapMode === Text.Wrap) {
-            return w
-        }
-        return Math.max(w, contentRow.implicitWidth, contentRow.width)
+        return w
     }
 
-    readonly property real naturalDescW: {
-        if (root.description === "") return 0
-        var maxD = root.maxDescW
-        if (!descText.shouldWrap && root.description.indexOf("\n") === -1) {
-            var w = descMetrics.width
-            if (descText.implicitWidth > w) w = descText.implicitWidth
-            return Math.min(w, maxD)
-        }
-        if (descText.paintedWidth > 0) {
-            return Math.min(Math.ceil(descText.paintedWidth), maxD)
-        }
-        if (root.description.indexOf("\n") !== -1 && descText.implicitWidth > 0) {
-            return Math.min(descText.implicitWidth, maxD)
-        }
-        return Math.min(descMetrics.width, maxD)
-    }
+    // 描述宽度同样只由 descMetrics（同步）决定：
+    // 用 paintedWidth / implicitWidth 会让宽度跟随上一帧排版，产生「宽窄漂移」，
+    // 而窗口宽度又由它驱动 —— 回环一旦成立，气泡就会在两档宽度之间摆动。
+    readonly property real naturalDescW: root.description === ""
+            ? 0 : Math.min(descMetrics.width, root.maxDescW)
 
-    readonly property real contentW: {
-        var dw = naturalDescW
-        if (descText.visible && !descText.shouldWrap) {
-            dw = Math.max(dw, descText.implicitWidth)
-        }
-        return Math.max(naturalRowW, dw)
+    // 宽度一律由 TextMetrics 同步推导，不掺入任何 Positioner/Text 的布局尺寸
+    readonly property real contentW: Math.max(naturalRowW, naturalDescW)
+
+    /// 正文行数（纯 TextMetrics 推导，与 C++ measuredSize 同一口径）。
+    /// 严禁读 bubbleText.lineCount / implicitHeight / contentRow.* ——
+    /// 它们都是**上一帧**的布局产物：换缩放档或换内容后，父项几何要等下一次
+    /// polish 才更新，读到的行高会让气泡凭空多出或少掉一整行
+    /// （多出 = 底部留白，少掉 = 文字被裁）。
+    readonly property int textLineCount: {
+        if (root.text === "")
+            return 0
+        if (!root.isMultilineText)
+            return 1
+        var explicitLines = root.text.split("\n").length
+        var wrappedLines = Math.max(1, Math.ceil(textMetrics.width / Math.max(1, root.maxTextW)))
+        return Math.max(explicitLines, wrappedLines)
     }
 
     readonly property real naturalRowH: {
         var h = 0
-        if (root.text !== "") {
-            var th = (bubbleText.lineCount > 1)
-                    ? Math.max(bubbleText.height, bubbleText.implicitHeight, bubbleText.lineCount * textMetrics.height)
-                    : textMetrics.height
-            h = Math.max(h, th)
-        }
+        if (root.text !== "")
+            h = root.textLineCount * textMetrics.height
         if (root.shortcut !== "") {
             var kbdH = (typeof ThemeTokens !== "undefined" && ThemeTokens)
                     ? ThemeTokens.dp(18) : Math.round(18 * root.uiScaleFactor)
@@ -164,27 +165,16 @@ Item {
                     ? ThemeTokens.dp(14) : Math.round(14 * root.uiScaleFactor)
             h = Math.max(h, iconH)
         }
-        return Math.max(h, contentRow.implicitHeight, contentRow.height)
+        return h
     }
 
     readonly property real naturalDescH: {
-        if (root.description === "") return 0
-        var maxD = root.maxDescW
-        var lineCount = 1
-        if (descMetrics.width > maxD) {
-            lineCount = Math.max(1, Math.ceil(descMetrics.width / maxD))
-        }
-        var explicitLines = root.description.split("\n").length
-        lineCount = Math.max(lineCount, explicitLines)
-        if (descText.lineCount > lineCount) {
-            lineCount = descText.lineCount
-        }
-        var singleLineH = descMetrics.height
-        if (descText.implicitHeight > 0 && descText.lineCount > 0) {
-            singleLineH = Math.max(singleLineH, descText.implicitHeight / descText.lineCount)
-        }
-        var estH = lineCount * singleLineH
-        return Math.max(estH, descText.height, descText.implicitHeight)
+        if (root.description === "")
+            return 0
+        var maxD = Math.max(1, root.maxDescW)
+        var lineCount = Math.max(1, Math.ceil(descMetrics.width / maxD))
+        lineCount = Math.max(lineCount, root.description.split("\n").length)
+        return lineCount * descMetrics.height
     }
 
     readonly property real contentH: {
@@ -198,16 +188,7 @@ Item {
         if (hasRow) h += naturalRowH
         h += sp
         if (hasDesc) h += naturalDescH
-
-        var renderedH = 0
-        if (contentRow.visible) {
-            renderedH += Math.max(contentRow.height, contentRow.implicitHeight)
-        }
-        renderedH += sp
-        if (descText.visible) {
-            renderedH += Math.max(descText.height, descText.implicitHeight)
-        }
-        return Math.max(h, renderedH, mainContent.implicitHeight, mainContent.height)
+        return h
     }
 
     readonly property real baseBubbleW: Math.max((typeof ThemeTokens !== "undefined" && ThemeTokens)
@@ -362,11 +343,11 @@ Item {
                 readonly property real maxDescW: root.maxDescW
                 readonly property bool shouldWrap: (descMetrics.width > maxDescW)
                 wrapMode: shouldWrap ? Text.Wrap : Text.NoWrap
-                width: shouldWrap
-                        ? (root.width > 0 && root.width - root.scaledPadX >= 100
-                           ? Math.min(maxDescW, root.width - root.scaledPadX)
-                           : maxDescW)
-                        : undefined
+                // 折行宽度只由内容上限决定，**不读 root.width**：
+                // root.width 在全局提示窗里等于「窗口宽度」，而窗口宽度又来自
+                // 本气泡的隐式尺寸 —— 一旦读取就形成「宽度↔高度」回环，量出来
+                // 的尺寸会随上一帧的窗口宽度漂移（首行留白 / 多行被裁都源于此）。
+                width: shouldWrap ? maxDescW : undefined
                 horizontalAlignment: Text.AlignLeft
             }
         }

@@ -50,8 +50,20 @@ Popup {
     property real minHeight: ThemeTokens.dp(120)
     /// 显式封顶（<=0 表示完全交给宿主空间自动计算）
     property real maxHeight: -1
+    /// **首选锚定契约**：直接给出触发弹窗的控件（按钮），由本组件负责把它
+    /// 映射成父项坐标并 clamp。宿主**严禁**再手算 anchorX/anchorY ——
+    /// 历史回归的根因正是宿主在绑定里调用 `mapToItem`：布局未完成时它求值到
+    /// (0,0)，而 `mapToItem` 内部的属性读取不会登记 QML 依赖，于是绑定的
+    /// 「旧坐标」永久冻结，弹窗整体飞到窗口左上角（或右边缘之外）。
+    property Item anchorItem: null
+    /// 锚点控件与弹窗之间的间距
+    property real gap: ThemeTokens.dp(4)
+    /// 水平对齐（仅 anchorItem 生效）："start" 左对齐｜"end" 右对齐｜"center" 居中
+    property string anchorAlign: "end"
+    /// 旧契约（保留兼容：拖拽浮层 / 居中弹窗仍可显式声明坐标）。
     /// 期望左上角（宿主父项坐标系）。x/y 由本组件按可用空间 clamp 后写入。
     /// placement "down"：anchorY 是期望**顶边**；placement "up"：anchorY 是期望**底边**。
+    /// 只要 anchorItem 有效就优先使用 anchorItem，本组属性不参与计算。
     property real anchorX: 0
     property real anchorY: 0
     /// 展开方向："down" 向下（默认）；"up" 向上（浮层底边贴 anchorY，向上延展）。
@@ -90,89 +102,145 @@ Popup {
                                                    + root.contentNaturalHeight
                                                    + root.footerHeight)
 
+    /// 显式依赖：锚点控件自身几何 + 打开态。让下面的定位绑定在「宿主把弹窗
+    /// 挂上来的时刻」与「按钮被重新布局」时重算。
+    /// （QML 里对 JS 变量赋值即登记依赖，值本身不参与几何计算。）
+    readonly property real anchorDependency: {
+        const it = root.anchorItem
+        const _depRev = root.anchorRevision
+        if (!it)
+            return -1
+        return it.x + it.y + it.width + it.height
+    }
+    /// 打开 / 关闭 / 视口变化时自增，强制定位绑定复算一次真实 mapToItem。
+    property int anchorRevision: 0
+    // 用 Connections 而非 onOpened/onClosed：派生组件常自带 onOpened 处理器，
+    // 那会整体覆盖基类的同名处理器，导致打开瞬间的复算被悄悄吞掉。
+    // aboutToShow 在真正显示前触发 —— 在这里复算，弹窗第一帧就落在正确位置，
+    // 不会先出现在旧坐标再跳一下。
+    Connections {
+        target: root
+        function onAboutToShow() { root.anchorRevision++ }
+        function onOpened() { root.anchorRevision++ }
+        function onClosed() { root.anchorRevision++ }
+    }
+
+    /// 锚点矩形（**父项坐标系**）。anchorItem 优先；无 anchorItem 时退化为
+    /// 旧契约的 (anchorX, anchorY) 零点。
+    readonly property rect anchorRect: {
+        const _dep = root.anchorDependency
+        const it = root.anchorItem
+        if (it && root.parent && typeof it.mapToItem === "function") {
+            const p = it.mapToItem(root.parent, 0, 0)
+            if (p && !isNaN(p.x) && !isNaN(p.y))
+                return Qt.rect(p.x, p.y, it.width, it.height)
+        }
+        return Qt.rect(root.anchorX, root.anchorY, 0, 0)
+    }
+
     /// 期望顶边（父项局部坐标）。向上展开时由「底边 - 自身高度」推出。
     readonly property real anchorTop: root.placement === "up"
-                                      ? root.anchorY - root.height
-                                      : root.anchorY
+                                      ? root.desiredBottom - root.height
+                                      : root.desiredTop
+    /// 期望顶边（placement "down"）：锚点底边 + gap
+    readonly property real desiredTop: root.anchorItem
+                                       ? root.anchorRect.y + root.anchorRect.height + root.gap
+                                       : root.anchorY
+    /// 期望底边（placement "up"）：锚点顶边 - gap
+    readonly property real desiredBottom: root.anchorItem
+                                          ? root.anchorRect.y - root.gap
+                                          : root.anchorY
+    /// 期望左边（父项局部坐标）
+    readonly property real desiredLeft: {
+        const _dep = root.anchorDependency
+        if (!root.anchorItem)
+            return root.anchorX
+        const r = root.anchorRect
+        if (root.anchorAlign === "start")
+            return r.x
+        if (root.anchorAlign === "center")
+            return r.x + (r.width - root.width) / 2
+        return r.x + r.width - root.width         // "end"：右边缘对齐
+    }
 
     // ---- 宿主可用视口（Viewport）与空间 ----
-    // 弹窗无论挂在多么狭小的按钮（如 36x36 齿轮）上，其可用视口一律为最外层窗口视口。
-    // 优先沿 parent 链回溯找到几何面积最大（width * height 最大）的容器 Item；
-    // 绝不将局部狭小 Item 误当成整个视口，确保换算坐标系与 hostBandWidth/Height 严格处于同一空间。
+    // 唯一可信的可用视口 = **顶层窗口的内容项**。
+    // 历史事故：曾用「沿 parent 链取面积最大的祖先」当视口 —— 只要链上存在
+    // 一个比窗口还大的容器（横向滚动的画布/工作区节点），hostBandWidth 就会
+    // 大于真实窗口，clamp 上限被放宽到窗口之外，弹窗于是贴着右边缘冲出去。
+    // 视口与窗口尺寸必须是同一个真相源，故这里只认窗口内容项（无窗口时退回
+    // Overlay，再退回父项）。
     readonly property Item hostViewport: {
-        let maxItem = null
-        let maxArea = 0
-        if (root.parent && root.parent.width > 0 && root.parent.height > 0) {
-            maxItem = root.parent
-            maxArea = root.parent.width * root.parent.height
-        }
-        let cur = root.parent ? root.parent.parent : null
-        while (cur) {
-            const area = cur.width * cur.height
-            if (area > maxArea) {
-                maxArea = area
-                maxItem = cur
-            }
-            cur = cur.parent
-        }
-        if (maxItem)
-            return maxItem
+        const p = root.parent
+        const win = p ? p.Window.window : null
+        if (win && win.contentItem)
+            return win.contentItem
         try {
             if (Overlay.overlay)
                 return Overlay.overlay
         } catch (e) {}
-        return root.parent
+        return p
+    }
+
+    /// 视口在**父项坐标系**中的矩形。
+    /// 用「两个角点分别投影」而不是「视口宽度 + 原点偏移」：父链上存在
+    /// transform 时（全局 UI 缩放就是挂在内容根上的 Scale），宽度与坐标分属
+    /// 不同单位，直接拿 `viewport.width` 当父项单位会整体偏掉一个缩放倍率，
+    /// 于是 clamp 上限落错位置 —— 弹窗要么提前贴边、要么冲出窗口。
+    readonly property rect viewportInParent: {
+        const vp = root.hostViewport
+        const _dep = root.anchorDependency
+        if (!vp || !root.parent || typeof vp.mapToItem !== "function")
+            return Qt.rect(0, 0, 0, 0)
+        try {
+            const a = vp.mapToItem(root.parent, 0, 0)
+            const b = vp.mapToItem(root.parent, vp.width, vp.height)
+            if (isNaN(a.x) || isNaN(a.y) || isNaN(b.x) || isNaN(b.y))
+                return Qt.rect(0, 0, 0, 0)
+            return Qt.rect(a.x, a.y, b.x - a.x, b.y - a.y)
+        } catch (e) {}
+        return Qt.rect(0, 0, 0, 0)
     }
 
     readonly property real hostBandHeight: {
-        const vp = root.hostViewport
-        if (vp && vp.height > 0)
-            return vp.height
+        const h = root.viewportInParent.height
+        if (h !== 0)
+            return h
         if (root.parent && root.parent.height > 0)
             return root.parent.height
         return 0
     }
 
     readonly property real hostBandWidth: {
-        const vp = root.hostViewport
-        if (vp && vp.width > 0)
-            return vp.width
+        const w = root.viewportInParent.width
+        if (w !== 0)
+            return w
         if (root.parent && root.parent.width > 0)
             return root.parent.width
         return 0
     }
 
-    /// 父项原点在宿主视口坐标系中的 y。
+    /// 父项原点在宿主视口坐标系中的 y（= 视口顶边在父项坐标中的偏移取反）。
     /// 刻意与 anchorX/anchorY **解耦**（恒定值），使宿主可以把 anchorY 写成
     /// `-height - gap` 而不会形成「高度↔位置」绑定回环。
     readonly property real parentOriginInHost: {
-        const vp = root.hostViewport
-        if (vp && root.parent && typeof root.parent.mapToItem === "function") {
-            try {
-                const m = root.parent.mapToItem(vp, 0, 0)
-                if (m && typeof m.y === "number" && !isNaN(m.y))
-                    return m.y
-            } catch (e) {}
-        }
-        return 0
+        const _dep = root.anchorDependency
+        return -root.viewportInParent.y
     }
 
     /// 父项原点在宿主视口坐标系中的 x。
     /// 刻意与 anchorX/anchorY 解耦（恒定值）。
     readonly property real parentOriginInHostX: {
-        const vp = root.hostViewport
-        if (vp && root.parent && typeof root.parent.mapToItem === "function") {
-            try {
-                const m = root.parent.mapToItem(vp, 0, 0)
-                if (m && typeof m.x === "number" && !isNaN(m.x))
-                    return m.x
-            } catch (e) {}
-        }
-        return 0
+        const _dep = root.anchorDependency
+        return -root.viewportInParent.x
     }
 
-    /// 锚点在宿主窗口坐标系中的 y
-    readonly property real anchorInHost: root.parentOriginInHost + root.anchorY
+    /// 锚点边缘在宿主窗口坐标系中的 y（"down" 取期望顶边，"up" 取期望底边）。
+    /// 刻意**不含自身 height**，否则会形成「高度 ↔ 位置」绑定回环。
+    readonly property real anchorInHost: {
+        const oy = root.parentOriginInHost
+        return oy + (root.placement === "up" ? root.desiredBottom : root.desiredTop)
+    }
 
     /// 可用高度上限（避开 Popup 的 FINAL availableHeight）。刻意只依赖
     /// hostBandHeight / anchorInHost / maxHeight，**不依赖 root.y 与 root.height**。
@@ -203,15 +271,16 @@ Popup {
 
     // 定位一律为绑定：绝不命令式写 root.x / root.y（会销毁宿主的绑定）。
     x: {
+        const left = root.desiredLeft
         if (root.hostBandWidth <= 0)
-            return root.anchorX
+            return left
         // 把窗口坐标系的左右边界换算回父项坐标系
         const offset = root.parentOriginInHostX
         const minLeft = root.edgeMargin - offset
         const maxLeft = root.hostBandWidth - root.width - root.edgeMargin - offset
         if (maxLeft < minLeft)
-            return root.anchorX
-        return Math.max(minLeft, Math.min(root.anchorX, maxLeft))
+            return left
+        return Math.max(minLeft, Math.min(left, maxLeft))
     }
     y: {
         const top = root.anchorTop
