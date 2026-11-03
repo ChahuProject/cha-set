@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import {
   Button,
   ScrollArea,
@@ -762,7 +762,7 @@ export function App() {
     setUiScale(1.0);
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     applyTheme(effectiveIsDark, accent, overrides, uiScale);
     localStorage.setItem('cs-mode', mode);
     localStorage.setItem('cs-accent', accent);

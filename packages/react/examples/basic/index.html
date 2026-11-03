@@ -4,6 +4,116 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ChaSet Showcase</title>
+    <style>
+      /* Pre-seed background & text to avoid white flash on load */
+      html {
+        background-color: #ffffff;
+        color: #1c2430;
+      }
+      html.dark {
+        background-color: #020817;
+        color: #e6f0fa;
+        color-scheme: dark;
+      }
+      :root {
+        --primary: #1d7ae0;
+        --primary-foreground: #ffffff;
+        --secondary: #e8ecf3;
+        --secondary-foreground: #1c2430;
+        --muted: #e8ecf3;
+        --muted-foreground: #5c6779;
+        --destructive: #ef4444;
+        --destructive-foreground: #ffffff;
+        --accent: #e8ecf3;
+        --accent-foreground: #1c2430;
+        --background: #ffffff;
+        --foreground: #1c2430;
+        --card: #ffffff;
+        --card-foreground: #1c2430;
+        --popover: #ffffff;
+        --popover-foreground: #1c2430;
+        --border: #ccd4e0;
+        --input: #ccd4e0;
+        --ring: #1d7ae0;
+      }
+      .dark {
+        --primary: #30a0ff;
+        --primary-foreground: #ffffff;
+        --secondary: #252d3d;
+        --secondary-foreground: #e6f0fa;
+        --muted: #252d3d;
+        --muted-foreground: #a0b2c6;
+        --destructive: #ef4444;
+        --destructive-foreground: #ffffff;
+        --accent: #252d3d;
+        --accent-foreground: #e6f0fa;
+        --background: #020817;
+        --foreground: #e6f0fa;
+        --card: #161b26;
+        --card-foreground: #e6f0fa;
+        --popover: #161b26;
+        --popover-foreground: #e6f0fa;
+        --border: #3c4858;
+        --input: #3c4858;
+        --ring: #30a0ff;
+      }
+    </style>
+    <script>
+      (function () {
+        try {
+          var params = new URLSearchParams(window.location.search);
+          var paramTheme = params.get('theme');
+          var mode = paramTheme || localStorage.getItem('cs-mode') || 'system';
+          var systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var isDark = mode === 'dark' || (mode === 'system' && systemDark);
+          if (isDark) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+
+          var accent = localStorage.getItem('cs-accent');
+          if (accent) {
+            document.documentElement.setAttribute('data-theme', accent);
+          }
+
+          var uiScale = localStorage.getItem('cs-uiscale');
+          if (uiScale) {
+            var s = parseFloat(uiScale);
+            if (!isNaN(s) && s >= 0.25 && s <= 5.0 && Math.abs(s - 1.0) > 0.001) {
+              document.documentElement.style.fontSize = (16 * s) + 'px';
+              document.documentElement.style.setProperty('--cs-ui-scale', String(s));
+            }
+          }
+
+          var overridesStr = localStorage.getItem('cs-overrides');
+          if (overridesStr) {
+            var overrides = JSON.parse(overridesStr);
+            var customProps = [
+              ['primary', '--primary'],
+              ['primaryForeground', '--primary-foreground'],
+              ['secondary', '--secondary'],
+              ['secondaryForeground', '--secondary-foreground'],
+              ['accent', '--accent'],
+              ['accentForeground', '--accent-foreground'],
+              ['destructive', '--destructive'],
+              ['background', '--background'],
+              ['card', '--card'],
+              ['border', '--border'],
+              ['ring', '--ring'],
+              ['radius', '--radius']
+            ];
+            for (var i = 0; i < customProps.length; i++) {
+              var k = customProps[i][0];
+              var prop = customProps[i][1];
+              if (overrides[k]) {
+                document.documentElement.style.setProperty(prop, overrides[k]);
+              }
+            }
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
