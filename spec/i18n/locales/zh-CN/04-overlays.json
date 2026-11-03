@@ -164,6 +164,17 @@
     }
   },
   "overlays": {
+    "alertDialog": {
+      "cancel": "取消",
+      "confirm": "确认删除",
+      "deleteDatabase": "永久删除数据库",
+      "deleteDatabaseDesc": "此操作无法逆转。此数据库及其所有包含的数据表、索引与备份将被立即永久清除。",
+      "openAlertDialog": "打开警示确认弹窗",
+      "overviewDesc": "测试阻断性警示对话框、破坏性操作强调、背景遮罩隔离与键盘 Escape 取消阻断。",
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "警示对话框沙盒",
+      "statusMessage": "数据库已被安全清除。"
+    },
     "activityStack": {
       "accessibleLabel": "活动堆栈",
       "activeCardsCount": "当前活动卡片数：%1",

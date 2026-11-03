@@ -326,6 +326,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/SeparatorDocPage.qml
             src/SliderDocPage.qml
             src/DialogDocPage.qml
+            src/AlertDialogDocPage.qml
             src/TooltipDocPage.qml
             src/TableDocPage.qml
             src/ColorPickerDocPage.qml
@@ -372,6 +373,8 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/LanguageSettingsDocPage.qml
             src/TableOfContentsDocPage.qml
             src/BreadcrumbDocPage.qml
+            src/StepTimelineDocPage.qml
+            src/LogConsoleDocPage.qml
             src/KbdDocPage.qml
             src/SquircleDocPage.qml
             src/MediaProgressBarDocPage.qml

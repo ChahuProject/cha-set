@@ -132,7 +132,11 @@
       "description": "Cross-stack language configuration card with system detection and cultural poetry quotes."
     },
     "logConsole": {
+      "description": "High-performance virtualized terminal log viewer with auto-scroll, ANSI color parsing, and copy support.",
       "empty": "No logs"
+    },
+    "log-console": {
+      "description": "High-performance virtualized terminal log viewer with auto-scroll, ANSI color parsing, and copy support."
     },
     "pipelineView": {
       "description": "Multi-stage execution view and pipeline center with job tracking, step timelines, and virtualized auto-scrolling log console."
@@ -141,7 +145,11 @@
       "description": "Visual rule tree builder for structured search query generation with nested logic groups (AND/OR), operator filters, and JSON serialization."
     },
     "stepTimeline": {
+      "description": "Sequential vertical execution step timeline with status indicators and formatted durations.",
       "emptyText": "No steps"
+    },
+    "step-timeline": {
+      "description": "Sequential vertical execution step timeline with status indicators and formatted durations."
     },
     "table": {
       "description": "A responsive, accessible table component with row hover highlights, clean borders, and header/caption semantics.",
@@ -209,6 +217,17 @@
     },
     "languageSettings": {
       "sandboxTitle": "Interactive Language Settings"
+    },
+    "logConsole": {
+      "appendLog": "Append Log Line",
+      "appendStream": "Append Batch Stream",
+      "clearLogs": "Clear Logs",
+      "copyAll": "Copy all logs",
+      "linesCount": "{{count}} lines",
+      "overviewDesc": "High-performance virtualized terminal log viewer with auto-scroll, ANSI color parsing, and copy support.",
+      "overviewHeading": "Interactive Overview",
+      "reset": "Reset Logs",
+      "sandboxTitle": "Log Console Sandbox"
     },
     "pipelineView": {
       "jobBenchmark": "Benchmark Suite",
@@ -284,6 +303,21 @@
       "userAlice": "Alice",
       "userBob": "Bob",
       "userCarol": "Carol"
+    },
+    "stepTimeline": {
+      "addStep": "Add Step",
+      "animationsDesc": "Steps in the running state exhibit continuous smooth rotation, transitioning cleanly to terminal status icons upon completion.",
+      "animationsTitle": "Animations",
+      "overviewDesc": "Sequential vertical execution step timeline with status indicators, dynamic duration formatting, and empty state.",
+      "overviewHeading": "Interactive Overview",
+      "reset": "Reset Steps",
+      "sandboxTitle": "Step Timeline Sandbox",
+      "stepBuild": "Compile Application Bundle",
+      "stepDeploy": "Deploy to Edge Cluster",
+      "stepLint": "Lint & Typecheck",
+      "stepPackage": "Generate Release Package",
+      "stepTest": "Unit & Integration Test Suite",
+      "toggleEmpty": "Toggle Empty State"
     },
     "themeSettings": {
       "sandboxTitle": "Interactive Theme Settings"

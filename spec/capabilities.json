@@ -1,12 +1,32 @@
 {
   "version": 1,
   "components": {
+    "alert-dialog": {
+      "modalOverlay": { "requirement": "must", "description": "renders focused modal barrier overlay blocking background clicks" },
+      "destructiveConfirmation": { "requirement": "must", "description": "highlights critical or destructive action with prominent styling" },
+      "keyboardDismissal": { "requirement": "must", "description": "Escape key dismisses dialog unless prevented" },
+      "focusTrap": { "requirement": "must", "description": "traps tab focus within the dialog buttons" }
+    },
     "breadcrumb": {
       "hierarchicalSegments": { "requirement": "must", "description": "renders path segments with icons and separators" },
       "interactiveNavigation": { "requirement": "must", "description": "clicks on segment emit navigation event" },
       "overflowHandling": { "requirement": "must", "description": "collapses intermediate segments into an overflow menu when space is constrained" },
       "subfolderBrowsing": { "requirement": "must", "description": "chevron click opens subfolders dropdown" },
       "keyboardNavigation": { "requirement": "must", "description": "arrow navigation and keyboard activation" }
+    },
+    "step-timeline": {
+      "sequentialSteps": { "requirement": "must", "description": "renders steps in sequential vertical timeline order" },
+      "statusIndicators": { "requirement": "must", "description": "displays status icons for success, failed, running, pending, and skipped" },
+      "durationDisplay": { "requirement": "must", "description": "formats and shows step duration in time format" },
+      "emptyState": { "requirement": "must", "description": "displays customizable emptyText when no steps provided" },
+      "activeProgressAnimation": { "requirement": "should", "description": "visual animation or rotating indicator on running step" }
+    },
+    "log-console": {
+      "ansiRendering": { "requirement": "must", "description": "renders ANSI colored terminal text lines" },
+      "autoScroll": { "requirement": "must", "description": "autoscrolls to bottom when new logs arrive while pinned" },
+      "copyLogs": { "requirement": "must", "description": "one-click clipboard copy of plain text logs" },
+      "lineCountBadge": { "requirement": "must", "description": "displays total log lines badge counter" },
+      "emptyState": { "requirement": "must", "description": "displays customizable emptyText when no logs present" }
     },
     "button": {
       "variant": { "requirement": "must", "description": "variant switches visual style" },

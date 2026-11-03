@@ -6,11 +6,13 @@ import {
   CodeBlock,
   KeybindingManager,
   LanguageSettings,
+  LogConsole,
   MediaProgressBar,
   PipelineView,
   QueryBuilder,
   ScaleOsd,
   SplitButton,
+  StepTimeline,
   ThemeSettings,
   DEFAULT_THEME_CONFIG,
 } from '../src';
@@ -114,6 +116,40 @@ export function Counter() {
       <div>
         {Array.from({ length: 10 }, (_, i) => (
           <PipelineView key={i} status="running" jobs={sampleJobs} />
+        ))}
+      </div>
+    );
+    unmount();
+  });
+
+  bench('StepTimeline (30x batch mount)', () => {
+    const { unmount } = render(
+      <div>
+        {Array.from({ length: 30 }, (_, i) => (
+          <StepTimeline
+            key={i}
+            steps={[
+              { name: 'Lint', status: 'success', durationMs: 120 },
+              { name: 'Build', status: 'running', durationMs: null },
+            ]}
+          />
+        ))}
+      </div>
+    );
+    unmount();
+  });
+
+  bench('LogConsole (20x batch mount)', () => {
+    const { unmount } = render(
+      <div>
+        {Array.from({ length: 20 }, (_, i) => (
+          <LogConsole
+            key={i}
+            lines={[
+              '[compiler] Initializing build...',
+              '\u001B[32mSuccess: 0 errors\u001B[0m',
+            ]}
+          />
         ))}
       </div>
     );

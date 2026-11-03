@@ -1,10 +1,30 @@
 {
+  "alert-dialog": {
+    "modalOverlay": true,
+    "destructiveConfirmation": true,
+    "keyboardDismissal": true,
+    "focusTrap": true
+  },
   "breadcrumb": {
     "hierarchicalSegments": true,
     "interactiveNavigation": true,
     "overflowHandling": true,
     "subfolderBrowsing": true,
     "keyboardNavigation": true
+  },
+  "step-timeline": {
+    "sequentialSteps": true,
+    "statusIndicators": true,
+    "durationDisplay": true,
+    "emptyState": true,
+    "activeProgressAnimation": true
+  },
+  "log-console": {
+    "ansiRendering": true,
+    "autoScroll": true,
+    "copyLogs": true,
+    "lineCountBadge": true,
+    "emptyState": true
   },
   "button": {
     "variant": true,

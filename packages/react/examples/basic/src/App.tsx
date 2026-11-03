@@ -52,6 +52,7 @@ import { SwitchDocPage } from './pages/components/SwitchDocPage';
 import { SeparatorDocPage } from './pages/components/SeparatorDocPage';
 import { SliderDocPage } from './pages/components/SliderDocPage';
 import { DialogDocPage } from './pages/components/DialogDocPage';
+import { AlertDialogDocPage } from './pages/components/AlertDialogDocPage';
 import { TooltipDocPage } from './pages/components/TooltipDocPage';
 import { TableDocPage } from './pages/components/TableDocPage';
 import { ColorPickerDocPage } from './pages/components/ColorPickerDocPage';
@@ -97,6 +98,8 @@ import { AddressBarDocPage } from './pages/components/AddressBarDocPage';
 import { ThemeSettingsDocPage } from './pages/components/ThemeSettingsDocPage';
 import { LanguageSettingsDocPage } from './pages/components/LanguageSettingsDocPage';
 import { BreadcrumbDocPage } from './pages/components/BreadcrumbDocPage';
+import { StepTimelineDocPage } from './pages/components/StepTimelineDocPage';
+import { LogConsoleDocPage } from './pages/components/LogConsoleDocPage';
 import { TableOfContentsDocPage } from './pages/components/TableOfContentsDocPage';
 import { KbdDocPage } from './pages/components/KbdDocPage';
 import { SquircleDocPage } from './pages/components/SquircleDocPage';
@@ -881,7 +884,7 @@ export function App() {
       case '#/components/context-menu':
         return <ContextMenuDocPage />;
       case '#/components/alert-dialog':
-        return <DialogDocPage />;
+        return <AlertDialogDocPage />;
       case '#/components/sheet':
         return <SheetDocPage />;
       case '#/components/skeleton':
@@ -965,6 +968,10 @@ export function App() {
         return <KeybindingManagerDocPage />;
       case '#/components/breadcrumb':
         return <BreadcrumbDocPage />;
+      case '#/components/step-timeline':
+        return <StepTimelineDocPage />;
+      case '#/components/log-console':
+        return <LogConsoleDocPage />;
       case '#/components/table-of-contents':
         return <TableOfContentsDocPage />;
       case '#/components/kbd':

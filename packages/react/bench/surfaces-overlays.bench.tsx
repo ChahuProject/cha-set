@@ -5,6 +5,9 @@ import {
   ActivityCard,
   ActivityStack,
   AdaptivePopup,
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
   ContextMenu,
   ContextMenuTrigger,
   ContextMenuContent,
@@ -94,6 +97,22 @@ describe('Performance Suite: Surfaces & Overlays (10 Components)', () => {
             </DialogTrigger>
             <DialogContent>Dialog Body {i}</DialogContent>
           </Dialog>
+        ))}
+      </div>
+    );
+    unmount();
+  });
+
+  bench('AlertDialog (30x batch mount)', () => {
+    const { unmount } = render(
+      <div>
+        {Array.from({ length: 30 }, (_, i) => (
+          <AlertDialog key={i} open={false}>
+            <AlertDialogTrigger asChild>
+              <button>Open Alert {i}</button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>Alert Body {i}</AlertDialogContent>
+          </AlertDialog>
         ))}
       </div>
     );

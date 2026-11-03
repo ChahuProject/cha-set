@@ -416,7 +416,7 @@ ApplicationWindow {
         case "activity-stack": return "ActivityStackDocPage.qml";
         case "adaptive-popup": return "AdaptivePopupDocPage.qml";
         case "context-menu": return "ContextMenuDocPage.qml";
-        case "alert-dialog": return "DialogDocPage.qml";
+        case "alert-dialog": return "AlertDialogDocPage.qml";
         case "sheet": return "SheetDocPage.qml";
         case "skeleton": return "SkeletonDocPage.qml";
         case "copy-button": return "CopyButtonDocPage.qml";
@@ -457,6 +457,8 @@ ApplicationWindow {
         case "language-settings": return "LanguageSettingsDocPage.qml";
         case "keybinding-manager": return "KeybindingManagerDocPage.qml";
         case "breadcrumb": return "BreadcrumbDocPage.qml";
+        case "step-timeline": return "StepTimelineDocPage.qml";
+        case "log-console": return "LogConsoleDocPage.qml";
         case "table-of-contents": return "TableOfContentsDocPage.qml";
         case "kbd": return "KbdDocPage.qml";
         case "squircle": return "SquircleDocPage.qml";
@@ -1839,6 +1841,7 @@ ApplicationWindow {
             var allComponents = [
                 { id: "activity-stack", name: "ChaSetActivityStack" },
                 { id: "adaptive-popup", name: "ChaSetAdaptivePopup" },
+                { id: "alert-dialog", name: "ChaSetAlertDialog" },
                 { id: "address-bar", name: "ChaSetAddressBar" },
                 { id: "badge", name: "ChaSetBadge" },
                 { id: "button", name: "ChaSetButton" },
@@ -1889,6 +1892,8 @@ ApplicationWindow {
                 { id: "squircle", name: "ChaSetSquircle" },
                 { id: "switch", name: "ChaSetSwitch" },
                 { id: "breadcrumb", name: "ChaSetBreadcrumb" },
+                { id: "step-timeline", name: "ChaSetStepTimeline" },
+                { id: "log-console", name: "ChaSetLogConsole" },
                 { id: "table-of-contents", name: "ChaSetTableOfContents" },
                 { id: "table", name: "ChaSetTable" },
                 { id: "tabs", name: "ChaSetTabs" },

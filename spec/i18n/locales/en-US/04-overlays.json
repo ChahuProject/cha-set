@@ -164,6 +164,17 @@
     }
   },
   "overlays": {
+    "alertDialog": {
+      "cancel": "Cancel",
+      "confirm": "Confirm Delete",
+      "deleteDatabase": "Delete Database Permanently",
+      "deleteDatabaseDesc": "This action cannot be undone. This database and all associated tables, indexes, and backups will be immediately eradicated.",
+      "openAlertDialog": "Open Alert Dialog",
+      "overviewDesc": "Modal dialog that interrupts the user with important, critical, or destructive confirmations.",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Alert Dialog Sandbox",
+      "statusMessage": "Database was permanently removed."
+    },
     "activityStack": {
       "accessibleLabel": "Activity Stack",
       "activeCardsCount": "Active cards: %1",

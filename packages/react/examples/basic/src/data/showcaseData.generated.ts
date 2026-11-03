@@ -1370,6 +1370,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "description": "Modal window that interrupts the user with critical content, with standard and alert confirmation variants."
       },
       {
+        "id": "alert-dialog",
+        "title": "Alert Dialog",
+        "href": "#/components/alert-dialog",
+        "desc": "A modal dialog that interrupts the user with important, critical, or destructive confirmations.",
+        "description": "A modal dialog that interrupts the user with important, critical, or destructive confirmations."
+      },
+      {
         "id": "sheet",
         "title": "Sheet",
         "href": "#/components/sheet",
@@ -1532,6 +1539,20 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "href": "#/components/pipeline-view",
         "desc": "Multi-stage execution view and pipeline center with job tracking, step timelines, and virtualized auto-scrolling log console.",
         "description": "Multi-stage execution view and pipeline center with job tracking, step timelines, and virtualized auto-scrolling log console."
+      },
+      {
+        "id": "step-timeline",
+        "title": "Step Timeline",
+        "href": "#/components/step-timeline",
+        "desc": "Sequential vertical execution step timeline with status indicators, durations, and empty state.",
+        "description": "Sequential vertical execution step timeline with status indicators, durations, and empty state."
+      },
+      {
+        "id": "log-console",
+        "title": "Log Console",
+        "href": "#/components/log-console",
+        "desc": "High-performance virtualized terminal log console with auto-scroll, ANSI colors, and copy support.",
+        "description": "High-performance virtualized terminal log console with auto-scroll, ANSI colors, and copy support."
       },
       {
         "id": "address-bar",

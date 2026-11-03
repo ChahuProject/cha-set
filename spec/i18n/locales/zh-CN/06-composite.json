@@ -132,7 +132,11 @@
       "description": "跨端语言偏好设置卡片，提供系统语言自动检测、即时生效切换与文化诗词意境引语。"
     },
     "logConsole": {
+      "description": "虚拟化高性能终端日志输出控制台，支持 ANSI 彩色解析、贴底自动滚动与纯文本一键复制。",
       "empty": "暂无日志"
+    },
+    "log-console": {
+      "description": "虚拟化高性能终端日志输出控制台，支持 ANSI 彩色解析、贴底自动滚动与纯文本一键复制。"
     },
     "pipelineView": {
       "description": "带任务追踪、步骤时间线与虚拟化自动滚动日志控制台的多阶段执行视图与流水线中心。"
@@ -141,7 +145,11 @@
       "description": "可视化条件查询构建器，支持嵌套逻辑分组 (AND/OR)、字段选择、运算符谓词筛选及 JSON 结构序列化。"
     },
     "stepTimeline": {
+      "description": "纵向步骤时间线，展示有序执行阶段、状态图标与格式化耗时。",
       "emptyText": "暂无步骤"
+    },
+    "step-timeline": {
+      "description": "纵向步骤时间线，展示有序执行阶段、状态图标与格式化耗时。"
     },
     "table": {
       "description": "响应式语义化基础数据表格组件，具备行悬停高亮、精致分割边框与表头/表尾语义结构。",
@@ -210,6 +218,17 @@
     "languageSettings": {
       "sandboxTitle": "交互式语言设置"
     },
+    "logConsole": {
+      "appendLog": "追加单行日志",
+      "appendStream": "追加流式日志",
+      "clearLogs": "清空日志",
+      "copyAll": "复制全部日志",
+      "linesCount": "{{count}} 行",
+      "overviewDesc": "测试高性能虚拟化日志输出、ANSI 控制字符颜色渲染、贴底自动滚动跟随与剪贴板一键导出。",
+      "overviewHeading": "交互式概览",
+      "reset": "重置示例",
+      "sandboxTitle": "日志控制台沙盒"
+    },
     "pipelineView": {
       "jobBenchmark": "性能基准测试集",
       "jobPackage": "打包构建产物",
@@ -244,6 +263,21 @@
       "sandboxTitle": "Query Builder 沙盒",
       "serializedModel": "序列化 JSON 查询模型:",
       "valuePlaceholder": "输入数值..."
+    },
+    "stepTimeline": {
+      "addStep": "追加步骤",
+      "animationsDesc": "处于运行中 (running) 状态的步骤指示器具备平滑匀速旋转动效，完成时瞬间切换为终态图标。",
+      "animationsTitle": "动画效果",
+      "overviewDesc": "测试纵向执行时间线、各阶段运行状态指示器、动态毫秒耗时格式化以及空状态占位。",
+      "overviewHeading": "交互式概览",
+      "reset": "重置步骤",
+      "sandboxTitle": "步骤时间线沙盒",
+      "stepBuild": "编译构建应用产物",
+      "stepDeploy": "部署至边缘集群",
+      "stepLint": "语法与类型检查",
+      "stepPackage": "生成发布安装包",
+      "stepTest": "单元与集成测试套件",
+      "toggleEmpty": "切换空状态"
     },
     "table": {
       "caption": "您最近的发票明细列表。",
@@ -284,6 +318,21 @@
       "userAlice": "爱丽丝",
       "userBob": "鲍勃",
       "userCarol": "卡罗尔"
+    },
+    "stepTimeline": {
+      "addStep": "追加步骤",
+      "animationsDesc": "处于运行中 (running) 状态的步骤指示器具备平滑匀速旋转动效，完成时瞬间切换为终态图标。",
+      "animationsTitle": "动画效果",
+      "overviewDesc": "测试纵向执行时间线、各阶段运行状态指示器、动态毫秒耗时格式化以及空状态占位。",
+      "overviewHeading": "交互式概览",
+      "reset": "重置步骤",
+      "sandboxTitle": "步骤时间线沙盒",
+      "stepBuild": "编译构建应用产物",
+      "stepDeploy": "部署至边缘集群",
+      "stepLint": "语法与类型检查",
+      "stepPackage": "生成发布安装包",
+      "stepTest": "单元与集成测试套件",
+      "toggleEmpty": "切换空状态"
     },
     "themeSettings": {
       "sandboxTitle": "交互式主题设置"
