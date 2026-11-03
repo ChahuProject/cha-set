@@ -93,10 +93,20 @@ function semanticBlocks(prefix) {
   });
   for (const [key, def] of entries) {
     const presets = def.presets ?? {};
-    const l = presets.launcher?.light;
-    const d = presets.launcher?.dark;
+    let l = presets.launcher?.light;
+    let d = presets.launcher?.dark;
     if (l === undefined && d === undefined) continue; // dunting-only token
     const prop = `${prefix}${cssName(key)}`;
+    if (prefix === '--cs-') {
+      if (typeof l === 'string') {
+        l = l.replaceAll('var(--foreground)', 'var(--foreground, var(--cs-foreground))')
+             .replaceAll('var(--sidebar-foreground)', 'var(--sidebar-foreground, var(--cs-sidebar-foreground))');
+      }
+      if (typeof d === 'string') {
+        d = d.replaceAll('var(--foreground)', 'var(--foreground, var(--cs-foreground))')
+             .replaceAll('var(--sidebar-foreground)', 'var(--sidebar-foreground, var(--cs-sidebar-foreground))');
+      }
+    }
     if (l !== undefined) light.push(decl(prop, l));
     if (d !== undefined) dark.push(decl(prop, d));
   }
@@ -158,7 +168,14 @@ function typographyDecls(prefix, primitives) {
   const accentBlocks = [];
   for (const o of themeEntries) {
     if (o.accentTheme === undefined) continue;
-    const decls = Object.entries(o.tokens).map(([n, v]) => decl(`--cs-${cssName(n)}`, v));
+    const decls = Object.entries(o.tokens).map(([n, v]) => {
+      let val = v;
+      if (typeof val === 'string') {
+        val = val.replaceAll('var(--foreground)', 'var(--foreground, var(--cs-foreground))')
+                 .replaceAll('var(--sidebar-foreground)', 'var(--sidebar-foreground, var(--cs-sidebar-foreground))');
+      }
+      return decl(`--cs-${cssName(n)}`, val);
+    });
     accentBlocks.push(selectorBlock(resolveSelector(o), decls));
   }
 
