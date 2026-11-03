@@ -219,8 +219,8 @@ T.ScrollBar {
         property string tooltipText: ""
         signal triggered()
 
-        width: control.buttonLength
-        height: control.buttonLength
+        width: control.vertical ? control.width : control.buttonLength
+        height: control.vertical ? control.buttonLength : control.height
         radius: ThemeTokens.dp(2)
         z: 2
 
@@ -242,7 +242,9 @@ T.ScrollBar {
 
         Canvas {
             id: iconCanvas
-            anchors.fill: parent
+            anchors.centerIn: parent
+            width: control.buttonLength
+            height: control.buttonLength
             antialiasing: true
             renderTarget: Canvas.Image
 
@@ -325,11 +327,12 @@ T.ScrollBar {
             id: _ma
             anchors.fill: parent
             hoverEnabled: true
-            enabled: btn.isEnabled && !btn.isNearThumb && control._isExpanded
-            cursorShape: (btn.isEnabled && !btn.isNearThumb && control._isExpanded) ? Qt.PointingHandCursor : undefined
+            enabled: !btn.isNearThumb
+            cursorShape: (!btn.isNearThumb && control._isExpanded) ? (btn.isEnabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor) : undefined
             acceptedButtons: Qt.LeftButton
 
-            onPressed: {
+            onPressed: (mouse) => {
+                mouse.accepted = true
                 if (btn.isEnabled && !btn.isNearThumb) {
                     btn.triggered()
                     if (control.autoRepeat && (btn.kind === 1 || btn.kind === 2)) {
@@ -337,7 +340,8 @@ T.ScrollBar {
                     }
                 }
             }
-            onReleased: {
+            onReleased: (mouse) => {
+                mouse.accepted = true
                 repeatDelayTimer.stop()
                 repeatIntervalTimer.stop()
             }

@@ -9,18 +9,39 @@ export interface ScrollBarButtonProps extends React.ButtonHTMLAttributes<HTMLBut
 }
 
 export const ScrollBarButton = React.forwardRef<HTMLButtonElement, ScrollBarButtonProps>(
-  function ScrollBarButton({ className, disabled, forceHover, forceActive, children, ...props }, ref) {
+  function ScrollBarButton({ className, disabled, forceHover, forceActive, children, onClick, ...props }, ref) {
     return (
       <button
         ref={ref}
         type="button"
         tabIndex={-1}
         disabled={disabled}
-        onPointerDown={(e) => e.stopPropagation()}
-        onPointerUp={(e) => e.stopPropagation()}
-        onMouseDown={(e) => e.stopPropagation()}
+        aria-disabled={disabled || undefined}
+        onPointerDown={(e) => {
+          e.stopPropagation();
+          if (disabled) e.preventDefault();
+          props.onPointerDown?.(e);
+        }}
+        onPointerUp={(e) => {
+          e.stopPropagation();
+          if (disabled) e.preventDefault();
+          props.onPointerUp?.(e);
+        }}
+        onMouseDown={(e) => {
+          e.stopPropagation();
+          if (disabled) e.preventDefault();
+          props.onMouseDown?.(e);
+        }}
+        onClick={(e) => {
+          e.stopPropagation();
+          if (disabled) {
+            e.preventDefault();
+            return;
+          }
+          onClick?.(e);
+        }}
         className={cn(
-          'inline-flex items-center justify-center size-2 rounded-[2px] text-muted-foreground/80 hover:text-foreground hover:bg-accent/80 active:bg-accent focus:outline-none transition-colors duration-quick ease-standard disabled:opacity-20 disabled:cursor-not-allowed cursor-pointer',
+          'inline-flex items-center justify-center size-2 rounded-[2px] text-muted-foreground/80 hover:text-foreground hover:bg-accent/80 active:bg-accent focus:outline-none transition-colors duration-quick ease-standard disabled:opacity-20 disabled:cursor-not-allowed aria-disabled:opacity-20 aria-disabled:cursor-not-allowed cursor-pointer',
           forceHover && !forceActive && 'bg-accent/80 text-foreground',
           forceActive && 'bg-accent text-foreground',
           className,
@@ -137,12 +158,17 @@ export function ScrollBarStartCluster({
 
   if (orientation === 'vertical') {
     const isAtTop = ctx ? ctx.scrollState.isAtTop : false;
+    const hideCluster = hideToStart && hidePageBack;
     return (
       <div
-        className="flex flex-col items-center justify-between select-none py-0.5 h-5 w-full pointer-events-none"
+        className={cn(
+          'flex flex-col items-center justify-between select-none py-0.5 h-5 w-full',
+          hideCluster ? 'pointer-events-none' : 'pointer-events-auto',
+        )}
         onPointerDown={(e) => e.stopPropagation()}
         onPointerUp={(e) => e.stopPropagation()}
         onMouseDown={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         <ScrollBarButton
           title="Scroll to Top"
@@ -150,7 +176,7 @@ export function ScrollBarStartCluster({
           disabled={isAtTop}
           forceHover={forceState === 'hover'}
           forceActive={forceState === 'active'}
-          className={getButtonVisibility(hideToStart)}
+          className={cn('w-full', getButtonVisibility(hideToStart))}
           onClick={(e) => {
             e.stopPropagation();
             ctx?.scrollToTop(smoothScroll);
@@ -164,7 +190,7 @@ export function ScrollBarStartCluster({
           disabled={isAtTop}
           forceHover={forceState === 'hover'}
           forceActive={forceState === 'active'}
-          className={getButtonVisibility(hidePageBack)}
+          className={cn('w-full', getButtonVisibility(hidePageBack))}
           onClick={(e) => {
             e.stopPropagation();
             ctx?.scrollPageUp(pageStepRatio, smoothScroll);
@@ -177,12 +203,17 @@ export function ScrollBarStartCluster({
   }
 
   const isAtLeft = ctx ? ctx.scrollState.isAtLeft : false;
+  const hideCluster = hideToStart && hidePageBack;
   return (
     <div
-      className="flex flex-row items-center justify-between select-none px-0.5 w-5 h-full pointer-events-none"
+      className={cn(
+        'flex flex-row items-center justify-between select-none px-0.5 w-5 h-full',
+        hideCluster ? 'pointer-events-none' : 'pointer-events-auto',
+      )}
       onPointerDown={(e) => e.stopPropagation()}
       onPointerUp={(e) => e.stopPropagation()}
       onMouseDown={(e) => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
     >
       <ScrollBarButton
         title="Scroll to Start"
@@ -190,7 +221,7 @@ export function ScrollBarStartCluster({
         disabled={isAtLeft}
         forceHover={forceState === 'hover'}
         forceActive={forceState === 'active'}
-        className={getButtonVisibility(hideToStart)}
+        className={cn('h-full', getButtonVisibility(hideToStart))}
         onClick={(e) => {
           e.stopPropagation();
           ctx?.scrollToLeft(smoothScroll);
@@ -204,7 +235,7 @@ export function ScrollBarStartCluster({
         disabled={isAtLeft}
         forceHover={forceState === 'hover'}
         forceActive={forceState === 'active'}
-        className={getButtonVisibility(hidePageBack)}
+        className={cn('h-full', getButtonVisibility(hidePageBack))}
         onClick={(e) => {
           e.stopPropagation();
           ctx?.scrollPageLeft(pageStepRatio, smoothScroll);
@@ -240,12 +271,17 @@ export function ScrollBarEndCluster({
 
   if (orientation === 'vertical') {
     const isAtBottom = ctx ? ctx.scrollState.isAtBottom : false;
+    const hideCluster = hidePageForward && hideToEnd;
     return (
       <div
-        className="flex flex-col items-center justify-between select-none py-0.5 h-5 w-full pointer-events-none"
+        className={cn(
+          'flex flex-col items-center justify-between select-none py-0.5 h-5 w-full',
+          hideCluster ? 'pointer-events-none' : 'pointer-events-auto',
+        )}
         onPointerDown={(e) => e.stopPropagation()}
         onPointerUp={(e) => e.stopPropagation()}
         onMouseDown={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         <ScrollBarButton
           title="Page Down"
@@ -253,7 +289,7 @@ export function ScrollBarEndCluster({
           disabled={isAtBottom}
           forceHover={forceState === 'hover'}
           forceActive={forceState === 'active'}
-          className={getButtonVisibility(hidePageForward)}
+          className={cn('w-full', getButtonVisibility(hidePageForward))}
           onClick={(e) => {
             e.stopPropagation();
             ctx?.scrollPageDown(pageStepRatio, smoothScroll);
@@ -267,7 +303,7 @@ export function ScrollBarEndCluster({
           disabled={isAtBottom}
           forceHover={forceState === 'hover'}
           forceActive={forceState === 'active'}
-          className={getButtonVisibility(hideToEnd)}
+          className={cn('w-full', getButtonVisibility(hideToEnd))}
           onClick={(e) => {
             e.stopPropagation();
             ctx?.scrollToBottom(smoothScroll);
@@ -280,12 +316,17 @@ export function ScrollBarEndCluster({
   }
 
   const isAtRight = ctx ? ctx.scrollState.isAtRight : false;
+  const hideCluster = hidePageForward && hideToEnd;
   return (
     <div
-      className="flex flex-row items-center justify-between select-none px-0.5 w-5 h-full pointer-events-none"
+      className={cn(
+        'flex flex-row items-center justify-between select-none px-0.5 w-5 h-full',
+        hideCluster ? 'pointer-events-none' : 'pointer-events-auto',
+      )}
       onPointerDown={(e) => e.stopPropagation()}
       onPointerUp={(e) => e.stopPropagation()}
       onMouseDown={(e) => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
     >
       <ScrollBarButton
         title="Page Right"
@@ -293,7 +334,7 @@ export function ScrollBarEndCluster({
         disabled={isAtRight}
         forceHover={forceState === 'hover'}
         forceActive={forceState === 'active'}
-        className={getButtonVisibility(hidePageForward)}
+        className={cn('h-full', getButtonVisibility(hidePageForward))}
         onClick={(e) => {
           e.stopPropagation();
           ctx?.scrollPageRight(pageStepRatio, smoothScroll);
@@ -307,7 +348,7 @@ export function ScrollBarEndCluster({
         disabled={isAtRight}
         forceHover={forceState === 'hover'}
         forceActive={forceState === 'active'}
-        className={getButtonVisibility(hideToEnd)}
+        className={cn('h-full', getButtonVisibility(hideToEnd))}
         onClick={(e) => {
           e.stopPropagation();
           ctx?.scrollToRight(smoothScroll);

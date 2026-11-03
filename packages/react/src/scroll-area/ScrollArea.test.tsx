@@ -174,6 +174,13 @@ describe('ScrollArea and ScrollBar', () => {
 
     fireEvent(pageDownBtn, pointerDownEvent);
     expect(stopPropagationSpy).toHaveBeenCalled();
+
+    // Disabled buttons (e.g. to top button at start boundary) must also capture and isolate pointerdown
+    const toTopBtn = screen.getByRole('button', { name: /scroll to top/i });
+    const toTopPointerDown = new MouseEvent('pointerdown', { bubbles: true, cancelable: true });
+    const toTopSpy = vi.spyOn(toTopPointerDown, 'stopPropagation');
+    fireEvent(toTopBtn, toTopPointerDown);
+    expect(toTopSpy).toHaveBeenCalled();
   });
 
   it('hides scrollbars when content does not overflow', () => {
