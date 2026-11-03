@@ -211,7 +211,7 @@ DocLayout {
                                 Repeater {
                                     model: root.demoItemCount
                                     Rectangle {
-                                        width: parent.width
+                                        width: parent ? parent.width : ThemeTokens.dp(280)
                                         height: ThemeTokens.dp(32)
                                         radius: ThemeTokens.dp(4)
                                         color: ThemeTokens.color("panelRaised")

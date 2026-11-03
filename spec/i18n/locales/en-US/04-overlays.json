@@ -15,6 +15,9 @@
     "scale-osd": {
       "description": "Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide."
     },
+    "activity-stack": {
+      "description": "Floating viewport-anchored stack of activity cards with 8-way placement, overflow, and collapse."
+    },
     "task-hud": {
       "description": "Floating stack of background executions with progress, overflow and collapse-to-summary."
     },
@@ -23,6 +26,10 @@
     },
     "floating-notice": {
       "description": "Floating stacked notice pill anchored to top or bottom with priority queueing, card-stack cycling, and extensible content."
+    },
+    "activityStack": {
+      "description": "Floating viewport-anchored stack of activity cards with 8-way placement, overflow, and collapse.",
+      "name": "Activity Stack"
     },
     "alertDialog": {
       "confirmText": "Continue",
@@ -157,6 +164,34 @@
     }
   },
   "overlays": {
+    "activityStack": {
+      "accessibleLabel": "Activity Stack",
+      "activeCardsCount": "Active cards: %1",
+      "addCard": "Add Card",
+      "animationsDesc": "Card entry/exit and summary row collapse use standard motion tokens and respect prefers-reduced-motion.",
+      "animationsTitle": "Animations",
+      "bottomCenter": "Bottom Center",
+      "bottomLeft": "Bottom Left",
+      "bottomRight": "Bottom Right",
+      "jobPrefix": "Job #",
+      "maxVisible": "Max Visible:",
+      "overviewDesc": "Viewport-anchored floating activity cards featuring adaptive width, smooth slide/fade transitions, overflow pills, and collapsible summary row.",
+      "overviewHeading": "Interactive Overview",
+      "placement": "Placement:",
+      "removeCard": "Remove Card",
+      "sampleDangerDetail": "Linker error: undefined symbol _main",
+      "sampleDangerTitle": "Build Failed",
+      "sampleSuccessDetail": "Artifacts passed all unit tests",
+      "sampleSuccessTitle": "Build Succeeded",
+      "sampleTaskDetail": "Pushing changes to remote branch",
+      "sampleTaskTitle": "Sync Pipeline",
+      "sampleWarningDetail": "Detected 3 deprecated API calls",
+      "sampleWarningTitle": "Dependency Warning",
+      "sandboxTitle": "Activity Stack Interactive Sandbox",
+      "toggleCollapse": "Toggle Collapse",
+      "topLeft": "Top Left",
+      "topRight": "Top Right"
+    },
     "adaptivePopup": {
       "addItems": "+3 Items",
       "auto": "Auto",

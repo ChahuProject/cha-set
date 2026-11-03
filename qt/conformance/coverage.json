@@ -144,6 +144,13 @@
     "positioning": true,
     "movable": true
   },
+  "activityStack": {
+    "eightPlacements": true,
+    "overflowPill": true,
+    "collapsibleSummary": true,
+    "cardTones": true,
+    "keyboardNavigation": true
+  },
   "adaptivePopup": {
     "contentAdaptiveHeight": true,
     "hostAvailableHeightCapping": true,

@@ -2,6 +2,8 @@ import * as React from 'react';
 import { bench, describe } from 'vitest';
 import { render } from '@testing-library/react';
 import {
+  ActivityCard,
+  ActivityStack,
   AdaptivePopup,
   ContextMenu,
   ContextMenuTrigger,
@@ -30,6 +32,27 @@ import {
 } from '../src';
 
 describe('Performance Suite: Surfaces & Overlays (10 Components)', () => {
+  bench('ActivityStack (20x batch mount)', () => {
+    const { unmount } = render(
+      <div>
+        {Array.from({ length: 20 }, (_, i) => (
+          <ActivityStack
+            key={i}
+            label={`Stack ${i}`}
+            placement="bottom-right"
+            entries={[
+              {
+                id: `entry-${i}-1`,
+                node: <ActivityCard itemId={`card-${i}-1`} icon={<span>icon</span>} title={`Task ${i}`} />,
+              },
+            ]}
+          />
+        ))}
+      </div>
+    );
+    unmount();
+  });
+
   bench('AdaptivePopup (30x batch mount)', () => {
     const { unmount } = render(
       <div>

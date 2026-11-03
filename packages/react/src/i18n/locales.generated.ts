@@ -969,6 +969,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "scale-osd": {
       "description": "用于画布缩放调节的浮动屏幕显示条，支持自动隐藏。"
     },
+    "activity-stack": {
+      "description": "视口锚定浮动活动卡片栈，支持八向定位、溢出折叠与卡片色调。"
+    },
     "task-hud": {
       "description": "后台任务浮动执行栈，支持进度展示、溢出收纳与折叠摘要。"
     },
@@ -977,6 +980,10 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     },
     "floating-notice": {
       "description": "悬浮在视口顶上或底下的紧凑提示胶囊，支持优先级排序、卡片轮播排队与内容插槽扩展。"
+    },
+    "activityStack": {
+      "description": "视口锚定浮动活动卡片栈，支持八向定位、溢出折叠与卡片色调。",
+      "name": "活动堆栈"
     },
     "alertDialog": {
       "confirmText": "继续",
@@ -2532,6 +2539,34 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     }
   },
   "overlays": {
+    "activityStack": {
+      "accessibleLabel": "活动堆栈",
+      "activeCardsCount": "当前活动卡片数：%1",
+      "addCard": "添加卡片",
+      "animationsDesc": "卡片出入与摘要行展开采用标准动效令牌，支持无障碍减少动效。",
+      "animationsTitle": "动画效果",
+      "bottomCenter": "底部居中 (Bottom Center)",
+      "bottomLeft": "左下 (Bottom Left)",
+      "bottomRight": "右下 (Bottom Right)",
+      "jobPrefix": "任务 #",
+      "maxVisible": "最大显示数：",
+      "overviewDesc": "在宿主视口边缘锚定浮动的活动卡片，具有自适应宽度、平滑滑入淡出、溢出胶囊折叠与可折叠摘要行。",
+      "overviewHeading": "交互总览",
+      "placement": "锚点方位：",
+      "removeCard": "移除卡片",
+      "sampleDangerDetail": "链接器找不到符号 _main",
+      "sampleDangerTitle": "编译失败",
+      "sampleSuccessDetail": "产物已通过全部单元测试",
+      "sampleSuccessTitle": "构建成功",
+      "sampleTaskDetail": "正在推送变更至远端分支",
+      "sampleTaskTitle": "同步工作流",
+      "sampleWarningDetail": "检测到 3 处可能弃用的 API 调用",
+      "sampleWarningTitle": "依赖项警告",
+      "sandboxTitle": "活动卡片栈交互沙盒",
+      "toggleCollapse": "切换折叠",
+      "topLeft": "左上 (Top Left)",
+      "topRight": "右上 (Top Right)"
+    },
     "adaptivePopup": {
       "addItems": "增加 3 项",
       "auto": "自动",
@@ -3718,6 +3753,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "scale-osd": {
       "description": "Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide."
     },
+    "activity-stack": {
+      "description": "Floating viewport-anchored stack of activity cards with 8-way placement, overflow, and collapse."
+    },
     "task-hud": {
       "description": "Floating stack of background executions with progress, overflow and collapse-to-summary."
     },
@@ -3726,6 +3764,10 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     },
     "floating-notice": {
       "description": "Floating stacked notice pill anchored to top or bottom with priority queueing, card-stack cycling, and extensible content."
+    },
+    "activityStack": {
+      "description": "Floating viewport-anchored stack of activity cards with 8-way placement, overflow, and collapse.",
+      "name": "Activity Stack"
     },
     "alertDialog": {
       "confirmText": "Continue",
@@ -5281,6 +5323,34 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     }
   },
   "overlays": {
+    "activityStack": {
+      "accessibleLabel": "Activity Stack",
+      "activeCardsCount": "Active cards: %1",
+      "addCard": "Add Card",
+      "animationsDesc": "Card entry/exit and summary row collapse use standard motion tokens and respect prefers-reduced-motion.",
+      "animationsTitle": "Animations",
+      "bottomCenter": "Bottom Center",
+      "bottomLeft": "Bottom Left",
+      "bottomRight": "Bottom Right",
+      "jobPrefix": "Job #",
+      "maxVisible": "Max Visible:",
+      "overviewDesc": "Viewport-anchored floating activity cards featuring adaptive width, smooth slide/fade transitions, overflow pills, and collapsible summary row.",
+      "overviewHeading": "Interactive Overview",
+      "placement": "Placement:",
+      "removeCard": "Remove Card",
+      "sampleDangerDetail": "Linker error: undefined symbol _main",
+      "sampleDangerTitle": "Build Failed",
+      "sampleSuccessDetail": "Artifacts passed all unit tests",
+      "sampleSuccessTitle": "Build Succeeded",
+      "sampleTaskDetail": "Pushing changes to remote branch",
+      "sampleTaskTitle": "Sync Pipeline",
+      "sampleWarningDetail": "Detected 3 deprecated API calls",
+      "sampleWarningTitle": "Dependency Warning",
+      "sandboxTitle": "Activity Stack Interactive Sandbox",
+      "toggleCollapse": "Toggle Collapse",
+      "topLeft": "Top Left",
+      "topRight": "Top Right"
+    },
     "adaptivePopup": {
       "addItems": "+3 Items",
       "auto": "Auto",

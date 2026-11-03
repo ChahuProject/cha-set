@@ -1419,6 +1419,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "description": "Floating on-screen display pill for canvas zoom and scale adjustments with auto-hide."
       },
       {
+        "id": "activity-stack",
+        "title": "Activity Stack",
+        "href": "#/components/activity-stack",
+        "desc": "Floating viewport-anchored stack of activity cards with 8-way placement, overflow, and collapse.",
+        "description": "Floating viewport-anchored stack of activity cards with 8-way placement, overflow, and collapse."
+      },
+      {
         "id": "task-hud",
         "title": "Task HUD",
         "href": "#/components/task-hud",

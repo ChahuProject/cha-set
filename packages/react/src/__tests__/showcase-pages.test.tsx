@@ -24,6 +24,7 @@ import { NotificationStackDocPage } from '../../examples/basic/src/pages/compone
 import { TaskHudDocPage } from '../../examples/basic/src/pages/components/TaskHudDocPage';
 import { PanelCardDocPage } from '../../examples/basic/src/pages/components/PanelCardDocPage';
 import { PopoverDocPage } from '../../examples/basic/src/pages/components/PopoverDocPage';
+import { ActivityStackDocPage } from '../../examples/basic/src/pages/components/ActivityStackDocPage';
 import { AdaptivePopupDocPage } from '../../examples/basic/src/pages/components/AdaptivePopupDocPage';
 import { QueryBuilderDocPage } from '../../examples/basic/src/pages/components/QueryBuilderDocPage';
 import { ReadOnlyInputDocPage } from '../../examples/basic/src/pages/components/ReadOnlyInputDocPage';
@@ -75,6 +76,7 @@ const pages = [
   { name: 'TaskHudDocPage', Component: TaskHudDocPage },
   { name: 'PanelCardDocPage', Component: PanelCardDocPage },
   { name: 'PopoverDocPage', Component: PopoverDocPage },
+  { name: 'ActivityStackDocPage', Component: ActivityStackDocPage },
   { name: 'AdaptivePopupDocPage', Component: AdaptivePopupDocPage },
   { name: 'QueryBuilderDocPage', Component: QueryBuilderDocPage },
   { name: 'ReadOnlyInputDocPage', Component: ReadOnlyInputDocPage },

@@ -18,6 +18,7 @@ export * from './color-picker';
 export * from './dropdown-menu';
 export * from './select';
 export * from './popover';
+export * from './activity-stack';
 export * from './adaptive-popup';
 export * from './context-menu';
 export * from './alert-dialog';
