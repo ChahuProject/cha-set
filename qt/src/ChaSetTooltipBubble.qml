@@ -76,6 +76,9 @@ Item {
                 ? Typography.sizeCaption : Math.round(11 * root.uiScaleFactor)
     }
 
+    // 声明式单行/多行判定（基于离线 TextMetrics，彻底断绝 Text 内部 lineCount 布局依赖形成的 Binding loop）
+    readonly property bool isMultilineText: root.text !== "" && (root.text.indexOf("\n") !== -1 || textMetrics.width > root.maxTextW)
+
     // 单行/多行紧凑内容宽度与高度（首帧同步计算 + TextMetrics 兜底，彻底杜绝 0 宽坍塌与 24dp 空白方块）
     readonly property real naturalTextW: {
         if (root.text === "") return 0
@@ -305,9 +308,9 @@ Item {
                     size: 14
                     color: (typeof ThemeTokens !== "undefined" && ThemeTokens)
                             ? ThemeTokens.color("text") : "#e6f2ff"
-                    anchors.verticalCenter: (bubbleText.lineCount <= 1) ? parent.verticalCenter : undefined
-                    anchors.top: (bubbleText.lineCount > 1) ? parent.top : undefined
-                    anchors.topMargin: (bubbleText.lineCount > 1) ? ((typeof ThemeTokens !== "undefined" && ThemeTokens) ? ThemeTokens.dp(2) : 2) : 0
+                    anchors.verticalCenter: (!root.isMultilineText) ? parent.verticalCenter : undefined
+                    anchors.top: root.isMultilineText ? parent.top : undefined
+                    anchors.topMargin: root.isMultilineText ? ((typeof ThemeTokens !== "undefined" && ThemeTokens) ? ThemeTokens.dp(2) : 2) : 0
                 }
 
                 Text {
@@ -322,12 +325,12 @@ Item {
                     font.pixelSize: (typeof Typography !== "undefined" && Typography)
                             ? Typography.sizeSmall : Math.round(12 * root.uiScaleFactor)
                     font.weight: (root.description !== "") ? Font.DemiBold : Font.Medium
-                    horizontalAlignment: (root.description !== "" || lineCount > 1) ? Text.AlignLeft : Text.AlignHCenter
-                    verticalAlignment: (lineCount <= 1) ? Text.AlignVCenter : Text.AlignTop
-                    anchors.verticalCenter: (lineCount <= 1) ? parent.verticalCenter : undefined
-                    anchors.top: (lineCount > 1) ? parent.top : undefined
+                    horizontalAlignment: (root.description !== "" || root.isMultilineText) ? Text.AlignLeft : Text.AlignHCenter
+                    verticalAlignment: (!root.isMultilineText) ? Text.AlignVCenter : Text.AlignTop
+                    anchors.verticalCenter: (!root.isMultilineText) ? parent.verticalCenter : undefined
+                    anchors.top: root.isMultilineText ? parent.top : undefined
                     anchors.topMargin: 0
-                    wrapMode: (textMetrics.width > root.maxTextW || root.text.indexOf("\n") !== -1) ? Text.Wrap : Text.NoWrap
+                    wrapMode: root.isMultilineText ? Text.Wrap : Text.NoWrap
                     width: (wrapMode === Text.Wrap) ? Math.min(textMetrics.width, root.maxTextW) : undefined
                 }
 
@@ -335,9 +338,9 @@ Item {
                     id: shortcutBadge
                     objectName: "shortcutBadge"
                     visible: root.shortcut !== ""
-                    anchors.verticalCenter: (bubbleText.lineCount <= 1) ? (parent ? parent.verticalCenter : undefined) : undefined
-                    anchors.top: (bubbleText.lineCount > 1) ? (parent ? parent.top : undefined) : undefined
-                    anchors.topMargin: (bubbleText.lineCount > 1) ? ((typeof ThemeTokens !== "undefined" && ThemeTokens) ? ThemeTokens.dp(2) : 2) : 0
+                    anchors.verticalCenter: (!root.isMultilineText) ? (parent ? parent.verticalCenter : undefined) : undefined
+                    anchors.top: root.isMultilineText ? (parent ? parent.top : undefined) : undefined
+                    anchors.topMargin: root.isMultilineText ? ((typeof ThemeTokens !== "undefined" && ThemeTokens) ? ThemeTokens.dp(2) : 2) : 0
                     variant: "outline"
                     size: "xs"
                     compact: "never"
