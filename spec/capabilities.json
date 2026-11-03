@@ -174,6 +174,12 @@
       "movable": { "requirement": "should", "description": "supports dragging popover position via handle" },
       "arrow": { "requirement": "should", "description": "renders directional arrow pointer towards trigger or anchor" }
     },
+    "adaptivePopup": {
+      "contentAdaptiveHeight": { "requirement": "must", "description": "expands to content natural height without unnecessary scrollbars" },
+      "hostAvailableHeightCapping": { "requirement": "must", "description": "caps height to host window space and activates scroll only when overflowing" },
+      "threeTierLayout": { "requirement": "must", "description": "provides fixed header, scrollable body, and fixed footer containers" },
+      "bidirectionalPlacement": { "requirement": "must", "description": "supports downward and upward expansion relative to anchor" }
+    },
     "contextMenu": {
       "trigger": { "requirement": "must", "description": "right-click opens context menu at cursor position" },
       "items": { "requirement": "must", "description": "renders menu items with click actions" },

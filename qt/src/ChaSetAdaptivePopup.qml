@@ -63,6 +63,8 @@ Popup {
     /// true：可用高度取整条宿主纵向可用带（必要时会把弹窗上移吃掉上方空间）；
     /// false：只取「锚点一侧」的剩余空间（锚点固定不动，更保守）。
     property bool useFullHostBand: true
+    /// 弹窗圆角半径
+    property real customRadius: ThemeTokens.dp(8)
 
     // ---- 内容挂载点（头 / 体 / 尾 三段式）----
     /// 固定头部区（不随内容滚动）。用 ColumnLayout，以便子项可用 Layout.* 附加属性。
@@ -205,6 +207,13 @@ Popup {
     bottomPadding: 0
     leftPadding: 0
     rightPadding: 0
+
+    background: ChaSetSquircle {
+        color: ThemeTokens.panel
+        border.color: ThemeTokens.border
+        border.width: 1
+        radius: root.customRadius
+    }
 
     contentItem: Item {
         width: root.width

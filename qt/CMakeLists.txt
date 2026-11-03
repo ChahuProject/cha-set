@@ -332,6 +332,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/DropdownMenuDocPage.qml
             src/SelectDocPage.qml
             src/PopoverDocPage.qml
+            src/AdaptivePopupDocPage.qml
             src/ContextMenuDocPage.qml
             src/SheetDocPage.qml
             src/SkeletonDocPage.qml

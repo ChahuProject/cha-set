@@ -58,6 +58,7 @@ import { ColorPickerDocPage } from './pages/components/ColorPickerDocPage';
 import { DropdownMenuDocPage } from './pages/components/DropdownMenuDocPage';
 import { SelectDocPage } from './pages/components/SelectDocPage';
 import { PopoverDocPage } from './pages/components/PopoverDocPage';
+import { AdaptivePopupDocPage } from './pages/components/AdaptivePopupDocPage';
 import { ContextMenuDocPage } from './pages/components/ContextMenuDocPage';
 import { SheetDocPage } from './pages/components/SheetDocPage';
 import { SkeletonDocPage } from './pages/components/SkeletonDocPage';
@@ -871,6 +872,8 @@ export function App() {
         return <SelectDocPage />;
       case '#/components/popover':
         return <PopoverDocPage />;
+      case '#/components/adaptive-popup':
+        return <AdaptivePopupDocPage />;
       case '#/components/context-menu':
         return <ContextMenuDocPage />;
       case '#/components/alert-dialog':

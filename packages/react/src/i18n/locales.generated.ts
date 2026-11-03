@@ -1005,6 +1005,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "defaultLabel": "通知",
       "description": "浮动分级通知堆栈，支持按条目独立生命周期与行内操作。"
     },
+    "adaptivePopup": {
+      "description": "内容驱动的自适应高度弹窗原语，具备宿主空间封顶与头/体/尾三段式布局，绝不误出多余滚动条。"
+    },
     "popover": {
       "description": "在锚定于触发器的浮动 Portal 中展示富交互内容，具备无障碍焦点管理。"
     },
@@ -1497,6 +1500,17 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "sandboxTitle": "视口约束容器沙盒",
       "variantsDesc": "配置自定义数值覆盖、字符串边界或自定义边距偏移。",
       "variantsTitle": "变体与边界"
+    },
+    "adaptivePopup": {
+      "animationsDesc": "展开与收起采用标准短时长进入缓动曲线，在 animationsEnabled 为 false 时自动禁用。",
+      "animationsTitle": "动画效果",
+      "headerTitle": "活动渲染目标",
+      "itemPrefix": "渲染层级 #",
+      "overviewDesc": "内容驱动型弹窗在宿主空间充裕时完整撑开至自然高度且绝不出滚动条；空间不足时自动按宿主视口封顶并启用平滑滚动。",
+      "overviewHeading": "交互总览",
+      "sandboxTitle": "自适应弹窗交互沙箱",
+      "variantsDesc": "演示向上/向下自适应展开以及显式 maxHeight 封顶效果。",
+      "variantsTitle": "形态与方位"
     },
     "activityStack": {
       "accessibleLabel": "活动堆栈",
@@ -2518,6 +2532,22 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     }
   },
   "overlays": {
+    "adaptivePopup": {
+      "addItems": "增加 3 项",
+      "auto": "自动",
+      "closePopup": "关闭自适应弹窗",
+      "done": "完成",
+      "down": "向下",
+      "downwardDesc": "默认模式。从锚点坐标向下展开，在触及宿主底部安全边距前自动限制高度。",
+      "downwardTitle": "向下自然展开（Placement: Down）",
+      "maxHeight": "最大高度：",
+      "openPopup": "打开自适应弹窗",
+      "placement": "展开方向：",
+      "removeItems": "减少 2 项",
+      "up": "向上",
+      "upwardDesc": "适用于状态栏或底部操作项。anchorY 代表期望底边，弹窗自底向上在窗口内展开。",
+      "upwardTitle": "向上贴靠展开（Placement: Up）"
+    },
     "contextMenu": {
       "back": "返回",
       "backTooltip": "返回上一页",
@@ -3724,6 +3754,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "defaultLabel": "Notifications",
       "description": "Floating, severity-coded notification stack with per-item lifetimes and inline actions."
     },
+    "adaptivePopup": {
+      "description": "Content-driven adaptive height popup with zero unnecessary scrollbars and 3-tier layout."
+    },
     "popover": {
       "description": "Displays rich interactive content in a floating portal anchored to a trigger, with accessible focus management."
     },
@@ -4216,6 +4249,17 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "sandboxTitle": "Viewport Constrained Container Sandbox",
       "variantsDesc": "Configure custom numeric overrides, string-based bounds, or custom margin offsets.",
       "variantsTitle": "Variants & Limits"
+    },
+    "adaptivePopup": {
+      "animationsDesc": "Entrance and exit utilize short duration entrance easings, automatically disabled when animationsEnabled is false.",
+      "animationsTitle": "Animations",
+      "headerTitle": "Active Render Targets",
+      "itemPrefix": "Render Layer #",
+      "overviewDesc": "Content-driven adaptive height popup expands to its natural content height without scrollbars when host space is sufficient, and clamps to the window viewport boundary when space is constrained.",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Adaptive Popup Sandbox",
+      "variantsDesc": "Demonstrates downward and upward adaptive expansion and explicit maxHeight capping.",
+      "variantsTitle": "Variants & Placement"
     },
     "activityStack": {
       "accessibleLabel": "Activity stack",
@@ -5237,6 +5281,22 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     }
   },
   "overlays": {
+    "adaptivePopup": {
+      "addItems": "+3 Items",
+      "auto": "Auto",
+      "closePopup": "Close Adaptive Popup",
+      "done": "Done",
+      "down": "Down",
+      "downwardDesc": "Default mode. Expands down from anchor coordinates and clamps before reaching the bottom edge of the host.",
+      "downwardTitle": "Downward Natural Sizing (Placement: Down)",
+      "maxHeight": "Max Height:",
+      "openPopup": "Open Adaptive Popup",
+      "placement": "Placement:",
+      "removeItems": "-2 Items",
+      "up": "Up",
+      "upwardDesc": "Useful for taskbars and status items. AnchorY represents the desired bottom edge, expanding upward into the window.",
+      "upwardTitle": "Upward Clamping (Placement: Up)"
+    },
     "contextMenu": {
       "back": "Back",
       "backTooltip": "Navigate back in history",

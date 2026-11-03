@@ -51,6 +51,9 @@
       "defaultLabel": "Notifications",
       "description": "Floating, severity-coded notification stack with per-item lifetimes and inline actions."
     },
+    "adaptivePopup": {
+      "description": "Content-driven adaptive height popup with zero unnecessary scrollbars and 3-tier layout."
+    },
     "popover": {
       "description": "Displays rich interactive content in a floating portal anchored to a trigger, with accessible focus management."
     },
@@ -70,6 +73,17 @@
     }
   },
   "desktopComposite": {
+    "adaptivePopup": {
+      "animationsDesc": "Entrance and exit utilize short duration entrance easings, automatically disabled when animationsEnabled is false.",
+      "animationsTitle": "Animations",
+      "headerTitle": "Active Render Targets",
+      "itemPrefix": "Render Layer #",
+      "overviewDesc": "Content-driven adaptive height popup expands to its natural content height without scrollbars when host space is sufficient, and clamps to the window viewport boundary when space is constrained.",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Adaptive Popup Sandbox",
+      "variantsDesc": "Demonstrates downward and upward adaptive expansion and explicit maxHeight capping.",
+      "variantsTitle": "Variants & Placement"
+    },
     "activityStack": {
       "accessibleLabel": "Activity stack",
       "overflowLabel": "{{count}} more items",
@@ -143,6 +157,22 @@
     }
   },
   "overlays": {
+    "adaptivePopup": {
+      "addItems": "+3 Items",
+      "auto": "Auto",
+      "closePopup": "Close Adaptive Popup",
+      "done": "Done",
+      "down": "Down",
+      "downwardDesc": "Default mode. Expands down from anchor coordinates and clamps before reaching the bottom edge of the host.",
+      "downwardTitle": "Downward Natural Sizing (Placement: Down)",
+      "maxHeight": "Max Height:",
+      "openPopup": "Open Adaptive Popup",
+      "placement": "Placement:",
+      "removeItems": "-2 Items",
+      "up": "Up",
+      "upwardDesc": "Useful for taskbars and status items. AnchorY represents the desired bottom edge, expanding upward into the window.",
+      "upwardTitle": "Upward Clamping (Placement: Up)"
+    },
     "contextMenu": {
       "back": "Back",
       "backTooltip": "Navigate back in history",

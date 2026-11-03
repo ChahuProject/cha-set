@@ -413,6 +413,7 @@ ApplicationWindow {
         case "dropdown-menu": return "DropdownMenuDocPage.qml";
         case "select": return "SelectDocPage.qml";
         case "popover": return "PopoverDocPage.qml";
+        case "adaptive-popup": return "AdaptivePopupDocPage.qml";
         case "context-menu": return "ContextMenuDocPage.qml";
         case "alert-dialog": return "DialogDocPage.qml";
         case "sheet": return "SheetDocPage.qml";
@@ -1834,6 +1835,7 @@ ApplicationWindow {
         if (scenario === "all" || scenario === "benchmark" || scenario === "perf") {
             console.log("[qt-scenario] Running dynamic QML component instantiation benchmark for all ChaSet components...");
             var allComponents = [
+                { id: "adaptive-popup", name: "ChaSetAdaptivePopup" },
                 { id: "address-bar", name: "ChaSetAddressBar" },
                 { id: "badge", name: "ChaSetBadge" },
                 { id: "button", name: "ChaSetButton" },

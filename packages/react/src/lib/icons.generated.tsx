@@ -521,6 +521,12 @@ export const ICON_ADOPTION = {
       "reasons": []
     },
     {
+      "file": "packages/react/src/resizable/Resizable.tsx",
+      "count": 1,
+      "exempted": 0,
+      "reasons": []
+    },
+    {
       "file": "packages/react/src/scroll-area/ScrollBarButtons.tsx",
       "count": 8,
       "exempted": 0,

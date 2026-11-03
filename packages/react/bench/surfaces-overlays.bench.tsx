@@ -2,6 +2,7 @@ import * as React from 'react';
 import { bench, describe } from 'vitest';
 import { render } from '@testing-library/react';
 import {
+  AdaptivePopup,
   ContextMenu,
   ContextMenuTrigger,
   ContextMenuContent,
@@ -29,6 +30,19 @@ import {
 } from '../src';
 
 describe('Performance Suite: Surfaces & Overlays (10 Components)', () => {
+  bench('AdaptivePopup (30x batch mount)', () => {
+    const { unmount } = render(
+      <div>
+        {Array.from({ length: 30 }, (_, i) => (
+          <AdaptivePopup key={i} open={false}>
+            <div>Content {i}</div>
+          </AdaptivePopup>
+        ))}
+      </div>
+    );
+    unmount();
+  });
+
   bench('ContextMenu (30x batch mount)', () => {
     const { unmount } = render(
       <div>

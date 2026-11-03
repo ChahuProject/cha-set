@@ -144,6 +144,12 @@
     "positioning": true,
     "movable": true
   },
+  "adaptivePopup": {
+    "contentAdaptiveHeight": true,
+    "hostAvailableHeightCapping": true,
+    "threeTierLayout": true,
+    "bidirectionalPlacement": true
+  },
   "contextMenu": {
     "trigger": true,
     "items": true,

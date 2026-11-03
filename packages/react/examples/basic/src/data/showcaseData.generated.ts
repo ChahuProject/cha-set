@@ -1377,6 +1377,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "description": "Displays rich interactive content in a floating portal anchored to a trigger."
       },
       {
+        "id": "adaptive-popup",
+        "title": "Adaptive Popup",
+        "href": "#/components/adaptive-popup",
+        "desc": "Content-driven adaptive height popup with zero unnecessary scrollbars and 3-tier layout.",
+        "description": "Content-driven adaptive height popup with zero unnecessary scrollbars and 3-tier layout."
+      },
+      {
         "id": "tooltip",
         "title": "Tooltip",
         "href": "#/components/tooltip",
