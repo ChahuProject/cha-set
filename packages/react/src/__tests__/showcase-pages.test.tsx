@@ -26,6 +26,7 @@ import { PanelCardDocPage } from '../../examples/basic/src/pages/components/Pane
 import { PopoverDocPage } from '../../examples/basic/src/pages/components/PopoverDocPage';
 import { ActivityStackDocPage } from '../../examples/basic/src/pages/components/ActivityStackDocPage';
 import { AdaptivePopupDocPage } from '../../examples/basic/src/pages/components/AdaptivePopupDocPage';
+import { BreadcrumbDocPage } from '../../examples/basic/src/pages/components/BreadcrumbDocPage';
 import { QueryBuilderDocPage } from '../../examples/basic/src/pages/components/QueryBuilderDocPage';
 import { ReadOnlyInputDocPage } from '../../examples/basic/src/pages/components/ReadOnlyInputDocPage';
 import { PresetNumberInputDocPage } from '../../examples/basic/src/pages/components/PresetNumberInputDocPage';
@@ -78,6 +79,7 @@ const pages = [
   { name: 'PopoverDocPage', Component: PopoverDocPage },
   { name: 'ActivityStackDocPage', Component: ActivityStackDocPage },
   { name: 'AdaptivePopupDocPage', Component: AdaptivePopupDocPage },
+  { name: 'BreadcrumbDocPage', Component: BreadcrumbDocPage },
   { name: 'QueryBuilderDocPage', Component: QueryBuilderDocPage },
   { name: 'ReadOnlyInputDocPage', Component: ReadOnlyInputDocPage },
   { name: 'PresetNumberInputDocPage', Component: PresetNumberInputDocPage },

@@ -1349,6 +1349,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "href": "#/components/table-of-contents",
         "desc": "Hierarchical outline navigation tree with guide lines, active indicator, and banner offset support.",
         "description": "Hierarchical outline navigation tree with guide lines, active indicator, and banner offset support."
+      },
+      {
+        "id": "breadcrumb",
+        "title": "Breadcrumb",
+        "href": "#/components/breadcrumb",
+        "desc": "Hierarchical path navigation trail with overflow ellipsis and dropdown subfolder browsing.",
+        "description": "Hierarchical path navigation trail with overflow ellipsis and dropdown subfolder browsing."
       }
     ]
   },

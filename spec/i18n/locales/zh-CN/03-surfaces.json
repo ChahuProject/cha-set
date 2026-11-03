@@ -18,6 +18,9 @@
     "table-of-contents": {
       "description": "层级大纲导航树，支持引导线、激活指示器与横幅偏移适配。"
     },
+    "breadcrumb": {
+      "description": "路径分级层级导航栏，支持图标标识、省略溢出收纳与子目录下拉菜单。"
+    },
     "card": {
       "description": "展示包含页眉、标题、描述、正文与底部操作区的卡片容器。"
     },
@@ -57,6 +60,11 @@
     }
   },
   "desktopComposite": {
+    "breadcrumb": {
+      "overviewDesc": "展示可交互的分级路径面包屑，支持分段点击导航、下拉子文件夹浏览以及多项溢出收纳。",
+      "overviewHeading": "交互总览",
+      "sandboxTitle": "面包屑交互沙盒"
+    },
     "card": {
       "overviewDesc": "通过跨 Web 与桌面端同步的交互式子组件，测试卡片变体。",
       "overviewHeading": "交互式概览",
@@ -183,6 +191,24 @@
     }
   },
   "surfaces": {
+    "breadcrumb": {
+      "animationsDesc": "分段悬停与下拉菜单均遵循规范动效时长与进入缓动。",
+      "animationsTitle": "动画效果",
+      "computer": "计算机",
+      "currentPath": "当前路径：",
+      "developer": "开发者",
+      "maxVisible": "最多显示数：",
+      "navigatedTo": "已导航到：%1",
+      "overviewDesc": "展示可交互的分级路径面包屑，支持分段点击导航、下拉子文件夹浏览以及多项溢出收纳。",
+      "overviewHeading": "交互总览",
+      "packages": "模块包 (packages)",
+      "react": "React 库 (react)",
+      "resetPath": "重置路径",
+      "sandboxTitle": "面包屑交互沙盒",
+      "systemC": "系统 (C:)",
+      "users": "用户",
+      "workspace": "工作区"
+    },
     "card": {
       "compact": "紧凑 (sm)",
       "compactCardContent": "更紧凑内边距的高密度布局。",

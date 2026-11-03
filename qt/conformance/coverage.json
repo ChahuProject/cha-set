@@ -1,4 +1,11 @@
 {
+  "breadcrumb": {
+    "hierarchicalSegments": true,
+    "interactiveNavigation": true,
+    "overflowHandling": true,
+    "subfolderBrowsing": true,
+    "keyboardNavigation": true
+  },
   "button": {
     "variant": true,
     "size": true,

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { bench, describe } from 'vitest';
 import { render } from '@testing-library/react';
 import {
+  Breadcrumb,
   Collapsible,
   CollapsibleTrigger,
   CollapsibleContent,
@@ -20,6 +21,24 @@ import {
 } from '../src';
 
 describe('Performance Suite: Layout & Navigation (12 Components)', () => {
+  bench('Breadcrumb (30x batch mount)', () => {
+    const { unmount } = render(
+      <div>
+        {Array.from({ length: 30 }, (_, i) => (
+          <Breadcrumb
+            key={i}
+            segments={[
+              { label: 'Root', path: '/' },
+              { label: `Dir ${i}`, path: `/dir-${i}` },
+              { label: 'File', path: `/dir-${i}/file` },
+            ]}
+          />
+        ))}
+      </div>
+    );
+    unmount();
+  });
+
   bench('Collapsible (50x batch mount)', () => {
     const { unmount } = render(
       <div>

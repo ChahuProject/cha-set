@@ -18,6 +18,9 @@
     "table-of-contents": {
       "description": "Hierarchical outline navigation tree with guide lines, active indicator, and banner offset support."
     },
+    "breadcrumb": {
+      "description": "Hierarchical path navigation trail with overflow ellipsis and dropdown subfolder browsing."
+    },
     "card": {
       "description": "Displays a card with header, title, description, content, and footer actions."
     },
@@ -57,6 +60,11 @@
     }
   },
   "desktopComposite": {
+    "breadcrumb": {
+      "overviewDesc": "Interactive hierarchical path breadcrumb with segment navigation, subfolder browsing, and overflow collapsing.",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Breadcrumb Interactive Sandbox"
+    },
     "card": {
       "overviewDesc": "Test card variants with interactive subcomponents synchronized across Web and Desktop.",
       "overviewHeading": "Interactive Overview",
@@ -183,6 +191,24 @@
     }
   },
   "surfaces": {
+    "breadcrumb": {
+      "animationsDesc": "Segment hover and dropdown menus follow standard motion duration and entrance curves.",
+      "animationsTitle": "Animations",
+      "computer": "Computer",
+      "currentPath": "Current Path:",
+      "developer": "Developer",
+      "maxVisible": "Max Visible:",
+      "navigatedTo": "Navigated to: %1",
+      "overviewDesc": "Interactive hierarchical path breadcrumb with segment navigation, subfolder browsing, and overflow collapsing.",
+      "overviewHeading": "Interactive Overview",
+      "packages": "packages",
+      "react": "react",
+      "resetPath": "Reset Path",
+      "sandboxTitle": "Breadcrumb Interactive Sandbox",
+      "systemC": "System (C:)",
+      "users": "Users",
+      "workspace": "Workspace"
+    },
     "card": {
       "compact": "Compact (sm)",
       "compactCardContent": "Streamlined layout with denser inner padding.",

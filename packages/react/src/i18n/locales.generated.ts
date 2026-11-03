@@ -917,6 +917,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "table-of-contents": {
       "description": "层级大纲导航树，支持引导线、激活指示器与横幅偏移适配。"
     },
+    "breadcrumb": {
+      "description": "路径分级层级导航栏，支持图标标识、省略溢出收纳与子目录下拉菜单。"
+    },
     "card": {
       "description": "展示包含页眉、标题、描述、正文与底部操作区的卡片容器。"
     },
@@ -1384,6 +1387,17 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "overviewHeading": "交互式概览",
       "sandboxTitle": "开关沙盒"
     },
+    "breadcrumb": {
+      "overviewDesc": "展示可交互的分级路径面包屑，支持分段点击导航、下拉子文件夹浏览以及多项溢出收纳。",
+      "overviewHeading": "交互总览",
+      "sandboxTitle": "面包屑交互沙盒",
+      "allLocations": "所有位置",
+      "emptyFolder": "（空文件夹）",
+      "expandSubfolders": "展开 %1 的子文件夹",
+      "noMatch": "未找到匹配文件夹",
+      "searchPlaceholder": "搜索文件夹...",
+      "showHiddenAncestors": "显示隐藏的祖先文件夹"
+    },
     "card": {
       "overviewDesc": "通过跨 Web 与桌面端同步的交互式子组件，测试卡片变体。",
       "overviewHeading": "交互式概览",
@@ -1710,14 +1724,6 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "searchPlaceholder": "搜索...",
       "searchTooltip": "搜索",
       "upTooltip": "上一级"
-    },
-    "breadcrumb": {
-      "allLocations": "所有位置",
-      "emptyFolder": "（空文件夹）",
-      "expandSubfolders": "展开 %1 的子文件夹",
-      "noMatch": "未找到匹配文件夹",
-      "searchPlaceholder": "搜索文件夹...",
-      "showHiddenAncestors": "显示隐藏的祖先文件夹"
     },
     "reorderableList": {
       "toggleTooltip": "显示/隐藏"
@@ -2285,6 +2291,24 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     }
   },
   "surfaces": {
+    "breadcrumb": {
+      "animationsDesc": "分段悬停与下拉菜单均遵循规范动效时长与进入缓动。",
+      "animationsTitle": "动画效果",
+      "computer": "计算机",
+      "currentPath": "当前路径：",
+      "developer": "开发者",
+      "maxVisible": "最多显示数：",
+      "navigatedTo": "已导航到：%1",
+      "overviewDesc": "展示可交互的分级路径面包屑，支持分段点击导航、下拉子文件夹浏览以及多项溢出收纳。",
+      "overviewHeading": "交互总览",
+      "packages": "模块包 (packages)",
+      "react": "React 库 (react)",
+      "resetPath": "重置路径",
+      "sandboxTitle": "面包屑交互沙盒",
+      "systemC": "系统 (C:)",
+      "users": "用户",
+      "workspace": "工作区"
+    },
     "card": {
       "compact": "紧凑 (sm)",
       "compactCardContent": "更紧凑内边距的高密度布局。",
@@ -3701,6 +3725,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "table-of-contents": {
       "description": "Hierarchical outline navigation tree with guide lines, active indicator, and banner offset support."
     },
+    "breadcrumb": {
+      "description": "Hierarchical path navigation trail with overflow ellipsis and dropdown subfolder browsing."
+    },
     "card": {
       "description": "Displays a card with header, title, description, content, and footer actions."
     },
@@ -4168,6 +4195,17 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "overviewHeading": "Interactive Overview",
       "sandboxTitle": "Switch Sandbox"
     },
+    "breadcrumb": {
+      "overviewDesc": "Interactive hierarchical path breadcrumb with segment navigation, subfolder browsing, and overflow collapsing.",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Breadcrumb Interactive Sandbox",
+      "allLocations": "All locations",
+      "emptyFolder": "(Empty folder)",
+      "expandSubfolders": "Expand subfolders of %1",
+      "noMatch": "No matching folders found",
+      "searchPlaceholder": "Search folders...",
+      "showHiddenAncestors": "Show hidden ancestor folders"
+    },
     "card": {
       "overviewDesc": "Test card variants with interactive subcomponents synchronized across Web and Desktop.",
       "overviewHeading": "Interactive Overview",
@@ -4494,14 +4532,6 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "searchPlaceholder": "Search...",
       "searchTooltip": "Search",
       "upTooltip": "Up one level"
-    },
-    "breadcrumb": {
-      "allLocations": "All locations",
-      "emptyFolder": "(Empty folder)",
-      "expandSubfolders": "Expand subfolders of %1",
-      "noMatch": "No matching folders found",
-      "searchPlaceholder": "Search folders...",
-      "showHiddenAncestors": "Show hidden ancestor folders"
     },
     "reorderableList": {
       "toggleTooltip": "Show/Hide"
@@ -5069,6 +5099,24 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     }
   },
   "surfaces": {
+    "breadcrumb": {
+      "animationsDesc": "Segment hover and dropdown menus follow standard motion duration and entrance curves.",
+      "animationsTitle": "Animations",
+      "computer": "Computer",
+      "currentPath": "Current Path:",
+      "developer": "Developer",
+      "maxVisible": "Max Visible:",
+      "navigatedTo": "Navigated to: %1",
+      "overviewDesc": "Interactive hierarchical path breadcrumb with segment navigation, subfolder browsing, and overflow collapsing.",
+      "overviewHeading": "Interactive Overview",
+      "packages": "packages",
+      "react": "react",
+      "resetPath": "Reset Path",
+      "sandboxTitle": "Breadcrumb Interactive Sandbox",
+      "systemC": "System (C:)",
+      "users": "Users",
+      "workspace": "Workspace"
+    },
     "card": {
       "compact": "Compact (sm)",
       "compactCardContent": "Streamlined layout with denser inner padding.",

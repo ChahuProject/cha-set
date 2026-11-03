@@ -456,6 +456,7 @@ ApplicationWindow {
         case "theme-settings": return "ThemeSettingsDocPage.qml";
         case "language-settings": return "LanguageSettingsDocPage.qml";
         case "keybinding-manager": return "KeybindingManagerDocPage.qml";
+        case "breadcrumb": return "BreadcrumbDocPage.qml";
         case "table-of-contents": return "TableOfContentsDocPage.qml";
         case "kbd": return "KbdDocPage.qml";
         case "squircle": return "SquircleDocPage.qml";
@@ -1887,6 +1888,7 @@ ApplicationWindow {
                 { id: "split-button", name: "ChaSetSplitButton" },
                 { id: "squircle", name: "ChaSetSquircle" },
                 { id: "switch", name: "ChaSetSwitch" },
+                { id: "breadcrumb", name: "ChaSetBreadcrumb" },
                 { id: "table-of-contents", name: "ChaSetTableOfContents" },
                 { id: "table", name: "ChaSetTable" },
                 { id: "tabs", name: "ChaSetTabs" },

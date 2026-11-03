@@ -371,6 +371,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/ThemeSettingsDocPage.qml
             src/LanguageSettingsDocPage.qml
             src/TableOfContentsDocPage.qml
+            src/BreadcrumbDocPage.qml
             src/KbdDocPage.qml
             src/SquircleDocPage.qml
             src/MediaProgressBarDocPage.qml

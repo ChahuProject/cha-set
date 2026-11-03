@@ -96,6 +96,7 @@ import { PipelineViewDocPage } from './pages/components/PipelineViewDocPage';
 import { AddressBarDocPage } from './pages/components/AddressBarDocPage';
 import { ThemeSettingsDocPage } from './pages/components/ThemeSettingsDocPage';
 import { LanguageSettingsDocPage } from './pages/components/LanguageSettingsDocPage';
+import { BreadcrumbDocPage } from './pages/components/BreadcrumbDocPage';
 import { TableOfContentsDocPage } from './pages/components/TableOfContentsDocPage';
 import { KbdDocPage } from './pages/components/KbdDocPage';
 import { SquircleDocPage } from './pages/components/SquircleDocPage';
@@ -962,6 +963,8 @@ export function App() {
         return <LanguageSettingsDocPage />;
       case '#/components/keybinding-manager':
         return <KeybindingManagerDocPage />;
+      case '#/components/breadcrumb':
+        return <BreadcrumbDocPage />;
       case '#/components/table-of-contents':
         return <TableOfContentsDocPage />;
       case '#/components/kbd':

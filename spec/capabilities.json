@@ -1,6 +1,13 @@
 {
   "version": 1,
   "components": {
+    "breadcrumb": {
+      "hierarchicalSegments": { "requirement": "must", "description": "renders path segments with icons and separators" },
+      "interactiveNavigation": { "requirement": "must", "description": "clicks on segment emit navigation event" },
+      "overflowHandling": { "requirement": "must", "description": "collapses intermediate segments into an overflow menu when space is constrained" },
+      "subfolderBrowsing": { "requirement": "must", "description": "chevron click opens subfolders dropdown" },
+      "keyboardNavigation": { "requirement": "must", "description": "arrow navigation and keyboard activation" }
+    },
     "button": {
       "variant": { "requirement": "must", "description": "variant switches visual style" },
       "size": { "requirement": "must", "description": "size switches dimensions" },

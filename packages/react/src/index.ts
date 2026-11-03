@@ -20,6 +20,7 @@ export * from './select';
 export * from './popover';
 export * from './activity-stack';
 export * from './adaptive-popup';
+export * from './breadcrumb';
 export * from './context-menu';
 export * from './alert-dialog';
 export * from './sheet';
