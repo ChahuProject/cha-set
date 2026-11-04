@@ -21,6 +21,19 @@
 //      旧实现把 anchorY 本身映射进窗口坐标，一旦宿主把 anchorY 写成
 //      `-height - gap`（向上展开）就会形成「高度↔位置」回环。
 //      这里改用恒定的 parentOriginInHost，从根源断开回环。
+//   5. 【坐标系必须统一：clamp 边界与期望位置必须同处一个空间】
+//      期望位置（anchorRect / desiredLeft）在**父项局部坐标**，
+//      窗口边界（viewportInParent）必须**换算到同一父项坐标系**后再比较。
+//      严禁把窗口坐标系的边界直接作用于父项局部坐标的期望位置：
+//      两者错位量恰为父项原点的全局偏移（本例 1864px），
+//      会把本应合法的 -344 误判为越界并顶成 +12 → 弹窗整体右移冲出右缘。
+//   6. 【换算必须能被重算：mapToItem 的结果不会自动失效】
+//      `mapToItem()` 内部读取的祖先几何**不登记 QML 依赖**，
+//      所以视口矩形会永久冻结在「父项还在 (0,0)」的首帧求值值上；
+//      而且「依赖属性值没变 ⇒ 下游不重算」，仅仅自增一个 revision 计数器
+//      是**推不动**任何下游绑定的。
+//      正解：用「定位依赖令牌」把锚点几何 + 父项祖先链几何 + 版本号打包成
+//      一个可判别的数组，令牌一变，所有几何绑定必然重算。
 //
 // 用法：
 //   ChaSetAdaptivePopup {
@@ -102,18 +115,60 @@ Popup {
                                                    + root.contentNaturalHeight
                                                    + root.footerHeight)
 
-    /// 显式依赖：锚点控件自身几何 + 打开态。让下面的定位绑定在「宿主把弹窗
-    /// 挂上来的时刻」与「按钮被重新布局」时重算。
-    /// （QML 里对 JS 变量赋值即登记依赖，值本身不参与几何计算。）
-    readonly property real anchorDependency: {
-        const it = root.anchorItem
-        const _depRev = root.anchorRevision
-        if (!it)
-            return -1
-        return it.x + it.y + it.width + it.height
-    }
     /// 打开 / 关闭 / 视口变化时自增，强制定位绑定复算一次真实 mapToItem。
     property int anchorRevision: 0
+
+    /// 【定位依赖令牌】把「锚点几何 + 父项祖先链几何 + 打开版本号」打包成一个
+    /// **每次求值都必然不同**的令牌。
+    ///
+    /// 为什么必须是「令牌」而不是几个 real：
+    ///   QML 的绑定传播规则是「依赖属性的**值**变了才通知下游」。
+    ///   旧实现把 revision 读进 binding 后丢弃（`const _depRev = root.anchorRevision`），
+    ///   revision 自增后 anchorDependency 的**值没变** → 下游 viewportInParent /
+    ///   desiredLeft 根本不重算 → 弹窗永远停在**首帧求值**时的旧坐标。
+    ///   历史症状：查看器设置面板整体右移 1864px，右缘冲到 2256px（窗口仅 1920px）。
+    ///
+    /// 另一个要点：`mapToItem()` 内部读取的祖先几何**不会**登记 QML 依赖，
+    /// 所以祖先链必须在这里显式读一遍 —— 祖先一动，令牌就变，定位必然重算。
+    /// 少了这一段，视口矩形会永久冻结在「父项还在 (0,0)」时算出的旧值。
+    ///
+    /// 令牌用**数组**而非数值求和：求和会碰撞（祖先左移 10px 与窗口收窄 20px
+    /// 可能抵成同一个和），数组则是逐元素可判别、且每次求值都是新对象。
+    readonly property var positionDependency: {
+        const it = root.anchorItem
+        const tok = [root.anchorRevision]
+        tok.push(it ? it.x : 0, it ? it.y : 0, it ? it.width : 0, it ? it.height : 0)
+        let node = root.parent
+        let guard = 0
+        while (node && guard < 64) {
+            const nx = node.x
+            const ny = node.y
+            const nw = node.width
+            const nh = node.height
+            if (nx !== undefined && ny !== undefined)
+                tok.push(nx, ny)
+            if (nw !== undefined && nh !== undefined)
+                tok.push(nw, nh)
+            // ⚠ 必须沿 QML `parent` 链上溯，**不能**用 `parentItem`：
+            // Qt 6 的 Item 在 QML 侧 **没有** parentItem 属性
+            // （实测 `typeof item.parentItem === "undefined"`），
+            // 用它会让链条在第一层就断掉 —— 父项平移/改尺寸永远不触发重算，
+            // 弹窗的 clamp 边界会停留在旧值，越界时拉不回窗口内。
+            // 非 Item 节点（窗口等）没有 x/width，被上面的 undefined 守卫跳过。
+            node = node.parent
+            ++guard
+        }
+        return tok
+    }
+
+    /// 显式依赖：锚点控件自身几何 + 打开态 + 祖先链几何。
+    /// 数值里混入 revision，保证「版本变了 ⇒ 值变了 ⇒ 下游必然重算」。
+    readonly property real anchorDependency: {
+        const tok = root.positionDependency
+        if (!root.anchorItem)
+            return tok[0] * 100000 - 1
+        return tok[0] * 100000 + tok[1] + tok[2] + tok[3] + tok[4]
+    }
     // 用 Connections 而非 onOpened/onClosed：派生组件常自带 onOpened 处理器，
     // 那会整体覆盖基类的同名处理器，导致打开瞬间的复算被悄悄吞掉。
     // aboutToShow 在真正显示前触发 —— 在这里复算，弹窗第一帧就落在正确位置，
@@ -128,12 +183,13 @@ Popup {
     /// 锚点矩形（**父项坐标系**）。anchorItem 优先；无 anchorItem 时退化为
     /// 旧契约的 (anchorX, anchorY) 零点。
     readonly property rect anchorRect: {
-        const _dep = root.anchorDependency
+        const _tok = root.positionDependency
         const it = root.anchorItem
-        if (it && root.parent && typeof it.mapToItem === "function") {
-            const p = it.mapToItem(root.parent, 0, 0)
-            if (p && !isNaN(p.x) && !isNaN(p.y))
-                return Qt.rect(p.x, p.y, it.width, it.height)
+        const p = root.parent
+        if (it && p && typeof it.mapToItem === "function") {
+            const q = it.mapToItem(p, 0, 0)
+            if (q && !isNaN(q.x) && !isNaN(q.y))
+                return Qt.rect(q.x, q.y, it.width, it.height)
         }
         return Qt.rect(root.anchorX, root.anchorY, 0, 0)
     }
@@ -152,7 +208,7 @@ Popup {
                                           : root.anchorY
     /// 期望左边（父项局部坐标）
     readonly property real desiredLeft: {
-        const _dep = root.anchorDependency
+        const _tok = root.positionDependency
         if (!root.anchorItem)
             return root.anchorX
         const r = root.anchorRect
@@ -172,7 +228,14 @@ Popup {
     // Overlay，再退回父项）。
     readonly property Item hostViewport: {
         const p = root.parent
-        const win = p ? p.Window.window : null
+        let win = null
+        if (p) {
+            // Item 自带的 window 属性（QQuickItem::window），无需额外 import，
+            // 且在「弹窗尚未挂进窗口」时也不会抛异常。
+            win = p.window || null
+            if (!win && p.Window && p.Window.window)
+                win = p.Window.window
+        }
         if (win && win.contentItem)
             return win.contentItem
         try {
@@ -189,12 +252,15 @@ Popup {
     /// 于是 clamp 上限落错位置 —— 弹窗要么提前贴边、要么冲出窗口。
     readonly property rect viewportInParent: {
         const vp = root.hostViewport
-        const _dep = root.anchorDependency
-        if (!vp || !root.parent || typeof vp.mapToItem !== "function")
+        // 直接依赖令牌：令牌每次求值都是新对象 ⇒ 这里必然随「打开 / 锚点移动 /
+        // 祖先移动」重算，绝不会冻结在首帧的旧坐标上。
+        const _tok = root.positionDependency
+        const p = root.parent
+        if (!vp || !p || typeof vp.mapToItem !== "function")
             return Qt.rect(0, 0, 0, 0)
         try {
-            const a = vp.mapToItem(root.parent, 0, 0)
-            const b = vp.mapToItem(root.parent, vp.width, vp.height)
+            const a = vp.mapToItem(p, 0, 0)
+            const b = vp.mapToItem(p, vp.width, vp.height)
             if (isNaN(a.x) || isNaN(a.y) || isNaN(b.x) || isNaN(b.y))
                 return Qt.rect(0, 0, 0, 0)
             return Qt.rect(a.x, a.y, b.x - a.x, b.y - a.y)
@@ -224,14 +290,14 @@ Popup {
     /// 刻意与 anchorX/anchorY **解耦**（恒定值），使宿主可以把 anchorY 写成
     /// `-height - gap` 而不会形成「高度↔位置」绑定回环。
     readonly property real parentOriginInHost: {
-        const _dep = root.anchorDependency
+        const _tok = root.positionDependency
         return -root.viewportInParent.y
     }
 
     /// 父项原点在宿主视口坐标系中的 x。
     /// 刻意与 anchorX/anchorY 解耦（恒定值）。
     readonly property real parentOriginInHostX: {
-        const _dep = root.anchorDependency
+        const _tok = root.positionDependency
         return -root.viewportInParent.x
     }
 
