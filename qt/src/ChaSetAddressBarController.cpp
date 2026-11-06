@@ -188,6 +188,9 @@ QString ChaSetAddressBarController::editingText() const {
   if (m_currentPath == QLatin1String("recycle-bin:")) {
     return localizedRecycleBinName();
   }
+  if (m_currentPath.startsWith(QLatin1String("virtual://"))) {
+    return QCoreApplication::translate("ChaSet", "已分类");
+  }
   if (m_currentPath.isEmpty()) {
     return localizedThisPcName();
   }
@@ -214,7 +217,8 @@ QString ChaSetAddressBarController::editingText() const {
 
 void ChaSetAddressBarController::setCurrentPath(const QString &path) {
   QString trimmed = path.trimmed();
-  if (trimmed == QLatin1String("recycle-bin:")) {
+  if (trimmed == QLatin1String("recycle-bin:") ||
+      trimmed.startsWith(QLatin1String("virtual://"))) {
     m_virtualBase.clear();
     m_virtualName.clear();
     m_virtualIcon.clear();
@@ -300,6 +304,35 @@ bool ChaSetAddressBarController::navigate(const QString &path) {
 bool ChaSetAddressBarController::navigateValidated(const QString &rawPath,
                                                    bool recordStack) {
   const QString trimmed = rawPath.trimmed();
+
+  // 0. 虚拟分类 / 智能库输入
+  const bool isVirtualInput =
+      (trimmed.startsWith(QLatin1String("virtual://")) ||
+       trimmed.compare(QString::fromUtf8("已分类"), Qt::CaseInsensitive) == 0 ||
+       trimmed.compare(QString::fromUtf8("智能标注库"), Qt::CaseInsensitive) == 0 ||
+       trimmed.compare(QLatin1String("Categorized"), Qt::CaseInsensitive) == 0);
+  if (isVirtualInput) {
+    m_virtualBase.clear();
+    m_virtualName.clear();
+    m_virtualIcon.clear();
+    const QString target = trimmed.startsWith(QLatin1String("virtual://"))
+                               ? trimmed
+                               : QStringLiteral("virtual://all_tagged");
+    if (recordStack && target != m_currentPath) {
+      if (m_backStack.isEmpty() || m_backStack.last() != m_currentPath) {
+        m_backStack.append(m_currentPath);
+      }
+      if (!m_forwardStack.isEmpty()) {
+        m_forwardStack.clear();
+      }
+      emit navigationStackChanged();
+    }
+    ChaSetPathHistoryStore::instance().add(target);
+    setCurrentPath(target);
+    setEditing(false);
+    emit navigateRequested(target);
+    return true;
+  }
 
   // 1. 回收站输入
   const bool isRecycleBinInput =
@@ -487,6 +520,18 @@ void ChaSetAddressBarController::goBack() {
     navigateToThisPc();
     return;
   }
+  if (target == QLatin1String("recycle-bin:") ||
+      target.startsWith(QLatin1String("virtual://"))) {
+    m_backStack.removeLast();
+    if (m_forwardStack.isEmpty() || m_forwardStack.last() != m_currentPath) {
+      m_forwardStack.append(m_currentPath);
+    }
+    emit navigationStackChanged();
+    setEditing(false);
+    setCurrentPath(target);
+    emit navigateRequested(target);
+    return;
+  }
   const QFileInfo info(QDir::cleanPath(expanded));
   if (!info.exists() || !info.isDir()) {
     return;
@@ -516,6 +561,18 @@ void ChaSetAddressBarController::goForward() {
     navigateToThisPc();
     return;
   }
+  if (target == QLatin1String("recycle-bin:") ||
+      target.startsWith(QLatin1String("virtual://"))) {
+    m_forwardStack.removeLast();
+    if (m_backStack.isEmpty() || m_backStack.last() != m_currentPath) {
+      m_backStack.append(m_currentPath);
+    }
+    emit navigationStackChanged();
+    setEditing(false);
+    setCurrentPath(target);
+    emit navigateRequested(target);
+    return;
+  }
   const QFileInfo info(QDir::cleanPath(expanded));
   if (!info.exists() || !info.isDir()) {
     return;
@@ -534,7 +591,8 @@ void ChaSetAddressBarController::goForward() {
 void ChaSetAddressBarController::navigateUp() {
   if (m_currentPath.isEmpty())
     return;
-  if (m_currentPath == QLatin1String("recycle-bin:")) {
+  if (m_currentPath == QLatin1String("recycle-bin:") ||
+      m_currentPath.startsWith(QLatin1String("virtual://"))) {
     navigateToThisPc();
     return;
   }

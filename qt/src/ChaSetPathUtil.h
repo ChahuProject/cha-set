@@ -143,6 +143,18 @@ splitPath(const QString &absPath,
     return segs;
   }
 
+  // 虚拟分类模式：virtual://all_tagged 或 virtual://...
+  if (absPath.startsWith(QLatin1String("virtual://"))) {
+    Segment virt;
+    virt.displayName = trOrFallback("已分类", "Categorized");
+    virt.realPath = absPath;
+    virt.icon = QStringLiteral("category");
+    virt.isRoot = false;
+    virt.hasSubfolders = false;
+    segs.push_back(std::move(virt));
+    return segs;
+  }
+
   // 虚拟已知文件夹模式：用户从顶层已知文件夹（音乐/文档/下载...）进入时，不显示真实物理前缀
   if (!virtualBase.isEmpty()) {
     const QString cleanBase =
