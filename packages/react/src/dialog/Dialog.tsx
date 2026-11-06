@@ -309,10 +309,10 @@ const alertSizeClasses: Record<DialogSize, string> = {
 };
 
 const defaultSizeWidths: Record<DialogSize, number | undefined> = {
-  sm: 24,
-  default: 32,
-  lg: 44,
-  xl: 56,
+  sm: 27,
+  default: 30,
+  lg: 42,
+  xl: 54,
   full: 68,
 };
 
@@ -572,7 +572,7 @@ export const DialogFooter = React.forwardRef<HTMLDivElement, DialogFooterProps>(
         data-slot={(props as Record<string, any>)['data-slot'] ?? (isAlert ? 'alert-dialog-footer' : 'dialog-footer')}
         className={cn(
           'flex flex-col-reverse gap-2 sm:flex-row sm:justify-end',
-          !isAlert && 'border-t border-border px-6 py-4',
+          !isAlert && 'border-t border-border px-6 py-3.5',
           className,
         )}
         {...props}

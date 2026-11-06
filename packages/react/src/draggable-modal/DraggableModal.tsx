@@ -366,6 +366,7 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
   // Sync with dynamic defaultHeight when not manually adjusted
   React.useEffect(() => {
     if (hasManuallyAdjustedRef.current || !rndRef.current || typeof window === 'undefined') return;
+    if (shouldAutoFit && heightRemVal === undefined && defaultHeight === undefined) return;
     const { h: boundsH } = getBoundsSize();
     const topOffset = isTopMode ? topMarginPx : 16;
     const bottomMargin = (isTopMode ? 2 : 1) * rem;
@@ -376,7 +377,7 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
       currentSizeRef.current = { ...currentSizeRef.current, height: targetH };
       rndRef.current.updateSize({ width: currentSizeRef.current.width, height: targetH });
     }
-  }, [resolvedHeight, resolvedMinHeight, isTopMode, topMarginPx, rem, getBoundsSize]);
+  }, [resolvedHeight, resolvedMinHeight, isTopMode, topMarginPx, rem, getBoundsSize, shouldAutoFit, heightRemVal, defaultHeight]);
 
   const handleSelectSize = (option: DraggableModalSizeOption) => {
     hasManuallyAdjustedRef.current = true;
@@ -471,7 +472,7 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
       </ScrollArea>
 
       {finalFixedFooter && (
-        <div ref={footerRef} className="shrink-0 border-t border-border/50">
+        <div ref={footerRef} className="shrink-0">
           {finalFixedFooter}
         </div>
       )}

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Input, Badge, Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose, DialogAction, DialogCancel, type DialogSizeOption, CodeBlock, useChaSetI18n } from '@chahu/cha-set';
+import { Button, Input, Badge, Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose, DialogAction, DialogCancel, type DialogSizeOption, CodeBlock, useChaSetI18n, Label } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -18,21 +18,21 @@ export function DialogDocPage() {
   <DialogTrigger asChild>
     <Button variant="outline">Open Profile Dialog</Button>
   </DialogTrigger>
-  <DialogContent>
+  <DialogContent size="sm">
     <DialogHeader>
       <DialogTitle>Edit profile</DialogTitle>
       <DialogDescription>
         Make changes to your profile here. Click save when you're done.
       </DialogDescription>
     </DialogHeader>
-    <div className="grid gap-4 py-4">
-      <div className="grid grid-cols-4 items-center gap-4">
-        <label className="text-right text-sm font-medium">Name</label>
-        <Input className="col-span-3" defaultValue="Alex Rivera" />
+    <div className="flex flex-col gap-3.5 py-2">
+      <div className="flex flex-col gap-1.5">
+        <Label htmlFor="name" size="sm" className="text-muted-foreground font-medium">Name</Label>
+        <Input id="name" defaultValue="Alex Rivera" />
       </div>
-      <div className="grid grid-cols-4 items-center gap-4">
-        <label className="text-right text-sm font-medium">Username</label>
-        <Input className="col-span-3" defaultValue="@arivera" />
+      <div className="flex flex-col gap-1.5">
+        <Label htmlFor="username" size="sm" className="text-muted-foreground font-medium">Username</Label>
+        <Input id="username" defaultValue="@arivera" />
       </div>
     </div>
     <DialogFooter>
@@ -48,28 +48,47 @@ export function DialogDocPage() {
     id: profileDialog
     title: "Edit profile"
     description: "Make changes to your profile here. Click save when you're done."
-    dialogWidth: 480
+    dialogWidth: ThemeTokens.dp(420)
     showCloseButton: true
 
     Column {
         width: parent.width
-        spacing: 12
+        spacing: ThemeTokens.dp(14)
 
-        Row {
-            spacing: 10
-            Text { text: "Name:"; width: 70; color: ThemeTokens.text }
-            ChaSetInput { width: 340; text: "Alex Rivera" }
+        Column {
+            width: parent.width
+            spacing: ThemeTokens.dp(6)
+            DocText {
+                text: "Name"
+                color: ThemeTokens.subduedText
+                font.pixelSize: Typography.sizeSmall
+                font.weight: Font.Medium
+            }
+            ChaSetInput {
+                width: parent.width
+                text: "Alex Rivera"
+            }
         }
-        Row {
-            spacing: 10
-            Text { text: "Username:"; width: 70; color: ThemeTokens.text }
-            ChaSetInput { width: 340; text: "@arivera" }
+
+        Column {
+            width: parent.width
+            spacing: ThemeTokens.dp(6)
+            DocText {
+                text: "Username"
+                color: ThemeTokens.subduedText
+                font.pixelSize: Typography.sizeSmall
+                font.weight: Font.Medium
+            }
+            ChaSetInput {
+                width: parent.width
+                text: "@arivera"
+            }
         }
     }
 
-    Row {
+    footer: Row {
         anchors.right: parent.right
-        spacing: 10
+        spacing: ThemeTokens.dp(8)
         ChaSetButton {
             variant: "outline"
             text: "Cancel"
@@ -113,7 +132,7 @@ export function DialogDocPage() {
               <DialogTrigger asChild>
                 <Button variant="outline">{t('overlays.dialog.openProfile', 'Open Profile Dialog')}</Button>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent size="sm">
                 <DialogHeader>
                   <DialogTitle>{t('overlays.dialog.editProfileTitle', 'Edit profile')}</DialogTitle>
                   <DialogDescription>
@@ -121,23 +140,23 @@ export function DialogDocPage() {
                   </DialogDescription>
                 </DialogHeader>
 
-                <div className="grid gap-4 py-4">
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <label className="text-right text-sm font-medium text-foreground">
+                <div className="flex flex-col gap-3.5 py-2">
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="profile-name" size="sm" className="text-muted-foreground font-medium">
                       {t('overlays.dialog.name', 'Name')}
-                    </label>
+                    </Label>
                     <Input
-                      className="col-span-3"
+                      id="profile-name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                     />
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <label className="text-right text-sm font-medium text-foreground">
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="profile-username" size="sm" className="text-muted-foreground font-medium">
                       {t('overlays.dialog.username', 'Username')}
-                    </label>
+                    </Label>
                     <Input
-                      className="col-span-3"
+                      id="profile-username"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
                     />
