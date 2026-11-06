@@ -54,6 +54,7 @@ export * from './elided-text';
 export * from './splitter-handle';
 export * from './duration-input';
 export * from './code-block';
+export * from './reorderable-list';
 export * from './pipeline-view';
 export * from './address-bar';
 export * from './theme-settings';

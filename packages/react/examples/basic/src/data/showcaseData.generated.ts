@@ -1629,6 +1629,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "href": "#/components/keybinding-manager",
         "desc": "Cross-stack keybinding and shortcut manager with reverse key search, conflict detection, and reset.",
         "description": "Cross-stack keybinding and shortcut manager with reverse key search, conflict detection, and reset."
+      },
+      {
+        "id": "reorderable-list",
+        "title": "Reorderable List",
+        "href": "#/components/reorderable-list",
+        "desc": "Drag-and-drop reorderable action list with insertion slot indicators and Alt solo toggles.",
+        "description": "Drag-and-drop reorderable action list with insertion slot indicators and Alt solo toggles."
       }
     ]
   }

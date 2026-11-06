@@ -381,6 +381,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/TableOfContentsDocPage.qml
             src/BreadcrumbDocPage.qml
             src/StepTimelineDocPage.qml
+            src/ReorderableListDocPage.qml
             src/LogConsoleDocPage.qml
             src/KbdDocPage.qml
             src/ShortcutBarDocPage.qml

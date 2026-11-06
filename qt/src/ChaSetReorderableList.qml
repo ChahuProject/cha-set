@@ -61,6 +61,8 @@ Item {
 
     implicitWidth: ThemeTokens.dp(280)
     implicitHeight: fieldRows.height
+    width: implicitWidth
+    height: implicitHeight
 
     /// 正在拖拽的行下标；-1 表示空闲
     property int dragIndex: -1

@@ -29,6 +29,7 @@ import { AdaptivePopupDocPage } from '../../examples/basic/src/pages/components/
 import { AlertDialogDocPage } from '../../examples/basic/src/pages/components/AlertDialogDocPage';
 import { BreadcrumbDocPage } from '../../examples/basic/src/pages/components/BreadcrumbDocPage';
 import { StepTimelineDocPage } from '../../examples/basic/src/pages/components/StepTimelineDocPage';
+import { ReorderableListDocPage } from '../../examples/basic/src/pages/components/ReorderableListDocPage';
 import { LogConsoleDocPage } from '../../examples/basic/src/pages/components/LogConsoleDocPage';
 import { QueryBuilderDocPage } from '../../examples/basic/src/pages/components/QueryBuilderDocPage';
 import { ReadOnlyInputDocPage } from '../../examples/basic/src/pages/components/ReadOnlyInputDocPage';
@@ -88,6 +89,7 @@ const pages = [
   { name: 'AlertDialogDocPage', Component: AlertDialogDocPage },
   { name: 'BreadcrumbDocPage', Component: BreadcrumbDocPage },
   { name: 'StepTimelineDocPage', Component: StepTimelineDocPage },
+  { name: 'ReorderableListDocPage', Component: ReorderableListDocPage },
   { name: 'LogConsoleDocPage', Component: LogConsoleDocPage },
   { name: 'QueryBuilderDocPage', Component: QueryBuilderDocPage },
   { name: 'ReadOnlyInputDocPage', Component: ReadOnlyInputDocPage },

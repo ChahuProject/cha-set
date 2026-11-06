@@ -466,5 +466,12 @@
     "exportCheatSheet": true,
     "multiChord": true,
     "keyboard": true
+  },
+  "reorderable-list": {
+    "dragReorder": true,
+    "collinearSlotIndicator": true,
+    "actionColumns": true,
+    "altSoloToggle": true,
+    "keyboardNavigation": true
   }
 }

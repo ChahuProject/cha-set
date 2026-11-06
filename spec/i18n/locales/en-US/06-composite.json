@@ -157,6 +157,12 @@
     },
     "themeSettings": {
       "description": "Cross-stack theme settings controller managing mode, accent palette, decoration level, and UI density."
+    },
+    "reorderableList": {
+      "description": "Drag-and-drop reorderable action list with insertion slot indicators and Alt solo toggles."
+    },
+    "reorderable-list": {
+      "description": "Drag-and-drop reorderable action list with insertion slot indicators and Alt solo toggles."
     }
   },
   "desktopComposite": {
@@ -185,7 +191,18 @@
       "showHiddenAncestors": "Show hidden ancestor folders"
     },
     "reorderableList": {
-      "toggleTooltip": "Show/Hide"
+      "toggleTooltip": "Show/Hide",
+      "sandboxTitle": "Reorderable List Sandbox",
+      "overviewDesc": "Interactive list supporting drag-and-drop reordering with collinear slot indicators, custom action columns, and Alt+Click solo/invert toggles.",
+      "toggleReorderable": "Toggle Reorderable",
+      "resetList": "Reset Items",
+      "addItem": "Add Item",
+      "fieldName": "File Name",
+      "fieldSize": "File Size",
+      "fieldType": "Item Type",
+      "fieldDate": "Modified Date",
+      "fieldTags": "Tags",
+      "fieldAuthor": "Author"
     },
     "codeBlock": {
       "embeddedBadge": "embedded",

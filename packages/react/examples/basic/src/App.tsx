@@ -100,6 +100,7 @@ import { ThemeSettingsDocPage } from './pages/components/ThemeSettingsDocPage';
 import { LanguageSettingsDocPage } from './pages/components/LanguageSettingsDocPage';
 import { BreadcrumbDocPage } from './pages/components/BreadcrumbDocPage';
 import { StepTimelineDocPage } from './pages/components/StepTimelineDocPage';
+import { ReorderableListDocPage } from './pages/components/ReorderableListDocPage';
 import { LogConsoleDocPage } from './pages/components/LogConsoleDocPage';
 import { TableOfContentsDocPage } from './pages/components/TableOfContentsDocPage';
 import { KbdDocPage } from './pages/components/KbdDocPage';
@@ -977,6 +978,8 @@ export function App() {
         return <BreadcrumbDocPage />;
       case '#/components/step-timeline':
         return <StepTimelineDocPage />;
+      case '#/components/reorderable-list':
+        return <ReorderableListDocPage />;
       case '#/components/log-console':
         return <LogConsoleDocPage />;
       case '#/components/table-of-contents':

@@ -10,6 +10,7 @@ import {
   MediaProgressBar,
   PipelineView,
   QueryBuilder,
+  ReorderableList,
   ScaleOsd,
   SplitButton,
   StepTimeline,
@@ -148,6 +149,23 @@ export function Counter() {
             lines={[
               '[compiler] Initializing build...',
               '\u001B[32mSuccess: 0 errors\u001B[0m',
+            ]}
+          />
+        ))}
+      </div>
+    );
+    unmount();
+  });
+
+  bench('ReorderableList (20x batch mount)', () => {
+    const { unmount } = render(
+      <div>
+        {Array.from({ length: 20 }, (_, i) => (
+          <ReorderableList
+            key={i}
+            items={[
+              { id: '1', label: 'Item 1', visible: true },
+              { id: '2', label: 'Item 2', visible: false },
             ]}
           />
         ))}

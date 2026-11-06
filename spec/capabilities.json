@@ -10,455 +10,1422 @@
       "shortcutsGuide": { "requirement": "must", "description": "bottom keyboard and mouse shortcuts indicator using Kbd" }
     },
     "alert-dialog": {
-      "modalOverlay": { "requirement": "must", "description": "renders focused modal barrier overlay blocking background clicks" },
-      "destructiveConfirmation": { "requirement": "must", "description": "highlights critical or destructive action with prominent styling" },
-      "keyboardDismissal": { "requirement": "must", "description": "Escape key dismisses dialog unless prevented" },
-      "focusTrap": { "requirement": "must", "description": "traps tab focus within the dialog buttons" }
+      "modalOverlay": {
+        "requirement": "must",
+        "description": "renders focused modal barrier overlay blocking background clicks"
+      },
+      "destructiveConfirmation": {
+        "requirement": "must",
+        "description": "highlights critical or destructive action with prominent styling"
+      },
+      "keyboardDismissal": {
+        "requirement": "must",
+        "description": "Escape key dismisses dialog unless prevented"
+      },
+      "focusTrap": {
+        "requirement": "must",
+        "description": "traps tab focus within the dialog buttons"
+      }
     },
     "breadcrumb": {
-      "hierarchicalSegments": { "requirement": "must", "description": "renders path segments with icons and separators" },
-      "interactiveNavigation": { "requirement": "must", "description": "clicks on segment emit navigation event" },
-      "overflowHandling": { "requirement": "must", "description": "collapses intermediate segments into an overflow menu when space is constrained" },
-      "subfolderBrowsing": { "requirement": "must", "description": "chevron click opens subfolders dropdown" },
-      "keyboardNavigation": { "requirement": "must", "description": "arrow navigation and keyboard activation" }
+      "hierarchicalSegments": {
+        "requirement": "must",
+        "description": "renders path segments with icons and separators"
+      },
+      "interactiveNavigation": {
+        "requirement": "must",
+        "description": "clicks on segment emit navigation event"
+      },
+      "overflowHandling": {
+        "requirement": "must",
+        "description": "collapses intermediate segments into an overflow menu when space is constrained"
+      },
+      "subfolderBrowsing": {
+        "requirement": "must",
+        "description": "chevron click opens subfolders dropdown"
+      },
+      "keyboardNavigation": {
+        "requirement": "must",
+        "description": "arrow navigation and keyboard activation"
+      }
     },
     "step-timeline": {
-      "sequentialSteps": { "requirement": "must", "description": "renders steps in sequential vertical timeline order" },
-      "statusIndicators": { "requirement": "must", "description": "displays status icons for success, failed, running, pending, and skipped" },
-      "durationDisplay": { "requirement": "must", "description": "formats and shows step duration in time format" },
-      "emptyState": { "requirement": "must", "description": "displays customizable emptyText when no steps provided" },
-      "activeProgressAnimation": { "requirement": "should", "description": "visual animation or rotating indicator on running step" }
+      "sequentialSteps": {
+        "requirement": "must",
+        "description": "renders steps in sequential vertical timeline order"
+      },
+      "statusIndicators": {
+        "requirement": "must",
+        "description": "displays status icons for success, failed, running, pending, and skipped"
+      },
+      "durationDisplay": {
+        "requirement": "must",
+        "description": "formats and shows step duration in time format"
+      },
+      "emptyState": {
+        "requirement": "must",
+        "description": "displays customizable emptyText when no steps provided"
+      },
+      "activeProgressAnimation": {
+        "requirement": "should",
+        "description": "visual animation or rotating indicator on running step"
+      }
     },
     "log-console": {
-      "ansiRendering": { "requirement": "must", "description": "renders ANSI colored terminal text lines" },
-      "autoScroll": { "requirement": "must", "description": "autoscrolls to bottom when new logs arrive while pinned" },
-      "copyLogs": { "requirement": "must", "description": "one-click clipboard copy of plain text logs" },
-      "lineCountBadge": { "requirement": "must", "description": "displays total log lines badge counter" },
-      "emptyState": { "requirement": "must", "description": "displays customizable emptyText when no logs present" }
+      "ansiRendering": {
+        "requirement": "must",
+        "description": "renders ANSI colored terminal text lines"
+      },
+      "autoScroll": {
+        "requirement": "must",
+        "description": "autoscrolls to bottom when new logs arrive while pinned"
+      },
+      "copyLogs": {
+        "requirement": "must",
+        "description": "one-click clipboard copy of plain text logs"
+      },
+      "lineCountBadge": {
+        "requirement": "must",
+        "description": "displays total log lines badge counter"
+      },
+      "emptyState": {
+        "requirement": "must",
+        "description": "displays customizable emptyText when no logs present"
+      }
     },
     "button": {
-      "variant": { "requirement": "must", "description": "variant switches visual style" },
-      "size": { "requirement": "must", "description": "size switches dimensions" },
-      "disabled": { "requirement": "must", "description": "disabled blocks interaction" },
-      "keyboard": { "requirement": "must", "description": "native button keyboard activation" },
-      "clickAction": { "requirement": "must", "description": "clicking triggers action handler" },
-      "loading": { "requirement": "should", "description": "loading shows spinner and blocks clicks" },
-      "fullWidth": { "requirement": "should", "description": "fullWidth stretches to container" },
-      "a11y": { "requirement": "should", "description": "accessible label support" },
-      "pressed": { "requirement": "should", "description": "pressed/toggle state with aria-pressed support" }
+      "variant": {
+        "requirement": "must",
+        "description": "variant switches visual style"
+      },
+      "size": {
+        "requirement": "must",
+        "description": "size switches dimensions"
+      },
+      "disabled": {
+        "requirement": "must",
+        "description": "disabled blocks interaction"
+      },
+      "keyboard": {
+        "requirement": "must",
+        "description": "native button keyboard activation"
+      },
+      "clickAction": {
+        "requirement": "must",
+        "description": "clicking triggers action handler"
+      },
+      "loading": {
+        "requirement": "should",
+        "description": "loading shows spinner and blocks clicks"
+      },
+      "fullWidth": {
+        "requirement": "should",
+        "description": "fullWidth stretches to container"
+      },
+      "a11y": {
+        "requirement": "should",
+        "description": "accessible label support"
+      },
+      "pressed": {
+        "requirement": "should",
+        "description": "pressed/toggle state with aria-pressed support"
+      }
     },
     "scrollbar": {
-      "orientation": { "requirement": "must", "description": "orientation switches between vertical and horizontal" },
-      "hotZone": { "requirement": "must", "description": "hot zone provides wider hit area than visual collapsed size" },
-      "dynamicWidth": { "requirement": "must", "description": "expands thickness on hover" },
-      "stepperButtons": { "requirement": "must", "description": "to-top, to-bottom, page-up, page-down navigation buttons" },
-      "wheelScroll": { "requirement": "must", "description": "mouse wheel / touchpad scrolls viewport smoothly" },
-      "thumbDrag": { "requirement": "must", "description": "dragging thumb translates viewport linearly with boundary clamping" },
-      "trackJump": { "requirement": "must", "description": "clicking track jumps thumb under cursor accurately" },
-      "boundaryClamp": { "requirement": "should", "description": "disables buttons when at scroll boundary" },
-      "smoothScroll": { "requirement": "should", "description": "smooth scroll animation for stepper actions" },
-      "size": { "requirement": "should", "description": "supports default and compact sm sizes" },
-      "floating": { "requirement": "should", "description": "supports floating overlay and non-floating gutter layout modes" }
+      "orientation": {
+        "requirement": "must",
+        "description": "orientation switches between vertical and horizontal"
+      },
+      "hotZone": {
+        "requirement": "must",
+        "description": "hot zone provides wider hit area than visual collapsed size"
+      },
+      "dynamicWidth": {
+        "requirement": "must",
+        "description": "expands thickness on hover"
+      },
+      "stepperButtons": {
+        "requirement": "must",
+        "description": "to-top, to-bottom, page-up, page-down navigation buttons"
+      },
+      "wheelScroll": {
+        "requirement": "must",
+        "description": "mouse wheel / touchpad scrolls viewport smoothly"
+      },
+      "thumbDrag": {
+        "requirement": "must",
+        "description": "dragging thumb translates viewport linearly with boundary clamping"
+      },
+      "trackJump": {
+        "requirement": "must",
+        "description": "clicking track jumps thumb under cursor accurately"
+      },
+      "boundaryClamp": {
+        "requirement": "should",
+        "description": "disables buttons when at scroll boundary"
+      },
+      "smoothScroll": {
+        "requirement": "should",
+        "description": "smooth scroll animation for stepper actions"
+      },
+      "size": {
+        "requirement": "should",
+        "description": "supports default and compact sm sizes"
+      },
+      "floating": {
+        "requirement": "should",
+        "description": "supports floating overlay and non-floating gutter layout modes"
+      }
     },
     "tabs": {
-      "selection": { "requirement": "must", "description": "selecting a tab switches active panel and state" },
-      "orientation": { "requirement": "must", "description": "orientation switches between horizontal and vertical layout" },
-      "keyboard": { "requirement": "must", "description": "arrow key navigation between tabs" },
-      "disabled": { "requirement": "must", "description": "disabled tab blocks selection and mouse interactions" },
-      "styling": { "requirement": "must", "description": "shadcn-aligned visual presentation with active pill background and subtle shadow" },
-      "activation": { "requirement": "should", "description": "automatic or manual tab activation" },
-      "variant": { "requirement": "should", "description": "supports default pill and line underline variants" },
-      "size": { "requirement": "should", "description": "supports default and compact sm sizes" }
+      "selection": {
+        "requirement": "must",
+        "description": "selecting a tab switches active panel and state"
+      },
+      "orientation": {
+        "requirement": "must",
+        "description": "orientation switches between horizontal and vertical layout"
+      },
+      "keyboard": {
+        "requirement": "must",
+        "description": "arrow key navigation between tabs"
+      },
+      "disabled": {
+        "requirement": "must",
+        "description": "disabled tab blocks selection and mouse interactions"
+      },
+      "styling": {
+        "requirement": "must",
+        "description": "shadcn-aligned visual presentation with active pill background and subtle shadow"
+      },
+      "activation": {
+        "requirement": "should",
+        "description": "automatic or manual tab activation"
+      },
+      "variant": {
+        "requirement": "should",
+        "description": "supports default pill and line underline variants"
+      },
+      "size": {
+        "requirement": "should",
+        "description": "supports default and compact sm sizes"
+      }
     },
     "badge": {
-      "variant": { "requirement": "must", "description": "supports default, secondary, destructive, and outline variants" },
-      "size": { "requirement": "must", "description": "supports default and sm sizes" },
-      "styling": { "requirement": "must", "description": "pill geometry with semantic color tokens and border" },
-      "customClass": { "requirement": "should", "description": "allows passing custom classes or color overrides" },
-      "dot": { "requirement": "should", "description": "status dot indicator support" },
-      "removable": { "requirement": "should", "description": "dismiss/remove action support" }
+      "variant": {
+        "requirement": "must",
+        "description": "supports default, secondary, destructive, and outline variants"
+      },
+      "size": {
+        "requirement": "must",
+        "description": "supports default and sm sizes"
+      },
+      "styling": {
+        "requirement": "must",
+        "description": "pill geometry with semantic color tokens and border"
+      },
+      "customClass": {
+        "requirement": "should",
+        "description": "allows passing custom classes or color overrides"
+      },
+      "dot": {
+        "requirement": "should",
+        "description": "status dot indicator support"
+      },
+      "removable": {
+        "requirement": "should",
+        "description": "dismiss/remove action support"
+      }
     },
     "label": {
-      "standard": { "requirement": "must", "description": "renders text label and associates with form controls via htmlFor" },
-      "size": { "requirement": "must", "description": "supports default (text-sm) and sm (text-xs) font sizing" },
-      "disabled": { "requirement": "must", "description": "disabled state dims opacity and blocks pointer interactions" },
-      "required": { "requirement": "must", "description": "renders required asterisk indicator marker when required" },
-      "styling": { "requirement": "must", "description": "typography, peer-disabled styles and colors aligned with ChaSet tokens" },
-      "optional": { "requirement": "should", "description": "displays optional indicator badge or text" },
-      "invalid": { "requirement": "should", "description": "indicates error state with destructive highlight" },
-      "description": { "requirement": "should", "description": "renders helper description text alongside label" },
-      "tooltip": { "requirement": "should", "description": "renders info icon with help tooltip" }
+      "standard": {
+        "requirement": "must",
+        "description": "renders text label and associates with form controls via htmlFor"
+      },
+      "size": {
+        "requirement": "must",
+        "description": "supports default (text-sm) and sm (text-xs) font sizing"
+      },
+      "disabled": {
+        "requirement": "must",
+        "description": "disabled state dims opacity and blocks pointer interactions"
+      },
+      "required": {
+        "requirement": "must",
+        "description": "renders required asterisk indicator marker when required"
+      },
+      "styling": {
+        "requirement": "must",
+        "description": "typography, peer-disabled styles and colors aligned with ChaSet tokens"
+      },
+      "optional": {
+        "requirement": "should",
+        "description": "displays optional indicator badge or text"
+      },
+      "invalid": {
+        "requirement": "should",
+        "description": "indicates error state with destructive highlight"
+      },
+      "description": {
+        "requirement": "should",
+        "description": "renders helper description text alongside label"
+      },
+      "tooltip": {
+        "requirement": "should",
+        "description": "renders info icon with help tooltip"
+      }
     },
     "collapsible": {
-      "standard": { "requirement": "must", "description": "core expanding and collapsing interaction" },
-      "defaultOpen": { "requirement": "must", "description": "initial open state control" },
-      "disabled": { "requirement": "must", "description": "disables collapsible toggling" }
+      "standard": {
+        "requirement": "must",
+        "description": "toggles open and collapsed states"
+      },
+      "defaultOpen": {
+        "requirement": "must",
+        "description": "mounts initially expanded when defaultOpen is true"
+      },
+      "disabled": {
+        "requirement": "must",
+        "description": "disables interaction when disabled is true"
+      },
+      "variant": {
+        "requirement": "should",
+        "description": "supports default, card, and ghost styling variants"
+      }
     },
     "card": {
-      "structure": { "requirement": "must", "description": "composite subcomponents: CardHeader, CardTitle, CardDescription, CardContent, CardFooter" },
-      "variant": { "requirement": "must", "description": "supports default, secondary, and outline variants" },
-      "styling": { "requirement": "must", "description": "rounded-xl geometry, border, background, and text tokens" },
-      "customClass": { "requirement": "should", "description": "allows passing custom classes or style overrides" },
-      "size": { "requirement": "should", "description": "supports default and compact sm sizes" },
-      "interactive": { "requirement": "should", "description": "supports hoverable interactive card elevation and border highlight" }
+      "structure": {
+        "requirement": "must",
+        "description": "composite subcomponents: CardHeader, CardTitle, CardDescription, CardContent, CardFooter"
+      },
+      "variant": {
+        "requirement": "must",
+        "description": "supports default, secondary, and outline variants"
+      },
+      "styling": {
+        "requirement": "must",
+        "description": "rounded-xl geometry, border, background, and text tokens"
+      },
+      "customClass": {
+        "requirement": "should",
+        "description": "allows passing custom classes or style overrides"
+      },
+      "size": {
+        "requirement": "should",
+        "description": "supports default and compact sm sizes"
+      },
+      "interactive": {
+        "requirement": "should",
+        "description": "supports hoverable interactive card elevation and border highlight"
+      }
     },
     "input": {
-      "textInput": { "requirement": "must", "description": "supports typing and updating value" },
-      "size": { "requirement": "must", "description": "supports default and sm heights" },
-      "disabled": { "requirement": "must", "description": "disabled state blocks typing and dims opacity" },
-      "placeholder": { "requirement": "must", "description": "renders placeholder text when empty" },
-      "focusRing": { "requirement": "must", "description": "displays focus ring and border highlight on active focus" },
-      "readOnly": { "requirement": "should", "description": "prevents editing while retaining focusable state" },
-      "invalid": { "requirement": "should", "description": "indicates error state with destructive highlight" },
-      "clearable": { "requirement": "should", "description": "renders a clear button when input has text" },
-      "passwordToggle": { "requirement": "should", "description": "toggles password visibility for password inputs" }
+      "textInput": {
+        "requirement": "must",
+        "description": "supports typing and updating value"
+      },
+      "size": {
+        "requirement": "must",
+        "description": "supports default and sm heights"
+      },
+      "disabled": {
+        "requirement": "must",
+        "description": "disabled state blocks typing and dims opacity"
+      },
+      "placeholder": {
+        "requirement": "must",
+        "description": "renders placeholder text when empty"
+      },
+      "focusRing": {
+        "requirement": "must",
+        "description": "displays focus ring and border highlight on active focus"
+      },
+      "readOnly": {
+        "requirement": "should",
+        "description": "prevents editing while retaining focusable state"
+      },
+      "invalid": {
+        "requirement": "should",
+        "description": "indicates error state with destructive highlight"
+      },
+      "clearable": {
+        "requirement": "should",
+        "description": "renders a clear button when input has text"
+      },
+      "passwordToggle": {
+        "requirement": "should",
+        "description": "toggles password visibility for password inputs"
+      }
     },
     "checkbox": {
-      "checked": { "requirement": "must", "description": "checked state controls toggled representation" },
-      "toggle": { "requirement": "must", "description": "clicking or space key triggers check state change" },
-      "disabled": { "requirement": "must", "description": "disabled state blocks interaction" },
-      "size": { "requirement": "must", "description": "supports default and sm sizes" },
-      "indeterminate": { "requirement": "must", "description": "supports indeterminate visual state and logic" },
-      "label": { "requirement": "must", "description": "renders accompanying label and clicking label toggles" },
-      "invalid": { "requirement": "should", "description": "indicates error state with destructive highlight" },
-      "description": { "requirement": "should", "description": "renders supporting helper text below label" },
-      "readOnly": { "requirement": "should", "description": "prevents toggling while maintaining focusability" }
+      "checked": {
+        "requirement": "must",
+        "description": "checked state controls toggled representation"
+      },
+      "toggle": {
+        "requirement": "must",
+        "description": "clicking or space key triggers check state change"
+      },
+      "disabled": {
+        "requirement": "must",
+        "description": "disabled state blocks interaction"
+      },
+      "size": {
+        "requirement": "must",
+        "description": "supports default and sm sizes"
+      },
+      "indeterminate": {
+        "requirement": "must",
+        "description": "supports indeterminate visual state and logic"
+      },
+      "label": {
+        "requirement": "must",
+        "description": "renders accompanying label and clicking label toggles"
+      },
+      "invalid": {
+        "requirement": "should",
+        "description": "indicates error state with destructive highlight"
+      },
+      "description": {
+        "requirement": "should",
+        "description": "renders supporting helper text below label"
+      },
+      "readOnly": {
+        "requirement": "should",
+        "description": "prevents toggling while maintaining focusability"
+      }
     },
     "switch": {
-      "checked": { "requirement": "must", "description": "checked state controls on/off representation" },
-      "toggle": { "requirement": "must", "description": "clicking or space key triggers toggle" },
-      "disabled": { "requirement": "must", "description": "disabled state blocks interaction and dims track" },
-      "size": { "requirement": "must", "description": "supports default and sm sizes" },
-      "label": { "requirement": "must", "description": "renders accompanying label" },
-      "loading": { "requirement": "should", "description": "displays async spinner and blocks toggle during operation" },
-      "description": { "requirement": "should", "description": "renders supporting helper text below label" },
-      "readOnly": { "requirement": "should", "description": "prevents toggling while maintaining focusability" }
+      "checked": {
+        "requirement": "must",
+        "description": "checked state controls on/off representation"
+      },
+      "toggle": {
+        "requirement": "must",
+        "description": "clicking or space key triggers toggle"
+      },
+      "disabled": {
+        "requirement": "must",
+        "description": "disabled state blocks interaction and dims track"
+      },
+      "size": {
+        "requirement": "must",
+        "description": "supports default and sm sizes"
+      },
+      "label": {
+        "requirement": "must",
+        "description": "renders accompanying label"
+      },
+      "loading": {
+        "requirement": "should",
+        "description": "displays async spinner and blocks toggle during operation"
+      },
+      "description": {
+        "requirement": "should",
+        "description": "renders supporting helper text below label"
+      },
+      "readOnly": {
+        "requirement": "should",
+        "description": "prevents toggling while maintaining focusability"
+      }
     },
     "separator": {
-      "orientation": { "requirement": "must", "description": "orientation switches between horizontal and vertical" },
-      "decorative": { "requirement": "must", "description": "supports decorative flag for accessibility" },
-      "styling": { "requirement": "must", "description": "border token styling and dimension containment" },
-      "variant": { "requirement": "should", "description": "supports solid, dashed, and dotted line styles" },
-      "label": { "requirement": "should", "description": "embedded text label or divider annotation slot" },
-      "labelPosition": { "requirement": "should", "description": "aligns label to left, center, or right" }
+      "orientation": {
+        "requirement": "must",
+        "description": "orientation switches between horizontal and vertical"
+      },
+      "decorative": {
+        "requirement": "must",
+        "description": "supports decorative flag for accessibility"
+      },
+      "styling": {
+        "requirement": "must",
+        "description": "border token styling and dimension containment"
+      },
+      "variant": {
+        "requirement": "should",
+        "description": "supports solid, dashed, and dotted line styles"
+      },
+      "label": {
+        "requirement": "should",
+        "description": "embedded text label or divider annotation slot"
+      },
+      "labelPosition": {
+        "requirement": "should",
+        "description": "aligns label to left, center, or right"
+      }
     },
     "slider": {
-      "valueBounds": { "requirement": "must", "description": "min, max bounds and value clamping" },
-      "step": { "requirement": "must", "description": "step snapping for values" },
-      "disabled": { "requirement": "must", "description": "disabled state blocks interaction" },
-      "thumbDrag": { "requirement": "must", "description": "dragging thumb updates value" },
-      "focusRing": { "requirement": "must", "description": "focus ring and keyboard navigation" },
-      "size": { "requirement": "should", "description": "supports default and compact sm sizes" },
-      "readOnly": { "requirement": "should", "description": "prevents interaction without muted opacity" },
-      "tooltip": { "requirement": "should", "description": "floating value tooltip on thumb hover or drag" },
-      "commitOnRelease": { "requirement": "should", "description": "dragging only commits value when pointer is released" },
-      "dualThumbs": { "requirement": "should", "description": "supports dual-thumb range interval selection" },
-      "stops": { "requirement": "should", "description": "snaps to discrete stops with optional label row" }
+      "valueBounds": {
+        "requirement": "must",
+        "description": "min, max bounds and value clamping"
+      },
+      "step": {
+        "requirement": "must",
+        "description": "step snapping for values"
+      },
+      "disabled": {
+        "requirement": "must",
+        "description": "disabled state blocks interaction"
+      },
+      "thumbDrag": {
+        "requirement": "must",
+        "description": "dragging thumb updates value"
+      },
+      "focusRing": {
+        "requirement": "must",
+        "description": "focus ring and keyboard navigation"
+      },
+      "size": {
+        "requirement": "should",
+        "description": "supports default and compact sm sizes"
+      },
+      "readOnly": {
+        "requirement": "should",
+        "description": "prevents interaction without muted opacity"
+      },
+      "tooltip": {
+        "requirement": "should",
+        "description": "floating value tooltip on thumb hover or drag"
+      },
+      "commitOnRelease": {
+        "requirement": "should",
+        "description": "dragging only commits value when pointer is released"
+      },
+      "dualThumbs": {
+        "requirement": "should",
+        "description": "supports dual-thumb range interval selection"
+      },
+      "stops": {
+        "requirement": "should",
+        "description": "snaps to discrete stops with optional label row"
+      }
     },
     "dialog": {
-      "open": { "requirement": "must", "description": "controlled and uncontrolled open state" },
-      "portal": { "requirement": "must", "description": "renders dialog into portal layer" },
-      "overlay": { "requirement": "must", "description": "backdrop overlay behind dialog content" },
-      "closeButton": { "requirement": "must", "description": "close button triggers onOpenChange" },
-      "escapeKey": { "requirement": "must", "description": "pressing Escape key closes the dialog" },
-      "variant": { "requirement": "must", "description": "supports default and alert visual and behavioral variants" },
-      "size": { "requirement": "should", "description": "supports tiered dialog size presets (sm, default, lg, xl, full)" },
-      "action": { "requirement": "should", "description": "action button confirms and closes dialog" },
-      "cancel": { "requirement": "should", "description": "cancel button dismisses dialog" },
-      "destructive": { "requirement": "should", "description": "supports destructive action styling variant" }
+      "open": {
+        "requirement": "must",
+        "description": "controlled and uncontrolled open state"
+      },
+      "portal": {
+        "requirement": "must",
+        "description": "renders dialog into portal layer"
+      },
+      "overlay": {
+        "requirement": "must",
+        "description": "backdrop overlay behind dialog content"
+      },
+      "closeButton": {
+        "requirement": "must",
+        "description": "close button triggers onOpenChange"
+      },
+      "escapeKey": {
+        "requirement": "must",
+        "description": "pressing Escape key closes the dialog"
+      },
+      "variant": {
+        "requirement": "must",
+        "description": "supports default and alert visual and behavioral variants"
+      },
+      "size": {
+        "requirement": "should",
+        "description": "supports tiered dialog size presets (sm, default, lg, xl, full)"
+      },
+      "action": {
+        "requirement": "should",
+        "description": "action button confirms and closes dialog"
+      },
+      "cancel": {
+        "requirement": "should",
+        "description": "cancel button dismisses dialog"
+      },
+      "destructive": {
+        "requirement": "should",
+        "description": "supports destructive action styling variant"
+      }
     },
     "tooltip": {
-      "content": { "requirement": "must", "description": "renders tooltip text content" },
-      "side": { "requirement": "must", "description": "positions tooltip relative to trigger" },
-      "delay": { "requirement": "must", "description": "supports delay before displaying" },
-      "hoverTrigger": { "requirement": "must", "description": "hover triggers tooltip display" },
-      "shortcut": { "requirement": "should", "description": "displays keyboard shortcut hint badge inside tooltip" },
-      "arrow": { "requirement": "should", "description": "renders directional arrow pointer towards trigger" }
+      "content": {
+        "requirement": "must",
+        "description": "renders tooltip text content"
+      },
+      "side": {
+        "requirement": "must",
+        "description": "positions tooltip relative to trigger"
+      },
+      "delay": {
+        "requirement": "must",
+        "description": "supports delay before displaying"
+      },
+      "hoverTrigger": {
+        "requirement": "must",
+        "description": "hover triggers tooltip display"
+      },
+      "shortcut": {
+        "requirement": "should",
+        "description": "displays keyboard shortcut hint badge inside tooltip"
+      },
+      "arrow": {
+        "requirement": "should",
+        "description": "renders directional arrow pointer towards trigger"
+      }
     },
     "table": {
-      "header": { "requirement": "must", "description": "renders table header row and columns" },
-      "body": { "requirement": "must", "description": "renders table body" },
-      "row": { "requirement": "must", "description": "renders table rows" },
-      "cell": { "requirement": "must", "description": "renders table cells" },
-      "alignment": { "requirement": "must", "description": "supports cell text alignment" }
+      "header": {
+        "requirement": "must",
+        "description": "renders table header row and columns"
+      },
+      "body": {
+        "requirement": "must",
+        "description": "renders table body"
+      },
+      "row": {
+        "requirement": "must",
+        "description": "renders table rows"
+      },
+      "cell": {
+        "requirement": "must",
+        "description": "renders table cells"
+      },
+      "alignment": {
+        "requirement": "must",
+        "description": "supports cell text alignment"
+      }
     },
     "colorPicker": {
-      "colorValue": { "requirement": "must", "description": "colorValue controls selected color value" },
-      "hexInput": { "requirement": "must", "description": "hexInput provides hexadecimal text editing" },
-      "swatches": { "requirement": "must", "description": "swatches renders preset color chips" },
-      "hueSlider": { "requirement": "must", "description": "hueSlider adjusts color hue track" },
-      "disabled": { "requirement": "must", "description": "disabled blocks color interactions" }
+      "colorValue": {
+        "requirement": "must",
+        "description": "colorValue controls selected color value"
+      },
+      "hexInput": {
+        "requirement": "must",
+        "description": "hexInput provides hexadecimal text editing"
+      },
+      "swatches": {
+        "requirement": "must",
+        "description": "swatches renders preset color chips"
+      },
+      "hueSlider": {
+        "requirement": "must",
+        "description": "hueSlider adjusts color hue track"
+      },
+      "disabled": {
+        "requirement": "must",
+        "description": "disabled blocks color interactions"
+      }
     },
     "dropdownMenu": {
-      "open": { "requirement": "must", "description": "controlled and uncontrolled open state" },
-      "items": { "requirement": "must", "description": "renders menu items and triggers actions" },
-      "submenus": { "requirement": "must", "description": "supports nested cascading submenus" },
-      "checkboxItems": { "requirement": "should", "description": "supports checkable menu items" },
-      "radioItems": { "requirement": "should", "description": "supports radio selection menu items" }
+      "open": {
+        "requirement": "must",
+        "description": "controlled and uncontrolled open state"
+      },
+      "items": {
+        "requirement": "must",
+        "description": "renders menu items and triggers actions"
+      },
+      "submenus": {
+        "requirement": "must",
+        "description": "supports nested cascading submenus"
+      },
+      "checkboxItems": {
+        "requirement": "should",
+        "description": "supports checkable menu items"
+      },
+      "radioItems": {
+        "requirement": "should",
+        "description": "supports radio selection menu items"
+      }
     },
     "select": {
-      "value": { "requirement": "must", "description": "controlled and uncontrolled value selection" },
-      "trigger": { "requirement": "must", "description": "renders trigger with placeholder and selected value" },
-      "popup": { "requirement": "must", "description": "opens dropdown popup with selectable options" },
-      "disabled": { "requirement": "must", "description": "disabled state blocks selection and interaction" },
-      "scrollButtons": { "requirement": "should", "description": "provides scroll buttons when options overflow" }
+      "value": {
+        "requirement": "must",
+        "description": "controlled and uncontrolled value selection"
+      },
+      "trigger": {
+        "requirement": "must",
+        "description": "renders trigger with placeholder and selected value"
+      },
+      "popup": {
+        "requirement": "must",
+        "description": "opens dropdown popup with selectable options"
+      },
+      "disabled": {
+        "requirement": "must",
+        "description": "disabled state blocks selection and interaction"
+      },
+      "scrollButtons": {
+        "requirement": "should",
+        "description": "provides scroll buttons when options overflow"
+      }
     },
     "popover": {
-      "open": { "requirement": "must", "description": "controlled and uncontrolled open state" },
-      "positioning": { "requirement": "must", "description": "positions popup relative to trigger or anchor" },
-      "movable": { "requirement": "should", "description": "supports dragging popover position via handle" },
-      "arrow": { "requirement": "should", "description": "renders directional arrow pointer towards trigger or anchor" }
+      "open": {
+        "requirement": "must",
+        "description": "controlled and uncontrolled open state"
+      },
+      "positioning": {
+        "requirement": "must",
+        "description": "positions popup relative to trigger or anchor"
+      },
+      "movable": {
+        "requirement": "should",
+        "description": "supports dragging popover position via handle"
+      },
+      "arrow": {
+        "requirement": "should",
+        "description": "renders directional arrow pointer towards trigger or anchor"
+      }
     },
     "activityStack": {
-      "eightPlacements": { "requirement": "must", "description": "anchors across the eight viewport placements with correct inwards slide" },
-      "overflowPill": { "requirement": "must", "description": "overflows excess cards into a show-all pill and expandable scroll list" },
-      "collapsibleSummary": { "requirement": "must", "description": "collapses the stack into a compact summary row and restores it" },
-      "cardTones": { "requirement": "must", "description": "multi-layer accent vocabulary driving border, top rail hairline, and progress fill" },
-      "keyboardNavigation": { "requirement": "must", "description": "arrow traversal of cards and Escape dismissal or collapse" }
+      "eightPlacements": {
+        "requirement": "must",
+        "description": "anchors across the eight viewport placements with correct inwards slide"
+      },
+      "overflowPill": {
+        "requirement": "must",
+        "description": "overflows excess cards into a show-all pill and expandable scroll list"
+      },
+      "collapsibleSummary": {
+        "requirement": "must",
+        "description": "collapses the stack into a compact summary row and restores it"
+      },
+      "cardTones": {
+        "requirement": "must",
+        "description": "multi-layer accent vocabulary driving border, top rail hairline, and progress fill"
+      },
+      "keyboardNavigation": {
+        "requirement": "must",
+        "description": "arrow traversal of cards and Escape dismissal or collapse"
+      }
     },
     "adaptivePopup": {
-      "contentAdaptiveHeight": { "requirement": "must", "description": "expands to content natural height without unnecessary scrollbars" },
-      "hostAvailableHeightCapping": { "requirement": "must", "description": "caps height to host window space and activates scroll only when overflowing" },
-      "threeTierLayout": { "requirement": "must", "description": "provides fixed header, scrollable body, and fixed footer containers" },
-      "bidirectionalPlacement": { "requirement": "must", "description": "supports downward and upward expansion relative to anchor" }
+      "contentAdaptiveHeight": {
+        "requirement": "must",
+        "description": "expands to content natural height without unnecessary scrollbars"
+      },
+      "hostAvailableHeightCapping": {
+        "requirement": "must",
+        "description": "caps height to host window space and activates scroll only when overflowing"
+      },
+      "threeTierLayout": {
+        "requirement": "must",
+        "description": "provides fixed header, scrollable body, and fixed footer containers"
+      },
+      "bidirectionalPlacement": {
+        "requirement": "must",
+        "description": "supports downward and upward expansion relative to anchor"
+      }
     },
     "contextMenu": {
-      "trigger": { "requirement": "must", "description": "right-click opens context menu at cursor position" },
-      "items": { "requirement": "must", "description": "renders menu items with click actions" },
-      "submenus": { "requirement": "should", "description": "supports nested cascading context submenus" }
+      "trigger": {
+        "requirement": "must",
+        "description": "right-click opens context menu at cursor position"
+      },
+      "items": {
+        "requirement": "must",
+        "description": "renders menu items with click actions"
+      },
+      "submenus": {
+        "requirement": "should",
+        "description": "supports nested cascading context submenus"
+      }
     },
     "sheet": {
-      "open": { "requirement": "must", "description": "controlled and uncontrolled open state" },
-      "side": { "requirement": "must", "description": "drawer slides in from top, right, bottom, or left side" },
-      "overlay": { "requirement": "must", "description": "renders backdrop overlay behind sheet drawer" },
-      "close": { "requirement": "must", "description": "close button or backdrop click dismisses sheet" },
-      "size": { "requirement": "should", "description": "drawer sizing presets across dimensions" }
+      "open": {
+        "requirement": "must",
+        "description": "controlled and uncontrolled open state"
+      },
+      "side": {
+        "requirement": "must",
+        "description": "drawer slides in from top, right, bottom, or left side"
+      },
+      "overlay": {
+        "requirement": "must",
+        "description": "renders backdrop overlay behind sheet drawer"
+      },
+      "close": {
+        "requirement": "must",
+        "description": "close button or backdrop click dismisses sheet"
+      },
+      "size": {
+        "requirement": "should",
+        "description": "drawer sizing presets across dimensions"
+      }
     },
     "skeleton": {
-      "pulse": { "requirement": "must", "description": "renders pulse animation placeholder" },
-      "wave": { "requirement": "should", "description": "renders wave shimmer animation placeholder" },
-      "customClass": { "requirement": "must", "description": "accepts custom width, height, and radius classes" }
-    },
-    "collapsible": {
-      "standard": { "requirement": "must", "description": "toggles open and collapsed states" },
-      "defaultOpen": { "requirement": "must", "description": "mounts initially expanded when defaultOpen is true" },
-      "disabled": { "requirement": "must", "description": "disables interaction when disabled is true" },
-      "variant": { "requirement": "should", "description": "supports default, card, and ghost styling variants" }
+      "pulse": {
+        "requirement": "must",
+        "description": "renders pulse animation placeholder"
+      },
+      "wave": {
+        "requirement": "should",
+        "description": "renders wave shimmer animation placeholder"
+      },
+      "customClass": {
+        "requirement": "must",
+        "description": "accepts custom width, height, and radius classes"
+      }
     },
     "copyButton": {
-      "copyText": { "requirement": "must", "description": "copies configured string or callback text to clipboard" },
-      "feedbackState": { "requirement": "must", "description": "temporarily displays copied state icon and tooltip" },
-      "label": { "requirement": "should", "description": "supports companion text label alongside copy icon" }
+      "copyText": {
+        "requirement": "must",
+        "description": "copies configured string or callback text to clipboard"
+      },
+      "feedbackState": {
+        "requirement": "must",
+        "description": "temporarily displays copied state icon and tooltip"
+      },
+      "label": {
+        "requirement": "should",
+        "description": "supports companion text label alongside copy icon"
+      }
     },
     "hoverCopy": {
-      "hoverReveal": { "requirement": "must", "description": "reveals floating copy button and dim scrim on pointer hover or focus" },
-      "copyAction": { "requirement": "must", "description": "copies configured text to clipboard on button activation" },
-      "copiedFeedback": { "requirement": "must", "description": "swaps icon to check for a fixed restore interval then restores" },
-      "restoreTiming": { "requirement": "must", "description": "restores to hovered state while pointer remains and idle otherwise" },
-      "emptyTextGuard": { "requirement": "must", "description": "empty copy text is a silent no-op without errors" },
-      "disabledGuard": { "requirement": "must", "description": "disabled state blocks reveal and copy" },
-      "touchFallback": { "requirement": "must", "description": "touch devices reveal the overlay via tap before copy" },
-      "keyboardActivation": { "requirement": "must", "description": "Tab focuses and Enter or Space activates the copy button" },
-      "contentAgnostic": { "requirement": "must", "description": "wraps arbitrary content without assumptions" },
-      "copyableBadgePreset": { "requirement": "must", "description": "CopyableBadge preset forwards to HoverCopy with badge-bound defaults" }
+      "hoverReveal": {
+        "requirement": "must",
+        "description": "reveals floating copy button and dim scrim on pointer hover or focus"
+      },
+      "copyAction": {
+        "requirement": "must",
+        "description": "copies configured text to clipboard on button activation"
+      },
+      "copiedFeedback": {
+        "requirement": "must",
+        "description": "swaps icon to check for a fixed restore interval then restores"
+      },
+      "restoreTiming": {
+        "requirement": "must",
+        "description": "restores to hovered state while pointer remains and idle otherwise"
+      },
+      "emptyTextGuard": {
+        "requirement": "must",
+        "description": "empty copy text is a silent no-op without errors"
+      },
+      "disabledGuard": {
+        "requirement": "must",
+        "description": "disabled state blocks reveal and copy"
+      },
+      "touchFallback": {
+        "requirement": "must",
+        "description": "touch devices reveal the overlay via tap before copy"
+      },
+      "keyboardActivation": {
+        "requirement": "must",
+        "description": "Tab focuses and Enter or Space activates the copy button"
+      },
+      "contentAgnostic": {
+        "requirement": "must",
+        "description": "wraps arbitrary content without assumptions"
+      },
+      "copyableBadgePreset": {
+        "requirement": "must",
+        "description": "CopyableBadge preset forwards to HoverCopy with badge-bound defaults"
+      }
     },
     "panelCard": {
-      "container": { "requirement": "must", "description": "renders card container with rounded borders and background" },
-      "tintedHeader": { "requirement": "must", "description": "supports tinted header background styling" },
-      "size": { "requirement": "should", "description": "supports default and compact sm sizing variants" },
-      "collapsible": { "requirement": "should", "description": "supports collapsible toggle and content collapse" }
+      "container": {
+        "requirement": "must",
+        "description": "renders card container with rounded borders and background"
+      },
+      "tintedHeader": {
+        "requirement": "must",
+        "description": "supports tinted header background styling"
+      },
+      "size": {
+        "requirement": "should",
+        "description": "supports default and compact sm sizing variants"
+      },
+      "collapsible": {
+        "requirement": "should",
+        "description": "supports collapsible toggle and content collapse"
+      }
     },
     "splitButton": {
-      "mainAction": { "requirement": "must", "description": "renders main primary action button triggering callback" },
-      "dropdownMenu": { "requirement": "must", "description": "renders secondary chevron trigger opening dropdown menu options" },
-      "separator": { "requirement": "must", "description": "renders visual divider between main button and chevron trigger" }
+      "mainAction": {
+        "requirement": "must",
+        "description": "renders main primary action button triggering callback"
+      },
+      "dropdownMenu": {
+        "requirement": "must",
+        "description": "renders secondary chevron trigger opening dropdown menu options"
+      },
+      "separator": {
+        "requirement": "must",
+        "description": "renders visual divider between main button and chevron trigger"
+      }
     },
     "inlineEditableText": {
-      "displayMode": { "requirement": "must", "description": "renders text with hover edit indicator" },
-      "editMode": { "requirement": "must", "description": "enters editable input mode on click with save on enter or blur" },
-      "cancel": { "requirement": "must", "description": "restores original value on escape key press" }
+      "displayMode": {
+        "requirement": "must",
+        "description": "renders text with hover edit indicator"
+      },
+      "editMode": {
+        "requirement": "must",
+        "description": "enters editable input mode on click with save on enter or blur"
+      },
+      "cancel": {
+        "requirement": "must",
+        "description": "restores original value on escape key press"
+      }
     },
     "readOnlyInput": {
-      "readOnlyValue": { "requirement": "must", "description": "renders readonly text input with auto-select on focus" },
-      "copyTrigger": { "requirement": "must", "description": "provides integrated copy button to copy content to clipboard" }
+      "readOnlyValue": {
+        "requirement": "must",
+        "description": "renders readonly text input with auto-select on focus"
+      },
+      "copyTrigger": {
+        "requirement": "must",
+        "description": "provides integrated copy button to copy content to clipboard"
+      }
     },
     "keybindingRecorder": {
-      "recordMode": { "requirement": "must", "description": "enters recording state on click and captures key combinations" },
-      "modifierBadges": { "requirement": "must", "description": "displays recorded modifier keys and primary key as badges" },
-      "clear": { "requirement": "must", "description": "allows clearing recorded keybinding" }
+      "recordMode": {
+        "requirement": "must",
+        "description": "enters recording state on click and captures key combinations"
+      },
+      "modifierBadges": {
+        "requirement": "must",
+        "description": "displays recorded modifier keys and primary key as badges"
+      },
+      "clear": {
+        "requirement": "must",
+        "description": "allows clearing recorded keybinding"
+      }
     },
     "virtualList": {
-      "virtualWindow": { "requirement": "must", "description": "renders only items within visible viewport window" },
-      "scrollToIndex": { "requirement": "must", "description": "programmatically scrolls to specified item index" }
+      "virtualWindow": {
+        "requirement": "must",
+        "description": "renders only items within visible viewport window"
+      },
+      "scrollToIndex": {
+        "requirement": "must",
+        "description": "programmatically scrolls to specified item index"
+      }
     },
     "virtualTree": {
-      "hierarchicalFlattening": { "requirement": "must", "description": "flattens hierarchical nodes into virtualized rows" },
-      "toggleExpand": { "requirement": "must", "description": "expands and collapses node children" },
-      "stickyAncestorRows": { "requirement": "must", "description": "pins the expanded ancestor chain of the open node above the scroll area so parents stay visible" }
+      "hierarchicalFlattening": {
+        "requirement": "must",
+        "description": "flattens hierarchical nodes into virtualized rows"
+      },
+      "toggleExpand": {
+        "requirement": "must",
+        "description": "expands and collapses node children"
+      },
+      "stickyAncestorRows": {
+        "requirement": "must",
+        "description": "pins the expanded ancestor chain of the open node above the scroll area so parents stay visible"
+      }
     },
     "virtualGrid": {
-      "responsiveColumns": { "requirement": "must", "description": "computes responsive column count from container width" },
-      "rowVirtualization": { "requirement": "must", "description": "virtualizes grid card rows" }
+      "responsiveColumns": {
+        "requirement": "must",
+        "description": "computes responsive column count from container width"
+      },
+      "rowVirtualization": {
+        "requirement": "must",
+        "description": "virtualizes grid card rows"
+      }
     },
     "draggableModal": {
-      "dragMove": { "requirement": "must", "description": "allows dragging window position across viewport" },
-      "resizeBounds": { "requirement": "must", "description": "allows resizing window dimensions within bounds" }
+      "dragMove": {
+        "requirement": "must",
+        "description": "allows dragging window position across viewport"
+      },
+      "resizeBounds": {
+        "requirement": "must",
+        "description": "allows resizing window dimensions within bounds"
+      }
     },
     "resizable": {
-      "panelGroup": { "requirement": "must", "description": "arranges child panels in horizontal or vertical orientation" },
-      "panelResize": { "requirement": "must", "description": "dynamically allocates width or height percentages to child panels" },
-      "handleDrag": { "requirement": "must", "description": "draggable handle separating panels with interactive feedback" },
-      "collapsible": { "requirement": "must", "description": "supports collapsing panels past minimum threshold" }
+      "panelGroup": {
+        "requirement": "must",
+        "description": "arranges child panels in horizontal or vertical orientation"
+      },
+      "panelResize": {
+        "requirement": "must",
+        "description": "dynamically allocates width or height percentages to child panels"
+      },
+      "handleDrag": {
+        "requirement": "must",
+        "description": "draggable handle separating panels with interactive feedback"
+      },
+      "collapsible": {
+        "requirement": "must",
+        "description": "supports collapsing panels past minimum threshold"
+      }
     },
     "windowTitleBar": {
-      "captionButtons": { "requirement": "must", "description": "renders minimize, maximize/restore, and close buttons" },
-      "doubleClickMaximize": { "requirement": "must", "description": "double-clicking header toggles maximized state" }
+      "captionButtons": {
+        "requirement": "must",
+        "description": "renders minimize, maximize/restore, and close buttons"
+      },
+      "doubleClickMaximize": {
+        "requirement": "must",
+        "description": "double-clicking header toggles maximized state"
+      }
     },
     "dataTable": {
-      "coreTable": { "requirement": "must", "description": "renders header, body, rows, and cells using TanStack table" },
-      "sorting": { "requirement": "must", "description": "sorts table rows ascending, descending, or neutral" },
-      "globalFilter": { "requirement": "must", "description": "filters rows via global search query" },
-      "rowSelection": { "requirement": "should", "description": "supports single and multiple row selection" }
+      "coreTable": {
+        "requirement": "must",
+        "description": "renders header, body, rows, and cells using TanStack table"
+      },
+      "sorting": {
+        "requirement": "must",
+        "description": "sorts table rows ascending, descending, or neutral"
+      },
+      "globalFilter": {
+        "requirement": "must",
+        "description": "filters rows via global search query"
+      },
+      "rowSelection": {
+        "requirement": "should",
+        "description": "supports single and multiple row selection"
+      }
     },
     "queryBuilder": {
-      "conditionTree": { "requirement": "must", "description": "builds and evaluates nested condition group trees" },
-      "operatorMatching": { "requirement": "must", "description": "matches record fields against selected operators" }
+      "conditionTree": {
+        "requirement": "must",
+        "description": "builds and evaluates nested condition group trees"
+      },
+      "operatorMatching": {
+        "requirement": "must",
+        "description": "matches record fields against selected operators"
+      }
     },
     "presetNumberInput": {
-      "standard": { "requirement": "must", "description": "base numeric text editing and value updates" },
-      "presets": { "requirement": "must", "description": "floating dropdown preset panel selection" },
-      "clear": { "requirement": "must", "description": "clears or resets current value" },
-      "disabled": { "requirement": "must", "description": "disables input and prevents preset popup interaction" }
+      "standard": {
+        "requirement": "must",
+        "description": "base numeric text editing and value updates"
+      },
+      "presets": {
+        "requirement": "must",
+        "description": "floating dropdown preset panel selection"
+      },
+      "clear": {
+        "requirement": "must",
+        "description": "clears or resets current value"
+      },
+      "disabled": {
+        "requirement": "must",
+        "description": "disables input and prevents preset popup interaction"
+      }
     },
     "viewportConstrainedContainer": {
-      "viewportMeasure": { "requirement": "must", "description": "dynamically measures viewport height and bounds max-height" },
-      "maxHeightOverride": { "requirement": "must", "description": "respects custom numeric or string maxHeight upper limits" },
-      "overflowScroll": { "requirement": "must", "description": "enables smooth vertical scrolling when content exceeds bounded height" }
+      "viewportMeasure": {
+        "requirement": "must",
+        "description": "dynamically measures viewport height and bounds max-height"
+      },
+      "maxHeightOverride": {
+        "requirement": "must",
+        "description": "respects custom numeric or string maxHeight upper limits"
+      },
+      "overflowScroll": {
+        "requirement": "must",
+        "description": "enables smooth vertical scrolling when content exceeds bounded height"
+      }
     },
     "sidebar": {
-      "providerContext": { "requirement": "must", "description": "provides responsive sidebar state, toggle and width management" },
-      "collapsibleVariant": { "requirement": "must", "description": "supports expanded, icon collapsed, offcanvas modes" },
-      "resizableRail": { "requirement": "must", "description": "interactive drag rail for resizing sidebar width" },
-      "menuHierarchy": { "requirement": "must", "description": "structured sidebar menus, submenus, actions and badges" }
+      "providerContext": {
+        "requirement": "must",
+        "description": "provides responsive sidebar state, toggle and width management"
+      },
+      "collapsibleVariant": {
+        "requirement": "must",
+        "description": "supports expanded, icon collapsed, offcanvas modes"
+      },
+      "resizableRail": {
+        "requirement": "must",
+        "description": "interactive drag rail for resizing sidebar width"
+      },
+      "menuHierarchy": {
+        "requirement": "must",
+        "description": "structured sidebar menus, submenus, actions and badges"
+      }
     },
     "segmentedControl": {
-      "selection": { "requirement": "must", "description": "selecting an option switches active value" },
-      "size": { "requirement": "must", "description": "supports sm, default, and lg sizes" },
-      "disabled": { "requirement": "must", "description": "disabled control or option blocks selection" },
-      "keyboard": { "requirement": "must", "description": "keyboard arrow keys and Enter/Space navigate options" },
-      "styling": { "requirement": "must", "description": "pill geometry with active indicator and ThemeTokens" }
+      "selection": {
+        "requirement": "must",
+        "description": "selecting an option switches active value"
+      },
+      "size": {
+        "requirement": "must",
+        "description": "supports sm, default, and lg sizes"
+      },
+      "disabled": {
+        "requirement": "must",
+        "description": "disabled control or option blocks selection"
+      },
+      "keyboard": {
+        "requirement": "must",
+        "description": "keyboard arrow keys and Enter/Space navigate options"
+      },
+      "styling": {
+        "requirement": "must",
+        "description": "pill geometry with active indicator and ThemeTokens"
+      }
     },
     "smoothWheelHandler": {
-      "kinematics": { "requirement": "must", "description": "smooth physics damping calculation for wheel events" },
-      "orientation": { "requirement": "must", "description": "vertical, horizontal, and vertical-to-horizontal mapping" },
-      "interactionMutex": { "requirement": "must", "description": "aborts smooth scroll animation on drag or flick gesture" }
+      "kinematics": {
+        "requirement": "must",
+        "description": "smooth physics damping calculation for wheel events"
+      },
+      "orientation": {
+        "requirement": "must",
+        "description": "vertical, horizontal, and vertical-to-horizontal mapping"
+      },
+      "interactionMutex": {
+        "requirement": "must",
+        "description": "aborts smooth scroll animation on drag or flick gesture"
+      }
     },
     "settingRow": {
-      "layout": { "requirement": "must", "description": "structured layout with title, description, and control slot" },
-      "highlight": { "requirement": "must", "description": "anchor targeting with 3-pulse flash highlight animation" }
+      "layout": {
+        "requirement": "must",
+        "description": "structured layout with title, description, and control slot"
+      },
+      "highlight": {
+        "requirement": "must",
+        "description": "anchor targeting with 3-pulse flash highlight animation"
+      }
     },
     "elidedText": {
-      "truncation": { "requirement": "must", "description": "detects overflow truncation accurately" },
-      "tooltip": { "requirement": "must", "description": "conditionally reveals full text tooltip only upon actual overflow" }
+      "truncation": {
+        "requirement": "must",
+        "description": "detects overflow truncation accurately"
+      },
+      "tooltip": {
+        "requirement": "must",
+        "description": "conditionally reveals full text tooltip only upon actual overflow"
+      }
     },
     "durationInput": {
-      "timeSegments": { "requirement": "must", "description": "renders hours, minutes, and seconds segments with step buttons" },
-      "presets": { "requirement": "must", "description": "provides dropdown menu with grouped duration presets" }
+      "timeSegments": {
+        "requirement": "must",
+        "description": "renders hours, minutes, and seconds segments with step buttons"
+      },
+      "presets": {
+        "requirement": "must",
+        "description": "provides dropdown menu with grouped duration presets"
+      }
     },
     "codeBlock": {
-      "code": { "requirement": "must", "description": "renders the provided source text losslessly, preserving whitespace and newlines" },
-      "syntaxHighlight": { "requirement": "must", "description": "tokenizes the source with the spec-driven lexer and colors each token type per the language" },
-      "copy": { "requirement": "must", "description": "copies the full source to the clipboard with transient feedback" },
-      "languageLabel": { "requirement": "must", "description": "displays the resolved language label or filename in the header" },
-      "lineNumbers": { "requirement": "should", "description": "renders a non-selectable line-number gutter aligned to the source lines" },
-      "wrap": { "requirement": "should", "description": "wraps long lines instead of scrolling horizontally" },
-      "horizontalScroll": { "requirement": "should", "description": "scrolls long lines horizontally when wrapping is disabled" },
-      "maxHeight": { "requirement": "should", "description": "bounds content height and enables vertical scrolling beyond it" },
-      "embedded": { "requirement": "should", "description": "renders without card chrome for inline prose embedding" },
-      "multiFile": { "requirement": "should", "description": "groups multiple files behind tabs with per-file language" }
+      "code": {
+        "requirement": "must",
+        "description": "renders the provided source text losslessly, preserving whitespace and newlines"
+      },
+      "syntaxHighlight": {
+        "requirement": "must",
+        "description": "tokenizes the source with the spec-driven lexer and colors each token type per the language"
+      },
+      "copy": {
+        "requirement": "must",
+        "description": "copies the full source to the clipboard with transient feedback"
+      },
+      "languageLabel": {
+        "requirement": "must",
+        "description": "displays the resolved language label or filename in the header"
+      },
+      "lineNumbers": {
+        "requirement": "should",
+        "description": "renders a non-selectable line-number gutter aligned to the source lines"
+      },
+      "wrap": {
+        "requirement": "should",
+        "description": "wraps long lines instead of scrolling horizontally"
+      },
+      "horizontalScroll": {
+        "requirement": "should",
+        "description": "scrolls long lines horizontally when wrapping is disabled"
+      },
+      "maxHeight": {
+        "requirement": "should",
+        "description": "bounds content height and enables vertical scrolling beyond it"
+      },
+      "embedded": {
+        "requirement": "should",
+        "description": "renders without card chrome for inline prose embedding"
+      },
+      "multiFile": {
+        "requirement": "should",
+        "description": "groups multiple files behind tabs with per-file language"
+      }
     },
     "pipelineView": {
-      "jobTracking": { "requirement": "must", "description": "displays job list with status indicators and selection" },
-      "stepTimeline": { "requirement": "must", "description": "vertical timeline showing execution steps with status icons and durations" },
-      "logConsole": { "requirement": "must", "description": "virtualized terminal log viewer with auto-scroll and copy" },
-      "statusSummary": { "requirement": "must", "description": "header summary badge, elapsed duration, and action slots" },
-      "cancellation": { "requirement": "should", "description": "triggers cancellation callback with disabled states" },
-      "filtering": { "requirement": "should", "description": "filters pipelines by status and keyword search" }
+      "jobTracking": {
+        "requirement": "must",
+        "description": "displays job list with status indicators and selection"
+      },
+      "stepTimeline": {
+        "requirement": "must",
+        "description": "vertical timeline showing execution steps with status icons and durations"
+      },
+      "logConsole": {
+        "requirement": "must",
+        "description": "virtualized terminal log viewer with auto-scroll and copy"
+      },
+      "statusSummary": {
+        "requirement": "must",
+        "description": "header summary badge, elapsed duration, and action slots"
+      },
+      "cancellation": {
+        "requirement": "should",
+        "description": "triggers cancellation callback with disabled states"
+      },
+      "filtering": {
+        "requirement": "should",
+        "description": "filters pipelines by status and keyword search"
+      }
     },
     "scaleOsd": {
-      "display": { "requirement": "must", "description": "displays percentage/scale readout" },
-      "stepControls": { "requirement": "must", "description": "zoom in, zoom out, and reset buttons" },
-      "autoHide": { "requirement": "must", "description": "auto-hides after duration with hover pause" },
-      "keyboard": { "requirement": "must", "description": "button keyboard activation" },
-      "placement": { "requirement": "should", "description": "configurable screen/viewport anchoring" },
-      "scaleInvariance": { "requirement": "must", "description": "remains invariant and fixed size regardless of interface scale factor" }
+      "display": {
+        "requirement": "must",
+        "description": "displays percentage/scale readout"
+      },
+      "stepControls": {
+        "requirement": "must",
+        "description": "zoom in, zoom out, and reset buttons"
+      },
+      "autoHide": {
+        "requirement": "must",
+        "description": "auto-hides after duration with hover pause"
+      },
+      "keyboard": {
+        "requirement": "must",
+        "description": "button keyboard activation"
+      },
+      "placement": {
+        "requirement": "should",
+        "description": "configurable screen/viewport anchoring"
+      },
+      "scaleInvariance": {
+        "requirement": "must",
+        "description": "remains invariant and fixed size regardless of interface scale factor"
+      }
     },
     "taskHud": {
-      "rendersTasks": { "requirement": "must", "description": "renders list of task cards with title, detail, and status" },
-      "status": { "requirement": "must", "description": "visual status indicator for running, success, warning, error" },
-      "determinateProgress": { "requirement": "must", "description": "progress bar width reflecting percentage for determinate tasks" },
-      "indeterminateProgress": { "requirement": "must", "description": "animated shimmer progress bar for running indeterminate tasks" },
-      "dismiss": { "requirement": "must", "description": "dismiss button with callback event" },
-      "cancel": { "requirement": "must", "description": "cancel control on running tasks with callback event" },
-      "overflow": { "requirement": "must", "description": "caps visible cards and expands the remainder into a scrollable list" },
-      "collapsible": { "requirement": "must", "description": "collapses the stack into a single summary row and restores it" },
-      "placement": { "requirement": "must", "description": "anchors the stack to any of the eight viewport placements" },
-      "keyboard": { "requirement": "must", "description": "arrow/Home/End traversal of cards and Escape collapse" },
-      "autoHide": { "requirement": "should", "description": "auto-hides when task queue is empty" }
+      "rendersTasks": {
+        "requirement": "must",
+        "description": "renders list of task cards with title, detail, and status"
+      },
+      "status": {
+        "requirement": "must",
+        "description": "visual status indicator for running, success, warning, error"
+      },
+      "determinateProgress": {
+        "requirement": "must",
+        "description": "progress bar width reflecting percentage for determinate tasks"
+      },
+      "indeterminateProgress": {
+        "requirement": "must",
+        "description": "animated shimmer progress bar for running indeterminate tasks"
+      },
+      "dismiss": {
+        "requirement": "must",
+        "description": "dismiss button with callback event"
+      },
+      "cancel": {
+        "requirement": "must",
+        "description": "cancel control on running tasks with callback event"
+      },
+      "overflow": {
+        "requirement": "must",
+        "description": "caps visible cards and expands the remainder into a scrollable list"
+      },
+      "collapsible": {
+        "requirement": "must",
+        "description": "collapses the stack into a single summary row and restores it"
+      },
+      "placement": {
+        "requirement": "must",
+        "description": "anchors the stack to any of the eight viewport placements"
+      },
+      "keyboard": {
+        "requirement": "must",
+        "description": "arrow/Home/End traversal of cards and Escape collapse"
+      },
+      "autoHide": {
+        "requirement": "should",
+        "description": "auto-hides when task queue is empty"
+      }
     },
     "notificationStack": {
-      "rendersNotifications": { "requirement": "must", "description": "renders notification cards with title and description" },
-      "levels": { "requirement": "must", "description": "severity coding for info, success, warning, and error" },
-      "actions": { "requirement": "must", "description": "inline action buttons emitting an action callback" },
-      "dismiss": { "requirement": "must", "description": "dismiss button with callback event" },
-      "autoExpire": { "requirement": "must", "description": "per-item lifetime that expires and dismisses the notification" },
-      "pauseOnHover": { "requirement": "must", "description": "suspends expiry countdowns while the pointer rests on the stack" },
-      "overflow": { "requirement": "must", "description": "caps visible cards and expands the remainder into a scrollable list" },
-      "collapsible": { "requirement": "must", "description": "collapses the stack into a single summary row and restores it" },
-      "placement": { "requirement": "must", "description": "anchors the stack to any of the eight viewport placements" },
-      "keyboard": { "requirement": "must", "description": "arrow/Home/End traversal of cards and Escape collapse" }
+      "rendersNotifications": {
+        "requirement": "must",
+        "description": "renders notification cards with title and description"
+      },
+      "levels": {
+        "requirement": "must",
+        "description": "severity coding for info, success, warning, and error"
+      },
+      "actions": {
+        "requirement": "must",
+        "description": "inline action buttons emitting an action callback"
+      },
+      "dismiss": {
+        "requirement": "must",
+        "description": "dismiss button with callback event"
+      },
+      "autoExpire": {
+        "requirement": "must",
+        "description": "per-item lifetime that expires and dismisses the notification"
+      },
+      "pauseOnHover": {
+        "requirement": "must",
+        "description": "suspends expiry countdowns while the pointer rests on the stack"
+      },
+      "overflow": {
+        "requirement": "must",
+        "description": "caps visible cards and expands the remainder into a scrollable list"
+      },
+      "collapsible": {
+        "requirement": "must",
+        "description": "collapses the stack into a single summary row and restores it"
+      },
+      "placement": {
+        "requirement": "must",
+        "description": "anchors the stack to any of the eight viewport placements"
+      },
+      "keyboard": {
+        "requirement": "must",
+        "description": "arrow/Home/End traversal of cards and Escape collapse"
+      }
     },
     "addressBar": {
-      "breadcrumbs": { "requirement": "must", "description": "renders path parsed into interactive breadcrumb segments" },
-      "editMode": { "requirement": "must", "description": "switches between breadcrumbs and full editable input on click or shortcut" },
-      "navigationControls": { "requirement": "must", "description": "back, forward, up, and refresh navigation buttons" },
-      "keyboard": { "requirement": "must", "description": "Alt+D or Ctrl+L to edit, Esc to cancel, Enter to navigate" },
-      "suggestions": { "requirement": "should", "description": "dropdown popover with path suggestions and history" }
+      "breadcrumbs": {
+        "requirement": "must",
+        "description": "renders path parsed into interactive breadcrumb segments"
+      },
+      "editMode": {
+        "requirement": "must",
+        "description": "switches between breadcrumbs and full editable input on click or shortcut"
+      },
+      "navigationControls": {
+        "requirement": "must",
+        "description": "back, forward, up, and refresh navigation buttons"
+      },
+      "keyboard": {
+        "requirement": "must",
+        "description": "Alt+D or Ctrl+L to edit, Esc to cancel, Enter to navigate"
+      },
+      "suggestions": {
+        "requirement": "should",
+        "description": "dropdown popover with path suggestions and history"
+      }
     },
     "themeSettings": {
-      "mode": { "requirement": "must", "description": "switches between light, dark, and system modes" },
-      "palette": { "requirement": "must", "description": "selects canonical 10-id palette presets and custom accent hex" },
-      "decoration": { "requirement": "must", "description": "configures interface style, master decoration level, and override sliders" },
-      "uiScale": { "requirement": "must", "description": "controls global UI scale density multiplier" },
-      "reset": { "requirement": "must", "description": "reverts to default theme configuration" },
-      "exportImport": { "requirement": "must", "description": "exports canonical JSON and imports valid configurations" },
-      "typography": { "requirement": "should", "description": "configures logical typography family and scale presets" },
-      "disabled": { "requirement": "should", "description": "disabled state blocks interactive changes" }
+      "mode": {
+        "requirement": "must",
+        "description": "switches between light, dark, and system modes"
+      },
+      "palette": {
+        "requirement": "must",
+        "description": "selects canonical 10-id palette presets and custom accent hex"
+      },
+      "decoration": {
+        "requirement": "must",
+        "description": "configures interface style, master decoration level, and override sliders"
+      },
+      "uiScale": {
+        "requirement": "must",
+        "description": "controls global UI scale density multiplier"
+      },
+      "reset": {
+        "requirement": "must",
+        "description": "reverts to default theme configuration"
+      },
+      "exportImport": {
+        "requirement": "must",
+        "description": "exports canonical JSON and imports valid configurations"
+      },
+      "typography": {
+        "requirement": "should",
+        "description": "configures logical typography family and scale presets"
+      },
+      "disabled": {
+        "requirement": "should",
+        "description": "disabled state blocks interactive changes"
+      }
     },
     "languageSettings": {
-      "followSystem": { "requirement": "must", "description": "switches between follow system and fixed languages" },
-      "systemDetection": { "requirement": "must", "description": "detects and displays current system OS language" },
-      "languageGrid": { "requirement": "must", "description": "displays supported language cards with native names, codes, and poetry quotes" },
-      "preferencePersistence": { "requirement": "must", "description": "updates language preference and triggers reactive re-evaluation" },
-      "extensibility": { "requirement": "must", "description": "renders user-registered custom languages dynamically" },
-      "disabled": { "requirement": "should", "description": "disabled state blocks interactive selection" }
+      "followSystem": {
+        "requirement": "must",
+        "description": "switches between follow system and fixed languages"
+      },
+      "systemDetection": {
+        "requirement": "must",
+        "description": "detects and displays current system OS language"
+      },
+      "languageGrid": {
+        "requirement": "must",
+        "description": "displays supported language cards with native names, codes, and poetry quotes"
+      },
+      "preferencePersistence": {
+        "requirement": "must",
+        "description": "updates language preference and triggers reactive re-evaluation"
+      },
+      "extensibility": {
+        "requirement": "must",
+        "description": "renders user-registered custom languages dynamically"
+      },
+      "disabled": {
+        "requirement": "should",
+        "description": "disabled state blocks interactive selection"
+      }
     },
     "tableOfContents": {
-      "rendersTree": { "requirement": "must", "description": "renders hierarchical outline items with level-based indentation" },
-      "activeIndicator": { "requirement": "must", "description": "visual indicator for currently active section" },
-      "bannerOffset": { "requirement": "must", "description": "supports topOffset and targetOffset adapting to global banners" },
-      "selection": { "requirement": "must", "description": "clicking an item triggers selection and smooth navigation" },
-      "keyboard": { "requirement": "must", "description": "arrow key spatial navigation and Enter/Space activation" },
-      "variant": { "requirement": "should", "description": "supports default, track, and flat visual variants" },
-      "disabled": { "requirement": "should", "description": "disabled items block click and navigation" }
+      "rendersTree": {
+        "requirement": "must",
+        "description": "renders hierarchical outline items with level-based indentation"
+      },
+      "activeIndicator": {
+        "requirement": "must",
+        "description": "visual indicator for currently active section"
+      },
+      "bannerOffset": {
+        "requirement": "must",
+        "description": "supports topOffset and targetOffset adapting to global banners"
+      },
+      "selection": {
+        "requirement": "must",
+        "description": "clicking an item triggers selection and smooth navigation"
+      },
+      "keyboard": {
+        "requirement": "must",
+        "description": "arrow key spatial navigation and Enter/Space activation"
+      },
+      "variant": {
+        "requirement": "should",
+        "description": "supports default, track, and flat visual variants"
+      },
+      "disabled": {
+        "requirement": "should",
+        "description": "disabled items block click and navigation"
+      }
     },
     "kbd": {
-      "variant": { "requirement": "must", "description": "switches visual appearance between subtle, outline, solid, and inverted" },
-      "size": { "requirement": "must", "description": "supports xs, sm, and default sizing scales" },
-      "shortcutParsing": { "requirement": "must", "description": "automatically parses key combinations and branches" },
-      "compactSymbols": { "requirement": "must", "description": "supports converting verbose modifiers to compact symbols" },
-      "styling": { "requirement": "must", "description": "token-aligned keycap rendering with mono typography" },
-      "responsive": { "requirement": "should", "description": "handles narrow layouts and container clipping gracefully" }
+      "variant": {
+        "requirement": "must",
+        "description": "switches visual appearance between subtle, outline, solid, and inverted"
+      },
+      "size": {
+        "requirement": "must",
+        "description": "supports xs, sm, and default sizing scales"
+      },
+      "shortcutParsing": {
+        "requirement": "must",
+        "description": "automatically parses key combinations and branches"
+      },
+      "compactSymbols": {
+        "requirement": "must",
+        "description": "supports converting verbose modifiers to compact symbols"
+      },
+      "styling": {
+        "requirement": "must",
+        "description": "token-aligned keycap rendering with mono typography"
+      },
+      "responsive": {
+        "requirement": "should",
+        "description": "handles narrow layouts and container clipping gracefully"
+      }
     },
     "shortcutBar": {
       "responsiveStages": { "requirement": "must", "description": "dynamically adapts through full, compact symbols, priority overflow, and compact icon stages" },
@@ -468,33 +1435,124 @@
       "styling": { "requirement": "should", "description": "token-aligned responsive container styling" }
     },
     "squircle": {
-      "continuousCurvature": { "requirement": "must", "description": "iOS continuous corner curvature (G2 continuity) via cubic Bezier superellipse" },
-      "cornerSmoothing": { "requirement": "must", "description": "customizable corner smoothing parameter from 0.0 to 1.0" },
-      "independentRadii": { "requirement": "must", "description": "supports distinct corner radii for topLeft, topRight, bottomLeft, bottomRight" },
-      "border": { "requirement": "should", "description": "inner border stroke conforming to box-sizing border-box" },
-      "cornerToggle": { "requirement": "should", "description": "selective per-corner or per-side rounding toggle" }
+      "continuousCurvature": {
+        "requirement": "must",
+        "description": "iOS continuous corner curvature (G2 continuity) via cubic Bezier superellipse"
+      },
+      "cornerSmoothing": {
+        "requirement": "must",
+        "description": "customizable corner smoothing parameter from 0.0 to 1.0"
+      },
+      "independentRadii": {
+        "requirement": "must",
+        "description": "supports distinct corner radii for topLeft, topRight, bottomLeft, bottomRight"
+      },
+      "border": {
+        "requirement": "should",
+        "description": "inner border stroke conforming to box-sizing border-box"
+      },
+      "cornerToggle": {
+        "requirement": "should",
+        "description": "selective per-corner or per-side rounding toggle"
+      }
     },
     "floatingNotice": {
-      "placement": { "requirement": "must", "description": "supports top and bottom viewport edge anchoring" },
-      "priority": { "requirement": "must", "description": "sorts notices by priority and insertion timestamp" },
-      "levels": { "requirement": "must", "description": "supports default, info, warning, and error severity levels" },
-      "queueDots": { "requirement": "must", "description": "renders indicator dots for queued notices with hover activation" },
-      "hoverPause": { "requirement": "must", "description": "suspends cycling and countdown timers on mouse hover" },
-      "hoverZoom": { "requirement": "must", "description": "gently zooms component scale on hover to improve readability" },
-      "dismissible": { "requirement": "must", "description": "renders close button on active notice on hover" },
-      "customContent": { "requirement": "must", "description": "supports rendering custom shell content or slots" }
+      "placement": {
+        "requirement": "must",
+        "description": "supports top and bottom viewport edge anchoring"
+      },
+      "priority": {
+        "requirement": "must",
+        "description": "sorts notices by priority and insertion timestamp"
+      },
+      "levels": {
+        "requirement": "must",
+        "description": "supports default, info, warning, and error severity levels"
+      },
+      "queueDots": {
+        "requirement": "must",
+        "description": "renders indicator dots for queued notices with hover activation"
+      },
+      "hoverPause": {
+        "requirement": "must",
+        "description": "suspends cycling and countdown timers on mouse hover"
+      },
+      "hoverZoom": {
+        "requirement": "must",
+        "description": "gently zooms component scale on hover to improve readability"
+      },
+      "dismissible": {
+        "requirement": "must",
+        "description": "renders close button on active notice on hover"
+      },
+      "customContent": {
+        "requirement": "must",
+        "description": "supports rendering custom shell content or slots"
+      }
     },
     "keybindingManager": {
-      "rendersActions": { "requirement": "must", "description": "renders list of configurable keybinding actions grouped by section" },
-      "searchAndFilter": { "requirement": "must", "description": "filters actions by keyword, scope, and reverse shortcut query" },
-      "recordBinding": { "requirement": "must", "description": "records physical key combinations into action chords" },
-      "conflictDetection": { "requirement": "must", "description": "detects and displays visual conflict badges for overlapping chords" },
-      "conflictResolution": { "requirement": "must", "description": "provides conflict detail popover or dialog for inspection" },
-      "resetAction": { "requirement": "must", "description": "reverts individual action binding to its factory default" },
-      "resetAll": { "requirement": "must", "description": "reverts all action bindings to factory defaults" },
-      "exportCheatSheet": { "requirement": "should", "description": "exports human-readable shortcut reference sheet" },
-      "multiChord": { "requirement": "should", "description": "supports binding multiple alternative shortcuts per action" },
-      "keyboard": { "requirement": "should", "description": "keyboard navigation across actions and controls" }
+      "rendersActions": {
+        "requirement": "must",
+        "description": "renders list of configurable keybinding actions grouped by section"
+      },
+      "searchAndFilter": {
+        "requirement": "must",
+        "description": "filters actions by keyword, scope, and reverse shortcut query"
+      },
+      "recordBinding": {
+        "requirement": "must",
+        "description": "records physical key combinations into action chords"
+      },
+      "conflictDetection": {
+        "requirement": "must",
+        "description": "detects and displays visual conflict badges for overlapping chords"
+      },
+      "conflictResolution": {
+        "requirement": "must",
+        "description": "provides conflict detail popover or dialog for inspection"
+      },
+      "resetAction": {
+        "requirement": "must",
+        "description": "reverts individual action binding to its factory default"
+      },
+      "resetAll": {
+        "requirement": "must",
+        "description": "reverts all action bindings to factory defaults"
+      },
+      "exportCheatSheet": {
+        "requirement": "should",
+        "description": "exports human-readable shortcut reference sheet"
+      },
+      "multiChord": {
+        "requirement": "should",
+        "description": "supports binding multiple alternative shortcuts per action"
+      },
+      "keyboard": {
+        "requirement": "should",
+        "description": "keyboard navigation across actions and controls"
+      }
+    },
+    "reorderable-list": {
+      "dragReorder": {
+        "requirement": "must",
+        "description": "supports drag-and-drop reordering with real-time feedback"
+      },
+      "collinearSlotIndicator": {
+        "requirement": "must",
+        "description": "insertion indicator aligns collinearly at the seam with bullet notch"
+      },
+      "actionColumns": {
+        "requirement": "must",
+        "description": "supports configurable action columns for per-item toggles"
+      },
+      "altSoloToggle": {
+        "requirement": "must",
+        "description": "Alt+Click performs solo toggle and subsequent invert behavior"
+      },
+      "keyboardNavigation": {
+        "requirement": "should",
+        "description": "supports keyboard navigation and action triggering"
+      }
     }
   }
 }

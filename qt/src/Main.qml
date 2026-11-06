@@ -460,6 +460,7 @@ ApplicationWindow {
         case "keybinding-manager": return "KeybindingManagerDocPage.qml";
         case "breadcrumb": return "BreadcrumbDocPage.qml";
         case "step-timeline": return "StepTimelineDocPage.qml";
+        case "reorderable-list": return "ReorderableListDocPage.qml";
         case "log-console": return "LogConsoleDocPage.qml";
         case "table-of-contents": return "TableOfContentsDocPage.qml";
         case "kbd": return "KbdDocPage.qml";
@@ -1898,6 +1899,7 @@ ApplicationWindow {
                 { id: "switch", name: "ChaSetSwitch" },
                 { id: "breadcrumb", name: "ChaSetBreadcrumb" },
                 { id: "step-timeline", name: "ChaSetStepTimeline" },
+                { id: "reorderable-list", name: "ChaSetReorderableList" },
                 { id: "log-console", name: "ChaSetLogConsole" },
                 { id: "table-of-contents", name: "ChaSetTableOfContents" },
                 { id: "table", name: "ChaSetTable" },

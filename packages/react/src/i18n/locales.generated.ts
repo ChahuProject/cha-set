@@ -1191,6 +1191,12 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     },
     "themeSettings": {
       "description": "跨端主题配置面板，统一管控外观模式、强调色调色板、装饰圆角阴影级别与界面缩放密度。"
+    },
+    "reorderableList": {
+      "description": "支持拖拽排序、缝隙对齐指示线与 Alt 独占切换的可重排操作列表。"
+    },
+    "reorderable-list": {
+      "description": "支持拖拽排序、缝隙对齐指示线与 Alt 独占切换的可重排操作列表。"
     }
   },
   "desktopComposite": {
@@ -1805,7 +1811,18 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "upTooltip": "上一级"
     },
     "reorderableList": {
-      "toggleTooltip": "显示/隐藏"
+      "toggleTooltip": "显示/隐藏",
+      "sandboxTitle": "可重排列表沙盒",
+      "overviewDesc": "支持拖拽排序、缝隙居中指示线、自定义操作列以及 Alt+单击独占/反转切换的交互式列表。",
+      "toggleReorderable": "切换可重排",
+      "resetList": "重置列表",
+      "addItem": "新增项目",
+      "fieldName": "文件名",
+      "fieldSize": "大小",
+      "fieldType": "类型",
+      "fieldDate": "修改日期",
+      "fieldTags": "标签",
+      "fieldAuthor": "作者"
     },
     "codeBlock": {
       "embeddedBadge": "嵌入",
@@ -4199,6 +4216,12 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     },
     "themeSettings": {
       "description": "Cross-stack theme settings controller managing mode, accent palette, decoration level, and UI density."
+    },
+    "reorderableList": {
+      "description": "Drag-and-drop reorderable action list with insertion slot indicators and Alt solo toggles."
+    },
+    "reorderable-list": {
+      "description": "Drag-and-drop reorderable action list with insertion slot indicators and Alt solo toggles."
     }
   },
   "desktopComposite": {
@@ -4813,7 +4836,18 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "upTooltip": "Up one level"
     },
     "reorderableList": {
-      "toggleTooltip": "Show/Hide"
+      "toggleTooltip": "Show/Hide",
+      "sandboxTitle": "Reorderable List Sandbox",
+      "overviewDesc": "Interactive list supporting drag-and-drop reordering with collinear slot indicators, custom action columns, and Alt+Click solo/invert toggles.",
+      "toggleReorderable": "Toggle Reorderable",
+      "resetList": "Reset Items",
+      "addItem": "Add Item",
+      "fieldName": "File Name",
+      "fieldSize": "File Size",
+      "fieldType": "Item Type",
+      "fieldDate": "Modified Date",
+      "fieldTags": "Tags",
+      "fieldAuthor": "Author"
     },
     "codeBlock": {
       "embeddedBadge": "embedded",
