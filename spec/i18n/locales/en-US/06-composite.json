@@ -88,6 +88,9 @@
     "keybinding-manager": {
       "description": "Cross-stack keybinding and shortcut manager with reverse key search, multi-scope filtering, conflict detection, and reference cheat sheet export."
     },
+    "reorderable-list": {
+      "description": "Drag-and-drop reorderable action list with insertion slot indicators and Alt solo toggles."
+    },
     "keybindingManager": {
       "activeResolver": "Active Resolver",
       "addAlternative": "Add alternative shortcut",

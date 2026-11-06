@@ -9,6 +9,7 @@ import {
 import { DocLayout } from '../../layout/DocLayout';
 import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
+import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
 
 export function ReorderableListDocPage() {
@@ -77,24 +78,10 @@ export function ReorderableListDocPage() {
       category="Composite Engines"
       title="Reorderable List"
       description={t(
-        'components.reorderableList.description',
+        'components.reorderable-list.description',
         'Drag-and-drop reorderable action list with insertion slot indicators and Alt solo toggles.',
       )}
-      tocItems={[
-        { id: 'overview', title: t('showcase.interactiveOverview', 'Interactive Overview') },
-        { id: 'installation', title: t('showcase.installation', 'Installation') },
-        { id: 'animations', title: t('showcase.animations', 'Animations') },
-        { id: 'keyboard', title: t('showcase.keyboardNavigation', 'Keyboard Navigation') },
-        { id: 'props', title: t('showcase.propsReference', 'Props Reference') },
-      ]}
     >
-      <DocText id="overview-desc" className="text-muted-foreground text-sm mb-4">
-        {t(
-          'desktopComposite.reorderableList.overviewDesc',
-          'Interactive list supporting drag-and-drop reordering with collinear slot indicators, custom action columns, and Alt+Click solo/invert toggles.',
-        )}
-      </DocText>
-
       <ComponentPreview
         title={t('desktopComposite.reorderableList.sandboxTitle', 'Reorderable List Sandbox')}
         reactCode={heroReactCode}
@@ -123,12 +110,31 @@ export function ReorderableListDocPage() {
         </div>
       </ComponentPreview>
 
-      <section id="installation" className="mt-8 scroll-mt-20">
-        <DocText role="h2">{t('showcase.installation', 'Installation')}</DocText>
-        <div className="mt-4 rounded-lg border border-border bg-card p-4 font-mono text-xs text-card-foreground">
-          <code>npm install @chahu/cha-set</code>
-        </div>
-      </section>
+      {/* Anatomy */}
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { ReorderableList } from '@chahu/cha-set';
+
+<ReorderableList
+  items={[
+    { id: 'name', label: 'File Name', visible: true },
+    { id: 'size', label: 'File Size', visible: true },
+  ]}
+  reorderable={true}
+  onItemsEdited={(newItems) => console.log('Items edited:', newItems)}
+/>`}
+        qtCode={`import ChaSet
+
+ChaSetReorderableList {
+    width: parent.width
+    reorderable: true
+    items: [
+        { id: "name", label: "File Name", visible: true },
+        { id: "size", label: "File Size", visible: true }
+    ]
+    onItemsEdited: (newItems) => console.log("Items edited:", newItems)
+}`}
+      />
 
       <DocMarkdown id="reorderable-list" section="animations" />
       <DocMarkdown id="reorderable-list" section="keyboard" />

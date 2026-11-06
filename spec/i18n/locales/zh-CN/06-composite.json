@@ -88,6 +88,9 @@
     "keybinding-manager": {
       "description": "跨端快捷键与热键管理组件，支持反向按键搜索、多作用域过滤、冲突检测与速查表导出。"
     },
+    "reorderable-list": {
+      "description": "支持拖拽排序、缝隙对齐指示线与 Alt 独占切换的可重排操作列表。"
+    },
     "keybindingManager": {
       "activeResolver": "当前冲突解决",
       "addAlternative": "添加备用快捷键",

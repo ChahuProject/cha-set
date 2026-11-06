@@ -474,7 +474,8 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "address-bar": "地址栏",
     "theme-settings": "主题设置",
     "language-settings": "语言设置",
-    "keybinding-manager": "快捷键管理器"
+    "keybinding-manager": "快捷键管理器",
+    "reorderable-list": "可重排列表"
   },
   "exportTheme": {
     "title": "导出主题配置",
@@ -1123,6 +1124,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "keybinding-manager": {
       "description": "跨端快捷键与热键管理组件，支持反向按键搜索、多作用域过滤、冲突检测与速查表导出。"
     },
+    "reorderable-list": {
+      "description": "支持拖拽排序、缝隙对齐指示线与 Alt 独占切换的可重排操作列表。"
+    },
     "keybindingManager": {
       "activeResolver": "当前冲突解决",
       "addAlternative": "添加备用快捷键",
@@ -1194,9 +1198,6 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "description": "跨端主题配置面板，统一管控外观模式、强调色调色板、装饰圆角阴影级别与界面缩放密度。"
     },
     "reorderableList": {
-      "description": "支持拖拽排序、缝隙对齐指示线与 Alt 独占切换的可重排操作列表。"
-    },
-    "reorderable-list": {
       "description": "支持拖拽排序、缝隙对齐指示线与 Alt 独占切换的可重排操作列表。"
     }
   },
@@ -3500,7 +3501,8 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "address-bar": "Address Bar",
     "theme-settings": "Theme Settings",
     "language-settings": "Language Settings",
-    "keybinding-manager": "Keybinding Manager"
+    "keybinding-manager": "Keybinding Manager",
+    "reorderable-list": "Reorderable List"
   },
   "exportTheme": {
     "title": "Export & Copy Theme Configuration",
@@ -4149,6 +4151,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "keybinding-manager": {
       "description": "Cross-stack keybinding and shortcut manager with reverse key search, multi-scope filtering, conflict detection, and reference cheat sheet export."
     },
+    "reorderable-list": {
+      "description": "Drag-and-drop reorderable action list with insertion slot indicators and Alt solo toggles."
+    },
     "keybindingManager": {
       "activeResolver": "Active Resolver",
       "addAlternative": "Add alternative shortcut",
@@ -4220,9 +4225,6 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "description": "Cross-stack theme settings controller managing mode, accent palette, decoration level, and UI density."
     },
     "reorderableList": {
-      "description": "Drag-and-drop reorderable action list with insertion slot indicators and Alt solo toggles."
-    },
-    "reorderable-list": {
       "description": "Drag-and-drop reorderable action list with insertion slot indicators and Alt solo toggles."
     }
   },

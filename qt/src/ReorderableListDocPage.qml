@@ -8,14 +8,7 @@ DocLayout {
     id: root
     category: "Composite Engines"
     pageTitle: "Reorderable List"
-    description: ChaSetI18n.tr("components.reorderableList.description", "Drag-and-drop reorderable action list with insertion slot indicators and Alt solo toggles.")
-    tocItems: [
-        { id: "overview", title: ChaSetI18n.tr("showcase.interactiveOverview", "Interactive Overview") },
-        { id: "installation", title: ChaSetI18n.tr("showcase.installation", "Installation") },
-        { id: "animations", title: ChaSetI18n.tr("showcase.animations", "Animations") },
-        { id: "keyboard", title: ChaSetI18n.tr("showcase.keyboardNavigation", "Keyboard Navigation") },
-        { id: "props", title: ChaSetI18n.tr("showcase.propsReference", "Props Reference") }
-    ]
+    description: ChaSetI18n.tr("components.reorderable-list.description", "Drag-and-drop reorderable action list with insertion slot indicators and Alt solo toggles.")
 
     readonly property var initialItems: [
         { id: "name", label: ChaSetI18n.tr("desktopComposite.reorderableList.fieldName", "File Name"), visible: true },
@@ -128,6 +121,31 @@ DocLayout {
                 }
             }
         }
+    }
+
+    DocAnatomy {
+        width: parent.width
+        reactCode: `import { ReorderableList } from '@chahu/cha-set';
+
+<ReorderableList
+  items={[
+    { id: 'name', label: 'File Name', visible: true },
+    { id: 'size', label: 'File Size', visible: true },
+  ]}
+  reorderable={true}
+  onItemsEdited={(newItems) => console.log('Items edited:', newItems)}
+/>`
+        qtCode: `import ChaSet
+
+ChaSetReorderableList {
+    width: parent.width
+    reorderable: true
+    items: [
+        { id: "name", label: "File Name", visible: true },
+        { id: "size", label: "File Size", visible: true }
+    ]
+    onItemsEdited: (newItems) => console.log("Items edited:", newItems)
+}`
     }
 
     DocMarkdown {

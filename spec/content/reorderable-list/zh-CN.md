@@ -6,7 +6,7 @@ title: Reorderable List
 description: 支持拖拽排序、缝隙对齐指示线与 Alt 独占切换的可重排操作列表。
 ---
 
-## Animations {#animations}
+## 动效规范 {#animations}
 
 拖拽重排与操作切换的动效与交互反馈规范。
 
@@ -15,12 +15,12 @@ description: 支持拖拽排序、缝隙对齐指示线与 Alt 独占切换的�
 - 操作图标在激活强调色与非激活弱化色之间通过 `duration-quick`（90ms）平滑切换。
 - 完整遵从 Web 端的 `prefers-reduced-motion` 与 Qt 桌面端的 `ThemeTokens.animationsEnabled`。
 
-## Keyboard Navigation {#keyboard}
+## 键盘导航 {#keyboard}
 
 组件支持的键盘交互与快捷键规范。
 
 ```table shortcuts
-| Key | Interaction |
+| 按键 | 行为 |
 | --- | --- |
 | Tab / Shift+Tab | 在列表项与末尾操作按钮之间循环切换焦点 |
 | Space / Enter | 切换当前聚焦的操作按钮开关状态 |
@@ -28,15 +28,15 @@ description: 支持拖拽排序、缝隙对齐指示线与 Alt 独占切换的�
 | ↑ / ↓ | 在连续的列表行项之间垂直移动焦点 |
 ```
 
-## Props Reference {#props}
+## 属性 {#props}
 
-跨端属性遵循统一的名称与语义；`Type` 对应 TypeScript 类型签名。
+跨端属性遵循统一的名称与语义；`类型` 列给的是 TypeScript 签名。
 
 ```table props
-| Prop | Type | Default | Description |
+| 属性 | 类型 | 默认值 | 描述 |
 | --- | --- | --- | --- |
 | `items` | `ReorderableListItem[]` | `[]` | 列表数据项对象数组，包含 id、label/name、可选 icon 及操作布尔字段。 |
-| `rowHeight` | `number` | `30` | 每行逻辑行高（单位为设备无关像素）。 |
+| `rowHeight` | `number` | `30` | 每行逻辑行高（单位为设备无关逻辑单位）。 |
 | `reorderable` | `boolean` | `true` | 是否允许通过拖拽手柄调整列表项顺序。 |
 | `actionColumns` | `ReorderableActionColumn[]` | `[]` | 末尾操作按钮列配置，包含图标、Tooltip 与快捷键定义。 |
 | `defaultActionKey` | `string` | `'visible'` | 当未显式指定 actionColumns 时默认绑定的布尔属性键。 |

@@ -308,7 +308,8 @@
     "address-bar": "Address Bar",
     "theme-settings": "Theme Settings",
     "language-settings": "Language Settings",
-    "keybinding-manager": "Keybinding Manager"
+    "keybinding-manager": "Keybinding Manager",
+    "reorderable-list": "Reorderable List"
   },
   "exportTheme": {
     "title": "Export & Copy Theme Configuration",
