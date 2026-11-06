@@ -6,7 +6,6 @@ import {
   Badge,
   Input,
   Label,
-  SettingRow,
   Table,
   TableHeader,
   TableBody,
@@ -203,29 +202,29 @@ export function SpacingGuidePage() {
               </div>
             </div>
 
-            <div className="p-2 rounded-lg bg-background text-foreground border border-border flex flex-col gap-1">
-              <SettingRow
-                name={t('getStarted.spacing.forms.nameLabel', 'Name')}
-                size="sm"
-                className="py-1 px-2"
-              >
+            <div className="p-4 rounded-lg bg-background text-foreground border border-border flex flex-col gap-3.5">
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="guide-rec-name" size="sm" className="text-foreground font-medium">
+                  {t('getStarted.spacing.forms.nameLabel', 'Name')}
+                </Label>
                 <Input
+                  id="guide-rec-name"
                   defaultValue={t('getStarted.spacing.forms.sampleName', 'Alex Rivera')}
-                  className="h-8 w-48 text-xs bg-muted/40 shadow-2xs"
+                  className="w-full"
                   readOnly
                 />
-              </SettingRow>
-              <SettingRow
-                name={t('getStarted.spacing.forms.usernameLabel', 'Username')}
-                size="sm"
-                className="py-1 px-2"
-              >
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="guide-rec-user" size="sm" className="text-foreground font-medium">
+                  {t('getStarted.spacing.forms.usernameLabel', 'Username')}
+                </Label>
                 <Input
+                  id="guide-rec-user"
                   defaultValue={t('getStarted.spacing.forms.sampleUsername', '@arivera')}
-                  className="h-8 w-48 text-xs bg-muted/40 shadow-2xs"
+                  className="w-full"
                   readOnly
                 />
-              </SettingRow>
+              </div>
             </div>
 
             <ul className="text-xs text-muted-foreground space-y-1 list-disc list-inside">

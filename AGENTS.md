@@ -232,6 +232,16 @@
     - **Dogfooding & Title Attribute Elimination (禁止原生 title 属性干扰)**: 内部封装 Tooltip 的组件（如 `CopyButton`、`WindowTitleBar`、`DraggableModal`、`ScaleOsd`）必须使用 ChaSet `<Tooltip>` / `ChaSetTooltip`，且严禁在底层 `<button>` 元素上附带原生 HTML `title="..."` 属性，防止浏览器原生黑色气泡与组件库高保真气泡发生重叠双弹出。
     - **DocPages 举证**: `TooltipDocPage` 双端 `overview` 必须复述本策略，且 `Examples` 网格必须各含一个 `Menu Items (Right Default)` 纵向三行示例（React 与 Qt 数量/顺序 1:1，见 SPAS 2.0 红线）；各宿主组件（如 `DropdownMenuDocPage`、`ContextMenuDocPage`、`SelectDocPage`）的沙盒演示与代码样例中必须包含实际 `tooltip` 配置以供用户直观检验。
 
+20. **Mandatory Desktop Dialog & Form Layout Standards (Windows 11 Fluent ContentDialog 规范 — 严禁卡片嵌套与生硬横向分割线)**:
+    - **Single Elevated Surface (单层高阶卡片律 — 严禁弹窗内套小卡片)**:
+      `Dialog` / `ContentDialog` 本身已是具备高阶标高（Elevation）、微圆角（8px / `rounded-lg`）与烟熏遮罩的模态表面。在弹窗内部绝对禁止再嵌套 `Card`、带边框的矩形框或孤岛卡片来包裹表单，所有表单控件必须直接平铺在弹窗画板上，杜绝套娃结构。
+    - **Win11 Top-Aligned Stack (Win11 顶部标签垂直堆叠流 — 严禁百分比断层)**:
+      模态对话框内部表单严格遵循 Windows 11 WinUI 3 `ContentDialog` 官方规范：`<Label>` 位于 `<Input>` 正上方（间距 6px / `gap-1.5`），输入框横向撑满内容宽度（`w-full`），表单项之间保持垂直流式间距（14px~16px / `gap-3.5` ~ `gap-4`）。视线自上而下单轨流动，杜绝左侧固定宽度带来的大面积荒废空白，严禁在通用弹窗中将 `SettingsCard` / 左右分栏作为表单结构。
+    - **Auto-Hug Content Height (内容自适应高度包裹律 — 严禁硬编码超高死黑)**:
+      弹窗垂直高度默认且必须自动贴合内容高度（`autoFitHeight: true`），简单表单弹窗随内容高度自适应收缩包裹，绝对禁止硬编码固定高度（如 `height: 400px`）导致底部产生数十至数百像素的大面积无意义黑腔与空洞死寂留白。
+    - **Zero Dividing Line (纯净无缝边距与零硬割裂律 — 严禁生硬横向分割线)**:
+      遵循 Windows 11 现代 Fluent 规范，弹窗底栏操作按钮（Cancel / Save）与表单处于同一纯净视觉表面，仅依靠 20px~24px 的呼吸边距实现功能分区，严禁在底部操作按钮上方强行绘制全通横向割裂线（`border-t` / `Rectangle { height: 1 }`）。
+
 ---
 
 ### Four-Layer Quality Defense Matrix (四级分层质量防御体系)

@@ -208,11 +208,15 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
     resolvedWidth = 32 * rem;
   }
 
+  const shouldAutoFit = autoFitHeight ?? 自动贴高 ?? true;
+
   let resolvedHeight: number;
   if (heightRemVal !== undefined) {
     resolvedHeight = heightRemVal * rem;
   } else if (defaultHeight !== undefined) {
     resolvedHeight = defaultHeight;
+  } else if (shouldAutoFit) {
+    resolvedHeight = resolvedMinHeight;
   } else {
     resolvedHeight = 25 * rem;
   }
@@ -251,8 +255,6 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
   const initialPos = initialPosRef.current;
   const currentPosRef = React.useRef({ x: initialPos.x, y: initialPos.y });
   const currentSizeRef = React.useRef({ width: initialPos.width, height: initialPos.height });
-
-  const shouldAutoFit = autoFitHeight ?? 自动贴高 ?? true;
 
   // Resolve the drag container size: when bounded to parent (showcase canvas),
   // measure the direct parent element so initial centering and clamping stay

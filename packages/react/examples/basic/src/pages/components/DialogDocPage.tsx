@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Input, Badge, Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose, DialogAction, DialogCancel, type DialogSizeOption, CodeBlock, useChaSetI18n, Label, SettingRow } from '@chahu/cha-set';
+import { Button, Input, Badge, Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose, DialogAction, DialogCancel, type DialogSizeOption, CodeBlock, useChaSetI18n, Label } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -25,15 +25,17 @@ export function DialogDocPage() {
         Make changes to your profile here. Click save when you're done.
       </DialogDescription>
     </DialogHeader>
-    <div className="rounded-lg bg-muted/40 p-1 flex flex-col gap-0.5 my-2">
-      <SettingRow name="Name" size="sm" className="py-1.5 px-2.5">
-        <Input id="name" defaultValue="Alex Rivera" className="h-8 w-52 text-xs bg-background/80 shadow-2xs" />
-      </SettingRow>
-      <SettingRow name="Username" size="sm" className="py-1.5 px-2.5">
-        <Input id="username" defaultValue="@arivera" className="h-8 w-52 text-xs bg-background/80 shadow-2xs" />
-      </SettingRow>
+    <div className="flex flex-col gap-3.5 py-2">
+      <div className="flex flex-col gap-1.5">
+        <Label htmlFor="name" size="sm" className="text-foreground font-medium">Name</Label>
+        <Input id="name" defaultValue="Alex Rivera" />
+      </div>
+      <div className="flex flex-col gap-1.5">
+        <Label htmlFor="username" size="sm" className="text-foreground font-medium">Username</Label>
+        <Input id="username" defaultValue="@arivera" />
+      </div>
     </div>
-    <DialogFooter>
+    <DialogFooter className="border-t-0 p-0 pt-4 gap-2">
       <DialogClose asChild>
         <Button variant="outline" size="sm">Cancel</Button>
       </DialogClose>
@@ -50,39 +52,37 @@ export function DialogDocPage() {
     dialogWidth: ThemeTokens.dp(400)
     showCloseButton: true
 
-    Rectangle {
+    Column {
         width: parent.width
-        implicitHeight: formCol.implicitHeight + ThemeTokens.dp(8)
-        height: implicitHeight
-        radius: ThemeTokens.dp(8)
-        color: ThemeTokens.panelRaised
+        spacing: ThemeTokens.dp(14)
 
         Column {
-            id: formCol
             width: parent.width
-            padding: ThemeTokens.dp(4)
-            spacing: ThemeTokens.dp(2)
-
-            ChaSetSettingRow {
-                width: parent.width - ThemeTokens.dp(8)
-                name: "Name"
-                size: "sm"
-                controlWidth: ThemeTokens.dp(210)
-                ChaSetInput {
-                    width: parent.width
-                    text: "Alex Rivera"
-                }
+            spacing: ThemeTokens.dp(6)
+            DocText {
+                text: "Name"
+                color: root.cFg
+                font.pixelSize: Typography.sizeSmall
+                font.weight: Font.Medium
             }
+            ChaSetInput {
+                width: parent.width
+                text: "Alex Rivera"
+            }
+        }
 
-            ChaSetSettingRow {
-                width: parent.width - ThemeTokens.dp(8)
-                name: "Username"
-                size: "sm"
-                controlWidth: ThemeTokens.dp(210)
-                ChaSetInput {
-                    width: parent.width
-                    text: "@arivera"
-                }
+        Column {
+            width: parent.width
+            spacing: ThemeTokens.dp(6)
+            DocText {
+                text: "Username"
+                color: root.cFg
+                font.pixelSize: Typography.sizeSmall
+                font.weight: Font.Medium
+            }
+            ChaSetInput {
+                width: parent.width
+                text: "@arivera"
             }
         }
     }
@@ -143,34 +143,30 @@ export function DialogDocPage() {
                   </DialogDescription>
                 </DialogHeader>
 
-                <div className="rounded-lg bg-muted/40 p-1 flex flex-col gap-0.5 my-2">
-                  <SettingRow
-                    name={t('overlays.dialog.name', 'Name')}
-                    size="sm"
-                    className="py-1.5 px-2.5"
-                  >
+                <div className="flex flex-col gap-3.5 py-2">
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="profile-name" size="sm" className="text-foreground font-medium">
+                      {t('overlays.dialog.name', 'Name')}
+                    </Label>
                     <Input
                       id="profile-name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="h-8 w-52 text-xs bg-background/80 shadow-2xs"
                     />
-                  </SettingRow>
-                  <SettingRow
-                    name={t('overlays.dialog.username', 'Username')}
-                    size="sm"
-                    className="py-1.5 px-2.5"
-                  >
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="profile-username" size="sm" className="text-foreground font-medium">
+                      {t('overlays.dialog.username', 'Username')}
+                    </Label>
                     <Input
                       id="profile-username"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
-                      className="h-8 w-52 text-xs bg-background/80 shadow-2xs"
                     />
-                  </SettingRow>
+                  </div>
                 </div>
 
-                <DialogFooter>
+                <DialogFooter className="border-t-0 p-0 pt-4 gap-2">
                   <DialogClose asChild>
                     <Button variant="outline" size="sm">{t('common.cancel', 'Cancel')}</Button>
                   </DialogClose>
