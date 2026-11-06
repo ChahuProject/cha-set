@@ -7,10 +7,19 @@ import { ShortcutBar } from '../kbd';
 import { CheckIcon, XIcon, SearchIcon, StarIcon } from '../lib/icons';
 import { matchPinyin } from '../lib/pinyin';
 import type {
-  FilterPopupItem,
   FilterPopupSearchVisibility,
   FilterPopupLogicMode,
 } from '@chahu/spec/filter-popup';
+
+export interface FilterPopupItem {
+  key: string | number;
+  label?: string;
+  count?: number;
+  stars?: number;
+  color?: string;
+  isChecked?: boolean;
+  isExcluded?: boolean;
+}
 
 export interface FilterPopupProps {
   title?: string;

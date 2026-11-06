@@ -221,7 +221,7 @@ export function FilterPopupDocPage() {
                 <Button variant="outline" size="sm" className="gap-2">
                   <span>{currentTitle}</span>
                   {hasActive && (
-                    <Badge size="xs" variant="secondary" className="px-1 text-[0.625rem]">
+                    <Badge size="sm" variant="secondary" className="px-1 text-[0.625rem]">
                       {t('overlays.filterPopup.filteredBadge', '已筛选')}
                     </Badge>
                   )}
