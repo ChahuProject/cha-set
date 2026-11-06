@@ -193,7 +193,7 @@ export function SpacingGuidePage() {
           <Card className="p-5 flex flex-col gap-4 border-primary/40 bg-card text-card-foreground shadow-xs">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Badge variant="default" className="bg-emerald-600 hover:bg-emerald-600 text-white">
+                <Badge variant="default" className="bg-emerald-600 hover:bg-emerald-600 text-primary-foreground">
                   {t('getStarted.spacing.forms.recommended', 'Recommended')}
                 </Badge>
                 <CardTitle className="text-sm font-semibold">
