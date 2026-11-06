@@ -102,6 +102,7 @@ import { StepTimelineDocPage } from './pages/components/StepTimelineDocPage';
 import { LogConsoleDocPage } from './pages/components/LogConsoleDocPage';
 import { TableOfContentsDocPage } from './pages/components/TableOfContentsDocPage';
 import { KbdDocPage } from './pages/components/KbdDocPage';
+import { ShortcutBarDocPage } from './pages/components/ShortcutBarDocPage';
 import { SquircleDocPage } from './pages/components/SquircleDocPage';
 import { MediaProgressBarDocPage } from './pages/components/MediaProgressBarDocPage';
 import { IntroductionPage } from './pages/get-started/IntroductionPage';
@@ -976,6 +977,8 @@ export function App() {
         return <TableOfContentsDocPage />;
       case '#/components/kbd':
         return <KbdDocPage />;
+      case '#/components/shortcut-bar':
+        return <ShortcutBarDocPage />;
       case '#/components/squircle':
         return <SquircleDocPage />;
       case '#/components/media-progress-bar':

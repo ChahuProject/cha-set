@@ -9,6 +9,7 @@ import {
   ElidedText,
   HoverCopy,
   Kbd,
+  ShortcutBar,
   Label,
   PanelCard,
   Separator,
@@ -88,6 +89,17 @@ describe('Performance Suite: Core Primitives (12 Components)', () => {
       <div>
         {Array.from({ length: 100 }, (_, i) => (
           <Kbd key={i}>Ctrl+K</Kbd>
+        ))}
+      </div>
+    );
+    unmount();
+  });
+
+  bench('ShortcutBar (50x batch mount)', () => {
+    const { unmount } = render(
+      <div>
+        {Array.from({ length: 50 }, (_, i) => (
+          <ShortcutBar key={i} preset="address-bar" mode="auto" />
         ))}
       </div>
     );

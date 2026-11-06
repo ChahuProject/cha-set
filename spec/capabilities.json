@@ -452,6 +452,13 @@
       "styling": { "requirement": "must", "description": "token-aligned keycap rendering with mono typography" },
       "responsive": { "requirement": "should", "description": "handles narrow layouts and container clipping gracefully" }
     },
+    "shortcutBar": {
+      "responsiveStages": { "requirement": "must", "description": "dynamically adapts through full, compact symbols, priority overflow, and compact icon stages" },
+      "iconMode": { "requirement": "must", "description": "supports dedicated compact keyboard icon mode with interactive popover drawer" },
+      "presetShortcuts": { "requirement": "must", "description": "built-in standard shortcut presets for common container contexts" },
+      "overflowPopover": { "requirement": "must", "description": "interactive popover displaying truncated shortcuts with search and clean layout" },
+      "styling": { "requirement": "should", "description": "token-aligned responsive container styling" }
+    },
     "squircle": {
       "continuousCurvature": { "requirement": "must", "description": "iOS continuous corner curvature (G2 continuity) via cubic Bezier superellipse" },
       "cornerSmoothing": { "requirement": "must", "description": "customizable corner smoothing parameter from 0.0 to 1.0" },

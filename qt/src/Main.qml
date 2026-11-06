@@ -461,6 +461,7 @@ ApplicationWindow {
         case "log-console": return "LogConsoleDocPage.qml";
         case "table-of-contents": return "TableOfContentsDocPage.qml";
         case "kbd": return "KbdDocPage.qml";
+        case "shortcut-bar": return "ShortcutBarDocPage.qml";
         case "squircle": return "SquircleDocPage.qml";
         case "media-progress-bar": return "MediaProgressBarDocPage.qml";
         case "floating-notice": return "FloatingNoticeDocPage.qml";
@@ -1884,6 +1885,7 @@ ApplicationWindow {
                 { id: "separator", name: "ChaSetSeparator" },
                 { id: "setting-row", name: "ChaSetSettingRow" },
                 { id: "sheet", name: "ChaSetSheet" },
+                { id: "shortcut-bar", name: "ChaSetShortcutBar" },
                 { id: "sidebar", name: "ChaSetSidebar" },
                 { id: "skeleton", name: "ChaSetSkeleton" },
                 { id: "slider", name: "ChaSetSlider" },

@@ -48,6 +48,8 @@ import { TooltipDocPage } from '../../examples/basic/src/pages/components/Toolti
 import { VirtualGridDocPage } from '../../examples/basic/src/pages/components/VirtualGridDocPage';
 import { VirtualListDocPage } from '../../examples/basic/src/pages/components/VirtualListDocPage';
 import { VirtualTreeDocPage } from '../../examples/basic/src/pages/components/VirtualTreeDocPage';
+import { KbdDocPage } from '../../examples/basic/src/pages/components/KbdDocPage';
+import { ShortcutBarDocPage } from '../../examples/basic/src/pages/components/ShortcutBarDocPage';
 import { WindowTitleBarDocPage } from '../../examples/basic/src/pages/components/WindowTitleBarDocPage';
 import { SegmentedControlDocPage } from '../../examples/basic/src/pages/components/SegmentedControlDocPage';
 import { SmoothWheelHandlerDocPage } from '../../examples/basic/src/pages/components/SmoothWheelHandlerDocPage';
@@ -104,6 +106,8 @@ const pages = [
   { name: 'VirtualGridDocPage', Component: VirtualGridDocPage },
   { name: 'VirtualListDocPage', Component: VirtualListDocPage },
   { name: 'VirtualTreeDocPage', Component: VirtualTreeDocPage },
+  { name: 'KbdDocPage', Component: KbdDocPage },
+  { name: 'ShortcutBarDocPage', Component: ShortcutBarDocPage },
   { name: 'WindowTitleBarDocPage', Component: WindowTitleBarDocPage },
   { name: 'SegmentedControlDocPage', Component: SegmentedControlDocPage },
   { name: 'SmoothWheelHandlerDocPage', Component: SmoothWheelHandlerDocPage },

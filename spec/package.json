@@ -63,6 +63,7 @@
     "./theme-settings": "./components/theme-settings.ts",
     "./table-of-contents": "./components/table-of-contents.ts",
     "./kbd": "./components/kbd.ts",
+    "./shortcut-bar": "./components/shortcut-bar.ts",
     "./floating-notice": "./components/floating-notice.ts",
     "./keybinding-manager": "./components/keybinding-manager.ts",
     "./showcase/shortcuts.json": "./showcase/shortcuts.json"

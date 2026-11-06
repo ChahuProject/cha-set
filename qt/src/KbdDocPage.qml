@@ -19,8 +19,6 @@ DocLayout {
     property string demoVariant: "outline"
     property string demoSize: "default"
     property string demoCompact: "auto"
-    property string demoShortcutMode: "auto"
-    property real playgroundWidth: 340
 
     // Section 1: Overview
     ComponentPreview {
@@ -412,222 +410,52 @@ DocLayout {
             }
         }
 
+        // Responsive ShortcutBar Demonstration
         ChaSetCard {
             width: parent.width
 
             Column {
                 width: parent.width - ThemeTokens.dp(24)
                 anchors.horizontalCenter: parent.horizontalCenter
-                topPadding: ThemeTokens.dp(14)
-                bottomPadding: ThemeTokens.dp(14)
-                spacing: ThemeTokens.dp(12)
+                topPadding: ThemeTokens.dp(12)
+                bottomPadding: ThemeTokens.dp(12)
+                spacing: ThemeTokens.dp(8)
 
-                DocText {
-                    text: ChaSetI18n.tr("desktopComposite.kbd.playgroundTitle", "Interactive Multi-Stage Responsive Playground")
-                    font.pixelSize: Typography.sizeBody
-                    font.weight: Typography.weightBold
-                    color: root.cFg
+                Item {
+                    width: parent.width
+                    height: Math.max(shortcutBarTitleText.implicitHeight, shortcutBarBadge.implicitHeight)
+
+                    DocText {
+                        id: shortcutBarTitleText
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: ChaSetI18n.tr("navigation.shortcut-bar", "Shortcut Bar")
+                        font.pixelSize: Typography.sizeBody
+                        font.weight: Typography.weightBold
+                        color: root.cFg
+                    }
+
+                    ChaSetBadge {
+                        id: shortcutBarBadge
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        variant: "outline"
+                        text: ChaSetI18n.tr("desktopComposite.shortcutBar.modeAuto", "Auto (Responsive)")
+                    }
                 }
 
                 DocText {
-                    text: ChaSetI18n.tr("desktopComposite.kbd.playgroundDesc", "Drag the right handle or adjust the slider to observe how the shortcut bar progresses through 4 adaptive stages: Full scale → Squeezed micro-scale → Compact symbols → +N folded badge with floating popover.")
+                    text: ChaSetI18n.tr("components.shortcutBar.description", "Interactive multi-stage responsive keyboard shortcut bar that progressively adapts from full text to compact symbols, overflow drawer, and keyboard icon.")
                     font.pixelSize: Typography.sizeCaption
                     color: root.cMutedFg
                     wrapMode: Text.WordWrap
                     width: parent.width
                 }
 
-                // Controls: Slider & Quick Presets
-                Row {
+                ChaSetShortcutBar {
                     width: parent.width
-                    spacing: ThemeTokens.dp(16)
-
-                    Row {
-                        spacing: ThemeTokens.dp(8)
-                        anchors.verticalCenter: parent.verticalCenter
-
-                        DocText {
-                            text: ChaSetI18n.tr("desktopComposite.kbd.widthLabel", "Width:")
-                            font.pixelSize: Typography.sizeCaption
-                            color: root.cMutedFg
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-
-                        ChaSetSlider {
-                            id: widthSlider
-                            width: ThemeTokens.dp(160)
-                            min: 160
-                            max: 540
-                            step: 1
-                            value: root.playgroundWidth
-                            onValueMoved: function(val) {
-                                root.playgroundWidth = Math.round(val)
-                            }
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-
-                        Binding {
-                            target: widthSlider
-                            property: "value"
-                            value: root.playgroundWidth
-                        }
-                    }
-
-                    Row {
-                        spacing: ThemeTokens.dp(6)
-                        anchors.verticalCenter: parent.verticalCenter
-
-                        DocText {
-                            text: ChaSetI18n.tr("desktopComposite.kbd.modeLabel", "Mode:")
-                            font.pixelSize: Typography.sizeCaption
-                            color: root.cMutedFg
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-
-                        ChaSetSegmentedControl {
-                            size: "xs"
-                            value: root.demoShortcutMode
-                            options: [
-                                { label: ChaSetI18n.tr("desktopComposite.kbd.modeAuto", "Auto (Responsive)"), value: "auto" },
-                                { label: ChaSetI18n.tr("desktopComposite.kbd.modeIcon", "Icon (Compact)"), value: "icon" }
-                            ]
-                            onValueChanged: function(val) {
-                                if (val !== undefined) {
-                                    root.demoShortcutMode = String(val)
-                                }
-                            }
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                    }
-
-                    Row {
-                        spacing: ThemeTokens.dp(6)
-                        anchors.verticalCenter: parent.verticalCenter
-
-                        DocText {
-                            text: ChaSetI18n.tr("desktopComposite.kbd.presetsLabel", "Presets:")
-                            font.pixelSize: Typography.sizeCaption
-                            color: root.cMutedFg
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-
-                        ChaSetButton {
-                            size: "xs"
-                            variant: Math.round(root.playgroundWidth) === 460 ? "secondary" : "outline"
-                            text: ChaSetI18n.tr("desktopComposite.kbd.presetFull", "Full ({{value}})", { value: "460" })
-                            onClicked: root.playgroundWidth = 460
-                        }
-
-                        ChaSetButton {
-                            size: "xs"
-                            variant: Math.round(root.playgroundWidth) === 330 ? "secondary" : "outline"
-                            text: ChaSetI18n.tr("desktopComposite.kbd.presetSqueezed", "Squeezed ({{value}})", { value: "330" })
-                            onClicked: root.playgroundWidth = 330
-                        }
-
-                        ChaSetButton {
-                            size: "xs"
-                            variant: Math.round(root.playgroundWidth) === 250 ? "secondary" : "outline"
-                            text: ChaSetI18n.tr("desktopComposite.kbd.presetCompact", "Compact ({{value}})", { value: "250" })
-                            onClicked: root.playgroundWidth = 250
-                        }
-
-                        ChaSetButton {
-                            size: "xs"
-                            variant: Math.round(root.playgroundWidth) === 180 ? "secondary" : "outline"
-                            text: ChaSetI18n.tr("desktopComposite.kbd.presetFolded", "Folded ({{value}})", { value: "180" })
-                            onClicked: root.playgroundWidth = 180
-                        }
-                    }
-                }
-
-                // Live Telemetry Badges
-                Row {
-                    spacing: ThemeTokens.dp(8)
-
-                    ChaSetBadge {
-                        variant: "outline"
-                        text: ChaSetI18n.tr("desktopComposite.kbd.widthBadge", "Width: {{value}}", { value: Math.round(root.playgroundWidth) })
-                    }
-
-                    ChaSetBadge {
-                        variant: "outline"
-                        text: {
-                            var s = playgroundShortcutBar.responsiveStage
-                            if (s === "full") return ChaSetI18n.tr("desktopComposite.kbd.stageFull", "Stage 1: Full (Full Text)")
-                            if (s === "squeezed") return ChaSetI18n.tr("desktopComposite.kbd.stageSqueezed", "Stage 2: Squeezed (Scaled)")
-                            if (s === "compact") return ChaSetI18n.tr("desktopComposite.kbd.stageCompact", "Stage 3: Compact (Symbols)")
-                            if (s === "folded") return ChaSetI18n.tr("desktopComposite.kbd.stageFolded", "Stage 4: Folded (+N Collapsed)")
-                            return "Stage: " + s
-                        }
-                    }
-                }
-
-                // Resizable Container Frame
-                Rectangle {
-                    id: playgroundFrame
-                    clip: true
-                    width: Math.max(ThemeTokens.dp(160), Math.min(ThemeTokens.dp(540), ThemeTokens.dp(root.playgroundWidth)))
-                    height: ThemeTokens.dp(32)
-                    radius: ThemeTokens.dp(6)
-                    color: ThemeTokens.background
-                    border.color: ThemeTokens.border
-                    border.width: ThemeTokens.dp(1)
-
-                    ChaSetShortcutBar {
-                        id: playgroundShortcutBar
-                        mode: root.demoShortcutMode
-                        anchors.left: parent.left
-                        anchors.right: playgroundResizeGrip.left
-                        anchors.verticalCenter: parent.verticalCenter
-                        preset: "address-bar"
-                        additionalShortcuts: [
-                            { "id": "tab", "keys": ["Tab"], "label": ChaSetI18n.tr("desktopComposite.kbd.completeLabel", "Autocomplete"), "priority": 2 },
-                            { "id": "copy", "keys": ["Ctrl", "C"], "label": ChaSetI18n.tr("desktopComposite.kbd.copyPathLabel", "Copy Path"), "priority": 4 }
-                        ]
-                    }
-
-                    Rectangle {
-                        id: playgroundResizeGrip
-                        width: ThemeTokens.dp(14)
-                        anchors.right: parent.right
-                        anchors.top: parent.top
-                        anchors.bottom: parent.bottom
-                        color: gripMouse.containsMouse || gripMouse.pressed ? ThemeTokens.hover : "transparent"
-
-                        Column {
-                            anchors.centerIn: parent
-                            spacing: ThemeTokens.dp(2)
-                            Rectangle { width: ThemeTokens.dp(3); height: ThemeTokens.dp(3); radius: ThemeTokens.dp(1.5); color: ThemeTokens.subduedText }
-                            Rectangle { width: ThemeTokens.dp(3); height: ThemeTokens.dp(3); radius: ThemeTokens.dp(1.5); color: ThemeTokens.subduedText }
-                            Rectangle { width: ThemeTokens.dp(3); height: ThemeTokens.dp(3); radius: ThemeTokens.dp(1.5); color: ThemeTokens.subduedText }
-                        }
-
-                        MouseArea {
-                            id: gripMouse
-                            anchors.fill: parent
-                            hoverEnabled: true
-                            cursorShape: Qt.SizeHorCursor
-                            property real startGlobalX: 0
-                            property real startW: 0
-
-                            onPressed: function(mouse) {
-                                var pt = mapToGlobal(mouse.x, mouse.y)
-                                startGlobalX = pt.x
-                                startW = root.playgroundWidth
-                            }
-
-                            onPositionChanged: function(mouse) {
-                                if (pressed) {
-                                    var pt = mapToGlobal(mouse.x, mouse.y)
-                                    var scale = (ThemeTokens.uiScale > 0) ? ThemeTokens.uiScale : 1.0
-                                    var delta = (pt.x - startGlobalX) / scale
-                                    var nw = Math.max(160, Math.min(540, Math.round(startW + delta)))
-                                    root.playgroundWidth = nw
-                                }
-                            }
-                        }
-                    }
+                    preset: "address-bar"
+                    mode: "auto"
                 }
             }
         }

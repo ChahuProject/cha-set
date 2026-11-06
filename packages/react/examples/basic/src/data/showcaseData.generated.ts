@@ -1173,6 +1173,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "description": "Displays keyboard shortcuts, key combinations, and keycap badges with smart compact truncation."
       },
       {
+        "id": "shortcut-bar",
+        "title": "Shortcut Bar",
+        "href": "#/components/shortcut-bar",
+        "desc": "Interactive multi-stage responsive keyboard shortcut bar that progressively adapts from full text to compact symbols, overflow drawer, and keyboard icon.",
+        "description": "Interactive multi-stage responsive keyboard shortcut bar that progressively adapts from full text to compact symbols, overflow drawer, and keyboard icon."
+      },
+      {
         "id": "squircle",
         "title": "Squircle",
         "href": "#/components/squircle",

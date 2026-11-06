@@ -423,6 +423,13 @@
     "styling": true,
     "responsive": true
   },
+  "shortcutBar": {
+    "responsiveStages": true,
+    "iconMode": true,
+    "presetShortcuts": true,
+    "overflowPopover": true,
+    "styling": true
+  },
   "squircle": {
     "continuousCurvature": true,
     "cornerSmoothing": true,

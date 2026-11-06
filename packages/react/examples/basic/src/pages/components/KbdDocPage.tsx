@@ -25,44 +25,6 @@ export function KbdDocPage() {
   const [variant, setVariant] = useState<KbdVariant>('outline');
   const [size, setSize] = useState<KbdSize>('default');
   const [compact, setCompact] = useState<KbdCompact>('auto');
-  const [shortcutMode, setShortcutMode] = useState<'auto' | 'icon'>('auto');
-  const [playgroundWidth, setPlaygroundWidth] = useState<number>(340);
-  const [activeStage, setActiveStage] = useState<'full' | 'squeezed' | 'compact' | 'folded'>('squeezed');
-  const [isDragging, setIsDragging] = useState<boolean>(false);
-  const frameRef = React.useRef<HTMLDivElement>(null);
-
-  const handleDragStart = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-    document.body.style.cursor = 'col-resize';
-    document.body.style.userSelect = 'none';
-
-    const frameEl = frameRef.current;
-    if (!frameEl) return;
-    const frameLeft = frameEl.getBoundingClientRect().left;
-    const rootFontSize =
-      typeof window !== 'undefined'
-        ? parseFloat(window.getComputedStyle(document.documentElement).fontSize) || 16
-        : 16;
-
-    const onMouseMove = (moveEvent: MouseEvent) => {
-      const rawPx = moveEvent.clientX - frameLeft;
-      const logicalW = Math.round((rawPx / rootFontSize) * 16);
-      const nextW = Math.max(160, Math.min(540, logicalW));
-      setPlaygroundWidth(nextW);
-    };
-
-    const onMouseUp = () => {
-      setIsDragging(false);
-      document.body.style.cursor = '';
-      document.body.style.userSelect = '';
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('mouseup', onMouseUp);
-    };
-
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseup', onMouseUp);
-  };
 
   const heroReactCode = `<Kbd
   variant="${variant}"
@@ -258,158 +220,19 @@ export function KbdDocPage() {
             </div>
           </Card>
 
-          {/* Interactive Multi-Stage Responsive Playground */}
-          <div className="flex flex-col gap-3 rounded-lg border border-border bg-card p-4">
-            <div className="flex flex-col gap-1">
-              <DocText role="h3">
-                {t('desktopComposite.kbd.playgroundTitle', 'Interactive Multi-Stage Responsive Playground')}
-              </DocText>
-              <p className="text-xs text-muted-foreground">
-                {t('desktopComposite.kbd.playgroundDesc', 'Drag the right handle or adjust the slider to observe how the shortcut bar progresses through 4 adaptive stages: Full scale → Squeezed micro-scale → Compact symbols → +N folded badge with floating popover.')}
-              </p>
+          {/* Responsive ShortcutBar Demonstration */}
+          <Card className="flex flex-col gap-2 p-4">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-foreground">{t('navigation.shortcut-bar', 'Shortcut Bar')}</span>
+              <Badge variant="outline" className="text-xs">{t('desktopComposite.shortcutBar.modeAuto', 'Auto (Responsive)')}</Badge>
             </div>
-
-            {/* Controls: Slider & Quick Presets & Mode */}
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div className="flex items-center gap-3 w-full sm:w-64">
-                <span className="text-xs text-muted-foreground shrink-0">{t('desktopComposite.kbd.widthLabel', 'Width:')}</span>
-                <Slider
-                  value={playgroundWidth}
-                  min={160}
-                  max={540}
-                  step={1}
-                  onValueChange={setPlaygroundWidth}
-                  className="flex-1"
-                />
-              </div>
-
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground shrink-0">{t('desktopComposite.kbd.modeLabel', 'Mode:')}</span>
-                <SegmentedControl
-                  size="sm"
-                  value={shortcutMode}
-                  onChange={(m) => setShortcutMode(m as 'auto' | 'icon')}
-                  options={[
-                    { label: t('desktopComposite.kbd.modeAuto', 'Auto (Responsive)'), value: 'auto' },
-                    { label: t('desktopComposite.kbd.modeIcon', 'Icon (Compact)'), value: 'icon' },
-                  ]}
-                />
-              </div>
-
-              <div className="flex flex-wrap items-center gap-1.5">
-                <span className="text-xs text-muted-foreground mr-1">{t('desktopComposite.kbd.presetsLabel', 'Presets:')}</span>
-                <Button
-                  variant={playgroundWidth === 460 ? 'secondary' : 'outline'}
-                  size="xs"
-                  onClick={() => setPlaygroundWidth(460)}
-                >
-                  {t('desktopComposite.kbd.presetFull', 'Full ({{value}})', { value: '28.75rem' })}
-                </Button>
-                <Button
-                  variant={playgroundWidth === 330 ? 'secondary' : 'outline'}
-                  size="xs"
-                  onClick={() => setPlaygroundWidth(330)}
-                >
-                  {t('desktopComposite.kbd.presetSqueezed', 'Squeezed ({{value}})', { value: '20.63rem' })}
-                </Button>
-                <Button
-                  variant={playgroundWidth === 250 ? 'secondary' : 'outline'}
-                  size="xs"
-                  onClick={() => setPlaygroundWidth(250)}
-                >
-                  {t('desktopComposite.kbd.presetCompact', 'Compact ({{value}})', { value: '15.63rem' })}
-                </Button>
-                <Button
-                  variant={playgroundWidth === 180 ? 'secondary' : 'outline'}
-                  size="xs"
-                  onClick={() => setPlaygroundWidth(180)}
-                >
-                  {t('desktopComposite.kbd.presetFolded', 'Folded ({{value}})', { value: '11.25rem' })}
-                </Button>
-              </div>
-            </div>
-
-            {/* Live Telemetry Badges */}
-            <div className="flex items-center gap-2 pt-1">
-              <Badge variant="outline" className="font-mono text-xs">
-                Width: {(playgroundWidth * 0.0625).toFixed(2)}rem
-              </Badge>
-              {activeStage === 'full' && (
-                <Badge
-                  variant="outline"
-                  className="border-emerald-500/40 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs"
-                >
-                  {t('desktopComposite.kbd.stageFull', 'Stage 1: Full (Full Text)')}
-                </Badge>
-              )}
-              {activeStage === 'squeezed' && (
-                <Badge
-                  variant="outline"
-                  className="border-sky-500/40 bg-sky-500/10 text-sky-600 dark:text-sky-400 text-xs"
-                >
-                  {t('desktopComposite.kbd.stageSqueezed', 'Stage 2: Squeezed (Scaled)')}
-                </Badge>
-              )}
-              {activeStage === 'compact' && (
-                <Badge
-                  variant="outline"
-                  className="border-amber-500/40 bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs"
-                >
-                  {t('desktopComposite.kbd.stageCompact', 'Stage 3: Compact (Symbols)')}
-                </Badge>
-              )}
-              {activeStage === 'folded' && (
-                <Badge
-                  variant="outline"
-                  className="border-purple-500/40 bg-purple-500/10 text-purple-600 dark:text-purple-400 text-xs"
-                >
-                  {t('desktopComposite.kbd.stageFolded', 'Stage 4: Folded (+N Collapsed)')}
-                </Badge>
-              )}
-            </div>
-
-            {/* Interactive Resizable Frame */}
+            <p className="text-xs text-muted-foreground">
+              {t('components.shortcutBar.description', 'Interactive multi-stage responsive keyboard shortcut bar that progressively adapts from full text to compact symbols, overflow drawer, and keyboard icon.')}
+            </p>
             <div className="pt-2">
-              <div
-                ref={frameRef}
-                style={{ width: `${playgroundWidth * 0.0625}rem` }}
-                className={`relative flex items-center rounded-md border border-dashed border-border bg-background shadow-xs ${
-                  isDragging
-                    ? 'ring-1 ring-ring transition-none'
-                    : 'transition-[width] duration-150 ease-out'
-                }`}
-              >
-                <div className="flex-1 min-w-0 overflow-hidden py-1 px-2">
-                  <ShortcutBar
-                    mode={shortcutMode}
-                    preset="address-bar"
-                    additionalShortcuts={[
-                      { id: 'tab', keys: ['Tab'], label: t('desktopComposite.kbd.completeLabel', 'Autocomplete'), priority: 2 },
-                      { id: 'copy', keys: ['Ctrl', 'C'], label: t('desktopComposite.kbd.copyPathLabel', 'Copy Path'), priority: 4 },
-                    ]}
-                    onStageChange={setActiveStage}
-                  />
-                </div>
-
-                {/* Right Edge Drag Handle */}
-                <div
-                  onMouseDown={handleDragStart}
-                  className={`group relative flex w-3.5 shrink-0 cursor-col-resize select-none items-center justify-center self-stretch rounded-r transition-colors ${
-                    isDragging
-                      ? 'bg-accent text-accent-foreground'
-                      : 'hover:bg-accent/70'
-                  }`}
-                  title={t('desktopComposite.kbd.dragHandleTooltip', 'Drag right handle to resize container width')}
-                >
-                  <div className="flex flex-col gap-0.5 items-center">
-                    <span className="block h-1 w-1 rounded-full bg-muted-foreground/50 group-hover:bg-foreground/70 transition-colors" />
-                    <span className="block h-1 w-1 rounded-full bg-muted-foreground/50 group-hover:bg-foreground/70 transition-colors" />
-                    <span className="block h-1 w-1 rounded-full bg-muted-foreground/50 group-hover:bg-foreground/70 transition-colors" />
-                  </div>
-                </div>
-              </div>
+              <ShortcutBar preset="address-bar" mode="auto" />
             </div>
-          </div>
+          </Card>
         </div>
       </section>
 

@@ -376,6 +376,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/StepTimelineDocPage.qml
             src/LogConsoleDocPage.qml
             src/KbdDocPage.qml
+            src/ShortcutBarDocPage.qml
             src/SquircleDocPage.qml
             src/MediaProgressBarDocPage.qml
             src/CommandSearchModal.qml
