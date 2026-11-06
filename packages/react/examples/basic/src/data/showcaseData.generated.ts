@@ -44,6 +44,32 @@ export interface TypographyRampData {
   quotes: TypographyQuoteItem[];
 }
 
+export interface SpacingScaleStep {
+  id: string;
+  name: string;
+  nameZh: string;
+  rem: string;
+  px: number;
+  usage: string;
+  usageZh: string;
+}
+
+export interface ModalTierItem {
+  id: string;
+  size: string;
+  widthRem: string;
+  widthPx: string;
+  cap: string;
+  capZh: string;
+  useCase: string;
+  useCaseZh: string;
+}
+
+export interface SpacingScaleData {
+  scaleSteps: SpacingScaleStep[];
+  modalTiers: ModalTierItem[];
+}
+
 export const CHANGELOG_DATA: ChangelogItem[] = [
   {
     "id": "rel-120",
@@ -1096,6 +1122,14 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "badge": "New",
         "desc": "One icon specification for both stacks: single geometry source, one stroke weight, optical centring by construction, and how to switch specifications.",
         "description": "One icon specification for both stacks: single geometry source, one stroke weight, optical centring by construction, and how to switch specifications."
+      },
+      {
+        "id": "spacing",
+        "title": "Spacing & Density",
+        "href": "#/get-started/spacing",
+        "badge": "Guide",
+        "desc": "Desktop space aesthetics, spacing scale, information density, and form layout guidelines.",
+        "description": "Desktop space aesthetics, spacing scale, information density, and form layout guidelines."
       }
     ]
   },
@@ -1884,6 +1918,106 @@ export const SHORTCUTS_DATA = {
       "hasConflict": false,
       "conflictOccupiers": [],
       "tags": []
+    }
+  ]
+};
+export const SPACING_SCALE_DATA: SpacingScaleData = {
+  "scaleSteps": [
+    {
+      "id": "micro",
+      "name": "Micro",
+      "nameZh": "微距",
+      "rem": "0.375rem",
+      "px": 6,
+      "usage": "Label-to-input gap, icon-to-text gap, badge chips",
+      "usageZh": "标签与输入框间距 (gap-1.5)、图标与文字间隙、角标内嵌"
+    },
+    {
+      "id": "tight",
+      "name": "Tight",
+      "nameZh": "紧凑距",
+      "rem": "0.5rem",
+      "px": 8,
+      "usage": "Button row spacing, segmented control gap, actions",
+      "usageZh": "按钮组横向间隙 (gap-2)、分段控件内嵌、工具栏操作"
+    },
+    {
+      "id": "compact",
+      "name": "Compact",
+      "nameZh": "致密距",
+      "rem": "0.625rem",
+      "px": 10,
+      "usage": "Card sub-item spacing, compact form field gap",
+      "usageZh": "卡片子项间距 (gap-2.5)、致密表单字段纵向间隙"
+    },
+    {
+      "id": "normal",
+      "name": "Normal",
+      "nameZh": "标准距",
+      "rem": "0.875rem",
+      "px": 14,
+      "usage": "Standard form field gap, list item vertical spacing",
+      "usageZh": "标准表单字段纵向间距 (space-y-3.5)、紧凑列表行距"
+    },
+    {
+      "id": "section",
+      "name": "Section",
+      "nameZh": "区块距",
+      "rem": "1.0rem",
+      "px": 16,
+      "usage": "Form body to header/footer gap, inner card section",
+      "usageZh": "表单正文与页眉/页脚间隙 (space-y-4)、卡片内部分区"
+    },
+    {
+      "id": "container",
+      "name": "Container",
+      "nameZh": "容器内边距",
+      "rem": "1.25rem",
+      "px": 20,
+      "usage": "Dialog, Sheet, PanelCard standard padding (p-5)",
+      "usageZh": "Dialog、Sheet、卡片标准内边距 (p-5 / 20px)"
+    }
+  ],
+  "modalTiers": [
+    {
+      "id": "sm",
+      "size": "sm (Compact)",
+      "widthRem": "26rem ~ 27rem",
+      "widthPx": "416px ~ 432px",
+      "cap": "2~3 fields / Confirmation",
+      "capZh": "2~3 个字段 / 确认操作",
+      "useCase": "Edit Profile, Quick Setup, Alert Confirmation",
+      "useCaseZh": "编辑个人资料、简短选项配置、二次确认弹窗"
+    },
+    {
+      "id": "default",
+      "size": "default (Standard)",
+      "widthRem": "30rem ~ 32rem",
+      "widthPx": "480px ~ 512px",
+      "cap": "4~6 fields / Standard Form",
+      "capZh": "4~6 个字段 / 标准表单",
+      "useCase": "User Settings, Preference Dialog, New Item Creator",
+      "useCaseZh": "用户通用设置、首选项弹窗、新增项目录入"
+    },
+    {
+      "id": "lg",
+      "size": "lg (Expanded)",
+      "widthRem": "42rem ~ 45rem",
+      "widthPx": "672px ~ 720px",
+      "cap": "Two-column / Rich Form",
+      "capZh": "双列表单 / 复合内容",
+      "useCase": "Hardware Configurator, Query Filter Builder",
+      "useCaseZh": "硬件设备配置台、复杂查询条件组合器"
+    },
+    {
+      "id": "xl",
+      "size": "xl (Workstation)",
+      "widthRem": "54rem ~ 58rem",
+      "widthPx": "864px ~ 928px",
+      "cap": "Master-Detail / Code",
+      "capZh": "主从视图 / 代码对比",
+      "useCase": "Keybinding Manager, Diff Viewer, Data Import",
+      "useCaseZh": "快捷键管理器、代码 Diff 对比、批量数据导入"
     }
   ]
 };

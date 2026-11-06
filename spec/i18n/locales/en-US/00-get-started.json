@@ -27,6 +27,12 @@
     "introduction": {
       "description": "ChaSet (Tea Set) is a cross-stack UI component library where a single source of truth powers both React (Web) and Qt/QML (Desktop) implementations."
     },
+    "spacing": {
+      "description": "Desktop space aesthetics, spacing scale, information density, and form layout guidelines."
+    },
+    "spacing-density": {
+      "description": "Desktop space aesthetics, spacing scale, information density, and form layout guidelines."
+    },
     "theme-studio": {
       "description": "Live interactive theme tuner. Fine-tune colors, radiuses, and accents with real-time feedback and one-click config export."
     },
@@ -316,9 +322,79 @@
         "webValScale": "Root font size multiplier",
         "webValSmoothing": "antialiased · grayscale"
       }
-    }
-  },
-  "showcase": {
+    },
+    "spacing": {
+        "title": "Space & Density Standards",
+        "desc": "Desktop space aesthetics, spacing scale, information density, and form layout guidelines.",
+        "principles": {
+          "title": "Four Laws of Desktop Space Aesthetics",
+          "desc": "Negative space is a tool to organize visual hierarchy and guide reading rhythm. In desktop software, whitespace never equals dead void. Eliminate meaningless empty hollows and horizontal tearing to preserve order and compact elegance.",
+          "law1": "Law 1",
+          "law1Title": "Hug-Content First",
+          "law1Desc": "Dialog, Sheet, and Card vertical heights default to auto, hugging content snugly. Strictly avoid hardcoding fixed heights when content is minimal, which creates 100px+ dead voids.",
+          "law2": "Law 2",
+          "law2Title": "Top-Aligned Scan",
+          "law2Desc": "Lightweight dialog forms enforce top-aligned labels. Full-width inputs eliminate horizontal tearing and dead left space from short labels, creating a smooth vertical reading path.",
+          "law3": "Law 3",
+          "law3Title": "Compact Rhythm",
+          "law3Desc": "Move away from mobile-style loose p-8/p-6 padding. Core desktop containers converge on p-5 (20px), paired with micro-gap 6px, tight gap 8px, and field gap 14px.",
+          "law4": "Law 4",
+          "law4Title": "Single Divider & Surface Elevation",
+          "law4Desc": "Keep only a single, gentle dividing line (border-t border-border) between body and footer. Never stack redundant double borders, and keep footer padding compact (py-3.5)."
+        },
+        "scale": {
+          "title": "Standard Spacing Scale",
+          "desc": "A unified spacing scale driving exact alignment across both React (rem) and Qt (ThemeTokens.dp).",
+          "colLevel": "Scale Level",
+          "colRem": "Rem / Dp",
+          "colPx": "Physical Base",
+          "colSpecimen": "Visual Thickness",
+          "colUsage": "Typical Use Cases"
+        },
+        "forms": {
+          "title": "Form Layout Patterns: Recommended vs Anti-Pattern",
+          "desc": "Comparing concrete patterns to demonstrate why Top-Aligned is optimal for lightweight dialogs.",
+          "recommended": "Recommended Standard",
+          "topAlignedTitle": "Top-Aligned Single-Column Flow",
+          "antiPattern": "Anti-Pattern",
+          "gridTitle": "Rigid Percentage Grid (grid-cols-4)",
+          "recPoint1": "Straight top-to-bottom scan line with zero horizontal eye jumps",
+          "recPoint2": "100% full-width inputs provide balanced, symmetric visual weight without stranded left margins",
+          "recPoint3": "Naturally adapts to multilingual labels (2-char CJK, English, or long German words)",
+          "nameLabel": "Name",
+          "usernameLabel": "Username",
+          "sampleName": "Alex Rivera",
+          "sampleUsername": "@arivera",
+          "antiPoint1": "Wastes 100px+ of dead space to the left of short labels",
+          "antiPoint2": "Forces the visual center of gravity rightwards, collapsing layout balance",
+          "antiPoint3": "Creates severe visual disconnection between title and input field"
+        },
+        "containers": {
+          "title": "Dialog & Container Size Contract",
+          "desc": "Distinct container width tiers for different scenarios; vertical height strictly follows the Auto-Hug content principle.",
+          "colTier": "Size Tier",
+          "colWidthRem": "Width Range",
+          "colWidthPx": "Physical Base",
+          "colCapacity": "Recommended Capacity",
+          "colUseCase": "Typical Use Cases"
+        },
+        "checklist": {
+          "title": "Design & Implementation Checklist",
+          "desc": "Verify these 5 golden rules before submitting new components or modifying existing views:",
+          "item1Title": "Is the container tightly hugging content (Auto-Hug)?",
+          "item1Desc": "Check that modals collapse when content is minimal, preventing 60px+ empty black voids below inputs.",
+          "item2Title": "Has left-side dead space from short labels in percentage grids been eliminated?",
+          "item2Desc": "Prefer Top-Aligned labels for dialog forms; inline mode is only permitted with fixed narrow widths (w-16 / w-20).",
+          "item3Title": "Is padding disciplined to desktop-grade p-5 (20px)?",
+          "item3Desc": "Avoid blindly copying mobile p-8 / p-6 padding, maintaining high-density desktop elegance.",
+          "item4Title": "Is the footer divider clean and singular?",
+          "item4Desc": "Ensure only one clear top border exists, preventing nested double borders or excessive vertical padding.",
+          "item5Title": "Is component dogfooding enforced?",
+          "item5Desc": "Form labels must use the native ChaSet Label primitive, strictly avoiding bare unstyled label tags."
+        }
+      }
+    },
+    "showcase": {
     "collapseOverflow": "Collapse & Overflow",
     "examplesVariants": "Examples & Variants",
     "installation": "Installation",
@@ -331,6 +407,11 @@
       "gallery": "Icon Gallery",
       "grids": "Grids, Weight & Size",
       "integration": "Host Integration",
+      "principles": "Core Principles",
+      "scale": "Spacing Scale",
+      "forms": "Form Patterns",
+      "containers": "Container Sizes",
+      "checklist": "Checklist",
       "ramp": "Cross-Script Size Ramp",
       "rasterizer": "Rasterization Path",
       "rules": "Governance Rules",

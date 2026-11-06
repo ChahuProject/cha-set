@@ -306,6 +306,11 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "gallery": "图标画廊",
       "grids": "网格、粗细与尺寸",
       "integration": "宿主集成",
+      "principles": "核心原则",
+      "scale": "间距阶梯",
+      "forms": "表单排版",
+      "containers": "容器尺寸",
+      "checklist": "自查清单",
       "ramp": "跨文字体系字阶",
       "rasterizer": "光栅化管线",
       "rules": "治理规则",
@@ -501,6 +506,12 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     },
     "introduction": {
       "description": "ChaSet（茶具套件）是一个跨端 UI 组件库，由单一真理源同时驱动 React (Web) 与 Qt/QML (桌面端) 两套实现。"
+    },
+    "spacing": {
+      "description": "桌面端空间美学、间距阶梯、信息密度与表单排版设计规范。"
+    },
+    "spacing-density": {
+      "description": "桌面端空间美学、间距阶梯、信息密度与表单排版设计规范。"
     },
     "theme-studio": {
       "description": "实时交互式主题微调器。微调颜色、圆角与强调色，提供即时反馈并支持一键导出配置。"
@@ -2172,6 +2183,76 @@ export const BUILTIN_LOCALES: Record<string, any> = {
         "webValScale": "根节点字体尺寸倍率",
         "webValSmoothing": "抗锯齿 · 灰度"
       }
+    },
+    "spacing": {
+      "title": "空间与留白规范",
+      "desc": "桌面端空间美学、间距阶梯、信息密度与表单排版设计规范。",
+      "principles": {
+        "title": "桌面端空间美学四大定律",
+        "desc": "留白（Negative Space）是组织视觉层次与引导阅读呼吸的工具。在桌面级软件中，留白绝不等于空置（Dead Void）。杜绝无意义的黑腔与横向撕裂，维持秩序与紧致美感。",
+        "law1": "定律 1",
+        "law1Title": "内容自适应包裹律 (Hug-Content First)",
+        "law1Desc": "弹窗（Dialog）、抽屉（Sheet）与卡片（Card）垂直高度默认 auto，严格包裹内容。严禁未填满时设死固定高导致百像素死黑。",
+        "law2": "定律 2",
+        "law2Title": "视线单轨扫读律 (Top-Aligned Scan)",
+        "law2Desc": "轻量弹窗强制采用顶部对齐标签（Top-Aligned）。输入框满宽，消除横向撕裂与短标签左侧死白，视线笔直顺滑流动。",
+        "law3": "定律 3",
+        "law3Title": "桌面紧致韵律阶梯 (Compact Rhythm)",
+        "law3Desc": "告别移动端宽松的 p-8/p-6 假大空。核心容器内边距收敛至 p-5 (20px)，微距 6px、紧凑距 8px、字段距 14px，张弛有度。",
+        "law4": "定律 4",
+        "law4Title": "单一弱化分割与表面层级 (Single Divider)",
+        "law4Desc": "底栏与正文之间仅保留一条柔和清晰的顶线（border-t border-border）。严禁嵌套双重边框，底栏内边距收敛至 py-3.5 扎实收尾。"
+      },
+      "scale": {
+        "title": "标准间距阶梯表",
+        "desc": "统一的间距标尺驱动双端（React rem 与 Qt ThemeTokens.dp）精确吻合。",
+        "colLevel": "标尺级别",
+        "colRem": "相对单位 (Rem / Dp)",
+        "colPx": "物理基准",
+        "colSpecimen": "厚度可视化",
+        "colUsage": "典型适用场景"
+      },
+      "forms": {
+        "title": "表单排版模式：推荐 vs 反模式",
+        "desc": "通过具体模式对比，观察为什么顶部对齐（Top-Aligned）是轻量弹窗的最优解。",
+        "recommended": "推荐规范",
+        "topAlignedTitle": "顶部对齐单轨流 (Top-Aligned)",
+        "antiPattern": "反模式",
+        "gridTitle": "机械百分比栅格 (grid-cols-4)",
+        "recPoint1": "视线自上而下笔直扫读，零水平跳跃",
+        "recPoint2": "输入框 100% 满宽，稳固对称无左侧留白空置",
+        "recPoint3": "天然适配多语言（中文双字、英文、德文长单词皆匀称）",
+        "nameLabel": "姓名",
+        "usernameLabel": "用户名",
+        "sampleName": "亚历克斯",
+        "sampleUsername": "@亚历克斯",
+        "antiPoint1": "短标签左侧荒废 100px+ 彻底废弃空白",
+        "antiPoint2": "表单重心被迫右倾，整体比例向右塌陷",
+        "antiPoint3": "从左上角标题到正文输入框视线产生严重断层"
+      },
+      "containers": {
+        "title": "弹窗与容器尺寸契约",
+        "desc": "不同业务场景对应清晰的容器宽度梯阶；垂直方向一律遵守 Auto-Hug 内容包裹原则。",
+        "colTier": "预设级别",
+        "colWidthRem": "宽度范围",
+        "colWidthPx": "物理像素",
+        "colCapacity": "推荐承载容量",
+        "colUseCase": "典型使用场景"
+      },
+      "checklist": {
+        "title": "设计与实现自查清单",
+        "desc": "在提交新组件或修改既有界面前，逐条确认以下 5 条铁律：",
+        "item1Title": "容器是否严密贴合（Auto-Hug）？",
+        "item1Desc": "检查弹窗在内容较少时是否自动收缩，杜绝输入项下方存在 60px 以上无意义死黑空腔。",
+        "item2Title": "是否消灭了百分比栅格短标签左侧死白？",
+        "item2Desc": "弹窗表单优先采用 Top-Aligned 标签；行内模式仅允许固定窄宽（w-16 / w-20）。",
+        "item3Title": "内边距是否收敛至桌面级 p-5 (20px)？",
+        "item3Desc": "杜绝盲目套用移动端 p-8 / p-6 导致的大而无当，保持桌面端高密度精致感。",
+        "item4Title": "底栏分割线是否纯粹单一？",
+        "item4Desc": "检查是否只存在一条清晰顶线，排查嵌套产生的双重边线或过高内边距。",
+        "item5Title": "是否执行了组件自举（Dogfooding）？",
+        "item5Desc": "表单标签必须使用 ChaSet 原生 Label 组件，严禁散落裸写无样式 label 标签。"
+      }
     }
   },
   "formsA": {
@@ -3233,6 +3314,11 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "gallery": "Icon Gallery",
       "grids": "Grids, Weight & Size",
       "integration": "Host Integration",
+      "principles": "Core Principles",
+      "scale": "Spacing Scale",
+      "forms": "Form Patterns",
+      "containers": "Container Sizes",
+      "checklist": "Checklist",
       "ramp": "Cross-Script Size Ramp",
       "rasterizer": "Rasterization Path",
       "rules": "Governance Rules",
@@ -3428,6 +3514,12 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     },
     "introduction": {
       "description": "ChaSet (Tea Set) is a cross-stack UI component library where a single source of truth powers both React (Web) and Qt/QML (Desktop) implementations."
+    },
+    "spacing": {
+      "description": "Desktop space aesthetics, spacing scale, information density, and form layout guidelines."
+    },
+    "spacing-density": {
+      "description": "Desktop space aesthetics, spacing scale, information density, and form layout guidelines."
     },
     "theme-studio": {
       "description": "Live interactive theme tuner. Fine-tune colors, radiuses, and accents with real-time feedback and one-click config export."
@@ -5098,6 +5190,76 @@ export const BUILTIN_LOCALES: Record<string, any> = {
         "webValRasterizer": "Grayscale alpha antialiasing",
         "webValScale": "Root font size multiplier",
         "webValSmoothing": "antialiased · grayscale"
+      }
+    },
+    "spacing": {
+      "title": "Space & Density Standards",
+      "desc": "Desktop space aesthetics, spacing scale, information density, and form layout guidelines.",
+      "principles": {
+        "title": "Four Laws of Desktop Space Aesthetics",
+        "desc": "Negative space is a tool to organize visual hierarchy and guide reading rhythm. In desktop software, whitespace never equals dead void. Eliminate meaningless empty hollows and horizontal tearing to preserve order and compact elegance.",
+        "law1": "Law 1",
+        "law1Title": "Hug-Content First",
+        "law1Desc": "Dialog, Sheet, and Card vertical heights default to auto, hugging content snugly. Strictly avoid hardcoding fixed heights when content is minimal, which creates 100px+ dead voids.",
+        "law2": "Law 2",
+        "law2Title": "Top-Aligned Scan",
+        "law2Desc": "Lightweight dialog forms enforce top-aligned labels. Full-width inputs eliminate horizontal tearing and dead left space from short labels, creating a smooth vertical reading path.",
+        "law3": "Law 3",
+        "law3Title": "Compact Rhythm",
+        "law3Desc": "Move away from mobile-style loose p-8/p-6 padding. Core desktop containers converge on p-5 (20px), paired with micro-gap 6px, tight gap 8px, and field gap 14px.",
+        "law4": "Law 4",
+        "law4Title": "Single Divider & Surface Elevation",
+        "law4Desc": "Keep only a single, gentle dividing line (border-t border-border) between body and footer. Never stack redundant double borders, and keep footer padding compact (py-3.5)."
+      },
+      "scale": {
+        "title": "Standard Spacing Scale",
+        "desc": "A unified spacing scale driving exact alignment across both React (rem) and Qt (ThemeTokens.dp).",
+        "colLevel": "Scale Level",
+        "colRem": "Rem / Dp",
+        "colPx": "Physical Base",
+        "colSpecimen": "Visual Thickness",
+        "colUsage": "Typical Use Cases"
+      },
+      "forms": {
+        "title": "Form Layout Patterns: Recommended vs Anti-Pattern",
+        "desc": "Comparing concrete patterns to demonstrate why Top-Aligned is optimal for lightweight dialogs.",
+        "recommended": "Recommended Standard",
+        "topAlignedTitle": "Top-Aligned Single-Column Flow",
+        "antiPattern": "Anti-Pattern",
+        "gridTitle": "Rigid Percentage Grid (grid-cols-4)",
+        "recPoint1": "Straight top-to-bottom scan line with zero horizontal eye jumps",
+        "recPoint2": "100% full-width inputs provide balanced, symmetric visual weight without stranded left margins",
+        "recPoint3": "Naturally adapts to multilingual labels (2-char CJK, English, or long German words)",
+        "nameLabel": "Name",
+        "usernameLabel": "Username",
+        "sampleName": "Alex Rivera",
+        "sampleUsername": "@arivera",
+        "antiPoint1": "Wastes 100px+ of dead space to the left of short labels",
+        "antiPoint2": "Forces the visual center of gravity rightwards, collapsing layout balance",
+        "antiPoint3": "Creates severe visual disconnection between title and input field"
+      },
+      "containers": {
+        "title": "Dialog & Container Size Contract",
+        "desc": "Distinct container width tiers for different scenarios; vertical height strictly follows the Auto-Hug content principle.",
+        "colTier": "Size Tier",
+        "colWidthRem": "Width Range",
+        "colWidthPx": "Physical Base",
+        "colCapacity": "Recommended Capacity",
+        "colUseCase": "Typical Use Cases"
+      },
+      "checklist": {
+        "title": "Design & Implementation Checklist",
+        "desc": "Verify these 5 golden rules before submitting new components or modifying existing views:",
+        "item1Title": "Is the container tightly hugging content (Auto-Hug)?",
+        "item1Desc": "Check that modals collapse when content is minimal, preventing 60px+ empty black voids below inputs.",
+        "item2Title": "Has left-side dead space from short labels in percentage grids been eliminated?",
+        "item2Desc": "Prefer Top-Aligned labels for dialog forms; inline mode is only permitted with fixed narrow widths (w-16 / w-20).",
+        "item3Title": "Is padding disciplined to desktop-grade p-5 (20px)?",
+        "item3Desc": "Avoid blindly copying mobile p-8 / p-6 padding, maintaining high-density desktop elegance.",
+        "item4Title": "Is the footer divider clean and singular?",
+        "item4Desc": "Ensure only one clear top border exists, preventing nested double borders or excessive vertical padding.",
+        "item5Title": "Is component dogfooding enforced?",
+        "item5Desc": "Form labels must use the native ChaSet Label primitive, strictly avoiding bare unstyled label tags."
       }
     }
   },

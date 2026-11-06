@@ -33,6 +33,13 @@
         "href": "#/get-started/icons",
         "badge": "New",
         "desc": "One icon specification for both stacks: single geometry source, one stroke weight, optical centring by construction, and how to switch specifications."
+      },
+      {
+        "id": "spacing",
+        "title": "Spacing & Density",
+        "href": "#/get-started/spacing",
+        "badge": "Guide",
+        "desc": "Desktop space aesthetics, spacing scale, information density, and form layout guidelines."
       }
     ]
   },

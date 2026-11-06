@@ -12,6 +12,7 @@ const featureCards = JSON.parse(fs.readFileSync(path.join(showcaseDir, 'feature-
 const navigation = JSON.parse(fs.readFileSync(path.join(showcaseDir, 'navigation.json'), 'utf8'));
 const typographyRamp = JSON.parse(fs.readFileSync(path.join(showcaseDir, 'typography-ramp.json'), 'utf8'));
 const shortcuts = JSON.parse(fs.readFileSync(path.join(showcaseDir, 'shortcuts.json'), 'utf8'));
+const spacingScale = JSON.parse(fs.readFileSync(path.join(showcaseDir, 'spacing-scale.json'), 'utf8'));
 
 const navigationWithDesc = navigation.map(group => ({
   ...group,
@@ -71,12 +72,39 @@ export interface TypographyRampData {
   quotes: TypographyQuoteItem[];
 }
 
+export interface SpacingScaleStep {
+  id: string;
+  name: string;
+  nameZh: string;
+  rem: string;
+  px: number;
+  usage: string;
+  usageZh: string;
+}
+
+export interface ModalTierItem {
+  id: string;
+  size: string;
+  widthRem: string;
+  widthPx: string;
+  cap: string;
+  capZh: string;
+  useCase: string;
+  useCaseZh: string;
+}
+
+export interface SpacingScaleData {
+  scaleSteps: SpacingScaleStep[];
+  modalTiers: ModalTierItem[];
+}
+
 export const CHANGELOG_DATA: ChangelogItem[] = ${JSON.stringify(changelog, null, 2)};
 export const FEATURE_CARDS_DATA: FeatureCardItem[] = ${JSON.stringify(featureCards, null, 2)};
 export const NAVIGATION_DATA: NavCategory[] = ${JSON.stringify(navigationWithDesc, null, 2)};
 export const NAVIGATION_CONFIG: NavCategory[] = NAVIGATION_DATA;
 export const TYPOGRAPHY_RAMP_DATA: TypographyRampData = ${JSON.stringify(typographyRamp, null, 2)};
 export const SHORTCUTS_DATA = ${JSON.stringify(shortcuts, null, 2)};
+export const SPACING_SCALE_DATA: SpacingScaleData = ${JSON.stringify(spacingScale, null, 2)};
 `;
 
 fs.writeFileSync(path.join(reactOutDir, 'showcaseData.generated.ts'), reactCode, 'utf8');
@@ -96,6 +124,7 @@ QtObject {
     readonly property var navigation: ${JSON.stringify(navigation)}
     readonly property var typographyRamp: ${JSON.stringify(typographyRamp)}
     readonly property var shortcuts: ${JSON.stringify(shortcuts)}
+    readonly property var spacingScale: ${JSON.stringify(spacingScale)}
 }
 `;
 

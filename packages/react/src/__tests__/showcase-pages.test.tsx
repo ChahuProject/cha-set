@@ -58,6 +58,7 @@ import { ElidedTextDocPage } from '../../examples/basic/src/pages/components/Eli
 import { SidebarDocPage } from '../../examples/basic/src/pages/components/SidebarDocPage';
 import { ViewportConstrainedContainerDocPage } from '../../examples/basic/src/pages/components/ViewportConstrainedContainerDocPage';
 import { IconsPage } from '../../examples/basic/src/pages/get-started/IconsPage';
+import { SpacingGuidePage } from '../../examples/basic/src/pages/get-started/SpacingGuidePage';
 
 const pages = [
   { name: 'BadgeDocPage', Component: BadgeDocPage },
@@ -116,6 +117,7 @@ const pages = [
   { name: 'SidebarDocPage', Component: SidebarDocPage },
   { name: 'ViewportConstrainedContainerDocPage', Component: ViewportConstrainedContainerDocPage },
   { name: 'IconsPage', Component: IconsPage },
+  { name: 'SpacingGuidePage', Component: SpacingGuidePage },
 ];
 
 describe('Showcase Living Documentation Pages (Smoke & Click Integrity)', () => {

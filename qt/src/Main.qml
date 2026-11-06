@@ -394,6 +394,7 @@ ApplicationWindow {
         case "theme-tuner": return "ThemeTunerPage.qml";
         case "typography": return "TypographyPage.qml";
         case "icons": return "IconsPage.qml";
+        case "spacing": return "SpacingGuidePage.qml";
         case "button": return "ButtonDocPage.qml";
         case "scroll-area": return "ScrollAreaDocPage.qml";
         case "tabs": return "TabsDocPage.qml";

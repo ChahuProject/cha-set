@@ -112,6 +112,7 @@ import { TokensPage } from './pages/get-started/TokensPage';
 import { ThemeTunerPage } from './pages/get-started/ThemeTunerPage';
 import { TypographyPage } from './pages/get-started/TypographyPage';
 import { IconsPage } from './pages/get-started/IconsPage';
+import { SpacingGuidePage } from './pages/get-started/SpacingGuidePage';
 import { showcaseShortcuts } from './services/showcaseShortcuts';
 
 function matchesKeyboardEvent(e: KeyboardEvent, chordString: string): boolean {
@@ -843,6 +844,8 @@ export function App() {
         return <TypographyPage />;
       case '#/get-started/icons':
         return <IconsPage />;
+      case '#/get-started/spacing':
+        return <SpacingGuidePage />;
       case '#/components/scroll-area':
         return <ScrollAreaDocPage />;
       case '#/components/tabs':
