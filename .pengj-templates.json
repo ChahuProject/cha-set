@@ -44,10 +44,10 @@
     ".agents\\skills\\git-workflow\\references\\non-interactive.md": "c1132bb6989f527671e538eac25bf7cc46753990cb60f7c454769d5a0eee4aa1",
     ".agents\\skills\\git-workflow\\references\\rebase-conflict.md": "0909941d7d8af993da1f04ae1dfbb7feab2fd44dad282ce8ee01bacd6a7b96f5",
     ".agents\\skills\\git-workflow\\scripts\\align-branches.ps1": "fb3786ca06162c8aeed8cf2b6cdcb0aedad8fca7fdf15ea9097da25cdd0bf949",
-    ".agents\\skills\\git-workflow\\scripts\\continue-sync.ps1": "a2f11c3036f02ede1c9a16bd3ba9853c8f1373a754ec674ce89fcc5694523b33",
+    ".agents\\skills\\git-workflow\\scripts\\continue-sync.ps1": "de3576688a7067013a386a94277de8a1d2ccd0326f8c4470d0d0d14d3f2183d5",
     ".agents\\skills\\git-workflow\\scripts\\manage-sync-backups.ps1": "3a52a163ee8667c114e7b3459c6138dc11875fa50333473c709be7d1a1c019ed",
     ".agents\\skills\\git-workflow\\scripts\\show-branch-topology.ps1": "b016cecfce2df367e3552220b50db9b939cf806273d78b88cfcb2a278c67172d",
-    ".agents\\skills\\git-workflow\\scripts\\sync-branch.ps1": "80f92d0c396c654dc07856fd8a94e2c80826ee6924256da83ad27d25c11e2688",
+    ".agents\\skills\\git-workflow\\scripts\\sync-branch.ps1": "2f04e34f58db6f573c89d3d7e3552c5dac547c8cf7d70436dbf60547b246c531",
     ".agents\\skills\\grill-me\\SKILL.md": "e0dcf39584c33a0a2b35cca1e32ce8bbfd1f30266042f38d65387fc35d60cbc7",
     ".agents\\skills\\mcp-bootstrap\\SKILL.md": "74681a5a08e166c44729d91427e5cb463524fce1d0d5532662d3d5107588a403",
     ".agents\\skills\\mcp-bootstrap\\scripts\\ensure-mcp.mjs": "7c3d9f774e69ed48a751987e449844f81138126aa7fd413709f2cf5a2144767f",
@@ -61,6 +61,6 @@
     ".vscode\\settings.json": "59588125b818b5bd3689b1f4f86e592e2808ba526961c5f857c273b64290f701",
     "AGENTS.md": "3fc98d9af09ea921ee68784723fecceda2619854dbaf13a3f0bc421c9d56402b",
     "commitlint.base.js": "7a6e2a5ae12b31ee0da5104b3d3ef321ea55aa07c8fa630e0aa11e7e3195a4f2",
-    "package.json": "9289b8181fa5e768a2ae76343dfc307f264d562499f7c03431d3d1b1697b402c"
+    "package.json": "f5a728ad53e37988cc5e6bcb3231168ef9dcd887e66548aa4a379f3788c93727"
   }
 }
