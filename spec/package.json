@@ -66,6 +66,7 @@
     "./shortcut-bar": "./components/shortcut-bar.ts",
     "./floating-notice": "./components/floating-notice.ts",
     "./keybinding-manager": "./components/keybinding-manager.ts",
+    "./filter-popup": "./components/filter-popup.ts",
     "./showcase/shortcuts.json": "./showcase/shortcuts.json"
   },
   "dependencies": {

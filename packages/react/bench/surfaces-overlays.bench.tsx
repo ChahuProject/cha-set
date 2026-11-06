@@ -5,6 +5,7 @@ import {
   ActivityCard,
   ActivityStack,
   AdaptivePopup,
+  FilterPopup,
   AlertDialog,
   AlertDialogTrigger,
   AlertDialogContent,
@@ -63,6 +64,22 @@ describe('Performance Suite: Surfaces & Overlays (10 Components)', () => {
           <AdaptivePopup key={i} open={false}>
             <div>Content {i}</div>
           </AdaptivePopup>
+        ))}
+      </div>
+    );
+    unmount();
+  });
+
+  bench('FilterPopup (30x batch mount)', () => {
+    const items = [
+      { key: 'jpg', label: '.jpg', count: 12 },
+      { key: 'png', label: '.png', count: 8 },
+      { key: 'exe', label: '.exe', count: 2, isExcluded: true },
+    ];
+    const { unmount } = render(
+      <div>
+        {Array.from({ length: 30 }, (_, i) => (
+          <FilterPopup key={i} title={`Filter ${i}`} items={items} open={false} />
         ))}
       </div>
     );

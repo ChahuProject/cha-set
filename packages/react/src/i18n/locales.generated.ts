@@ -443,6 +443,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "sheet": "抽屉侧栏",
     "popover": "气泡卡片",
     "adaptive-popup": "自适应弹窗",
+    "filter-popup": "过滤器弹窗",
     "tooltip": "文字提示",
     "dropdown-menu": "下拉菜单",
     "context-menu": "右键上下文菜单",
@@ -1035,6 +1036,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "adaptivePopup": {
       "description": "内容驱动的自适应高度弹窗原语，具备宿主空间封顶与头/体/尾三段式布局，绝不误出多余滚动条。"
     },
+    "filterPopup": {
+      "description": "多维分面筛选弹窗组件，支持实时拼音搜索、排除过滤、星级评分与快捷键提示。"
+    },
     "popover": {
       "description": "在锚定于触发器的浮动 Portal 中展示富交互内容，具备无障碍焦点管理。"
     },
@@ -1584,6 +1588,13 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "sandboxTitle": "自适应弹窗交互沙箱",
       "variantsDesc": "演示向上/向下自适应展开以及显式 maxHeight 封顶效果。",
       "variantsTitle": "形态与方位"
+    },
+    "filterPopup": {
+      "animationsDesc": "弹窗进出场采用快速动效令牌（90ms）与标准缓动曲线，条目悬停、复选状态切换与搜索框展开均平滑响应，并在降低动效模式下保持稳定。",
+      "animationsTitle": "动效说明",
+      "overviewDesc": "通用多维筛选弹出浮层组件，支持三态包含与排除、按键即输入实时拼音模糊筛选、星级评分与底部快捷键操作指南。",
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "过滤器弹窗沙盒"
     },
     "activityStack": {
       "accessibleLabel": "活动堆栈",
@@ -2696,6 +2707,20 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "upwardDesc": "适用于状态栏或底部操作项。anchorY 代表期望底边，弹窗自底向上在窗口内展开。",
       "upwardTitle": "向上贴靠展开（Placement: Up）"
     },
+    "filterPopup": {
+      "clearDimension": "清除本维筛选",
+      "dimension": "筛选维度：",
+      "filtered": "已筛选",
+      "filteredBadge": "已筛选",
+      "format": "格式",
+      "formatFilter": "格式筛选",
+      "hint": "点击下方按钮展开过滤弹窗，或直接键入字符触发快速搜索过滤。",
+      "rating": "评分",
+      "ratingFilter": "评分筛选",
+      "stars": "星",
+      "tag": "标签",
+      "tagFilter": "标签筛选"
+    },
     "contextMenu": {
       "back": "返回",
       "backTooltip": "返回上一页",
@@ -3340,6 +3365,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "sheet": "Sheet",
     "popover": "Popover",
     "adaptive-popup": "Adaptive Popup",
+    "filter-popup": "Filter Popup",
     "tooltip": "Tooltip",
     "dropdown-menu": "Dropdown Menu",
     "context-menu": "Context Menu",
@@ -3932,6 +3958,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "adaptivePopup": {
       "description": "Content-driven adaptive height popup with zero unnecessary scrollbars and 3-tier layout."
     },
+    "filterPopup": {
+      "description": "Multi-dimensional facet filtering popup with search, exclusions, ratings and shortcuts."
+    },
     "popover": {
       "description": "Displays rich interactive content in a floating portal anchored to a trigger, with accessible focus management."
     },
@@ -4481,6 +4510,13 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "sandboxTitle": "Adaptive Popup Sandbox",
       "variantsDesc": "Demonstrates downward and upward adaptive expansion and explicit maxHeight capping.",
       "variantsTitle": "Variants & Placement"
+    },
+    "filterPopup": {
+      "animationsDesc": "Fade and zoom scale transitions apply on popup entrance and exit with quick duration (90ms) and standard easing tokens. Micro-interactions for hover, checkbox states, and search expansions are animated smoothly and honor reduced motion preferences.",
+      "animationsTitle": "Animations",
+      "overviewDesc": "Multi-dimensional facet filtering popup supporting tri-state inclusion and exclusion, instant pinyin fuzzy search, star ratings, and bottom keyboard shortcut guidance.",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Filter Popup Sandbox"
     },
     "activityStack": {
       "accessibleLabel": "Activity stack",
@@ -5592,6 +5628,20 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "up": "Up",
       "upwardDesc": "Useful for taskbars and status items. AnchorY represents the desired bottom edge, expanding upward into the window.",
       "upwardTitle": "Upward Clamping (Placement: Up)"
+    },
+    "filterPopup": {
+      "clearDimension": "Clear Dimension",
+      "dimension": "Dimension:",
+      "filtered": "Filtered",
+      "filteredBadge": "Filtered",
+      "format": "Format",
+      "formatFilter": "Format Filter",
+      "hint": "Click the button below to open the filter popup, or press printable characters to test quick search.",
+      "rating": "Rating",
+      "ratingFilter": "Rating Filter",
+      "stars": "Stars",
+      "tag": "Tag",
+      "tagFilter": "Tag Filter"
     },
     "contextMenu": {
       "back": "Back",

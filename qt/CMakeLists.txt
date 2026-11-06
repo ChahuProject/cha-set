@@ -152,12 +152,17 @@ qt_add_qml_module(ChaSet
         src/ChaSetSystemTheme.cpp
         src/ChaSetSquircle.h
         src/ChaSetSquircle.cpp
+        src/ChaSetPinyinTable.h
+        src/ChaSetPinyinTable.cpp
+        src/ChaSetPinyin.h
+        src/ChaSetPinyin.cpp
     RESOURCES
         resources/fonts/MaterialSymbolsOutlined[FILL,GRAD,opsz,wght].ttf
     QML_FILES
         src/ChaSetScrollBar.qml
         src/ChaSetScrollArea.qml
         src/ChaSetAdaptivePopup.qml
+        src/ChaSetFilterPopup.qml
         src/ChaSetButton.qml
         src/ChaSetCircularProgress.qml
         src/ChaSetTabs.qml
@@ -335,6 +340,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/PopoverDocPage.qml
             src/ActivityStackDocPage.qml
             src/AdaptivePopupDocPage.qml
+            src/FilterPopupDocPage.qml
             src/ContextMenuDocPage.qml
             src/SheetDocPage.qml
             src/SkeletonDocPage.qml

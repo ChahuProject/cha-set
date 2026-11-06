@@ -61,6 +61,7 @@ import { SelectDocPage } from './pages/components/SelectDocPage';
 import { PopoverDocPage } from './pages/components/PopoverDocPage';
 import { ActivityStackDocPage } from './pages/components/ActivityStackDocPage';
 import { AdaptivePopupDocPage } from './pages/components/AdaptivePopupDocPage';
+import { FilterPopupDocPage } from './pages/components/FilterPopupDocPage';
 import { ContextMenuDocPage } from './pages/components/ContextMenuDocPage';
 import { SheetDocPage } from './pages/components/SheetDocPage';
 import { SkeletonDocPage } from './pages/components/SkeletonDocPage';
@@ -882,6 +883,8 @@ export function App() {
         return <ActivityStackDocPage />;
       case '#/components/adaptive-popup':
         return <AdaptivePopupDocPage />;
+      case '#/components/filter-popup':
+        return <FilterPopupDocPage />;
       case '#/components/context-menu':
         return <ContextMenuDocPage />;
       case '#/components/alert-dialog':

@@ -61,6 +61,9 @@
     "adaptivePopup": {
       "description": "内容驱动的自适应高度弹窗原语，具备宿主空间封顶与头/体/尾三段式布局，绝不误出多余滚动条。"
     },
+    "filterPopup": {
+      "description": "多维分面筛选弹窗组件，支持实时拼音搜索、排除过滤、星级评分与快捷键提示。"
+    },
     "popover": {
       "description": "在锚定于触发器的浮动 Portal 中展示富交互内容，具备无障碍焦点管理。"
     },
@@ -91,6 +94,13 @@
       "sandboxTitle": "自适应弹窗交互沙箱",
       "variantsDesc": "演示向上/向下自适应展开以及显式 maxHeight 封顶效果。",
       "variantsTitle": "形态与方位"
+    },
+    "filterPopup": {
+      "animationsDesc": "弹窗进出场采用快速动效令牌（90ms）与标准缓动曲线，条目悬停、复选状态切换与搜索框展开均平滑响应，并在降低动效模式下保持稳定。",
+      "animationsTitle": "动效说明",
+      "overviewDesc": "通用多维筛选弹出浮层组件，支持三态包含与排除、按键即输入实时拼音模糊筛选、星级评分与底部快捷键操作指南。",
+      "overviewHeading": "交互式概览",
+      "sandboxTitle": "过滤器弹窗沙盒"
     },
     "activityStack": {
       "accessibleLabel": "活动堆栈",
@@ -219,6 +229,20 @@
       "up": "向上",
       "upwardDesc": "适用于状态栏或底部操作项。anchorY 代表期望底边，弹窗自底向上在窗口内展开。",
       "upwardTitle": "向上贴靠展开（Placement: Up）"
+    },
+    "filterPopup": {
+      "clearDimension": "清除本维筛选",
+      "dimension": "筛选维度：",
+      "filtered": "已筛选",
+      "filteredBadge": "已筛选",
+      "format": "格式",
+      "formatFilter": "格式筛选",
+      "hint": "点击下方按钮展开过滤弹窗，或直接键入字符触发快速搜索过滤。",
+      "rating": "评分",
+      "ratingFilter": "评分筛选",
+      "stars": "星",
+      "tag": "标签",
+      "tagFilter": "标签筛选"
     },
     "contextMenu": {
       "back": "返回",

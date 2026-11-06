@@ -33,17 +33,20 @@ Rectangle {
 
     readonly property var filteredItems: {
         if (!query || query.trim() === "") return allItems
-        var q = query.toLowerCase()
+        var q = query.trim()
+        var pinyinMatch = (typeof ChaSetPinyin !== "undefined" && ChaSetPinyin && typeof ChaSetPinyin.match === "function")
+            ? ChaSetPinyin.match
+            : function(t, k) { return String(t || "").toLowerCase().indexOf(String(k || "").toLowerCase()) >= 0 }
         return allItems.filter(function(item) {
-            var locTitle = (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("navigation." + item.id, item.title || "").toLowerCase() : ""
-            var locCat = (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("categories." + item.category, ChaSetI18n.tr("showcase.categories." + item.category, item.category || "")).toLowerCase() : ""
-            var locDesc = (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components." + item.id + ".description", item.desc || "").toLowerCase() : ""
-            return (item.title && item.title.toLowerCase().indexOf(q) >= 0) ||
-                   (locTitle && locTitle.indexOf(q) >= 0) ||
-                   (item.desc && item.desc.toLowerCase().indexOf(q) >= 0) ||
-                   (locDesc && locDesc.indexOf(q) >= 0) ||
-                   (item.category && item.category.toLowerCase().indexOf(q) >= 0) ||
-                   (locCat && locCat.indexOf(q) >= 0)
+            var locTitle = (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("navigation." + item.id, item.title || "") : ""
+            var locCat = (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("categories." + item.category, ChaSetI18n.tr("showcase.categories." + item.category, item.category || "")) : ""
+            var locDesc = (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components." + item.id + ".description", item.desc || "") : ""
+            return pinyinMatch(item.title, q) ||
+                   pinyinMatch(locTitle, q) ||
+                   pinyinMatch(item.desc, q) ||
+                   pinyinMatch(locDesc, q) ||
+                   pinyinMatch(item.category, q) ||
+                   pinyinMatch(locCat, q)
         })
     }
 

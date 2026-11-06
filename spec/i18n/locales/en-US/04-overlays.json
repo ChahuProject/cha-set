@@ -61,6 +61,9 @@
     "adaptivePopup": {
       "description": "Content-driven adaptive height popup with zero unnecessary scrollbars and 3-tier layout."
     },
+    "filterPopup": {
+      "description": "Multi-dimensional facet filtering popup with search, exclusions, ratings and shortcuts."
+    },
     "popover": {
       "description": "Displays rich interactive content in a floating portal anchored to a trigger, with accessible focus management."
     },
@@ -91,6 +94,13 @@
       "sandboxTitle": "Adaptive Popup Sandbox",
       "variantsDesc": "Demonstrates downward and upward adaptive expansion and explicit maxHeight capping.",
       "variantsTitle": "Variants & Placement"
+    },
+    "filterPopup": {
+      "animationsDesc": "Fade and zoom scale transitions apply on popup entrance and exit with quick duration (90ms) and standard easing tokens. Micro-interactions for hover, checkbox states, and search expansions are animated smoothly and honor reduced motion preferences.",
+      "animationsTitle": "Animations",
+      "overviewDesc": "Multi-dimensional facet filtering popup supporting tri-state inclusion and exclusion, instant pinyin fuzzy search, star ratings, and bottom keyboard shortcut guidance.",
+      "overviewHeading": "Interactive Overview",
+      "sandboxTitle": "Filter Popup Sandbox"
     },
     "activityStack": {
       "accessibleLabel": "Activity stack",
@@ -219,6 +229,20 @@
       "up": "Up",
       "upwardDesc": "Useful for taskbars and status items. AnchorY represents the desired bottom edge, expanding upward into the window.",
       "upwardTitle": "Upward Clamping (Placement: Up)"
+    },
+    "filterPopup": {
+      "clearDimension": "Clear Dimension",
+      "dimension": "Dimension:",
+      "filtered": "Filtered",
+      "filteredBadge": "Filtered",
+      "format": "Format",
+      "formatFilter": "Format Filter",
+      "hint": "Click the button below to open the filter popup, or press printable characters to test quick search.",
+      "rating": "Rating",
+      "ratingFilter": "Rating Filter",
+      "stars": "Stars",
+      "tag": "Tag",
+      "tagFilter": "Tag Filter"
     },
     "contextMenu": {
       "back": "Back",

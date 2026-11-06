@@ -9,6 +9,7 @@ import {
   VirtualList,
   type VirtualListHandle,
   useChaSetI18n,
+  matchPinyin,
 } from '@chahu/cha-set';
 import { NAVIGATION_CONFIG, type NavItem } from '../types/navigation';
 
@@ -49,21 +50,20 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
 
   const filtered = useMemo(() => {
     if (!query.trim()) return allItems;
-    const q = query.toLowerCase();
     return allItems.filter((entry) => {
-      const locTitle = t('navigation.' + entry.item.id, entry.item.title).toLowerCase();
-      const locCat = t('categories.' + entry.category, t('showcase.categories.' + entry.category, entry.category)).toLowerCase();
-      const rawTitle = entry.item.title.toLowerCase();
-      const rawCat = entry.category.toLowerCase();
-      const rawDesc = (entry.item.description || '').toLowerCase();
-      const locDesc = t('components.' + entry.item.id + '.description', entry.item.description || '').toLowerCase();
+      const locTitle = t('navigation.' + entry.item.id, entry.item.title);
+      const locCat = t('categories.' + entry.category, t('showcase.categories.' + entry.category, entry.category));
+      const rawTitle = entry.item.title;
+      const rawCat = entry.category;
+      const rawDesc = entry.item.description || '';
+      const locDesc = t('components.' + entry.item.id + '.description', entry.item.description || '');
       return (
-        rawTitle.includes(q) ||
-        locTitle.includes(q) ||
-        rawCat.includes(q) ||
-        locCat.includes(q) ||
-        rawDesc.includes(q) ||
-        locDesc.includes(q)
+        matchPinyin(rawTitle, query) ||
+        matchPinyin(locTitle, query) ||
+        matchPinyin(rawCat, query) ||
+        matchPinyin(locCat, query) ||
+        matchPinyin(rawDesc, query) ||
+        matchPinyin(locDesc, query)
       );
     });
   }, [allItems, query, t]);

@@ -18,6 +18,7 @@ export * from './color-picker';
 export * from './dropdown-menu';
 export * from './select';
 export * from './popover';
+export * from './filter-popup';
 export * from './activity-stack';
 export * from './adaptive-popup';
 export * from './breadcrumb';
@@ -66,6 +67,7 @@ export * from './hover-copy';
 export * from './i18n';
 export * from './typography';
 export * from './lib/splitFixedFooter';
+export { matchPinyin } from './lib/pinyin';
 export {
   CheckIcon,
   AlertTriangleIcon,

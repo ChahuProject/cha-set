@@ -284,6 +284,13 @@ Item {
         itemTooltipPopup.close()
     }
 
+    Timer {
+        id: closeTimer
+        interval: 150
+        repeat: false
+        onTriggered: overflowPopup.close()
+    }
+
     property color backgroundColor: "transparent"
 
     Rectangle {

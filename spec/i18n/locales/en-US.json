@@ -282,6 +282,7 @@
     "sheet": "Sheet",
     "popover": "Popover",
     "adaptive-popup": "Adaptive Popup",
+    "filter-popup": "Filter Popup",
     "tooltip": "Tooltip",
     "dropdown-menu": "Dropdown Menu",
     "context-menu": "Context Menu",

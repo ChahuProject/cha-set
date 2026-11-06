@@ -1405,6 +1405,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "description": "Content-driven adaptive height popup with zero unnecessary scrollbars and 3-tier layout."
       },
       {
+        "id": "filter-popup",
+        "title": "Filter Popup",
+        "href": "#/components/filter-popup",
+        "desc": "Multi-dimensional facet filtering popup with search, exclusions, ratings and shortcuts.",
+        "description": "Multi-dimensional facet filtering popup with search, exclusions, ratings and shortcuts."
+      },
+      {
         "id": "tooltip",
         "title": "Tooltip",
         "href": "#/components/tooltip",

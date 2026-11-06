@@ -1,6 +1,13 @@
 {
   "version": 1,
   "components": {
+    "filter-popup": {
+      "facetFiltering": { "requirement": "must", "description": "supports inclusion and exclusion tri-state filtering on facet items" },
+      "pinyinSearch": { "requirement": "must", "description": "real-time multi-modal pinyin, initial and substring search" },
+      "autoHiddenSearch": { "requirement": "must", "description": "auto-hidden search bar that instantly unfolds upon keyboard character input" },
+      "starRatings": { "requirement": "must", "description": "visual star ratings representation and fast numeric 0-5 filter matching" },
+      "shortcutsGuide": { "requirement": "must", "description": "bottom keyboard and mouse shortcuts indicator using Kbd" }
+    },
     "alert-dialog": {
       "modalOverlay": { "requirement": "must", "description": "renders focused modal barrier overlay blocking background clicks" },
       "destructiveConfirmation": { "requirement": "must", "description": "highlights critical or destructive action with prominent styling" },

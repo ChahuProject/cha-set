@@ -4,8 +4,8 @@ import { DocLayout } from '../../layout/DocLayout';
 import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
 import { DocAnatomy } from '../../components/DocAnatomy';
-import { DocText } from '../../components/DocText';
 import { showcaseShortcuts } from '../../services/showcaseShortcuts';
+import { DocText } from '../../components/DocText';
 
 export function KeybindingManagerDocPage() {
   const { t, locale } = useChaSetI18n();

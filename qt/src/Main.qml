@@ -415,6 +415,7 @@ ApplicationWindow {
         case "popover": return "PopoverDocPage.qml";
         case "activity-stack": return "ActivityStackDocPage.qml";
         case "adaptive-popup": return "AdaptivePopupDocPage.qml";
+        case "filter-popup": return "FilterPopupDocPage.qml";
         case "context-menu": return "ContextMenuDocPage.qml";
         case "alert-dialog": return "AlertDialogDocPage.qml";
         case "sheet": return "SheetDocPage.qml";
@@ -1842,6 +1843,7 @@ ApplicationWindow {
             var allComponents = [
                 { id: "activity-stack", name: "ChaSetActivityStack" },
                 { id: "adaptive-popup", name: "ChaSetAdaptivePopup" },
+                { id: "filter-popup", name: "ChaSetFilterPopup" },
                 { id: "alert-dialog", name: "ChaSetAlertDialog" },
                 { id: "address-bar", name: "ChaSetAddressBar" },
                 { id: "badge", name: "ChaSetBadge" },

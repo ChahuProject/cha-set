@@ -1,4 +1,11 @@
 {
+  "filter-popup": {
+    "facetFiltering": true,
+    "pinyinSearch": true,
+    "autoHiddenSearch": true,
+    "starRatings": true,
+    "shortcutsGuide": true
+  },
   "alert-dialog": {
     "modalOverlay": true,
     "destructiveConfirmation": true,
