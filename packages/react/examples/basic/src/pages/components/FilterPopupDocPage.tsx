@@ -207,6 +207,9 @@ export function FilterPopupDocPage() {
               title={currentTitle}
               icon={currentIcon}
               items={currentItems}
+              searchEnabled={true}
+              searchVisibility="autoHidden"
+              validateFileName={activeTab === 'format'}
               hasActive={hasActive}
               showLogicToggle={activeTab === 'tag'}
               logicMode={tagLogicMode}

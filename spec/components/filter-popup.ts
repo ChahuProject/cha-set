@@ -25,6 +25,7 @@ export const filterPopupSchema = z.object({
   onOpenChange: z.function().optional(),
   searchEnabled: z.boolean().default(true),
   searchVisibility: filterPopupSearchVisibilitySchema.default('autoHidden'),
+  validateFileName: z.boolean().default(false),
   showLogicToggle: z.boolean().default(false),
   logicMode: filterPopupLogicModeSchema.default('and'),
   onLogicModeChange: z.function().optional(),

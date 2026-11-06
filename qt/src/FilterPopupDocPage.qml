@@ -231,6 +231,7 @@ DocLayout {
                 title: root.currentTitle
                 iconName: root.currentIcon
                 items: root.currentItems
+                validateFileName: root.demoTab === "format"
                 hasActive: root.hasActive
                 showLogicToggle: root.demoTab === "tag"
                 logicMode: root.demoLogicMode

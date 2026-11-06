@@ -21,6 +21,7 @@ export interface FilterPopupProps {
   onOpenChange?: (open: boolean) => void;
   searchEnabled?: boolean;
   searchVisibility?: FilterPopupSearchVisibility;
+  validateFileName?: boolean;
   showLogicToggle?: boolean;
   logicMode?: FilterPopupLogicMode;
   onLogicModeChange?: (mode: FilterPopupLogicMode) => void;
@@ -48,6 +49,7 @@ export function FilterPopup({
   onOpenChange,
   searchEnabled = true,
   searchVisibility = 'autoHidden',
+  validateFileName = false,
   showLogicToggle = false,
   logicMode = 'and',
   onLogicModeChange,
@@ -82,11 +84,28 @@ export function FilterPopup({
   const searchInputRef = React.useRef<HTMLInputElement | null>(null);
   const panelRef = React.useRef<HTMLDivElement | null>(null);
 
+  const invalidFileNameChars = React.useMemo(() => {
+    if (!validateFileName || !searchQuery) return [];
+    const list: string[] = [];
+    const seen = new Set<string>();
+    for (const ch of searchQuery) {
+      if (/[\\/:*?"<>|\x00-\x1F]/.test(ch)) {
+        if (!seen.has(ch)) {
+          seen.add(ch);
+          list.push(ch);
+        }
+      }
+    }
+    return list;
+  }, [validateFileName, searchQuery]);
+
+  const hasInvalidChars = invalidFileNameChars.length > 0;
+
   React.useEffect(() => {
     if (isOpen) {
       setSearchQuery('');
       setSearchActive(searchVisibility === 'always');
-      if (searchVisibility === 'always') {
+      if (searchEnabled) {
         setTimeout(() => searchInputRef.current?.focus(), 50);
       } else {
         setTimeout(() => panelRef.current?.focus(), 50);
@@ -95,7 +114,7 @@ export function FilterPopup({
       setSearchQuery('');
       setSearchActive(searchVisibility === 'always');
     }
-  }, [isOpen, searchVisibility]);
+  }, [isOpen, searchEnabled, searchVisibility]);
 
   const isSearchVisible =
     searchEnabled &&
@@ -257,7 +276,14 @@ export function FilterPopup({
 
             {/* Search Bar */}
             {isSearchVisible && (
-              <div className="relative flex h-7 items-center rounded-md border border-border bg-background px-2 gap-1.5 text-foreground focus-within:border-primary">
+              <div
+                className={cn(
+                  'relative flex h-7 items-center rounded-md border px-2 gap-1.5 transition-colors',
+                  hasInvalidChars
+                    ? 'border-destructive bg-destructive/10 text-destructive'
+                    : 'border-border bg-background text-foreground focus-within:border-primary',
+                )}
+              >
                 <SearchIcon className="size-3 text-muted-foreground shrink-0" />
                 <input
                   ref={searchInputRef}
@@ -265,6 +291,9 @@ export function FilterPopup({
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={(e) => {
+                    if (e.key === 'Backspace' && searchQuery.length === 0) {
+                      e.stopPropagation();
+                    }
                     if (e.key === 'Escape') {
                       if (searchQuery.length > 0) {
                         setSearchQuery('');
@@ -304,6 +333,16 @@ export function FilterPopup({
                     <XIcon className="size-3" />
                   </button>
                 )}
+              </div>
+            )}
+
+            {/* Invalid filename characters warning */}
+            {isSearchVisible && hasInvalidChars && (
+              <div className="flex items-center gap-1.5 px-1 text-2xs text-destructive">
+                <XIcon className="size-3 shrink-0" />
+                <span className="truncate">
+                  {`不支持字符: ${invalidFileNameChars.join('  ')}`}
+                </span>
               </div>
             )}
 

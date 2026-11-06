@@ -84,4 +84,43 @@ describe('FilterPopup (React)', () => {
     fireEvent.click(clearBtn);
     expect(onClear).toHaveBeenCalled();
   });
+
+  it('validates illegal filename characters when validateFileName is enabled', () => {
+    render(
+      <FilterPopup
+        title="Format Filter"
+        items={sampleItems}
+        defaultOpen
+        searchVisibility="always"
+        validateFileName
+      />,
+    );
+
+    const input = screen.getByPlaceholderText('快速搜索...');
+    fireEvent.change(input, { target: { value: 'test*?file' } });
+
+    expect(screen.getByText(/不支持字符.*[*?]/)).toBeInTheDocument();
+  });
+
+  it('allows legal filename symbols like #, _, - without warning', () => {
+    const symbolItems = [
+      { key: 'a_b', label: 'file_name#1-test.jpg', count: 1 },
+      { key: 'other', label: 'other.png', count: 2 },
+    ];
+    render(
+      <FilterPopup
+        title="Format Filter"
+        items={symbolItems}
+        defaultOpen
+        searchVisibility="always"
+        validateFileName
+      />,
+    );
+
+    const input = screen.getByPlaceholderText('快速搜索...');
+    fireEvent.change(input, { target: { value: 'name#1-test' } });
+
+    expect(screen.queryByText(/不支持字符/)).not.toBeInTheDocument();
+    expect(screen.getByText('file_name#1-test.jpg')).toBeInTheDocument();
+  });
 });

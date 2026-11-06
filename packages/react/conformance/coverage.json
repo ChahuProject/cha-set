@@ -4,6 +4,7 @@
     "pinyinSearch": true,
     "autoHiddenSearch": true,
     "starRatings": true,
+    "fileNameValidation": true,
     "shortcutsGuide": true
   },
   "alert-dialog": {

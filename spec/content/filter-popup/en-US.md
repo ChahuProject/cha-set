@@ -33,6 +33,7 @@ Names and semantics are identical on both stacks; `Type` gives the TypeScript si
 | `open` | `boolean` | `false` | Controlled open state of the popup. |
 | `searchEnabled` | `boolean` | `true` | Whether the search filtering capability is enabled. |
 | `searchVisibility` | `'autoHidden' \| 'always'` | `'autoHidden'` | Search bar visibility mode. |
+| `validateFileName` | `boolean` | `false` | Whether to validate search query against illegal filename characters. |
 | `showLogicToggle` | `boolean` | `false` | Whether to display AND / OR logic toggle capsule. |
 | `logicMode` | `'and' \| 'or'` | `'and'` | Active boolean logic filtering mode. |
 | `hasActive` | `boolean` | `false` | Whether any filters are currently active in this dimension. |

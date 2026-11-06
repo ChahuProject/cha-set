@@ -23,9 +23,29 @@ Popup {
     // searchVisibility: "autoHidden" | "always"
     property bool searchEnabled: true
     property string searchVisibility: "autoHidden" // "autoHidden" | "always"
+    property bool validateFileName: false
     property bool searchActive: searchVisibility === "always"
     property string searchFilterText: ""
     property real lastClosedMs: 0
+
+    // Illegal Windows filename characters: \ / : * ? " < > |
+    readonly property var invalidFileNameChars: {
+        if (!validateFileName || !searchFilterText) return []
+        var text = searchFilterText
+        var list = []
+        var seen = {}
+        for (var i = 0; i < text.length; ++i) {
+            var ch = text[i]
+            if (/[\\/:*?"<>|\x00-\x1F]/.test(ch)) {
+                if (!seen[ch]) {
+                    seen[ch] = true
+                    list.push(ch)
+                }
+            }
+        }
+        return list
+    }
+    readonly property bool hasInvalidChars: invalidFileNameChars.length > 0
 
     // Callbacks / overrides for dynamic inclusion & exclusion state
     property var checkIncluded: null // function(key): bool
@@ -50,9 +70,8 @@ Popup {
 
     function applyFocus() {
         if (!rootPopup.opened) return
-        if (!rootPopup.searchEnabled) return
-        if (rootPopup.searchVisibility === "always" || rootPopup.searchActive || rootPopup.searchFilterText.length > 0) {
-            if (searchInput) searchInput.forceActiveFocus()
+        if (rootPopup.searchEnabled && searchInput) {
+            searchInput.forceActiveFocus()
         } else {
             contentCol.forceActiveFocus()
         }
@@ -60,6 +79,7 @@ Popup {
 
     onAboutToShow: {
         refreshEpoch++
+        ChaSetOverlayHub.register(rootPopup)
         searchFilterText = ""
         if (searchInput) searchInput.text = ""
         searchActive = (searchVisibility === "always")
@@ -72,9 +92,14 @@ Popup {
 
     onClosed: {
         lastClosedMs = Date.now()
+        ChaSetOverlayHub.unregister(rootPopup)
         searchFilterText = ""
         if (searchInput) searchInput.text = ""
         searchActive = (searchVisibility === "always")
+    }
+
+    Component.onDestruction: {
+        ChaSetOverlayHub.unregister(rootPopup)
     }
 
     function itemMatchesSearch(it, query) {
@@ -127,6 +152,16 @@ Popup {
 
     function handleKeyPress(event) {
         if (!event || !rootPopup.searchEnabled) return false
+
+        if (event.key === Qt.Key_Backspace) {
+            if (searchInput && searchInput.text.length > 0) {
+                searchInput.text = searchInput.text.slice(0, -1)
+                rootPopup.searchFilterText = searchInput.text.trim()
+                searchInput.cursorPosition = searchInput.text.length
+            }
+            event.accepted = true
+            return true
+        }
 
         if (event.key === Qt.Key_Escape) {
             if (rootPopup.searchFilterText.length > 0 || (rootPopup.searchVisibility === "autoHidden" && rootPopup.searchActive)) {
@@ -234,13 +269,27 @@ Popup {
         // Search Bar
         Rectangle {
             id: searchBar
-            visible: rootPopup.searchEnabled && (rootPopup.searchVisibility === "always" || rootPopup.searchActive || rootPopup.searchFilterText.length > 0)
+            readonly property bool isBarExpanded: rootPopup.searchEnabled && (rootPopup.searchVisibility === "always" || rootPopup.searchActive || rootPopup.searchFilterText.length > 0)
+            visible: rootPopup.searchEnabled
             Layout.fillWidth: true
-            Layout.preferredHeight: ThemeTokens.dp(26)
+            Layout.preferredHeight: isBarExpanded ? ThemeTokens.dp(26) : 0
+            opacity: isBarExpanded ? 1.0 : 0.0
+            clip: true
             radius: ThemeTokens.dp(4)
-            color: ThemeTokens.panel
-            border.color: searchInput.activeFocus ? ThemeTokens.accent : ThemeTokens.border
+            color: rootPopup.hasInvalidChars ? Qt.alpha(ThemeTokens.danger, 0.1) : ThemeTokens.panel
+            border.color: {
+                if (rootPopup.hasInvalidChars) return ThemeTokens.danger
+                if (searchInput.activeFocus) return ThemeTokens.accent
+                return ThemeTokens.border
+            }
             border.width: 1
+
+            Behavior on Layout.preferredHeight {
+                NumberAnimation { duration: ThemeTokens.motionDurationFast; easing.type: Easing.OutQuad }
+            }
+            Behavior on opacity {
+                NumberAnimation { duration: ThemeTokens.motionDurationFast }
+            }
 
             RowLayout {
                 anchors.fill: parent
@@ -261,8 +310,13 @@ Popup {
                     color: ThemeTokens.text
                     selectByMouse: true
                     clip: true
+                    inputMethodHints: Qt.ImhNone
+                    activeFocusOnTab: true
                     onTextChanged: {
                         rootPopup.searchFilterText = text.trim()
+                        if (text.length > 0) {
+                            rootPopup.searchActive = true
+                        }
                     }
 
                     HoverHandler {
@@ -270,16 +324,17 @@ Popup {
                     }
 
                     Keys.onPressed: (event) => {
+                        if (event.key === Qt.Key_Backspace && searchInput.text.length === 0) {
+                            event.accepted = true
+                            return
+                        }
                         if (event.key === Qt.Key_Escape) {
                             if (searchInput.text.length > 0) {
                                 searchInput.text = ""
                                 rootPopup.searchFilterText = ""
-                                event.accepted = true
-                                return
-                            }
-                            if (rootPopup.searchVisibility === "autoHidden") {
-                                rootPopup.searchActive = false
-                                contentCol.forceActiveFocus()
+                                if (rootPopup.searchVisibility === "autoHidden") {
+                                    rootPopup.searchActive = false
+                                }
                                 event.accepted = true
                                 return
                             }
@@ -318,6 +373,30 @@ Popup {
                         }
                     }
                 }
+            }
+        }
+
+        // Invalid filename characters warning
+        RowLayout {
+            id: invalidCharsNotice
+            visible: searchBar.isBarExpanded && rootPopup.hasInvalidChars
+            Layout.fillWidth: true
+            Layout.preferredHeight: visible ? ThemeTokens.dp(16) : 0
+            spacing: ThemeTokens.dp(4)
+            clip: true
+
+            ChaSetIcon {
+                name: "close"
+                size: 12
+                color: ThemeTokens.danger
+            }
+
+            Text {
+                Layout.fillWidth: true
+                font.pixelSize: Typography.sizeMicro
+                color: ThemeTokens.danger
+                elide: Text.ElideRight
+                text: qsTr("不支持字符: %1").arg(rootPopup.invalidFileNameChars.join("  "))
             }
         }
 

@@ -6,6 +6,7 @@
       "pinyinSearch": { "requirement": "must", "description": "real-time multi-modal pinyin, initial and substring search" },
       "autoHiddenSearch": { "requirement": "must", "description": "auto-hidden search bar that instantly unfolds upon keyboard character input" },
       "starRatings": { "requirement": "must", "description": "visual star ratings representation and fast numeric 0-5 filter matching" },
+      "fileNameValidation": { "requirement": "should", "description": "validates search query against illegal filename characters with danger state and hint" },
       "shortcutsGuide": { "requirement": "must", "description": "bottom keyboard and mouse shortcuts indicator using Kbd" }
     },
     "alert-dialog": {
