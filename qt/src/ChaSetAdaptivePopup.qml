@@ -149,7 +149,7 @@ Popup {
                 tok.push(nx, ny)
             if (nw !== undefined && nh !== undefined)
                 tok.push(nw, nh)
-            // ⚠ 必须沿 QML `parent` 链上溯，**不能**用 `parentItem`：
+            // [WARN] 必须沿 QML `parent` 链上溯，**不能**用 `parentItem`：
             // Qt 6 的 Item 在 QML 侧 **没有** parentItem 属性
             // （实测 `typeof item.parentItem === "undefined"`），
             // 用它会让链条在第一层就断掉 —— 父项平移/改尺寸永远不触发重算，
