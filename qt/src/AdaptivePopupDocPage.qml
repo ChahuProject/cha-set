@@ -16,44 +16,75 @@ DocLayout {
 
     ComponentPreview {
         title: ChaSetI18n.tr("desktopComposite.adaptivePopup.sandboxTitle", "Adaptive Popup Sandbox")
-        reactCode: `<AdaptivePopup
-  open={${triggerBtn.popupOpen}}
-  onOpenChange={setOpen}
-  placement="${root.demoPlacement}"
-  maxHeight={${root.demoMaxHeight}}
-  anchorRef={triggerRef}
-  className="w-80"
-  header={
-    <div className="p-3">
-      <h4 className="text-xs font-semibold text-foreground">Select Render Target</h4>
-    </div>
-  }
-  footer={
-    <div className="p-2 flex justify-end gap-2">
-      <Button size="sm" variant="outline" onClick={() => setOpen(false)}>Close</Button>
-    </div>
-  }
->
-  <div className="py-2 space-y-1">
-    {items.map(item => (
-      <div key={item.id} className="p-2 rounded hover:bg-muted/40 text-xs flex justify-between">
-        <span>{item.name}</span>
-        <Badge variant="outline" size="sm">{item.type}</Badge>
+        stageHeight: 380
+        reactCode: `<div ref={containerRef} className="relative h-[22.5rem] w-full overflow-hidden ...">
+  <Button
+    ref={triggerRef}
+    onClick={() => setOpen(!open)}
+  >
+    {open ? 'Close Adaptive Popup' : 'Open Adaptive Popup'}
+  </Button>
+
+  <AdaptivePopup
+    open={${demoPopup.visible}}
+    onOpenChange={setOpen}
+    placement="${root.demoPlacement}"
+    align="center"
+    maxHeight={${root.demoMaxHeight}}
+    anchorRef={triggerRef}
+    containerRef={containerRef}
+    className="w-80"
+    header={
+      <div className="p-3">
+        <h4 className="text-xs font-semibold text-foreground">Select Render Target</h4>
       </div>
-    ))}
-  </div>
-</AdaptivePopup>`
-        qtCode: `ChaSetButton {
-    id: triggerBtn
-    text: "Toggle Adaptive Popup"
-    variant: "outline"
-    onClicked: popup.open()
+    }
+    footer={
+      <div className="p-2 flex justify-end gap-2">
+        <Button size="sm" variant="outline" onClick={() => setOpen(false)}>Close</Button>
+      </div>
+    }
+  >
+    <div className="py-2 space-y-1">
+      {items.map(item => (
+        <div key={item.id} className="p-2 rounded hover:bg-muted/40 text-xs flex justify-between">
+          <span>{item.name}</span>
+          <Badge variant="outline" size="sm">{item.type}</Badge>
+        </div>
+      ))}
+    </div>
+  </AdaptivePopup>
+</div>`
+        qtCode: `Rectangle {
+    id: previewArea
+    width: parent.width
+    height: ThemeTokens.dp(360)
+    color: ThemeTokens.color("panelRaised")
+    border.color: ThemeTokens.border
+    border.width: 1
+    radius: ThemeTokens.dp(8)
+    clip: true
+
+    ChaSetButton {
+        id: triggerBtn
+        text: "Toggle Adaptive Popup"
+        variant: "outline"
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: "${root.demoPlacement}" === "down" ? parent.top : undefined
+        anchors.topMargin: "${root.demoPlacement}" === "down" ? ThemeTokens.dp(32) : 0
+        anchors.bottom: "${root.demoPlacement}" === "up" ? parent.bottom : undefined
+        anchors.bottomMargin: "${root.demoPlacement}" === "up" ? ThemeTokens.dp(32) : 0
+        onClicked: popup.open()
+    }
 
     ChaSetAdaptivePopup {
         id: popup
+        parent: previewArea
+        container: previewArea
+        anchorItem: triggerBtn
+        anchorAlign: "center"
         placement: "${root.demoPlacement}"
         maxHeight: ${root.demoMaxHeight}
-        anchorY: triggerBtn.height + 4
         width: 320
 
         headerItems: [
@@ -77,61 +108,51 @@ DocLayout {
     }
 }`
 
-        Item {
-            anchors.fill: parent
-
-            Column {
-                anchors.centerIn: parent
+        controlsData: [
+            Row {
                 spacing: ThemeTokens.dp(16)
-                width: ThemeTokens.dp(360)
 
                 Row {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: ThemeTokens.dp(16)
-
-                    Row {
-                        spacing: ThemeTokens.dp(8)
-                        DocText {
-                            text: ChaSetI18n.tr("overlays.adaptivePopup.placement", "Placement:")
-                            color: ThemeTokens.subduedText
-                            font.pixelSize: Typography.sizeSmall
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                        ChaSetSegmentedControl {
-                            anchors.verticalCenter: parent.verticalCenter
-                            size: "sm"
-                            value: root.demoPlacement
-                            options: [
-                                { label: ChaSetI18n.tr("overlays.adaptivePopup.down", "Down"), value: "down" },
-                                { label: ChaSetI18n.tr("overlays.adaptivePopup.up", "Up"), value: "up" }
-                            ]
-                            onValueSelected: function(val) { root.demoPlacement = String(val); }
-                        }
+                    spacing: ThemeTokens.dp(8)
+                    DocText {
+                        text: ChaSetI18n.tr("overlays.adaptivePopup.placement", "Placement:")
+                        color: ThemeTokens.subduedText
+                        font.pixelSize: Typography.sizeSmall
+                        anchors.verticalCenter: parent.verticalCenter
                     }
-
-                    Row {
-                        spacing: ThemeTokens.dp(8)
-                        DocText {
-                            text: ChaSetI18n.tr("overlays.adaptivePopup.maxHeight", "Max Height:")
-                            color: ThemeTokens.subduedText
-                            font.pixelSize: Typography.sizeSmall
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                        ChaSetSegmentedControl {
-                            anchors.verticalCenter: parent.verticalCenter
-                            size: "sm"
-                            value: String(root.demoMaxHeight)
-                            options: [
-                                { label: ChaSetI18n.tr("overlays.adaptivePopup.auto", "Auto"), value: "-1" },
-                                { label: "200", value: "200" }
-                            ]
-                            onValueSelected: function(val) { root.demoMaxHeight = parseInt(val, 10); }
-                        }
+                    ChaSetSegmentedControl {
+                        anchors.verticalCenter: parent.verticalCenter
+                        size: "sm"
+                        value: root.demoPlacement
+                        options: [
+                            { label: ChaSetI18n.tr("overlays.adaptivePopup.down", "Down"), value: "down" },
+                            { label: ChaSetI18n.tr("overlays.adaptivePopup.up", "Up"), value: "up" }
+                        ]
+                        onValueSelected: function(val) { root.demoPlacement = String(val); }
                     }
                 }
 
                 Row {
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: ThemeTokens.dp(8)
+                    DocText {
+                        text: ChaSetI18n.tr("overlays.adaptivePopup.maxHeight", "Max Height:")
+                        color: ThemeTokens.subduedText
+                        font.pixelSize: Typography.sizeSmall
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    ChaSetSegmentedControl {
+                        anchors.verticalCenter: parent.verticalCenter
+                        size: "sm"
+                        value: String(root.demoMaxHeight)
+                        options: [
+                            { label: ChaSetI18n.tr("overlays.adaptivePopup.auto", "Auto"), value: "-1" },
+                            { label: "200", value: "200" }
+                        ]
+                        onValueSelected: function(val) { root.demoMaxHeight = parseInt(val, 10); }
+                    }
+                }
+
+                Row {
                     spacing: ThemeTokens.dp(8)
 
                     ChaSetButton {
@@ -154,114 +175,135 @@ DocLayout {
                         onClicked: root.demoItemCount = root.demoItemCount + 3
                     }
                 }
+            }
+        ]
 
-                Item {
-                    width: parent.width
-                    height: ThemeTokens.dp(44)
+        Rectangle {
+            id: previewStage
+            anchors.fill: parent
+            anchors.margins: ThemeTokens.dp(16)
+            radius: ThemeTokens.dp(8)
+            color: ThemeTokens.color("panelRaised")
+            border.width: 1
+            border.color: ThemeTokens.border
+            clip: true
 
-                    ChaSetButton {
-                        id: triggerBtn
-                        property bool popupOpen: demoPopup.visible
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        text: popupOpen ? ChaSetI18n.tr("overlays.adaptivePopup.closePopup", "Close Adaptive Popup") : ChaSetI18n.tr("overlays.adaptivePopup.openPopup", "Open Adaptive Popup")
-                        variant: "default"
-                        onClicked: {
-                            if (demoPopup.visible) {
-                                demoPopup.close();
-                            } else {
-                                demoPopup.open();
-                            }
+            DocText {
+                anchors.top: parent.top
+                anchors.topMargin: ThemeTokens.dp(10)
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: ChaSetI18n.tr("desktopComposite.adaptivePopup.boundedCanvasHint", "Bounded preview container (adapts and clamps inside this area)")
+                color: ThemeTokens.subduedText
+                font.pixelSize: Typography.sizeMicro
+            }
+
+            ChaSetButton {
+                id: triggerBtn
+                property bool popupOpen: demoPopup.visible
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.top: root.demoPlacement === "down" ? parent.top : undefined
+                anchors.topMargin: root.demoPlacement === "down" ? ThemeTokens.dp(32) : 0
+                anchors.bottom: root.demoPlacement === "up" ? parent.bottom : undefined
+                anchors.bottomMargin: root.demoPlacement === "up" ? ThemeTokens.dp(32) : 0
+                text: popupOpen ? ChaSetI18n.tr("overlays.adaptivePopup.closePopup", "Close Adaptive Popup") : ChaSetI18n.tr("overlays.adaptivePopup.openPopup", "Open Adaptive Popup")
+                variant: "default"
+                onClicked: {
+                    if (demoPopup.visible) {
+                        demoPopup.close();
+                    } else {
+                        demoPopup.open();
+                    }
+                }
+            }
+
+            ChaSetAdaptivePopup {
+                id: demoPopup
+                parent: previewStage
+                container: previewStage
+                anchorItem: triggerBtn
+                anchorAlign: "center"
+                width: ThemeTokens.dp(320)
+                placement: root.demoPlacement
+                maxHeight: root.demoMaxHeight > 0 ? ThemeTokens.dp(root.demoMaxHeight) : -1
+
+                headerItems: [
+                    RowLayout {
+                        width: parent.width
+                        DocText {
+                            Layout.fillWidth: true
+                            Layout.leftMargin: ThemeTokens.dp(12)
+                            Layout.topMargin: ThemeTokens.dp(10)
+                            Layout.bottomMargin: ThemeTokens.dp(10)
+                            text: ChaSetI18n.tr("desktopComposite.adaptivePopup.headerTitle", "Active Render Targets")
+                            font.pixelSize: Typography.sizeSmall
+                            font.bold: true
+                            color: ThemeTokens.text
                         }
+                        ChaSetBadge {
+                            Layout.rightMargin: ThemeTokens.dp(12)
+                            text: String(root.demoItemCount)
+                            variant: "secondary"
+                        }
+                    }
+                ]
 
-                        ChaSetAdaptivePopup {
-                            id: demoPopup
-                            width: ThemeTokens.dp(320)
-                            placement: root.demoPlacement
-                            maxHeight: root.demoMaxHeight > 0 ? ThemeTokens.dp(root.demoMaxHeight) : -1
-                            anchorX: (triggerBtn.width - width) / 2
-                            anchorY: root.demoPlacement === "up" ? -ThemeTokens.dp(6) : triggerBtn.height + ThemeTokens.dp(6)
+                Column {
+                    width: parent.width
+                    spacing: ThemeTokens.dp(6)
+                    topPadding: ThemeTokens.dp(8)
+                    bottomPadding: ThemeTokens.dp(8)
 
-                            headerItems: [
-                                RowLayout {
-                                    width: parent.width
-                                    DocText {
-                                        Layout.fillWidth: true
-                                        Layout.leftMargin: ThemeTokens.dp(12)
-                                        Layout.topMargin: ThemeTokens.dp(10)
-                                        Layout.bottomMargin: ThemeTokens.dp(10)
-                                        text: ChaSetI18n.tr("desktopComposite.adaptivePopup.headerTitle", "Active Render Targets")
-                                        font.pixelSize: Typography.sizeSmall
-                                        font.bold: true
-                                        color: ThemeTokens.text
-                                    }
-                                    ChaSetBadge {
-                                        Layout.rightMargin: ThemeTokens.dp(12)
-                                        text: String(root.demoItemCount)
-                                        variant: "secondary"
-                                    }
-                                }
-                            ]
+                    Repeater {
+                        model: root.demoItemCount
+                        Rectangle {
+                            width: parent ? parent.width : ThemeTokens.dp(280)
+                            height: ThemeTokens.dp(32)
+                            radius: ThemeTokens.dp(4)
+                            color: ThemeTokens.panel
+                            border.width: 1
+                            border.color: ThemeTokens.border
 
-                            Column {
-                                width: parent.width
-                                spacing: ThemeTokens.dp(6)
-                                topPadding: ThemeTokens.dp(8)
-                                bottomPadding: ThemeTokens.dp(8)
-
-                                Repeater {
-                                    model: root.demoItemCount
-                                    Rectangle {
-                                        width: parent ? parent.width : ThemeTokens.dp(280)
-                                        height: ThemeTokens.dp(32)
-                                        radius: ThemeTokens.dp(4)
-                                        color: ThemeTokens.color("panelRaised")
-                                        border.width: 1
-                                        border.color: ThemeTokens.border
-
-                                        DocText {
-                                            anchors.left: parent.left
-                                            anchors.leftMargin: ThemeTokens.dp(8)
-                                            anchors.verticalCenter: parent.verticalCenter
-                                            text: ChaSetI18n.tr("desktopComposite.adaptivePopup.itemPrefix", "Render Layer #") + (index + 1)
-                                            color: ThemeTokens.text
-                                            font.pixelSize: Typography.sizeSmall
-                                        }
-
-                                        ChaSetBadge {
-                                            anchors.right: parent.right
-                                            anchors.rightMargin: ThemeTokens.dp(8)
-                                            anchors.verticalCenter: parent.verticalCenter
-                                            text: index % 2 === 0 ? "Color Attachment" : "Depth Stencil"
-                                            variant: "outline"
-                                        }
-                                    }
-                                }
+                            DocText {
+                                anchors.left: parent.left
+                                anchors.leftMargin: ThemeTokens.dp(8)
+                                anchors.verticalCenter: parent.verticalCenter
+                                text: ChaSetI18n.tr("desktopComposite.adaptivePopup.itemPrefix", "Render Layer #") + (index + 1)
+                                color: ThemeTokens.text
+                                font.pixelSize: Typography.sizeSmall
                             }
 
-                            footerItems: [
-                                RowLayout {
-                                    width: parent.width
-                                    DocText {
-                                        Layout.leftMargin: ThemeTokens.dp(12)
-                                        Layout.topMargin: ThemeTokens.dp(8)
-                                        Layout.bottomMargin: ThemeTokens.dp(8)
-                                        text: root.demoPlacement === "up" ? "Placement: Up" : "Placement: Down"
-                                        color: ThemeTokens.subduedText
-                                        font.pixelSize: Typography.sizeMicro
-                                    }
-                                    Item { Layout.fillWidth: true }
-                                    ChaSetButton {
-                                        Layout.rightMargin: ThemeTokens.dp(12)
-                                        size: "sm"
-                                        variant: "outline"
-                                        text: ChaSetI18n.tr("overlays.adaptivePopup.done", "Done")
-                                        onClicked: demoPopup.close()
-                                    }
-                                }
-                            ]
+                            ChaSetBadge {
+                                anchors.right: parent.right
+                                anchors.rightMargin: ThemeTokens.dp(8)
+                                anchors.verticalCenter: parent.verticalCenter
+                                text: index % 2 === 0 ? "Color Attachment" : "Depth Stencil"
+                                variant: "outline"
+                            }
                         }
                     }
                 }
+
+                footerItems: [
+                    RowLayout {
+                        width: parent.width
+                        DocText {
+                            Layout.leftMargin: ThemeTokens.dp(12)
+                            Layout.topMargin: ThemeTokens.dp(8)
+                            Layout.bottomMargin: ThemeTokens.dp(8)
+                            text: root.demoPlacement === "up" ? "Placement: Up" : "Placement: Down"
+                            color: ThemeTokens.subduedText
+                            font.pixelSize: Typography.sizeMicro
+                        }
+                        Item { Layout.fillWidth: true }
+                        ChaSetButton {
+                            Layout.rightMargin: ThemeTokens.dp(12)
+                            size: "sm"
+                            variant: "outline"
+                            text: ChaSetI18n.tr("overlays.adaptivePopup.done", "Done")
+                            onClicked: demoPopup.close()
+                        }
+                    }
+                ]
             }
         }
     }

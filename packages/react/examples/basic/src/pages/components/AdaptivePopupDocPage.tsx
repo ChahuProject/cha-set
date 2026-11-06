@@ -19,6 +19,7 @@ export function AdaptivePopupDocPage() {
   const [maxHeightLimit, setMaxHeightLimit] = useState<number>(-1);
   const [itemCount, setItemCount] = useState<number>(5);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const sampleTargets = Array.from({ length: itemCount }, (_, i) => ({
     id: i + 1,
@@ -26,45 +27,75 @@ export function AdaptivePopupDocPage() {
     type: i % 2 === 0 ? 'Color Attachment' : 'Depth Stencil',
   }));
 
-  const heroReactCode = `<AdaptivePopup
-  open={${open}}
-  onOpenChange={setOpen}
-  placement="${placement}"
-  maxHeight={${maxHeightLimit}}
-  anchorRef={triggerRef}
-  className="w-80"
-  header={
-    <div className="p-3">
-      <h4 className="text-xs font-semibold text-foreground">Select Render Target</h4>
-    </div>
-  }
-  footer={
-    <div className="p-2 flex justify-end gap-2">
-      <Button size="sm" variant="outline" onClick={() => setOpen(false)}>Close</Button>
-    </div>
-  }
->
-  <div className="py-2 space-y-1">
-    {items.map(item => (
-      <div key={item.id} className="p-2 rounded hover:bg-muted/40 text-xs flex justify-between">
-        <span>{item.name}</span>
-        <Badge variant="outline" size="sm">{item.type}</Badge>
-      </div>
-    ))}
-  </div>
-</AdaptivePopup>`;
+  const heroReactCode = `<div ref={containerRef} className="relative h-[22.5rem] w-full overflow-hidden ...">
+  <Button
+    ref={triggerRef}
+    onClick={() => setOpen(!open)}
+  >
+    {open ? 'Close Adaptive Popup' : 'Open Adaptive Popup'}
+  </Button>
 
-  const heroQtCode = `ChaSetButton {
-    id: triggerBtn
-    text: "Toggle Adaptive Popup"
-    variant: "outline"
-    onClicked: popup.open()
+  <AdaptivePopup
+    open={${open}}
+    onOpenChange={setOpen}
+    placement="${placement}"
+    align="center"
+    maxHeight={${maxHeightLimit}}
+    anchorRef={triggerRef}
+    containerRef={containerRef}
+    className="w-80"
+    header={
+      <div className="p-3">
+        <h4 className="text-xs font-semibold text-foreground">Select Render Target</h4>
+      </div>
+    }
+    footer={
+      <div className="p-2 flex justify-end gap-2">
+        <Button size="sm" variant="outline" onClick={() => setOpen(false)}>Close</Button>
+      </div>
+    }
+  >
+    <div className="py-2 space-y-1">
+      {items.map(item => (
+        <div key={item.id} className="p-2 rounded hover:bg-muted/40 text-xs flex justify-between">
+          <span>{item.name}</span>
+          <Badge variant="outline" size="sm">{item.type}</Badge>
+        </div>
+      ))}
+    </div>
+  </AdaptivePopup>
+</div>`;
+
+  const heroQtCode = `Rectangle {
+    id: previewArea
+    width: parent.width
+    height: ThemeTokens.dp(360)
+    color: ThemeTokens.color("panelRaised")
+    border.color: ThemeTokens.border
+    border.width: 1
+    radius: ThemeTokens.dp(8)
+    clip: true
+
+    ChaSetButton {
+        id: triggerBtn
+        text: "Toggle Adaptive Popup"
+        variant: "outline"
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: "${placement}" === "down" ? parent.top : undefined
+        anchors.topMargin: "${placement}" === "down" ? ThemeTokens.dp(32) : 0
+        anchors.bottom: "${placement}" === "up" ? parent.bottom : undefined
+        anchors.bottomMargin: "${placement}" === "up" ? ThemeTokens.dp(32) : 0
+        onClicked: popup.open()
+    }
 
     ChaSetAdaptivePopup {
         id: popup
+        parent: previewArea
+        container: previewArea
+        anchorItem: triggerBtn
+        anchorAlign: "center"
         placement: "${placement}"
         maxHeight: ${maxHeightLimit}
-        anchorY: triggerBtn.height + 4
         width: 320
 
         headerItems: [
@@ -112,9 +143,8 @@ export function AdaptivePopupDocPage() {
           title={t('desktopComposite.adaptivePopup.sandboxTitle', 'Adaptive Popup Sandbox')}
           reactCode={heroReactCode}
           qtCode={heroQtCode}
-        >
-          <div className="w-full max-w-md flex flex-col gap-4 items-center py-6">
-            <div className="flex flex-wrap items-center gap-3">
+          controls={
+            <div className="flex flex-wrap items-center gap-6">
               <div className="flex items-center gap-2">
                 <span className="text-xs text-muted-foreground">{t('overlays.adaptivePopup.placement', 'Placement:')}</span>
                 <SegmentedControl
@@ -140,21 +170,34 @@ export function AdaptivePopupDocPage() {
                   ]}
                 />
               </div>
+
+              <div className="flex items-center gap-2">
+                <Button size="sm" variant="outline" onClick={() => setItemCount(Math.max(1, itemCount - 2))}>
+                  {t('overlays.adaptivePopup.removeItems', '-2 Items')}
+                </Button>
+                <Badge variant="outline" size="sm">
+                  {itemCount}
+                </Badge>
+                <Button size="sm" variant="outline" onClick={() => setItemCount(itemCount + 3)}>
+                  {t('overlays.adaptivePopup.addItems', '+3 Items')}
+                </Button>
+              </div>
+            </div>
+          }
+        >
+          <div
+            ref={containerRef}
+            className="relative w-full h-[22.5rem] rounded-lg border border-dashed border-border bg-muted/10 flex items-center justify-center overflow-hidden"
+          >
+            <div className="text-center text-xs text-muted-foreground/60 absolute top-3 select-none pointer-events-none">
+              {t('desktopComposite.adaptivePopup.boundedCanvasHint', 'Bounded preview container (adapts and clamps inside this area)')}
             </div>
 
-            <div className="flex items-center gap-2">
-              <Button size="sm" variant="outline" onClick={() => setItemCount(Math.max(1, itemCount - 2))}>
-                {t('overlays.adaptivePopup.removeItems', '-2 Items')}
-              </Button>
-              <Badge variant="outline" size="sm">
-                {itemCount}
-              </Badge>
-              <Button size="sm" variant="outline" onClick={() => setItemCount(itemCount + 3)}>
-                {t('overlays.adaptivePopup.addItems', '+3 Items')}
-              </Button>
-            </div>
-
-            <div className="relative mt-4">
+            <div
+              className={`absolute left-1/2 -translate-x-1/2 transition-all duration-200 ${
+                placement === 'down' ? 'top-8' : 'bottom-8'
+              }`}
+            >
               <Button
                 ref={triggerRef}
                 variant="default"
@@ -167,8 +210,10 @@ export function AdaptivePopupDocPage() {
                 open={open}
                 onOpenChange={setOpen}
                 placement={placement}
+                align="center"
                 maxHeight={maxHeightLimit}
                 anchorRef={triggerRef}
+                containerRef={containerRef}
                 className="w-80"
                 header={
                   <div className="p-3 flex items-center justify-between">

@@ -1538,6 +1538,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "adaptivePopup": {
       "animationsDesc": "展开与收起采用标准短时长进入缓动曲线，在 animationsEnabled 为 false 时自动禁用。",
       "animationsTitle": "动画效果",
+      "boundedCanvasHint": "自适应弹窗受限于此预览容器边界（在此区域内自适应伸缩与截断）",
       "headerTitle": "活动渲染目标",
       "itemPrefix": "渲染层级 #",
       "overviewDesc": "内容驱动型弹窗在宿主空间充裕时完整撑开至自然高度且绝不出滚动条；空间不足时自动按宿主视口封顶并启用平滑滚动。",
@@ -4396,6 +4397,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "adaptivePopup": {
       "animationsDesc": "Entrance and exit utilize short duration entrance easings, automatically disabled when animationsEnabled is false.",
       "animationsTitle": "Animations",
+      "boundedCanvasHint": "Bounded preview container (adapts and clamps inside this area)",
       "headerTitle": "Active Render Targets",
       "itemPrefix": "Render Layer #",
       "overviewDesc": "Content-driven adaptive height popup expands to its natural content height without scrollbars when host space is sufficient, and clamps to the window viewport boundary when space is constrained.",

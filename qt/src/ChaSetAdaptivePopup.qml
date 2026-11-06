@@ -73,6 +73,10 @@ Popup {
     property real gap: ThemeTokens.dp(4)
     /// 水平对齐（仅 anchorItem 生效）："start" 左对齐｜"end" 右对齐｜"center" 居中
     property string anchorAlign: "end"
+    /// 可选显式容器视口（默认为 null，即顶层窗口）。
+    /// 当设置了 container 时，弹窗将被限制在该容器内部自适应伸缩与 clamp，
+    /// 不会超出容器边界。
+    property Item container: null
     /// 旧契约（保留兼容：拖拽浮层 / 居中弹窗仍可显式声明坐标）。
     /// 期望左上角（宿主父项坐标系）。x/y 由本组件按可用空间 clamp 后写入。
     /// placement "down"：anchorY 是期望**顶边**；placement "up"：anchorY 是期望**底边**。
@@ -90,6 +94,8 @@ Popup {
     property bool useFullHostBand: true
     /// 弹窗圆角半径
     property real customRadius: ThemeTokens.dp(8)
+
+    closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
     // ---- 内容挂载点（头 / 体 / 尾 三段式）----
     /// 固定头部区（不随内容滚动）。用 ColumnLayout，以便子项可用 Layout.* 附加属性。
@@ -138,6 +144,9 @@ Popup {
         const it = root.anchorItem
         const tok = [root.anchorRevision]
         tok.push(it ? it.x : 0, it ? it.y : 0, it ? it.width : 0, it ? it.height : 0)
+        const ct = root.container
+        if (ct)
+            tok.push(ct.x, ct.y, ct.width, ct.height)
         let node = root.parent
         let guard = 0
         while (node && guard < 64) {
@@ -227,6 +236,8 @@ Popup {
     // 视口与窗口尺寸必须是同一个真相源，故这里只认窗口内容项（无窗口时退回
     // Overlay，再退回父项）。
     readonly property Item hostViewport: {
+        if (root.container)
+            return root.container
         const p = root.parent
         let win = null
         if (p) {

@@ -34,4 +34,5 @@ Names and semantics are identical on both stacks; `Type` gives the TypeScript si
 | `edgeMargin` | `number` | `12` | Safe margin distance from host window bounds. |
 | `contentInset` | `number` | `16` | Horizontal padding inset for scrollable content area. |
 | `useFullHostBand` | `boolean` | `true` | Whether to utilize full vertical window band when expanding. |
+| `container` | `HTMLElement \| RefObject \| Item` | `null` | Optional host viewport container, bounding popup expansion and clamping. |
 ```

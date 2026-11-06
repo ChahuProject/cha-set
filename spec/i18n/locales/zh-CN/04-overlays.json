@@ -83,6 +83,7 @@
     "adaptivePopup": {
       "animationsDesc": "展开与收起采用标准短时长进入缓动曲线，在 animationsEnabled 为 false 时自动禁用。",
       "animationsTitle": "动画效果",
+      "boundedCanvasHint": "自适应弹窗受限于此预览容器边界（在此区域内自适应伸缩与截断）",
       "headerTitle": "活动渲染目标",
       "itemPrefix": "渲染层级 #",
       "overviewDesc": "内容驱动型弹窗在宿主空间充裕时完整撑开至自然高度且绝不出滚动条；空间不足时自动按宿主视口封顶并启用平滑滚动。",

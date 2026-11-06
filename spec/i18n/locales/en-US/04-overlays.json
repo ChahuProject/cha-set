@@ -83,6 +83,7 @@
     "adaptivePopup": {
       "animationsDesc": "Entrance and exit utilize short duration entrance easings, automatically disabled when animationsEnabled is false.",
       "animationsTitle": "Animations",
+      "boundedCanvasHint": "Bounded preview container (adapts and clamps inside this area)",
       "headerTitle": "Active Render Targets",
       "itemPrefix": "Render Layer #",
       "overviewDesc": "Content-driven adaptive height popup expands to its natural content height without scrollbars when host space is sufficient, and clamps to the window viewport boundary when space is constrained.",

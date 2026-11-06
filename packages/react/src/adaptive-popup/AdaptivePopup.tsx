@@ -14,6 +14,9 @@ export interface AdaptivePopupProps extends React.HTMLAttributes<HTMLDivElement>
   contentInset?: number;
   useFullHostBand?: boolean;
   anchorRef?: React.RefObject<HTMLElement | null>;
+  containerRef?: React.RefObject<HTMLElement | null>;
+  container?: HTMLElement | null | React.RefObject<HTMLElement | null>;
+  align?: 'start' | 'center' | 'end';
   header?: React.ReactNode;
   footer?: React.ReactNode;
   children?: React.ReactNode;
@@ -35,6 +38,9 @@ export const AdaptivePopup = React.forwardRef<HTMLDivElement, AdaptivePopupProps
       contentInset = 16,
       useFullHostBand = true,
       anchorRef,
+      containerRef,
+      container,
+      align = 'start',
       header,
       footer,
       children,
@@ -48,6 +54,19 @@ export const AdaptivePopup = React.forwardRef<HTMLDivElement, AdaptivePopupProps
     const contentRef = React.useRef<HTMLDivElement>(null);
     const headerRef = React.useRef<HTMLDivElement>(null);
     const footerRef = React.useRef<HTMLDivElement>(null);
+
+    const resolveContainer = React.useCallback((): HTMLElement | null => {
+      if (containerRef && typeof containerRef === 'object' && 'current' in containerRef) {
+        return containerRef.current;
+      }
+      if (container) {
+        if (typeof container === 'object' && 'current' in container) {
+          return (container as React.RefObject<HTMLElement | null>).current;
+        }
+        return container as HTMLElement;
+      }
+      return null;
+    }, [containerRef, container]);
 
     const [computedStyle, setComputedStyle] = React.useState<{
       top: number;
@@ -77,18 +96,36 @@ export const AdaptivePopup = React.forwardRef<HTMLDivElement, AdaptivePopupProps
     React.useLayoutEffect(() => {
       if (!open || typeof window === 'undefined') return;
 
+      const containerEl = resolveContainer();
+
       const updatePosition = () => {
         let originX = anchorX;
         let originY = anchorY;
 
+        const hostRect = containerEl
+          ? containerEl.getBoundingClientRect()
+          : { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
+
+        const hostBandW = hostRect.width;
+        const hostBandH = hostRect.height;
+
+        const popupW = popupRef.current ? popupRef.current.offsetWidth : 320;
+
         if (anchorRef?.current) {
           const rect = anchorRef.current.getBoundingClientRect();
-          originX = rect.left;
-          originY = placement === 'up' ? rect.top : rect.bottom + 4;
+          if (containerEl) {
+            originX = rect.left - hostRect.left;
+            originY = placement === 'up' ? rect.top - hostRect.top : rect.bottom - hostRect.top + 4;
+          } else {
+            originX = rect.left;
+            originY = placement === 'up' ? rect.top : rect.bottom + 4;
+          }
+          if (align === 'center') {
+            originX = originX + (rect.width - popupW) / 2;
+          } else if (align === 'end') {
+            originX = originX + rect.width - popupW;
+          }
         }
-
-        const windowW = window.innerWidth;
-        const windowH = window.innerHeight;
 
         // Measure natural heights
         const headerH = headerRef.current ? headerRef.current.offsetHeight : 0;
@@ -99,11 +136,11 @@ export const AdaptivePopup = React.forwardRef<HTMLDivElement, AdaptivePopupProps
         // Calculate host available height
         let usable: number;
         if (useFullHostBand) {
-          usable = windowH - edgeMargin * 2;
+          usable = hostBandH - edgeMargin * 2;
         } else if (placement === 'up') {
           usable = Math.max(edgeMargin, originY) - edgeMargin;
         } else {
-          usable = windowH - Math.max(edgeMargin, originY) - edgeMargin;
+          usable = hostBandH - Math.max(edgeMargin, originY) - edgeMargin;
         }
 
         if (maxH > 0) {
@@ -115,17 +152,16 @@ export const AdaptivePopup = React.forwardRef<HTMLDivElement, AdaptivePopupProps
         const heightCapped = finalHeight < desiredH - 1;
 
         // Calculate clamped position
-        const popupW = popupRef.current ? popupRef.current.offsetWidth : 320;
-        const maxLeft = windowW - popupW - edgeMargin;
+        const maxLeft = hostBandW - popupW - edgeMargin;
         const clampedLeft = Math.max(edgeMargin, Math.min(originX, Math.max(edgeMargin, maxLeft)));
 
         let clampedTop: number;
         if (placement === 'up') {
           const topCandidate = originY - finalHeight;
-          const maxTop = windowH - finalHeight - edgeMargin;
+          const maxTop = hostBandH - finalHeight - edgeMargin;
           clampedTop = Math.max(edgeMargin, Math.min(topCandidate, Math.max(edgeMargin, maxTop)));
         } else {
-          const maxTop = windowH - finalHeight - edgeMargin;
+          const maxTop = hostBandH - finalHeight - edgeMargin;
           clampedTop = Math.max(edgeMargin, Math.min(originY, Math.max(edgeMargin, maxTop)));
         }
 
@@ -139,14 +175,21 @@ export const AdaptivePopup = React.forwardRef<HTMLDivElement, AdaptivePopupProps
 
       updatePosition();
 
+      let resizeObserver: ResizeObserver | null = null;
+      if (typeof ResizeObserver !== 'undefined' && containerEl) {
+        resizeObserver = new ResizeObserver(() => updatePosition());
+        resizeObserver.observe(containerEl);
+      }
+
       window.addEventListener('resize', updatePosition);
       window.addEventListener('scroll', updatePosition, true);
 
       return () => {
+        resizeObserver?.disconnect();
         window.removeEventListener('resize', updatePosition);
         window.removeEventListener('scroll', updatePosition, true);
       };
-    }, [open, placement, anchorX, anchorY, edgeMargin, useFullHostBand, minH, maxH, anchorRef, children, header, footer]);
+    }, [open, placement, anchorX, anchorY, edgeMargin, useFullHostBand, minH, maxH, anchorRef, containerRef, container, align, children, header, footer, resolveContainer]);
 
     // Dismiss on Escape
     React.useEffect(() => {
@@ -176,6 +219,9 @@ export const AdaptivePopup = React.forwardRef<HTMLDivElement, AdaptivePopupProps
 
     if (!open) return null;
 
+    const containerEl = resolveContainer();
+    const isContained = Boolean(containerEl);
+
     const popupContent = (
       <div
         ref={(node) => {
@@ -188,7 +234,8 @@ export const AdaptivePopup = React.forwardRef<HTMLDivElement, AdaptivePopupProps
         role="dialog"
         aria-modal="false"
         className={cn(
-          'fixed z-50 rounded-lg border border-border bg-popover text-popover-foreground shadow-md',
+          isContained ? 'absolute' : 'fixed',
+          'z-50 rounded-lg border border-border bg-popover text-popover-foreground shadow-md',
           'flex flex-col overflow-hidden',
           'duration-short ease-entrance animate-in fade-in-0 zoom-in-95',
           className,
@@ -225,7 +272,7 @@ export const AdaptivePopup = React.forwardRef<HTMLDivElement, AdaptivePopupProps
     );
 
     if (typeof document !== 'undefined') {
-      return createPortal(popupContent, document.body);
+      return createPortal(popupContent, containerEl || document.body);
     }
     return popupContent;
   },
