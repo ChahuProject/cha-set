@@ -14,6 +14,7 @@ export {
   type KbdOverflow,
   type ShortcutItem,
   type ShortcutPresetName,
+  type ShortcutBarMode,
   type ShortcutBarApi,
 } from '@chahu/spec/kbd';
 

@@ -149,6 +149,30 @@ describe('ShortcutBar Component', () => {
     // Unhover should schedule dismissal
     fireEvent.mouseLeave(items[1]!);
   });
+
+  it('renders compact keyboard icon trigger when mode="icon"', () => {
+    const { container } = render(
+      <ShortcutBar
+        preset="dropdown"
+        mode="icon"
+      />,
+    );
+
+    const visibleItems = container.querySelectorAll('[data-slot="shortcut-item"]');
+    expect(visibleItems.length).toBe(0);
+
+    const iconTrigger = container.querySelector('[data-slot="shortcut-icon-trigger"]');
+    expect(iconTrigger).toBeInTheDocument();
+
+    // Hover on icon trigger reveals complete shortcut list
+    fireEvent.mouseEnter(iconTrigger!);
+    const tooltip = screen.getByRole('tooltip');
+    expect(tooltip).toBeInTheDocument();
+    expect(tooltip).toHaveTextContent('快捷键列表');
+    expect(tooltip).toHaveTextContent('导航');
+    expect(tooltip).toHaveTextContent('选择');
+    expect(tooltip).toHaveTextContent('关闭');
+  });
 });
 
 

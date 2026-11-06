@@ -16,6 +16,7 @@ Item {
     property string size: "xs"             // "xs" | "sm" | "default" | "md"
     property string variant: "outline"     // "outline" | "solid" | "subtle" | "inverted"
     property bool showOverflowCount: true
+    property string mode: "auto"           // "auto" | "icon"
     property int maxVisibleItems: -1
     property bool forceCompact: false
 
@@ -129,6 +130,14 @@ Item {
             return { "visible": [], "overflow": [], "stage": "full" }
         }
 
+        if (root.mode === "icon") {
+            return {
+                "visible": [],
+                "overflow": effectiveItems,
+                "stage": "folded"
+            }
+        }
+
         if (root.maxVisibleItems >= 0) {
             var visFixed = effectiveItems.slice(0, root.maxVisibleItems)
             var ovFixed = effectiveItems.slice(root.maxVisibleItems)
@@ -239,11 +248,9 @@ Item {
 
         if (best) return best
 
-        var fallbackItem = Object.assign({}, effectiveItems[0])
-        fallbackItem.isCompact = true
         return {
-            "visible": [fallbackItem],
-            "overflow": effectiveItems.slice(1),
+            "visible": [],
+            "overflow": effectiveItems,
             "stage": "folded"
         }
     }
@@ -344,10 +351,55 @@ Item {
             }
         }
 
+        // Extreme constraint or icon mode fallback: display single keyboard icon trigger
+        Item {
+            id: iconTriggerItem
+            visible: (root.mode === "icon") || (root.visibleItems.length === 0 && root.effectiveItems.length > 0)
+            width: ThemeTokens.dp(20)
+            height: ThemeTokens.dp(20)
+            anchors.verticalCenter: parent ? parent.verticalCenter : undefined
+
+            Rectangle {
+                anchors.fill: parent
+                radius: ThemeTokens.dp(4)
+                color: iconTriggerHover.hovered ? ThemeTokens.accentSubtle : "transparent"
+            }
+
+            ChaSetIcon {
+                name: "keyboard"
+                size: 14
+                color: iconTriggerHover.hovered ? ThemeTokens.text : ThemeTokens.subduedText
+                anchors.centerIn: parent
+            }
+
+            HoverHandler {
+                id: iconTriggerHover
+                cursorShape: Qt.PointingHandCursor
+                onHoveredChanged: {
+                    if (hovered) {
+                        closeTimer.stop()
+                        overflowPopup.open()
+                    } else {
+                        closeTimer.restart()
+                    }
+                }
+            }
+
+            TapHandler {
+                onTapped: {
+                    if (overflowPopup.visible) {
+                        overflowPopup.close()
+                    } else {
+                        overflowPopup.open()
+                    }
+                }
+            }
+        }
+
         // Overflow '+N' badge with interactive overlay Popup
         ChaSetBadge {
             id: overflowBadge
-            visible: root.showOverflowCount && root.overflowItems && root.overflowItems.length > 0
+            visible: root.showOverflowCount && root.overflowItems && root.overflowItems.length > 0 && root.visibleItems.length > 0
             size: "sm"
             variant: "outline"
             text: root.overflowBadgeText
@@ -374,17 +426,19 @@ Item {
 
             Popup {
                 id: overflowPopup
-                parent: overflowBadge
+                parent: (root.visibleItems.length === 0 && iconTriggerItem.visible) ? iconTriggerItem : overflowBadge
                 modal: false
                 dim: false
                 focus: false
                 closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
+                readonly property Item anchorItem: (root.visibleItems.length === 0 && iconTriggerItem.visible) ? iconTriggerItem : overflowBadge
+
                 x: {
                     var win = root.Window.window
-                    if (!win) return (overflowBadge.width - implicitWidth) / 2
-                    var mapped = overflowBadge.mapToItem(null, 0, 0)
-                    var targetX = mapped.x + (overflowBadge.width - implicitWidth) / 2
+                    if (!win) return (anchorItem.width - implicitWidth) / 2
+                    var mapped = anchorItem.mapToItem(null, 0, 0)
+                    var targetX = mapped.x + (anchorItem.width - implicitWidth) / 2
                     var clampedX = Math.max(ThemeTokens.dp(8), Math.min(win.width - implicitWidth - ThemeTokens.dp(8), targetX))
                     return clampedX - mapped.x
                 }
@@ -392,9 +446,9 @@ Item {
                     var win = root.Window.window
                     var gap = ThemeTokens.dp(6)
                     if (!win) return -implicitHeight - gap
-                    var mapped = overflowBadge.mapToItem(null, 0, 0)
+                    var mapped = anchorItem.mapToItem(null, 0, 0)
                     if (mapped.y - implicitHeight - gap < ThemeTokens.dp(8)) {
-                        return overflowBadge.height + gap
+                        return anchorItem.height + gap
                     }
                     return -implicitHeight - gap
                 }
@@ -425,7 +479,9 @@ Item {
                     Row {
                         width: parent.width
                         Text {
-                            text: ChaSetI18n.tr("desktopComposite.shortcutBar.moreShortcuts", "更多快捷键")
+                            text: root.visibleItems.length === 0
+                                ? ChaSetI18n.tr("desktopComposite.shortcutBar.allShortcuts", "快捷键列表")
+                                : ChaSetI18n.tr("desktopComposite.shortcutBar.moreShortcuts", "更多快捷键")
                             color: ThemeTokens.subduedText
                             font.pixelSize: Typography.sizeCaption
                             font.weight: Font.Medium
@@ -439,7 +495,7 @@ Item {
                     }
 
                     Repeater {
-                        model: root.overflowItems
+                        model: root.visibleItems.length === 0 ? root.effectiveItems : root.overflowItems
                         delegate: Row {
                             id: ovRow
                             required property var modelData

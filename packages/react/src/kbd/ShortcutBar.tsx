@@ -2,6 +2,7 @@ import * as React from 'react';
 import { createPortal } from 'react-dom';
 import { cn } from '../lib/utils';
 import { Kbd } from './Kbd';
+import { KeyboardIcon } from '../lib/icons';
 import {
   composeShortcuts,
   type ComposeShortcutsOptions,
@@ -12,6 +13,7 @@ import type {
   KbdSize,
   KbdVariant,
   KbdCompact,
+  ShortcutBarMode,
 } from '@chahu/spec/kbd';
 
 function getRootFontSize(): number {
@@ -90,6 +92,8 @@ export interface ShortcutBarProps
   showOverflowCount?: boolean;
   /** Force compact symbol rendering (for test hooks) */
   forceCompact?: boolean;
+  /** Presentation mode: 'auto' (progressive multi-stage responsive adapting) or 'icon' (compact keyboard icon trigger) (default: 'auto') */
+  mode?: ShortcutBarMode;
   /** Maximum number of visible items before collapsing (optional override) */
   maxVisibleItems?: number;
   /** Optional callback notified whenever responsive stage transitions between full, squeezed, compact, and folded */
@@ -114,6 +118,7 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
       variant = 'outline',
       showOverflowCount = true,
       forceCompact = false,
+      mode = 'auto',
       maxVisibleItems,
       onStageChange,
       className,
@@ -244,6 +249,14 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
           };
         }
 
+        if (mode === 'icon') {
+          return {
+            visibleItems: [] as { item: ShortcutItem; isCompact: boolean }[],
+            overflowItems: effectiveItems,
+            responsiveStage: 'folded' as const,
+          };
+        }
+
         if (maxVisibleItems !== undefined && maxVisibleItems >= 0) {
           const vis = effectiveItems.slice(0, maxVisibleItems);
           const ov = effectiveItems.slice(maxVisibleItems);
@@ -352,10 +365,11 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
           if (bestConfig) break;
         }
 
+        // If even 1 item cannot fit in available width, fold everything into overflow for icon fallback
         return (
           bestConfig ?? {
-            visibleItems: [{ item: effectiveItems[0]!, isCompact: true }],
-            overflowItems: effectiveItems.slice(1),
+            visibleItems: [],
+            overflowItems: effectiveItems,
             responsiveStage: 'folded' as const,
           }
         );
@@ -576,42 +590,63 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
         </div>
 
         {/* Visible Shortcut Items - Strict Atomic Units */}
-        <div
-          className={cn(
-            'flex min-w-0 shrink-0 items-center transition-colors duration-100',
-            responsiveStage === 'full' ? 'gap-2.5 text-micro' : 'gap-1.5 text-nano',
-          )}
-        >
-          {visibleItems.map(({ item, isCompact }) => (
-            <span
-              key={`visible-${item.id}`}
-              data-slot="shortcut-item"
-              data-compact={isCompact ? 'true' : 'false'}
-              className={cn(
-                'inline-flex shrink-0 items-center whitespace-nowrap cursor-pointer rounded px-1 py-0.5 transition-colors duration-100 hover:bg-accent/40',
-                isCompact ? 'gap-0.5' : 'gap-1',
-                item.disabled && 'opacity-50 pointer-events-none',
-              )}
-              onMouseEnter={(e) => handleItemMouseEnter(item, e.currentTarget)}
-              onMouseLeave={handleItemMouseLeave}
-            >
-              {item.keys.map((keyStr, kIdx) => (
-                <Kbd
-                  key={`key-${item.id}-${kIdx}`}
-                  size={isCompact ? 'xs' : (responsiveStage === 'full' ? size : 'xs')}
-                  variant={variant}
-                  compact={isCompact ? 'always' : 'never'}
-                  className={cn(isCompact && 'h-4 min-w-4 px-0.5 text-nano')}
-                >
-                  {keyStr}
-                </Kbd>
-              ))}
-              <span className="shrink-0 whitespace-nowrap">
-                {isCompact && item.shortLabel ? item.shortLabel : item.label}
+        {visibleItems.length > 0 && (
+          <div
+            className={cn(
+              'flex min-w-0 shrink-0 items-center transition-colors duration-100',
+              responsiveStage === 'full' ? 'gap-2.5 text-micro' : 'gap-1.5 text-nano',
+            )}
+          >
+            {visibleItems.map(({ item, isCompact }) => (
+              <span
+                key={`visible-${item.id}`}
+                data-slot="shortcut-item"
+                data-compact={isCompact ? 'true' : 'false'}
+                className={cn(
+                  'inline-flex shrink-0 items-center whitespace-nowrap cursor-pointer rounded px-1 py-0.5 transition-colors duration-100 hover:bg-accent/40',
+                  isCompact ? 'gap-0.5' : 'gap-1',
+                  item.disabled && 'opacity-50 pointer-events-none',
+                )}
+                onMouseEnter={(e) => handleItemMouseEnter(item, e.currentTarget)}
+                onMouseLeave={handleItemMouseLeave}
+              >
+                {item.keys.map((keyStr, kIdx) => (
+                  <Kbd
+                    key={`key-${item.id}-${kIdx}`}
+                    size={isCompact ? 'xs' : (responsiveStage === 'full' ? size : 'xs')}
+                    variant={variant}
+                    compact={isCompact ? 'always' : 'never'}
+                    className={cn(isCompact && 'h-4 min-w-4 px-0.5 text-nano')}
+                  >
+                    {keyStr}
+                  </Kbd>
+                ))}
+                <span className="shrink-0 whitespace-nowrap">
+                  {isCompact && item.shortLabel ? item.shortLabel : item.label}
+                </span>
               </span>
-            </span>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
+
+        {/* Extreme constraint or icon mode fallback: display single keyboard icon trigger */}
+        {((mode === 'icon') || (visibleItems.length === 0 && effectiveItems.length > 0)) && (
+          <div
+            ref={badgeRef}
+            data-slot="shortcut-icon-trigger"
+            className="inline-flex shrink-0 items-center justify-center cursor-pointer rounded p-1 text-muted-foreground transition-colors duration-100 hover:bg-accent/40 hover:text-foreground"
+            role="button"
+            tabIndex={0}
+            aria-label="快捷键提示"
+            aria-expanded={isHoveringOverflow}
+            onMouseEnter={handleBadgeMouseEnter}
+            onMouseLeave={handleBadgeMouseLeave}
+            onFocus={handleBadgeMouseEnter}
+            onBlur={handleBadgeMouseLeave}
+          >
+            <KeyboardIcon className="size-4" />
+          </div>
+        )}
 
         {/* Item Tooltip on Hover rendered via Portal */}
         {activeTooltip &&
@@ -653,7 +688,7 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
           )}
 
         {/* Overflow '+N' Badge with interactive trigger */}
-        {showOverflowCount && overflowItems.length > 0 && (
+        {showOverflowCount && overflowItems.length > 0 && visibleItems.length > 0 && (
           <div
             ref={badgeRef}
             className="relative ml-1.5 inline-flex shrink-0 items-center"
@@ -703,11 +738,13 @@ export const ShortcutBar = React.forwardRef<HTMLDivElement, ShortcutBarProps>(
             >
               <div className="flex flex-col gap-1.5">
                 <div className="flex items-center justify-between border-b border-border/50 pb-1 text-micro font-medium text-muted-foreground">
-                  <span>更多快捷键</span>
-                  <span className="text-nano opacity-75">+{overflowItems.length}</span>
+                  <span>{visibleItems.length === 0 ? '快捷键列表' : '更多快捷键'}</span>
+                  <span className="text-nano opacity-75">
+                    {visibleItems.length === 0 ? effectiveItems.length : `+${overflowItems.length}`}
+                  </span>
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  {overflowItems.map((ovItem) => (
+                  {(visibleItems.length === 0 ? effectiveItems : overflowItems).map((ovItem) => (
                     <div
                       key={`ov-${ovItem.id}`}
                       className="flex items-center justify-between gap-4 py-0.5 text-micro"

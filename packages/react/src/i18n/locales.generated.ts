@@ -1225,6 +1225,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "invertedTooltip": "反白（文字提示）",
       "menuDesc": "专用 Shortcut 组件，内置右对齐与防收缩行为，适用于菜单项。",
       "menuTitle": "菜单尾随快捷键",
+      "modeAuto": "自动（响应式）",
+      "modeIcon": "图标（紧凑）",
+      "modeLabel": "形态：",
       "multiModifier": "多修饰符序列：",
       "narrowDesc": "当父容器被压缩时，标签文本将被截断，而快捷键保持完整或压缩为符号。",
       "narrowTitle": "窄容器自适应",
@@ -1265,6 +1268,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "stackBadge": "React 19 与 Qt 6"
     },
     "shortcutBar": {
+      "allShortcuts": "快捷键列表",
       "cancel": "取消",
       "close": "关闭",
       "confirm": "确认",
@@ -4084,6 +4088,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "invertedTooltip": "Inverted (Tooltip)",
       "menuDesc": "Dedicated Shortcut component with built-in right-alignment and non-shrinking behavior for menu items.",
       "menuTitle": "Menu Trailing Shortcuts",
+      "modeAuto": "Auto (Responsive)",
+      "modeIcon": "Icon (Compact)",
+      "modeLabel": "Mode:",
       "multiModifier": "Multi-Modifier Sequence:",
       "narrowDesc": "When the parent container is squeezed, the label is truncated while the shortcut stays intact or compresses into symbols.",
       "narrowTitle": "Narrow Container Adaptation",
@@ -4124,6 +4131,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "stackBadge": "React 19 & Qt 6"
     },
     "shortcutBar": {
+      "allShortcuts": "Shortcut list",
       "cancel": "Cancel",
       "close": "Close",
       "confirm": "Confirm",

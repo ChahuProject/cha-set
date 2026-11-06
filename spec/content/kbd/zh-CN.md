@@ -37,4 +37,5 @@ description: 显示键盘快捷键、组合键及键帽徽章，具备智能紧�
 | `shortcut` | `string` | `''` | 自动解析的序列化快捷键组合字符串。 |
 | `separator` | `string` | `'+'` | 组合键之间的自定义分隔符。 |
 | `className` | `string` | `''` | 可选的额外 Tailwind CSS 类名。 |
+| `mode` | `'auto' \| 'icon'` | `'auto'` | ShortcutBar 呈现形态：`auto` 自动多阶段响应自适应（极端空间折叠为小图标），`icon` 常驻小键盘图标形态。 |
 ```

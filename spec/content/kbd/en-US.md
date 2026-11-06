@@ -37,4 +37,5 @@ Names and semantics are identical on both stacks; `Type` gives the TypeScript si
 | `shortcut` | `string` | `''` | Serialized shortcut combination string to parse automatically. |
 | `separator` | `string` | `'+'` | Custom separator character between combination keys. |
 | `className` | `string` | `''` | Optional additional Tailwind CSS class names. |
+| `mode` | `'auto' \| 'icon'` | `'auto'` | ShortcutBar display mode: `auto` for progressive multi-stage responsive adapting (folds to icon on extreme constraint), `icon` for persistent compact keyboard icon. |
 ```

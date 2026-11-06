@@ -19,6 +19,7 @@ DocLayout {
     property string demoVariant: "outline"
     property string demoSize: "default"
     property string demoCompact: "auto"
+    property string demoShortcutMode: "auto"
     property real playgroundWidth: 340
 
     // Section 1: Overview
@@ -477,6 +478,33 @@ DocLayout {
                         anchors.verticalCenter: parent.verticalCenter
 
                         DocText {
+                            text: ChaSetI18n.tr("desktopComposite.kbd.modeLabel", "Mode:")
+                            font.pixelSize: Typography.sizeCaption
+                            color: root.cMutedFg
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+
+                        ChaSetSegmentedControl {
+                            size: "xs"
+                            value: root.demoShortcutMode
+                            options: [
+                                { label: ChaSetI18n.tr("desktopComposite.kbd.modeAuto", "Auto (Responsive)"), value: "auto" },
+                                { label: ChaSetI18n.tr("desktopComposite.kbd.modeIcon", "Icon (Compact)"), value: "icon" }
+                            ]
+                            onValueChanged: function(val) {
+                                if (val !== undefined) {
+                                    root.demoShortcutMode = String(val)
+                                }
+                            }
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                    }
+
+                    Row {
+                        spacing: ThemeTokens.dp(6)
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        DocText {
                             text: ChaSetI18n.tr("desktopComposite.kbd.presetsLabel", "Presets:")
                             font.pixelSize: Typography.sizeCaption
                             color: root.cMutedFg
@@ -548,6 +576,7 @@ DocLayout {
 
                     ChaSetShortcutBar {
                         id: playgroundShortcutBar
+                        mode: root.demoShortcutMode
                         anchors.left: parent.left
                         anchors.right: playgroundResizeGrip.left
                         anchors.verticalCenter: parent.verticalCenter

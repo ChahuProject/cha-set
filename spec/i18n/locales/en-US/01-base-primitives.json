@@ -252,6 +252,9 @@
       "invertedTooltip": "Inverted (Tooltip)",
       "menuDesc": "Dedicated Shortcut component with built-in right-alignment and non-shrinking behavior for menu items.",
       "menuTitle": "Menu Trailing Shortcuts",
+      "modeAuto": "Auto (Responsive)",
+      "modeIcon": "Icon (Compact)",
+      "modeLabel": "Mode:",
       "multiModifier": "Multi-Modifier Sequence:",
       "narrowDesc": "When the parent container is squeezed, the label is truncated while the shortcut stays intact or compresses into symbols.",
       "narrowTitle": "Narrow Container Adaptation",
@@ -292,6 +295,7 @@
       "stackBadge": "React 19 & Qt 6"
     },
     "shortcutBar": {
+      "allShortcuts": "Shortcut list",
       "cancel": "Cancel",
       "close": "Close",
       "confirm": "Confirm",

@@ -75,6 +75,8 @@ export const SHORTCUT_PRESETS: Record<
   ],
 };
 
+export const shortcutBarModeSchema = z.enum(['auto', 'icon']);
+
 export const shortcutBarSchema = z.object({
   items: z.array(shortcutItemSchema).optional(),
   preset: shortcutPresetNameSchema.optional(),
@@ -83,6 +85,7 @@ export const shortcutBarSchema = z.object({
   size: kbdSizeSchema.default('xs'),
   variant: kbdVariantSchema.default('outline'),
   showOverflowCount: z.boolean().default(true),
+  mode: shortcutBarModeSchema.default('auto'),
 });
 
 export type KbdApi = z.infer<typeof kbdSchema>;
@@ -92,5 +95,6 @@ export type KbdCompact = z.infer<typeof kbdCompactSchema>;
 export type KbdOverflow = z.infer<typeof kbdOverflowSchema>;
 export type ShortcutItem = z.infer<typeof shortcutItemSchema>;
 export type ShortcutPresetName = z.infer<typeof shortcutPresetNameSchema>;
+export type ShortcutBarMode = z.infer<typeof shortcutBarModeSchema>;
 export type ShortcutBarApi = z.infer<typeof shortcutBarSchema>;
 

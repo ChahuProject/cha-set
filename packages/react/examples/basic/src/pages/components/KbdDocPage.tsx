@@ -25,6 +25,7 @@ export function KbdDocPage() {
   const [variant, setVariant] = useState<KbdVariant>('outline');
   const [size, setSize] = useState<KbdSize>('default');
   const [compact, setCompact] = useState<KbdCompact>('auto');
+  const [shortcutMode, setShortcutMode] = useState<'auto' | 'icon'>('auto');
   const [playgroundWidth, setPlaygroundWidth] = useState<number>(340);
   const [activeStage, setActiveStage] = useState<'full' | 'squeezed' | 'compact' | 'folded'>('squeezed');
   const [isDragging, setIsDragging] = useState<boolean>(false);
@@ -268,7 +269,7 @@ export function KbdDocPage() {
               </p>
             </div>
 
-            {/* Controls: Slider & Quick Presets */}
+            {/* Controls: Slider & Quick Presets & Mode */}
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center gap-3 w-full sm:w-64">
                 <span className="text-xs text-muted-foreground shrink-0">{t('desktopComposite.kbd.widthLabel', 'Width:')}</span>
@@ -279,6 +280,19 @@ export function KbdDocPage() {
                   step={1}
                   onValueChange={setPlaygroundWidth}
                   className="flex-1"
+                />
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-muted-foreground shrink-0">{t('desktopComposite.kbd.modeLabel', 'Mode:')}</span>
+                <SegmentedControl
+                  size="sm"
+                  value={shortcutMode}
+                  onChange={(m) => setShortcutMode(m as 'auto' | 'icon')}
+                  options={[
+                    { label: t('desktopComposite.kbd.modeAuto', 'Auto (Responsive)'), value: 'auto' },
+                    { label: t('desktopComposite.kbd.modeIcon', 'Icon (Compact)'), value: 'icon' },
+                  ]}
                 />
               </div>
 
@@ -367,6 +381,7 @@ export function KbdDocPage() {
               >
                 <div className="flex-1 min-w-0 overflow-hidden py-1 px-2">
                   <ShortcutBar
+                    mode={shortcutMode}
                     preset="address-bar"
                     additionalShortcuts={[
                       { id: 'tab', keys: ['Tab'], label: t('desktopComposite.kbd.completeLabel', 'Autocomplete'), priority: 2 },
