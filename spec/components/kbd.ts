@@ -43,6 +43,7 @@ export const shortcutPresetNameSchema = z.enum([
   'tree',
   'table',
   'address-bar',
+  'filter-popup',
 ]);
 
 export const SHORTCUT_PRESETS: Record<
@@ -71,6 +72,12 @@ export const SHORTCUT_PRESETS: Record<
   'address-bar': [
     { id: 'nav', keys: ['Up', 'Down'], label: '导航', priority: 1 },
     { id: 'open', keys: ['Enter'], label: '打开', priority: 1 },
+    { id: 'close', keys: ['Esc'], label: '关闭', priority: 2 },
+  ],
+  'filter-popup': [
+    { id: 'include', keys: ['mouse-left'], label: '包含', priority: 1 },
+    { id: 'exclude', keys: ['mouse-right'], label: '排除', priority: 1 },
+    { id: 'search', keys: ['字符'], label: '输入开始搜索', priority: 3 },
     { id: 'close', keys: ['Esc'], label: '关闭', priority: 2 },
   ],
 };

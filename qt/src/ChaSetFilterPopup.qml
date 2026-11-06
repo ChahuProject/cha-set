@@ -607,76 +607,10 @@ Popup {
                 color: ThemeTokens.border
             }
 
-            RowLayout {
+            ChaSetShortcutBar {
                 anchors.fill: parent
-                spacing: ThemeTokens.dp(8)
-
-                RowLayout {
-                    spacing: ThemeTokens.dp(3)
-                    ChaSetKbd {
-                        size: "xs"
-                        variant: "outline"
-                        shortcut: "mouse-left"
-                        Layout.alignment: Qt.AlignVCenter
-                    }
-                    Text {
-                        text: qsTr("包含")
-                        font.pixelSize: Typography.sizeMicro
-                        color: ThemeTokens.subduedText
-                        Layout.alignment: Qt.AlignVCenter
-                    }
-                }
-
-                RowLayout {
-                    spacing: ThemeTokens.dp(3)
-                    ChaSetKbd {
-                        size: "xs"
-                        variant: "outline"
-                        shortcut: "mouse-right"
-                        Layout.alignment: Qt.AlignVCenter
-                    }
-                    Text {
-                        text: qsTr("排除")
-                        font.pixelSize: Typography.sizeMicro
-                        color: ThemeTokens.subduedText
-                        Layout.alignment: Qt.AlignVCenter
-                    }
-                }
-
-                RowLayout {
-                    visible: rootPopup.searchEnabled
-                    spacing: ThemeTokens.dp(3)
-                    ChaSetKbd {
-                        size: "xs"
-                        variant: "outline"
-                        text: qsTr("字符")
-                        Layout.alignment: Qt.AlignVCenter
-                    }
-                    Text {
-                        text: qsTr("输入开始搜索")
-                        font.pixelSize: Typography.sizeMicro
-                        color: ThemeTokens.subduedText
-                        Layout.alignment: Qt.AlignVCenter
-                    }
-                }
-
-                Item { Layout.fillWidth: true }
-
-                RowLayout {
-                    spacing: ThemeTokens.dp(3)
-                    ChaSetKbd {
-                        size: "xs"
-                        variant: "outline"
-                        shortcut: "Esc"
-                        Layout.alignment: Qt.AlignVCenter
-                    }
-                    Text {
-                        text: qsTr("关闭")
-                        font.pixelSize: Typography.sizeMicro
-                        color: ThemeTokens.subduedText
-                        Layout.alignment: Qt.AlignVCenter
-                    }
-                }
+                preset: "filter-popup"
+                exclude: rootPopup.searchEnabled ? [] : ["search"]
             }
         }
     }

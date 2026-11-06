@@ -112,6 +112,7 @@
       "presetAddressBar": "地址栏",
       "presetDialog": "对话框",
       "presetDropdown": "下拉菜单",
+      "presetFilterPopup": "过滤器弹窗",
       "presetTable": "数据表格",
       "presetTree": "树形视图",
       "sandboxTitle": "快捷键状态栏沙盒"
@@ -308,11 +309,14 @@
     "shortcutBar": {
       "allShortcuts": "快捷键列表",
       "cancel": "取消",
+      "charKey": "字符",
       "close": "关闭",
       "completeLabel": "自动补全",
       "confirm": "确认",
       "copyPathLabel": "复制路径",
       "dragHandleTooltip": "拖拽右侧手柄调整容器宽度",
+      "exclude": "排除",
+      "include": "包含",
       "modeAuto": "自动（响应式）",
       "modeIcon": "图标（紧凑）",
       "modeLabel": "形态：",
@@ -336,6 +340,7 @@
       "stageFull": "阶段 1: 完整模式 (文字标签)",
       "stageIcon": "阶段 5: 小键盘图标 (极窄折叠)",
       "stageSqueezed": "阶段 2: 紧缩模式 (微缩字号)",
+      "startSearch": "输入开始搜索",
       "toggle": "折叠/展开",
       "widthBadge": "宽度: {{value}}",
       "widthLabel": "容器宽度："

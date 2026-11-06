@@ -237,130 +237,17 @@ Rectangle {
                 color: ThemeTokens.border
             }
 
-            Row {
+            ChaSetShortcutBar {
                 anchors.left: parent.left
-                anchors.leftMargin: ThemeTokens.dp(14)
+                anchors.leftMargin: ThemeTokens.dp(8)
+                anchors.right: resultCountText.left
+                anchors.rightMargin: ThemeTokens.dp(8)
                 anchors.verticalCenter: parent.verticalCenter
-                spacing: ThemeTokens.dp(16)
-
-                // Navigation group (Up / Down + label)
-                Row {
-                    spacing: ThemeTokens.dp(6)
-                    anchors.verticalCenter: parent.verticalCenter
-
-                    Row {
-                        spacing: ThemeTokens.dp(4)
-                        anchors.verticalCenter: parent.verticalCenter
-
-                        Rectangle {
-                            width: upTxt.implicitWidth + ThemeTokens.dp(12)
-                            height: ThemeTokens.dp(20)
-                            radius: ThemeTokens.dp(4)
-                            color: ThemeTokens.dark ? Qt.rgba(30/255, 41/255, 59/255, 0.8) : Qt.rgba(241/255, 245/255, 249/255, 1.0)
-                            border.width: 1
-                            border.color: ThemeTokens.border
-                            Text {
-                                id: upTxt
-                                anchors.centerIn: parent
-                                text: ChaSetI18n.tr("common.keyUp", "↑")
-                                color: ThemeTokens.subduedText
-                                font.pixelSize: Typography.sizeNano
-                                font.family: Typography.familyMono
-                                font.weight: Font.Medium
-                            }
-                        }
-
-                        Rectangle {
-                            width: downTxt.implicitWidth + ThemeTokens.dp(12)
-                            height: ThemeTokens.dp(20)
-                            radius: ThemeTokens.dp(4)
-                            color: ThemeTokens.dark ? Qt.rgba(30/255, 41/255, 59/255, 0.8) : Qt.rgba(241/255, 245/255, 249/255, 1.0)
-                            border.width: 1
-                            border.color: ThemeTokens.border
-                            Text {
-                                id: downTxt
-                                anchors.centerIn: parent
-                                text: ChaSetI18n.tr("common.keyDown", "↓")
-                                color: ThemeTokens.subduedText
-                                font.pixelSize: Typography.sizeNano
-                                font.family: Typography.familyMono
-                                font.weight: Font.Medium
-                            }
-                        }
-                    }
-
-                    Text {
-                        text: ChaSetI18n.tr("common.navigate", "导航")
-                        color: ThemeTokens.subduedText
-                        font.pixelSize: Typography.sizeSmall
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-                }
-
-                // Enter group
-                Row {
-                    spacing: ThemeTokens.dp(6)
-                    anchors.verticalCenter: parent.verticalCenter
-
-                    Rectangle {
-                        width: entTxt.implicitWidth + ThemeTokens.dp(12)
-                        height: ThemeTokens.dp(20)
-                        radius: ThemeTokens.dp(4)
-                        color: ThemeTokens.dark ? Qt.rgba(30/255, 41/255, 59/255, 0.8) : Qt.rgba(241/255, 245/255, 249/255, 1.0)
-                        border.width: 1
-                        border.color: ThemeTokens.border
-                        Text {
-                            id: entTxt
-                            anchors.centerIn: parent
-                            text: "Enter"
-                            color: ThemeTokens.subduedText
-                            font.pixelSize: Typography.sizeNano
-                            font.family: Typography.familyMono
-                            font.weight: Font.Medium
-                        }
-                    }
-
-                    Text {
-                        text: ChaSetI18n.tr("common.open", "打开")
-                        color: ThemeTokens.subduedText
-                        font.pixelSize: Typography.sizeSmall
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-                }
-
-                // Esc group
-                Row {
-                    spacing: ThemeTokens.dp(6)
-                    anchors.verticalCenter: parent.verticalCenter
-
-                    Rectangle {
-                        width: escTxt.implicitWidth + ThemeTokens.dp(12)
-                        height: ThemeTokens.dp(20)
-                        radius: ThemeTokens.dp(4)
-                        color: ThemeTokens.dark ? Qt.rgba(30/255, 41/255, 59/255, 0.8) : Qt.rgba(241/255, 245/255, 249/255, 1.0)
-                        border.width: 1
-                        border.color: ThemeTokens.border
-                        Text {
-                            id: escTxt
-                            anchors.centerIn: parent
-                            text: "Esc"
-                            color: ThemeTokens.subduedText
-                            font.pixelSize: Typography.sizeNano
-                            font.family: Typography.familyMono
-                            font.weight: Font.Medium
-                        }
-                    }
-
-                    Text {
-                        text: ChaSetI18n.tr("common.close", "关闭")
-                        color: ThemeTokens.subduedText
-                        font.pixelSize: Typography.sizeSmall
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-                }
+                preset: "address-bar"
             }
 
             Text {
+                id: resultCountText
                 anchors.right: parent.right
                 anchors.rightMargin: ThemeTokens.dp(14)
                 anchors.verticalCenter: parent.verticalCenter

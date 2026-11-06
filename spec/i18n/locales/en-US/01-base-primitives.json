@@ -112,6 +112,7 @@
       "presetAddressBar": "Address Bar",
       "presetDialog": "Dialog",
       "presetDropdown": "Dropdown",
+      "presetFilterPopup": "Filter Popup",
       "presetTable": "Data Table",
       "presetTree": "Tree View",
       "sandboxTitle": "Shortcut Bar Sandbox"
@@ -308,11 +309,14 @@
     "shortcutBar": {
       "allShortcuts": "Shortcut list",
       "cancel": "Cancel",
+      "charKey": "Character",
       "close": "Close",
       "completeLabel": "Autocomplete",
       "confirm": "Confirm",
       "copyPathLabel": "Copy Path",
       "dragHandleTooltip": "Drag right handle to resize container width",
+      "exclude": "Exclude",
+      "include": "Include",
       "modeAuto": "Auto (Responsive)",
       "modeIcon": "Icon (Compact)",
       "modeLabel": "Mode:",
@@ -336,6 +340,7 @@
       "stageFull": "Stage 1: Full (Text Labels)",
       "stageIcon": "Stage 5: Keyboard Icon (Ultra Narrow)",
       "stageSqueezed": "Stage 2: Squeezed (Scaled Text)",
+      "startSearch": "Type to search",
       "toggle": "Collapse/Expand",
       "widthBadge": "Width: {{value}}",
       "widthLabel": "Container Width:"

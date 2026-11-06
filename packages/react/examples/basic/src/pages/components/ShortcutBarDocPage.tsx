@@ -125,6 +125,7 @@ export function ShortcutBarDocPage() {
                     { label: t('components.shortcutBar.presetAddressBar', 'Address Bar'), value: 'address-bar' },
                     { label: t('components.shortcutBar.presetDialog', 'Dialog'), value: 'dialog' },
                     { label: t('components.shortcutBar.presetDropdown', 'Dropdown'), value: 'dropdown' },
+                    { label: t('components.shortcutBar.presetFilterPopup', 'Filter Popup'), value: 'filter-popup' },
                     { label: t('components.shortcutBar.presetTree', 'Tree View'), value: 'tree' },
                     { label: t('components.shortcutBar.presetTable', 'Data Table'), value: 'table' },
                   ]}

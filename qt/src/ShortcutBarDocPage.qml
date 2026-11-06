@@ -79,6 +79,7 @@ DocLayout {
                         { label: ChaSetI18n.tr("components.shortcutBar.presetAddressBar", "Address Bar"), value: "address-bar" },
                         { label: ChaSetI18n.tr("components.shortcutBar.presetDialog", "Dialog"), value: "dialog" },
                         { label: ChaSetI18n.tr("components.shortcutBar.presetDropdown", "Dropdown"), value: "dropdown" },
+                        { label: ChaSetI18n.tr("components.shortcutBar.presetFilterPopup", "Filter Popup"), value: "filter-popup" },
                         { label: ChaSetI18n.tr("components.shortcutBar.presetTree", "Tree View"), value: "tree" },
                         { label: ChaSetI18n.tr("components.shortcutBar.presetTable", "Data Table"), value: "table" }
                     ]

@@ -627,6 +627,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "presetAddressBar": "地址栏",
       "presetDialog": "对话框",
       "presetDropdown": "下拉菜单",
+      "presetFilterPopup": "过滤器弹窗",
       "presetTable": "数据表格",
       "presetTree": "树形视图",
       "sandboxTitle": "快捷键状态栏沙盒"
@@ -1286,11 +1287,14 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "shortcutBar": {
       "allShortcuts": "快捷键列表",
       "cancel": "取消",
+      "charKey": "字符",
       "close": "关闭",
       "completeLabel": "自动补全",
       "confirm": "确认",
       "copyPathLabel": "复制路径",
       "dragHandleTooltip": "拖拽右侧手柄调整容器宽度",
+      "exclude": "排除",
+      "include": "包含",
       "modeAuto": "自动（响应式）",
       "modeIcon": "图标（紧凑）",
       "modeLabel": "形态：",
@@ -1314,6 +1318,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "stageFull": "阶段 1: 完整模式 (文字标签)",
       "stageIcon": "阶段 5: 小键盘图标 (极窄折叠)",
       "stageSqueezed": "阶段 2: 紧缩模式 (微缩字号)",
+      "startSearch": "输入开始搜索",
       "toggle": "折叠/展开",
       "widthBadge": "宽度: {{value}}",
       "widthLabel": "容器宽度："
@@ -3549,6 +3554,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "presetAddressBar": "Address Bar",
       "presetDialog": "Dialog",
       "presetDropdown": "Dropdown",
+      "presetFilterPopup": "Filter Popup",
       "presetTable": "Data Table",
       "presetTree": "Tree View",
       "sandboxTitle": "Shortcut Bar Sandbox"
@@ -4208,11 +4214,14 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "shortcutBar": {
       "allShortcuts": "Shortcut list",
       "cancel": "Cancel",
+      "charKey": "Character",
       "close": "Close",
       "completeLabel": "Autocomplete",
       "confirm": "Confirm",
       "copyPathLabel": "Copy Path",
       "dragHandleTooltip": "Drag right handle to resize container width",
+      "exclude": "Exclude",
+      "include": "Include",
       "modeAuto": "Auto (Responsive)",
       "modeIcon": "Icon (Compact)",
       "modeLabel": "Mode:",
@@ -4236,6 +4245,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "stageFull": "Stage 1: Full (Text Labels)",
       "stageIcon": "Stage 5: Keyboard Icon (Ultra Narrow)",
       "stageSqueezed": "Stage 2: Squeezed (Scaled Text)",
+      "startSearch": "Type to search",
       "toggle": "Collapse/Expand",
       "widthBadge": "Width: {{value}}",
       "widthLabel": "Container Width:"

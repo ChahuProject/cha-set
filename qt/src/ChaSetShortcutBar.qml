@@ -44,6 +44,12 @@ Item {
             { "id": "nav", "keys": ["Up", "Down"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.nav", "导航"), "priority": 1 },
             { "id": "open", "keys": ["Enter"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.open", "打开"), "priority": 1 },
             { "id": "close", "keys": ["Esc"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.close", "关闭"), "priority": 2 }
+        ],
+        "filter-popup": [
+            { "id": "include", "keys": ["mouse-left"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.include", "包含"), "priority": 1 },
+            { "id": "exclude", "keys": ["mouse-right"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.exclude", "排除"), "priority": 1 },
+            { "id": "search", "keys": [ChaSetI18n.tr("desktopComposite.shortcutBar.charKey", "字符")], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.startSearch", "输入开始搜索"), "priority": 3 },
+            { "id": "close", "keys": ["Esc"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.close", "关闭"), "priority": 2 }
         ]
     })
 

@@ -3,7 +3,7 @@ import { Popover as PopoverPrimitive } from '@base-ui/react/popover';
 import { cn } from '../lib/utils';
 import { Button } from '../button';
 import { SegmentedControl } from '../segmented-control';
-import { Kbd } from '../kbd';
+import { ShortcutBar } from '../kbd';
 import { CheckIcon, XIcon, SearchIcon, StarIcon } from '../lib/icons';
 import { matchPinyin } from '../lib/pinyin';
 import type {
@@ -436,31 +436,11 @@ export function FilterPopup({
             </div>
 
             {/* Bottom Shortcuts Bar */}
-            <div className="flex h-6 items-center gap-2 border-t border-border pt-1 px-0.5 text-[0.625rem] text-muted-foreground">
-              <div className="flex items-center gap-1">
-                <Kbd size="xs" variant="outline" shortcut="mouse-left" />
-                <span>包含</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <Kbd size="xs" variant="outline" shortcut="mouse-right" />
-                <span>排除</span>
-              </div>
-              {searchEnabled && (
-                <div className="flex items-center gap-1">
-                  <Kbd size="xs" variant="outline">
-                    字符
-                  </Kbd>
-                  <span>输入开始搜索</span>
-                </div>
-              )}
-              <div className="flex-1" />
-              <div className="flex items-center gap-1">
-                <Kbd size="xs" variant="outline">
-                  Esc
-                </Kbd>
-                <span>关闭</span>
-              </div>
-            </div>
+            <ShortcutBar
+              preset="filter-popup"
+              exclude={searchEnabled ? [] : ['search']}
+              className="border-t border-border pt-1 px-0.5"
+            />
           </div>
         </PopoverPrimitive.Popup>
       </PopoverPrimitive.Positioner>

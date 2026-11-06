@@ -4,6 +4,7 @@ import {
   Card,
   Input,
   Kbd,
+  ShortcutBar,
   Separator,
   SearchIcon,
   VirtualList,
@@ -203,23 +204,11 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
         </div>
 
         {/* Bottom Keyboard Shortcut & Result Count Bar */}
-        <div className="flex items-center justify-between px-3.5 py-2 border-t border-border bg-muted/40 text-xs text-muted-foreground">
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5">
-              <Kbd size="xs" variant="outline">{t('common.keyUp', '↑')}</Kbd>
-              <Kbd size="xs" variant="outline">{t('common.keyDown', '↓')}</Kbd>
-              <span>{t('common.navigate', '导航')}</span>
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Kbd size="xs" variant="outline">Enter</Kbd>
-              <span>{t('common.open', '打开')}</span>
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Kbd size="xs" variant="outline">Esc</Kbd>
-              <span>{t('common.close', '关闭')}</span>
-            </span>
+        <div className="flex items-center justify-between px-3 py-1.5 border-t border-border bg-muted/40 text-xs text-muted-foreground">
+          <div className="flex-1 min-w-0 mr-3">
+            <ShortcutBar preset="address-bar" />
           </div>
-          <span className="text-micro">
+          <span className="text-micro shrink-0">
             {t('common.resultCount', '{{count}} 个结果', { count: filtered.length })}
           </span>
         </div>

@@ -33,7 +33,7 @@ export function lookupSyllable(codePoint: number): SyllableTuple | null {
   }
   const table = getTable();
   const idx = table[codePoint - PINYIN_TABLE_START];
-  return idx > 0 && idx < SYLLABLES.length ? SYLLABLES[idx] : null;
+  return typeof idx === 'number' && idx > 0 && idx < SYLLABLES.length ? (SYLLABLES[idx] ?? null) : null;
 }
 
 interface CharInfo {
@@ -56,7 +56,9 @@ function matchFromPosition(
   }
 
   const info = textInfo[textPos];
-  const qc = query[queryPos].toLowerCase();
+  if (!info) return false;
+  const qc = (query[queryPos] ?? '').toLowerCase();
+  if (!qc) return false;
 
   // 1. Literal matching
   if (!info.isCjk) {
@@ -101,7 +103,7 @@ function matchFromPosition(
     if (remainQ <= xhLen) {
       let match = true;
       for (let i = 0; i < remainQ; ++i) {
-        if (xiaohePinyin[i] !== query[queryPos + i].toLowerCase()) {
+        if (xiaohePinyin[i] !== (query[queryPos + i] ?? '').toLowerCase()) {
           match = false;
           break;
         }
@@ -110,7 +112,7 @@ function matchFromPosition(
     } else {
       let match = true;
       for (let i = 0; i < xhLen; ++i) {
-        if (xiaohePinyin[i] !== query[queryPos + i].toLowerCase()) {
+        if (xiaohePinyin[i] !== (query[queryPos + i] ?? '').toLowerCase()) {
           match = false;
           break;
         }
@@ -128,7 +130,7 @@ function matchFromPosition(
     if (remainQ <= pyLen) {
       let match = true;
       for (let i = 0; i < remainQ; ++i) {
-        if (pinyin[i] !== query[queryPos + i].toLowerCase()) {
+        if (pinyin[i] !== (query[queryPos + i] ?? '').toLowerCase()) {
           match = false;
           break;
         }
@@ -137,7 +139,7 @@ function matchFromPosition(
     } else {
       let match = true;
       for (let i = 0; i < pyLen; ++i) {
-        if (pinyin[i] !== query[queryPos + i].toLowerCase()) {
+        if (pinyin[i] !== (query[queryPos + i] ?? '').toLowerCase()) {
           match = false;
           break;
         }
@@ -175,7 +177,7 @@ export function matchPinyin(text: string | null | undefined, query: string | nul
     const cp = text.codePointAt(i) ?? 0;
     const isCjk = cp >= PINYIN_TABLE_START && cp <= PINYIN_TABLE_END;
     textInfo.push({
-      char: text[i],
+      char: text[i] ?? '',
       isCjk,
       syllable: isCjk ? lookupSyllable(cp) : null,
     });
