@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Input, Badge, Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose, DialogAction, DialogCancel, type DialogSizeOption, CodeBlock, useChaSetI18n, Label } from '@chahu/cha-set';
+import { Button, Input, Badge, Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose, DialogAction, DialogCancel, type DialogSizeOption, CodeBlock, useChaSetI18n, Label, SettingRow } from '@chahu/cha-set';
 import { DocLayout } from '../../layout/DocLayout';
 import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
@@ -25,21 +25,19 @@ export function DialogDocPage() {
         Make changes to your profile here. Click save when you're done.
       </DialogDescription>
     </DialogHeader>
-    <div className="flex flex-col gap-3.5 py-2">
-      <div className="flex flex-col gap-1.5">
-        <Label htmlFor="name" size="sm" className="text-muted-foreground font-medium">Name</Label>
-        <Input id="name" defaultValue="Alex Rivera" />
-      </div>
-      <div className="flex flex-col gap-1.5">
-        <Label htmlFor="username" size="sm" className="text-muted-foreground font-medium">Username</Label>
-        <Input id="username" defaultValue="@arivera" />
-      </div>
+    <div className="rounded-lg bg-muted/40 p-1 flex flex-col gap-0.5 my-2">
+      <SettingRow name="Name" size="sm" className="py-1.5 px-2.5">
+        <Input id="name" defaultValue="Alex Rivera" className="h-8 w-52 text-xs bg-background/80 shadow-2xs" />
+      </SettingRow>
+      <SettingRow name="Username" size="sm" className="py-1.5 px-2.5">
+        <Input id="username" defaultValue="@arivera" className="h-8 w-52 text-xs bg-background/80 shadow-2xs" />
+      </SettingRow>
     </div>
     <DialogFooter>
       <DialogClose asChild>
-        <Button variant="outline">Cancel</Button>
+        <Button variant="outline" size="sm">Cancel</Button>
       </DialogClose>
-      <Button type="submit">Save changes</Button>
+      <Button size="sm" type="submit">Save changes</Button>
     </DialogFooter>
   </DialogContent>
 </Dialog>`;
@@ -48,40 +46,43 @@ export function DialogDocPage() {
     id: profileDialog
     title: "Edit profile"
     description: "Make changes to your profile here. Click save when you're done."
-    dialogWidth: ThemeTokens.dp(420)
+    size: "sm"
+    dialogWidth: ThemeTokens.dp(400)
     showCloseButton: true
 
-    Column {
+    Rectangle {
         width: parent.width
-        spacing: ThemeTokens.dp(14)
+        implicitHeight: formCol.implicitHeight + ThemeTokens.dp(8)
+        height: implicitHeight
+        radius: ThemeTokens.dp(8)
+        color: ThemeTokens.panelRaised
 
         Column {
+            id: formCol
             width: parent.width
-            spacing: ThemeTokens.dp(6)
-            DocText {
-                text: "Name"
-                color: ThemeTokens.subduedText
-                font.pixelSize: Typography.sizeSmall
-                font.weight: Font.Medium
-            }
-            ChaSetInput {
-                width: parent.width
-                text: "Alex Rivera"
-            }
-        }
+            padding: ThemeTokens.dp(4)
+            spacing: ThemeTokens.dp(2)
 
-        Column {
-            width: parent.width
-            spacing: ThemeTokens.dp(6)
-            DocText {
-                text: "Username"
-                color: ThemeTokens.subduedText
-                font.pixelSize: Typography.sizeSmall
-                font.weight: Font.Medium
+            ChaSetSettingRow {
+                width: parent.width - ThemeTokens.dp(8)
+                name: "Name"
+                size: "sm"
+                controlWidth: ThemeTokens.dp(210)
+                ChaSetInput {
+                    width: parent.width
+                    text: "Alex Rivera"
+                }
             }
-            ChaSetInput {
-                width: parent.width
-                text: "@arivera"
+
+            ChaSetSettingRow {
+                width: parent.width - ThemeTokens.dp(8)
+                name: "Username"
+                size: "sm"
+                controlWidth: ThemeTokens.dp(210)
+                ChaSetInput {
+                    width: parent.width
+                    text: "@arivera"
+                }
             }
         }
     }
@@ -90,11 +91,13 @@ export function DialogDocPage() {
         anchors.right: parent.right
         spacing: ThemeTokens.dp(8)
         ChaSetButton {
+            size: "sm"
             variant: "outline"
             text: "Cancel"
             onClicked: profileDialog.reject()
         }
         ChaSetButton {
+            size: "sm"
             text: "Save changes"
             onClicked: profileDialog.accept()
         }
@@ -140,34 +143,38 @@ export function DialogDocPage() {
                   </DialogDescription>
                 </DialogHeader>
 
-                <div className="flex flex-col gap-3.5 py-2">
-                  <div className="flex flex-col gap-1.5">
-                    <Label htmlFor="profile-name" size="sm" className="text-muted-foreground font-medium">
-                      {t('overlays.dialog.name', 'Name')}
-                    </Label>
+                <div className="rounded-lg bg-muted/40 p-1 flex flex-col gap-0.5 my-2">
+                  <SettingRow
+                    name={t('overlays.dialog.name', 'Name')}
+                    size="sm"
+                    className="py-1.5 px-2.5"
+                  >
                     <Input
                       id="profile-name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
+                      className="h-8 w-52 text-xs bg-background/80 shadow-2xs"
                     />
-                  </div>
-                  <div className="flex flex-col gap-1.5">
-                    <Label htmlFor="profile-username" size="sm" className="text-muted-foreground font-medium">
-                      {t('overlays.dialog.username', 'Username')}
-                    </Label>
+                  </SettingRow>
+                  <SettingRow
+                    name={t('overlays.dialog.username', 'Username')}
+                    size="sm"
+                    className="py-1.5 px-2.5"
+                  >
                     <Input
                       id="profile-username"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
+                      className="h-8 w-52 text-xs bg-background/80 shadow-2xs"
                     />
-                  </div>
+                  </SettingRow>
                 </div>
 
                 <DialogFooter>
                   <DialogClose asChild>
-                    <Button variant="outline">{t('common.cancel', 'Cancel')}</Button>
+                    <Button variant="outline" size="sm">{t('common.cancel', 'Cancel')}</Button>
                   </DialogClose>
-                  <Button type="button" onClick={() => setOpen(false)}>
+                  <Button size="sm" type="button" onClick={() => setOpen(false)}>
                     {t('common.saveChanges', 'Save changes')}
                   </Button>
                 </DialogFooter>

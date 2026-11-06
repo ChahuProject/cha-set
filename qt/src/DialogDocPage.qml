@@ -43,8 +43,8 @@ DocLayout {
         width: parent.width
         stageHeight: 200
         title: ChaSetI18n.tr("desktopComposite.dialog.sandboxTitle", "Dialog Sandbox")
-        reactCode: `<Dialog open={open} onOpenChange={setOpen}>\n  <DialogTrigger asChild>\n    <Button variant="outline">Open Profile Dialog</Button>\n  </DialogTrigger>\n  <DialogContent size="sm">\n    <DialogHeader>\n      <DialogTitle>Edit profile</DialogTitle>\n      <DialogDescription>\n        Make changes to your profile here. Click save when you're done.\n      </DialogDescription>\n    </DialogHeader>\n    <div className="flex flex-col gap-3.5 py-2">\n      <div className="flex flex-col gap-1.5">\n        <Label htmlFor="name" size="sm" className="text-muted-foreground font-medium">Name</Label>\n        <Input id="name" defaultValue="Alex Rivera" />\n      </div>\n      <div className="flex flex-col gap-1.5">\n        <Label htmlFor="username" size="sm" className="text-muted-foreground font-medium">Username</Label>\n        <Input id="username" defaultValue="@arivera" />\n      </div>\n    </div>\n    <DialogFooter>\n      <DialogClose asChild>\n        <Button variant="outline">Cancel</Button>\n      </DialogClose>\n      <Button type="submit">Save changes</Button>\n    </DialogFooter>\n  </DialogContent>\n</Dialog>`
-        qtCode: `ChaSetDialog {\n    id: profileDialog\n    title: "Edit profile"\n    description: "Make changes to your profile here. Click save when you're done."\n    dialogWidth: ThemeTokens.dp(420)\n    showCloseButton: true\n\n    Column {\n        width: parent.width\n        spacing: ThemeTokens.dp(14)\n\n        Column {\n            width: parent.width\n            spacing: ThemeTokens.dp(6)\n            DocText {\n                text: "Name"\n                color: ThemeTokens.subduedText\n                font.pixelSize: Typography.sizeSmall\n                font.weight: Font.Medium\n            }\n            ChaSetInput {\n                width: parent.width\n                text: "Alex Rivera"\n            }\n        }\n\n        Column {\n            width: parent.width\n            spacing: ThemeTokens.dp(6)\n            DocText {\n                text: "Username"\n                color: ThemeTokens.subduedText\n                font.pixelSize: Typography.sizeSmall\n                font.weight: Font.Medium\n            }\n            ChaSetInput {\n                width: parent.width\n                text: "@arivera"\n            }\n        }\n    }\n\n    footer: Row {\n        anchors.right: parent.right\n        spacing: ThemeTokens.dp(8)\n        ChaSetButton {\n            variant: "outline"\n            text: "Cancel"\n            onClicked: profileDialog.reject()\n        }\n        ChaSetButton {\n            text: "Save changes"\n            onClicked: profileDialog.accept()\n        }\n    }\n}`
+        reactCode: `<Dialog open={open} onOpenChange={setOpen}>\n  <DialogTrigger asChild>\n    <Button variant="outline">Open Profile Dialog</Button>\n  </DialogTrigger>\n  <DialogContent size="sm">\n    <DialogHeader>\n      <DialogTitle>Edit profile</DialogTitle>\n      <DialogDescription>\n        Make changes to your profile here. Click save when you're done.\n      </DialogDescription>\n    </DialogHeader>\n    <div className="rounded-lg bg-muted/40 p-1 flex flex-col gap-0.5 my-2">\n      <SettingRow name="Name" size="sm" className="py-1.5 px-2.5">\n        <Input id="name" defaultValue="Alex Rivera" className="h-8 w-52 text-xs bg-background/80 shadow-2xs" />\n      </SettingRow>\n      <SettingRow name="Username" size="sm" className="py-1.5 px-2.5">\n        <Input id="username" defaultValue="@arivera" className="h-8 w-52 text-xs bg-background/80 shadow-2xs" />\n      </SettingRow>\n    </div>\n    <DialogFooter>\n      <DialogClose asChild>\n        <Button variant="outline" size="sm">Cancel</Button>\n      </DialogClose>\n      <Button size="sm" type="submit">Save changes</Button>\n    </DialogFooter>\n  </DialogContent>\n</Dialog>`
+        qtCode: `ChaSetDialog {\n    id: profileDialog\n    title: "Edit profile"\n    description: "Make changes to your profile here. Click save when you're done."\n    size: "sm"\n    dialogWidth: ThemeTokens.dp(400)\n    showCloseButton: true\n\n    Rectangle {\n        width: parent.width\n        implicitHeight: formCol.implicitHeight + ThemeTokens.dp(8)\n        height: implicitHeight\n        radius: ThemeTokens.dp(8)\n        color: ThemeTokens.panelRaised\n\n        Column {\n            id: formCol\n            width: parent.width\n            padding: ThemeTokens.dp(4)\n            spacing: ThemeTokens.dp(2)\n\n            ChaSetSettingRow {\n                width: parent.width - ThemeTokens.dp(8)\n                name: "Name"\n                size: "sm"\n                controlWidth: ThemeTokens.dp(210)\n                ChaSetInput {\n                    width: parent.width\n                    text: "Alex Rivera"\n                }\n            }\n\n            ChaSetSettingRow {\n                width: parent.width - ThemeTokens.dp(8)\n                name: "Username"\n                size: "sm"\n                controlWidth: ThemeTokens.dp(210)\n                ChaSetInput {\n                    width: parent.width\n                    text: "@arivera"\n                }\n            }\n        }\n    }\n\n    footer: Row {\n        anchors.right: parent.right\n        spacing: ThemeTokens.dp(8)\n        ChaSetButton {\n            size: "sm"\n            variant: "outline"\n            text: "Cancel"\n            onClicked: profileDialog.reject()\n        }\n        ChaSetButton {\n            size: "sm"\n            text: "Save changes"\n            onClicked: profileDialog.accept()\n        }\n    }\n}`
 
         stageData: [
             Column {
@@ -229,43 +229,45 @@ DocLayout {
         id: profileDialog
         title: ChaSetI18n.tr("overlays.dialog.editProfileTitle", "Edit profile")
         description: ChaSetI18n.tr("overlays.dialog.editProfileDesc", "Make changes to your profile here. Click save when you're done.")
-        dialogWidth: ThemeTokens.dp(420)
+        size: "sm"
+        dialogWidth: ThemeTokens.dp(400)
 
-        Column {
+        Rectangle {
+            id: formCard
             width: parent.width
-            spacing: ThemeTokens.dp(14)
+            implicitHeight: formCol.implicitHeight + ThemeTokens.dp(8)
+            height: implicitHeight
+            radius: ThemeTokens.dp(8)
+            color: ThemeTokens.panelRaised
 
             Column {
+                id: formCol
                 width: parent.width
-                spacing: ThemeTokens.dp(6)
+                padding: ThemeTokens.dp(4)
+                spacing: ThemeTokens.dp(2)
 
-                DocText {
-                    text: ChaSetI18n.tr("overlays.dialog.name", "Name")
-                    color: ThemeTokens.subduedText
-                    font.pixelSize: Typography.sizeSmall
-                    font.weight: Font.Medium
+                ChaSetSettingRow {
+                    width: parent.width - ThemeTokens.dp(8)
+                    name: ChaSetI18n.tr("overlays.dialog.name", "Name")
+                    size: "sm"
+                    controlWidth: ThemeTokens.dp(210)
+                    ChaSetInput {
+                        id: nameInput
+                        width: parent.width
+                        text: ChaSetI18n.tr("desktopComposite.dialog.demoName", "Alex Rivera")
+                    }
                 }
-                ChaSetInput {
-                    id: nameInput
-                    width: parent.width
-                    text: ChaSetI18n.tr("desktopComposite.dialog.demoName", "Alex Rivera")
-                }
-            }
 
-            Column {
-                width: parent.width
-                spacing: ThemeTokens.dp(6)
-
-                DocText {
-                    text: ChaSetI18n.tr("overlays.dialog.username", "Username")
-                    color: ThemeTokens.subduedText
-                    font.pixelSize: Typography.sizeSmall
-                    font.weight: Font.Medium
-                }
-                ChaSetInput {
-                    id: usernameInput
-                    width: parent.width
-                    text: "@arivera"
+                ChaSetSettingRow {
+                    width: parent.width - ThemeTokens.dp(8)
+                    name: ChaSetI18n.tr("overlays.dialog.username", "Username")
+                    size: "sm"
+                    controlWidth: ThemeTokens.dp(210)
+                    ChaSetInput {
+                        id: usernameInput
+                        width: parent.width
+                        text: "@arivera"
+                    }
                 }
             }
         }

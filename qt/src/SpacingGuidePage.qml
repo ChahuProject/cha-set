@@ -390,7 +390,7 @@ DocLayout {
                         // Form demo preview
                         Rectangle {
                             width: parent.width - ThemeTokens.dp(36)
-                            height: ThemeTokens.dp(146)
+                            height: ThemeTokens.dp(100)
                             radius: 6
                             color: ThemeTokens.background
                             border.color: ThemeTokens.border
@@ -398,18 +398,14 @@ DocLayout {
 
                             Column {
                                 anchors.fill: parent
-                                anchors.margins: ThemeTokens.dp(14)
-                                spacing: ThemeTokens.dp(10)
+                                anchors.margins: ThemeTokens.dp(8)
+                                spacing: ThemeTokens.dp(4)
 
-                                Column {
+                                ChaSetSettingRow {
                                     width: parent.width
-                                    spacing: ThemeTokens.dp(6)
-                                    DocText {
-                                        text: ChaSetI18n.tr("getStarted.spacing.forms.nameLabel", "Name")
-                                        isMuted: true
-                                        font.pixelSize: Typography.sizeSmall
-                                        font.weight: Typography.weightMedium
-                                    }
+                                    name: ChaSetI18n.tr("getStarted.spacing.forms.nameLabel", "Name")
+                                    size: "sm"
+                                    controlWidth: ThemeTokens.dp(180)
                                     ChaSetInput {
                                         width: parent.width
                                         text: ChaSetI18n.tr("getStarted.spacing.forms.sampleName", "Alex Rivera")
@@ -417,15 +413,11 @@ DocLayout {
                                     }
                                 }
 
-                                Column {
+                                ChaSetSettingRow {
                                     width: parent.width
-                                    spacing: ThemeTokens.dp(6)
-                                    DocText {
-                                        text: ChaSetI18n.tr("getStarted.spacing.forms.usernameLabel", "Username")
-                                        isMuted: true
-                                        font.pixelSize: Typography.sizeSmall
-                                        font.weight: Typography.weightMedium
-                                    }
+                                    name: ChaSetI18n.tr("getStarted.spacing.forms.usernameLabel", "Username")
+                                    size: "sm"
+                                    controlWidth: ThemeTokens.dp(180)
                                     ChaSetInput {
                                         width: parent.width
                                         text: ChaSetI18n.tr("getStarted.spacing.forms.sampleUsername", "@arivera")
