@@ -589,7 +589,6 @@ Popup {
                     visible: !rootPopup.displayItems || rootPopup.displayItems.length === 0
                     Layout.fillWidth: true
                     Layout.preferredHeight: ThemeTokens.dp(36)
-                    implicitHeight: ThemeTokens.dp(36)
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                     text: rootPopup.searchFilterText ? qsTr("未匹配到相关项") : qsTr("暂无可选项")
