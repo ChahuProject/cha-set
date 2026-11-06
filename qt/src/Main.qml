@@ -1665,6 +1665,150 @@ ApplicationWindow {
             }
         }
 
+        // Scenario 13b: VirtualTree occurrence keys, lazy loading & row content slot
+        if (scenario === "all" || scenario === "virtual-tree" || scenario === "tree-contract") {
+            console.log("[qt-scenario] Running VirtualTree occurrence key / lazy loading / row slot contract scenario...");
+            var contractFailures = 0;
+
+            var findObjectByName = function(obj, name) {
+                if (!obj || !obj.children) return null;
+                for (var i = 0; i < obj.children.length; i++) {
+                    if (obj.children[i].objectName === name) return obj.children[i];
+                    var found = findObjectByName(obj.children[i], name);
+                    if (found) return found;
+                }
+                return null;
+            };
+
+            var hasFlatKey = function(tree, key) {
+                for (var i = 0; i < tree.flatItems.length; i++) {
+                    if (String(tree.flatItems[i].key) === key) return true;
+                }
+                return false;
+            };
+
+            var contractHost = Qt.createQmlObject(
+                'import QtQuick; import ChaSet; Item { width: 300; height: 300; Component { id: contractRowDelegate; Item { objectName: "vtContractRow"; property var rowContext: null; width: 200; height: 24; Text { text: rowContext ? rowContext.key : "" } } } ChaSetVirtualTree { id: contractTree; anchors.fill: parent; nodes: []; rowDelegate: contractRowDelegate; nodeKeyProvider: function(n) { return n.occ } } property alias tree: contractTree }',
+                win.contentItem,
+                "dynamicTestVirtualTreeContract"
+            );
+
+            if (!contractHost || !contractHost.tree) {
+                console.log("[qt-scenario] FAIL: Could not create contract ChaSetVirtualTree host");
+                contractFailures++;
+            } else {
+                var contractTree = contractHost.tree;
+
+                // 1. Occurrence keys isolate expansion for duplicate logical ids.
+                contractTree.nodes = [
+                    { occ: "A", id: "root-shared", children: [
+                        { occ: "A/shared", id: "shared", children: [
+                            { occ: "A/shared/leaf", id: "leaf" }
+                        ] }
+                    ] },
+                    { occ: "B", id: "root-shared", children: [
+                        { occ: "B/shared", id: "shared", children: [
+                            { occ: "B/shared/leaf", id: "leaf" }
+                        ] }
+                    ] }
+                ];
+                contractTree.expandedIds = ({});
+
+                if (String(contractTree.flatItems[0].key) !== "A") {
+                    console.log("[qt-scenario] FAIL: nodeKeyProvider not applied, first key=" + contractTree.flatItems[0].key);
+                    contractFailures++;
+                }
+
+                contractTree.toggleExpand("A");
+                contractTree.toggleExpand("A/shared");
+
+                if (!hasFlatKey(contractTree, "A/shared/leaf")) {
+                    console.log("[qt-scenario] FAIL: expanding A/shared did not reveal A occurrence leaf");
+                    contractFailures++;
+                }
+                if (hasFlatKey(contractTree, "B/shared") || contractTree.isExpanded("B/shared")) {
+                    console.log("[qt-scenario] FAIL: A expansion leaked into B occurrence");
+                    contractFailures++;
+                }
+
+                contractTree.toggleExpand("B");
+                if (!hasFlatKey(contractTree, "B/shared")) {
+                    console.log("[qt-scenario] FAIL: expanding B did not reveal B/shared");
+                    contractFailures++;
+                }
+                if (hasFlatKey(contractTree, "B/shared/leaf")) {
+                    console.log("[qt-scenario] FAIL: B/shared inherited A/shared expansion");
+                    contractFailures++;
+                }
+
+                // 2. Lazy loading: opening an unloaded node requests children once,
+                //    records expansion optimistically, and renders them after load.
+                var requestedKeys = [];
+                contractTree.nodeExpandRequested.connect(function(key) {
+                    requestedKeys.push(String(key));
+                });
+                contractTree.expandedIds = ({});
+                contractTree.nodes = [
+                    { occ: "lazy", id: "lazy", hasChildren: true, isLoaded: false, isLoading: true }
+                ];
+
+                contractTree.toggleExpand("lazy");
+                if (requestedKeys.length !== 1 || requestedKeys[0] !== "lazy") {
+                    console.log("[qt-scenario] FAIL: expected exactly one expand request for lazy, got " + requestedKeys.join(","));
+                    contractFailures++;
+                }
+                if (!contractTree.isExpanded("lazy")) {
+                    console.log("[qt-scenario] FAIL: lazy node expansion was not recorded optimistically");
+                    contractFailures++;
+                }
+                if (!contractTree.flatItems[0].isLoading) {
+                    console.log("[qt-scenario] FAIL: lazy node isLoading not surfaced to the row model");
+                    contractFailures++;
+                }
+
+                contractTree.nodes = [
+                    { occ: "lazy", id: "lazy", hasChildren: true, isLoaded: true, isLoading: false, children: [
+                        { occ: "lazy/child", id: "lazy-child" }
+                    ] }
+                ];
+                if (!hasFlatKey(contractTree, "lazy/child")) {
+                    console.log("[qt-scenario] FAIL: loaded children did not render under the already-open node");
+                    contractFailures++;
+                }
+
+                contractTree.toggleExpand("lazy");
+                if (requestedKeys.length !== 1) {
+                    console.log("[qt-scenario] FAIL: loaded node must not re-request children, got " + requestedKeys.length);
+                    contractFailures++;
+                }
+
+                // 3. Row content slot: the delegate root receives a live rowContext.
+                contractTree.nodes = [{ occ: "row-node", id: "row-node" }];
+                contractTree.expandedIds = ({});
+                var contractList = findObjectByName(contractTree, "vtTreeList");
+                if (contractList) contractList.forceLayout();
+                var contractRow = findObjectByName(contractTree, "vtContractRow");
+                if (!contractRow || !contractRow.rowContext) {
+                    console.log("[qt-scenario] FAIL: rowDelegate did not receive rowContext");
+                    contractFailures++;
+                } else if (String(contractRow.rowContext.key) !== "row-node" || String(contractRow.rowContext.id) !== "row-node") {
+                    console.log("[qt-scenario] FAIL: rowContext identity mismatch, key=" + contractRow.rowContext.key + ", id=" + contractRow.rowContext.id);
+                    contractFailures++;
+                } else if (contractRow.rowContext.isLoaded !== true || contractRow.rowContext.childCount !== 0) {
+                    console.log("[qt-scenario] FAIL: rowContext lazy state mismatch");
+                    contractFailures++;
+                }
+
+                contractHost.destroy();
+            }
+
+            if (contractFailures === 0) {
+                console.log("[qt-scenario] PASS: VirtualTree occurrence key / lazy loading / row slot contract verified");
+            } else {
+                failures += contractFailures;
+            }
+        }
+
         // Scenario 14: AddressBar Inline Edit, Suggest Popup & Outside Click Kinematics
         if (scenario === "all" || scenario === "address-bar") {
             console.log("[qt-scenario] Running AddressBar inline edit, suggest popup & outside click scenario...");

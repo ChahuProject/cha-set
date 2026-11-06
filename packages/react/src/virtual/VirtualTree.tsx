@@ -46,6 +46,10 @@ export interface VirtualTreeHandle {
 
 export interface VirtualTreeRowContext<T> {
   node: T;
+  /** Logical node id (`node.id`), independent of the occurrence key. */
+  id: string;
+  /** Occurrence key resolved from the node (defaults to `id`). */
+  key: string;
   depth: number;
   isExpanded: boolean;
   isSelected: boolean;
@@ -56,6 +60,10 @@ export interface VirtualTreeRowContext<T> {
   isDropValid: boolean;
   hasChildren: boolean;
   childCount: number;
+  /** False while the host has not fetched this node's children yet. */
+  isLoaded: boolean;
+  /** True while the host is fetching this node's children. */
+  isLoading: boolean;
   toggleExpand: () => void;
   selectNode: (e?: React.MouseEvent) => void;
 }
@@ -81,7 +89,18 @@ export interface VirtualTreeProps<T> {
   /** Alias for rootNodes */
   nodes?: readonly T[];
   getChildren?: (node: T) => readonly T[];
+  /**
+   * Occurrence key provider. Defaults to `node.id`. Hosts that can display the
+   * same entity at several positions return a position-qualified key so
+   * expansion/selection/drag identity stays isolated per occurrence.
+   */
   getNodeKey?: (node: T) => string;
+  /**
+   * Fired once when the user opens a node whose `isLoaded` flag is false.
+   * The expansion is recorded optimistically; load the children, then re-render
+   * with `isLoaded: true` and they appear under the already-open node.
+   */
+  onExpandRequest?: (node: T, key: string) => void;
   defaultExpandDepth?: number;
   estimateSize?: number;
   gap?: number;
@@ -133,10 +152,13 @@ export interface VirtualTreeProps<T> {
 
 interface FlatNode<T> {
   node: T;
+  key: string;
   depth: number;
   isExpanded: boolean;
   hasChildren: boolean;
   childCount: number;
+  isLoaded: boolean;
+  isLoading: boolean;
 }
 
 export function VirtualTree<T>({
@@ -144,6 +166,7 @@ export function VirtualTree<T>({
   nodes,
   getChildren,
   getNodeKey,
+  onExpandRequest,
   defaultExpandDepth = 0,
   estimateSize = 32,
   gap = 0,
@@ -194,6 +217,20 @@ export function VirtualTree<T>({
   const getNodeKeyRef = React.useRef(safeGetNodeKey);
   getNodeKeyRef.current = safeGetNodeKey;
 
+  // Lazy-loading helpers. Nodes that never declare `isLoaded` stay fully loaded,
+  // preserving the behaviour of every pre-existing host.
+  const isNodeLoaded = React.useCallback(
+    (node: T): boolean =>
+      (node as any)?.isLoaded !== undefined ? Boolean((node as any).isLoaded) : true,
+    [],
+  );
+  const isNodeLoading = React.useCallback(
+    (node: T): boolean => Boolean((node as any)?.isLoading),
+    [],
+  );
+  const onExpandRequestRef = React.useRef(onExpandRequest);
+  onExpandRequestRef.current = onExpandRequest;
+
   // Single canonical set for expanded node keys
   const [expandedKeys, setExpandedKeys] = React.useState<ReadonlySet<string>>(() => {
     const initial = new Set<string>();
@@ -203,7 +240,7 @@ export function VirtualTree<T>({
         for (const n of nodeList) {
           const k = safeGetNodeKey(n);
           const ch = safeGetChildren(n) ?? [];
-          if (ch.length > 0) {
+          if (ch.length > 0 && isNodeLoaded(n)) {
             initial.add(k);
             traverse(ch, depth + 1);
           }
@@ -213,6 +250,11 @@ export function VirtualTree<T>({
     }
     return initial;
   });
+
+  // Mirror of the canonical set so `toggleExpand` can read the pre-toggle value
+  // synchronously (state updaters must stay free of side effects).
+  const expandedKeysRef = React.useRef<ReadonlySet<string>>(expandedKeys);
+  expandedKeysRef.current = expandedKeys;
 
   // Multi-selection state
   const [internalSelectedKeys, setInternalSelectedKeys] = React.useState<ReadonlySet<string>>(() => {
@@ -271,18 +313,23 @@ export function VirtualTree<T>({
 
   const toggleExpand = React.useCallback((node: T) => {
     const key = getNodeKeyRef.current(node);
-    setExpandedKeys((prev) => {
-      const next = new Set(prev);
-      const isExpandedNow = !next.has(key);
-      if (isExpandedNow) {
-        next.add(key);
-      } else {
-        next.delete(key);
-      }
-      onNodeToggle?.(node, isExpandedNow);
-      return next;
-    });
-  }, [onNodeToggle]);
+    const isExpandedNow = !expandedKeysRef.current.has(key);
+    const next = new Set(expandedKeysRef.current);
+    if (isExpandedNow) {
+      next.add(key);
+    } else {
+      next.delete(key);
+    }
+    expandedKeysRef.current = next;
+    setExpandedKeys(next);
+    onNodeToggle?.(node, isExpandedNow);
+    // Lazy loading: ask the host for children the first time this occurrence
+    // opens. Expansion is already recorded, so children render as soon as the
+    // host flips `isLoaded` to true.
+    if (isExpandedNow && !isNodeLoaded(node)) {
+      onExpandRequestRef.current?.(node, key);
+    }
+  }, [onNodeToggle, isNodeLoaded]);
 
   const getAllKeys = React.useCallback(() => {
     const keys: string[] = [];
@@ -291,8 +338,10 @@ export function VirtualTree<T>({
       const hasChildren = (node as any)?.hasChildren !== undefined ? Boolean((node as any).hasChildren) : children.length > 0;
       if (hasChildren) {
         keys.push(safeGetNodeKey(node));
-        for (const child of children) {
-          traverse(child);
+        if (isNodeLoaded(node)) {
+          for (const child of children) {
+            traverse(child);
+          }
         }
       }
     };
@@ -300,15 +349,18 @@ export function VirtualTree<T>({
       traverse(root);
     }
     return keys;
-  }, [safeRootNodes, safeGetChildren, safeGetNodeKey]);
+  }, [safeRootNodes, safeGetChildren, safeGetNodeKey, isNodeLoaded]);
 
   const expandAll = React.useCallback(() => {
-    const all = getAllKeys();
-    setExpandedKeys(new Set(all));
+    const next = new Set(getAllKeys());
+    expandedKeysRef.current = next;
+    setExpandedKeys(next);
   }, [getAllKeys]);
 
   const collapseAll = React.useCallback(() => {
-    setExpandedKeys(new Set());
+    const next = new Set<string>();
+    expandedKeysRef.current = next;
+    setExpandedKeys(next);
   }, []);
 
   const visibleNodes = React.useMemo(() => {
@@ -318,16 +370,22 @@ export function VirtualTree<T>({
       const key = getNodeKeyRef.current(node);
       const hasChildren = (node as any)?.hasChildren !== undefined ? Boolean((node as any).hasChildren) : children.length > 0;
       const isExpanded = hasChildren && expandedKeys.has(key);
+      const isLoaded = isNodeLoaded(node);
 
       results.push({
         node,
+        key,
         depth,
         isExpanded,
         hasChildren,
         childCount: children.length,
+        isLoaded,
+        isLoading: isNodeLoading(node),
       });
 
-      if (isExpanded && children.length > 0) {
+      // `isLoaded: false` means the children array is not authoritative; never
+      // render it, even if a stale copy is still attached to the node.
+      if (isExpanded && isLoaded && children.length > 0) {
         for (const child of children) {
           traverse(child, depth + 1);
         }
@@ -338,7 +396,7 @@ export function VirtualTree<T>({
       traverse(root, 0);
     }
     return results;
-  }, [safeRootNodes, expandedKeys]);
+  }, [safeRootNodes, expandedKeys, isNodeLoaded, isNodeLoading]);
 
   const updateSelection = React.useCallback(
     (nextKeys: Set<string>, lastClickedNode?: T) => {
@@ -799,7 +857,7 @@ export function VirtualTree<T>({
   const safeRenderRow = React.useMemo(
     () =>
       renderRow ??
-      (({ node, depth, hasChildren, isExpanded, isSelected, isDimmed, isCopied, toggleExpand, selectNode }) => (
+      (({ node, depth, hasChildren, isExpanded, isSelected, isDimmed, isCopied, isLoading, toggleExpand, selectNode }) => (
         <div
           className={cn(
             'flex items-center gap-2 px-2 py-1 text-xs cursor-pointer rounded select-none transition-colors duration-quick ease-standard',
@@ -830,6 +888,15 @@ export function VirtualTree<T>({
           <span className="font-mono">
             {(node as any)?.label ?? (node as any)?.name ?? (node as any)?.title ?? String(node)}
           </span>
+          {isLoading && (
+            <span
+              data-slot="virtual-tree-row-loading"
+              className="ml-auto text-micro text-muted-foreground/60"
+              aria-hidden="true"
+            >
+              …
+            </span>
+          )}
         </div>
       )),
     [renderRow],
@@ -938,6 +1005,8 @@ export function VirtualTree<T>({
                 data-drop-target={isTarget ? true : undefined}
                 data-drop-position={dropPos ?? undefined}
                 data-drop-valid={isTarget ? isDropValid : undefined}
+                data-loading={flat.isLoading ? true : undefined}
+                data-loaded={flat.isLoaded ? undefined : false}
                 draggable={enableDnd && (canDrag ? canDrag(flat.node) : true)}
                 onDragStart={(e) => handleDragStart(e, flat.node, nodeKey)}
                 onDragOver={(e) => handleDragOver(e, flat.node, flat)}
@@ -984,6 +1053,8 @@ export function VirtualTree<T>({
 
                 {safeRenderRow({
                   node: flat.node,
+                  id: String((flat.node as any)?.id ?? nodeKey),
+                  key: nodeKey,
                   depth: flat.depth,
                   isExpanded: flat.isExpanded,
                   isSelected,
@@ -994,6 +1065,8 @@ export function VirtualTree<T>({
                   isDropValid,
                   hasChildren: flat.hasChildren,
                   childCount: flat.childCount,
+                  isLoaded: flat.isLoaded,
+                  isLoading: flat.isLoading,
                   toggleExpand: () => toggleExpand(flat.node),
                   selectNode: (e) => handleNodeClick(virtualRow.index, e),
                 })}

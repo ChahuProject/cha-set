@@ -37,10 +37,14 @@ description: 虚拟化层级树视图组件，支持节点动态折叠展开、�
 | `rootNodes` | `readonly T[]` | `[]` | 顶层层级节点数组。 |
 | `nodes` | `readonly T[]` | `[]` | rootNodes 的别名。 |
 | `getChildren` | `(node: T) => readonly T[]` | `(node) => node.children` | 返回节点子节点的访问器。 |
-| `getNodeKey` | `(node: T) => string` | `(node) => node.id` | 节点的唯一标识访问器。 |
+| `getNodeKey` | `(node: T) => string` | `(node) => node.id` | 出现位置键访问器。同一实体挂载在多个位置时返回带位置前缀的键，展开／选中／拖拽身份互不串扰；Qt 侧为 `nodeKeyProvider` 函数。 |
+| `node.hasChildren` | `boolean` | 由 `children.length` 推断 | 是否展示展开箭头。箭头可见性只由该字段决定，与 `children` 是否已加载无关。 |
+| `node.isLoaded` | `boolean` | `true` | 节点子项是否已加载。为 `false` 时不渲染 `children`（即使存在旧副本），展开时触发展开请求。 |
+| `node.isLoading` | `boolean` | `false` | 宿主正在拉取子项时为 `true`，用于展示加载指示。 |
+| `onExpandRequest` | `(node: T, key: string) => void` | `undefined` | 用户展开 `isLoaded: false` 节点时触发一次；Qt 侧为 `nodeExpandRequested(key)` 信号。 |
 | `selectionMode` | `'single' \| 'multiple' \| 'none'` | `'single'` | 当前的选择交互模式。 |
-| `selectedId` | `string \| null` | `null` | 当前选中节点的标识（单选模式）。 |
-| `selectedIds` | `readonly string[]` | `[]` | 已选中节点标识数组（多选模式）。 |
+| `selectedId` | `string \| null` | `null` | 当前选中项的出现位置键（单选模式）。 |
+| `selectedIds` | `readonly string[]` | `[]` | 已选中项的出现位置键数组（多选模式）。 |
 | `dimmedIds` | `readonly string[]` | `[]` | 以半透明剪切态渲染的节点 ID 数组。 |
 | `stickyItems` | `readonly VirtualTreeStickyItem[]` | `[]` | 展开节点祖先链，置顶于滚动区上方以保持父级可见。 |
 | `onStickySelect` | `(item: VirtualTreeStickyItem) => void` | `undefined` | 点击置顶行时触发的回调（仅导航，永不切换展开）。 |
@@ -54,7 +58,7 @@ description: 虚拟化层级树视图组件，支持节点动态折叠展开、�
 | `estimateSize` | `number` | `32` | 虚拟计算用的预估行高。 |
 | `gap` | `number` | `0` | 相邻行之间的间距。 |
 | `overscan` | `number` | `10` | 可视边界外渲染的缓冲节点数。 |
-| `renderRow` | `(context: VirtualTreeRowContext<T>) => ReactNode` | `undefined` | 自定义行渲染函数。 |
+| `renderRow` | `(context: VirtualTreeRowContext<T>) => ReactNode` | `undefined` | 行内容插槽：仅替换行内容（箭头／图标／标签／徽标），行外壳与交互管线仍归组件；Qt 侧为 `rowDelegate`（根节点需声明 `property var rowContext`）。 |
 | `emptyNode` | `ReactNode` | `null` | 树为空时展示的内容。 |
 | `ref` | `Ref<VirtualTreeHandle>` | `undefined` | 暴露 expandAll()、collapseAll()、selectAll()、scrollToIndex() 的句柄。 |
 ```

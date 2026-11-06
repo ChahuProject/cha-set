@@ -37,10 +37,14 @@ Names and semantics are identical on both stacks; `Type` gives the TypeScript si
 | `rootNodes` | `readonly T[]` | `[]` | Array of top-level hierarchy nodes. |
 | `nodes` | `readonly T[]` | `[]` | Alias for rootNodes. |
 | `getChildren` | `(node: T) => readonly T[]` | `(node) => node.children` | Accessor returning child nodes of a node. |
-| `getNodeKey` | `(node: T) => string` | `(node) => node.id` | Unique identifier accessor for a node. |
+| `getNodeKey` | `(node: T) => string` | `(node) => node.id` | Occurrence key accessor. When the same entity is mounted at several positions, return a position-qualified key so expansion/selection/drag identity stays isolated per occurrence. Qt: `nodeKeyProvider` function. |
+| `node.hasChildren` | `boolean` | inferred from `children.length` | Whether the expand chevron is shown. Chevron visibility depends only on this flag, independent of whether `children` are loaded. |
+| `node.isLoaded` | `boolean` | `true` | Whether the node's children are loaded. `false` suppresses rendering `children` (even a stale copy) and fires the expand request when opened. |
+| `node.isLoading` | `boolean` | `false` | `true` while the host is fetching children; drives the loading indicator. |
+| `onExpandRequest` | `(node: T, key: string) => void` | `undefined` | Fired once when the user opens a node with `isLoaded: false`. Qt: `nodeExpandRequested(key)` signal. |
 | `selectionMode` | `'single' \| 'multiple' \| 'none'` | `'single'` | Active selection interaction mode. |
-| `selectedId` | `string \| null` | `null` | Identifier of the currently selected node (single mode). |
-| `selectedIds` | `readonly string[]` | `[]` | Array of selected node identifiers (multiple mode). |
+| `selectedId` | `string \| null` | `null` | Occurrence key of the currently selected row (single mode). |
+| `selectedIds` | `readonly string[]` | `[]` | Occurrence keys of selected rows (multiple mode). |
 | `dimmedIds` | `readonly string[]` | `[]` | Array of node IDs rendered in dimmed/cut state. |
 | `stickyItems` | `readonly VirtualTreeStickyItem[]` | `[]` | Expanded ancestor chain of the open node, pinned above the scroll area so parents stay visible. |
 | `onStickySelect` | `(item: VirtualTreeStickyItem) => void` | `undefined` | Callback fired when a pinned row is clicked (navigate only, never toggles expansion). |
@@ -54,7 +58,7 @@ Names and semantics are identical on both stacks; `Type` gives the TypeScript si
 | `estimateSize` | `number` | `32` | Estimated row height for virtual calculation. |
 | `gap` | `number` | `0` | Spacing between adjacent rows. |
 | `overscan` | `number` | `10` | Buffer nodes rendered outside visible bounds. |
-| `renderRow` | `(context: VirtualTreeRowContext<T>) => ReactNode` | `undefined` | Custom row rendering function. |
+| `renderRow` | `(context: VirtualTreeRowContext<T>) => ReactNode` | `undefined` | Row content slot: replaces row content only (chevron / icon / label / badge); the row shell and interaction plumbing stay component-owned. Qt: `rowDelegate` (root must declare `property var rowContext`). |
 | `emptyNode` | `ReactNode` | `null` | Content shown when tree is empty. |
 | `ref` | `Ref<VirtualTreeHandle>` | `undefined` | Handle exposing expandAll(), collapseAll(), selectAll(), scrollToIndex(). |
 ```

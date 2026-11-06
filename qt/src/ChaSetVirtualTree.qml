@@ -15,7 +15,21 @@ Item {
     property string selectionMode: "single" // "single" | "multiple" | "none"
     property var dimmedIds: []
     property var copiedIds: []
+    /// Expansion table keyed by **occurrence key** (see `nodeKey()`).
+    /// With no `nodeKeyProvider` the key is `node.id`, so pre-existing hosts
+    /// keep the exact same semantics.
     property var expandedIds: ({})
+    /// Occurrence key provider: `function(node) -> string`. Default `node.id`.
+    /// Hosts that can mount the same entity at several positions return a
+    /// position-qualified key so expansion/selection/drag identity never leaks
+    /// across occurrences. Mirrors React `getNodeKey` 1:1.
+    property var nodeKeyProvider: null
+    /// Row content slot. A `Component` whose root declares
+    /// `property var rowContext`; receives a live context object (see
+    /// spec/components/virtual-tree.ts `VirtualTreeRowContext`).
+    /// Replaces the built-in row content only; the row shell (background,
+    /// selection, drop indicators, click/drag plumbing) stays component-owned.
+    property var rowDelegate: null
     property int defaultExpandDepth: 0
     property int estimateSize: 28
     readonly property int effectiveEstimateSize: ThemeTokens.dp(estimateSize)
@@ -130,7 +144,7 @@ Item {
             ? String(targetId) : root._anchorId
         if (id && id !== "") {
             for (var i = 0; i < root.flatItems.length; i++) {
-                if (String(root.flatItems[i].id) === id) {
+                if (String(root.flatItems[i].key) === id) {
                     root._anchorId = id
                     var step = root.effectiveEstimateSize + (root.gap > 0 ? ThemeTokens.dp(root.gap) : ThemeTokens.dp(2))
                     root._anchorVisualY = i * step - treeList.contentY
@@ -141,7 +155,7 @@ Item {
         var topStep = root.effectiveEstimateSize + (root.gap > 0 ? ThemeTokens.dp(root.gap) : ThemeTokens.dp(2))
         var topIdx = Math.max(0, Math.floor(treeList.contentY / Math.max(1, topStep)))
         if (topIdx < root.flatItems.length) {
-            root._anchorId = String(root.flatItems[topIdx].id)
+            root._anchorId = String(root.flatItems[topIdx].key)
             root._anchorVisualY = topIdx * topStep - treeList.contentY
         } else {
             root._anchorId = ""
@@ -157,7 +171,7 @@ Item {
         var step = root.effectiveEstimateSize + (root.gap > 0 ? ThemeTokens.dp(root.gap) : ThemeTokens.dp(2))
         if (root._anchorId !== "") {
             for (var i = 0; i < root.flatItems.length; i++) {
-                if (String(root.flatItems[i].id) === root._anchorId) {
+                if (String(root.flatItems[i].key) === root._anchorId) {
                     targetContentY = i * step - root._anchorVisualY
                     break
                 }
@@ -200,12 +214,17 @@ Item {
     // Must mirror the React VirtualTree `stickyItems` prop 1:1.
     property var stickyItems: []
 
-    signal nodeSelected(string nodeId)
-    signal nodeClicked(string nodeId)
-    signal nodeExpanded(string nodeId)
-    signal nodeCollapsed(string nodeId)
-    signal nodeToggled(string nodeId, bool isExpanded)
-    signal nodeDoubleClicked(string nodeId)
+    signal nodeSelected(string nodeKey)
+    signal nodeClicked(string nodeKey)
+    signal nodeExpanded(string nodeKey)
+    signal nodeCollapsed(string nodeKey)
+    signal nodeToggled(string nodeKey, bool isExpanded)
+    signal nodeDoubleClicked(string nodeKey)
+    /// Fired once each time the user opens a node whose `isLoaded` flag is false.
+    /// The expansion is recorded optimistically; set `isLoaded: true` with the
+    /// fetched children and they render under the already-open node.
+    /// Mirrors React `onExpandRequest`.
+    signal nodeExpandRequested(string nodeKey)
     signal nodeCut(var ids)
     signal nodeCopied(var ids)
     signal nodePasted(string targetId, string position)
@@ -217,24 +236,56 @@ Item {
     implicitWidth: ThemeTokens.dp(320)
     implicitHeight: ThemeTokens.dp(280)
 
+    // Resolve the occurrence key of a node. Defaults to node.id so every
+    // pre-existing host keeps id-keyed identity.
+    function nodeKey(n) {
+        if (n === undefined || n === null) return ""
+        if (root.nodeKeyProvider) {
+            var k = root.nodeKeyProvider(n)
+            if (k !== undefined && k !== null) return String(k)
+        }
+        return String(n.id)
+    }
+
+    // Find the flattened row currently shown for an occurrence key. Accepts a
+    // logical node id as a fallback so legacy programmatic callers still work.
+    function findFlatItem(key) {
+        var wanted = String(key)
+        for (var i = 0; i < root.flatItems.length; i++) {
+            if (String(root.flatItems[i].key) === wanted) return root.flatItems[i]
+        }
+        for (var j = 0; j < root.flatItems.length; j++) {
+            if (String(root.flatItems[j].id) === wanted) return root.flatItems[j]
+        }
+        return null
+    }
+
     // Flatten tree items based on active expansion state
     function flatten(list, depth) {
         let res = []
         if (!list) return res
         for (let i = 0; i < list.length; i++) {
             let n = list[i]
+            let key = root.nodeKey(n)
             let hasCh = n.hasChildren !== undefined ? !!n.hasChildren : !!(n.children && n.children.length > 0)
-            let isExp = root.expandedIds[n.id] !== undefined ? !!root.expandedIds[n.id] : (depth < root.defaultExpandDepth)
+            let isLoaded = n.isLoaded !== undefined ? !!n.isLoaded : true
+            let isLoading = n.isLoading !== undefined ? !!n.isLoading : false
+            let isExp = root.expandedIds[key] !== undefined ? !!root.expandedIds[key] : (depth < root.defaultExpandDepth)
             let item = Object.assign({}, n, {
                 id: n.id,
+                key: key,
                 label: n.label !== undefined ? n.label : (n.name !== undefined ? n.name : n.id),
                 depth: depth,
                 hasChildren: hasCh,
+                isLoaded: isLoaded,
+                isLoading: isLoading,
                 isExpanded: isExp,
                 rawNode: n
             })
             res.push(item)
-            if (hasCh && isExp && n.children && n.children.length > 0) {
+            // `isLoaded: false` means the children array is not authoritative;
+            // never render it, even if a stale copy is still attached.
+            if (hasCh && isExp && isLoaded && n.children && n.children.length > 0) {
                 let sub = flatten(n.children, depth + 1)
                 for (let j = 0; j < sub.length; j++) res.push(sub[j])
             }
@@ -247,36 +298,37 @@ Item {
     function getDropTargetLabel() {
         if (!root.dropTargetId) return ""
         for (var i = 0; i < root.flatItems.length; i++) {
-            if (root.flatItems[i].id === root.dropTargetId) {
+            if (root.flatItems[i].key === root.dropTargetId) {
                 return root.flatItems[i].label || root.flatItems[i].id
             }
         }
         return root.dropTargetId
     }
 
-    function isSelected(id) {
+    // Selection/dim/copy identity is the occurrence key (default = node id).
+    function isSelected(key) {
         if (root.selectionMode === "multiple") {
-            return root.selectedIds && root.selectedIds.indexOf(id) !== -1
+            return root.selectedIds && root.selectedIds.indexOf(key) !== -1
         }
-        return root.selectedId === id
+        return root.selectedId === key
     }
 
-    function isDimmed(id) {
-        return root.dimmedIds && root.dimmedIds.indexOf(id) !== -1
+    function isDimmed(key) {
+        return root.dimmedIds && root.dimmedIds.indexOf(key) !== -1
     }
 
-    function isCopied(id) {
-        return root.copiedIds && root.copiedIds.indexOf(id) !== -1
+    function isCopied(key) {
+        return root.copiedIds && root.copiedIds.indexOf(key) !== -1
     }
 
     function selectAll() {
         if (root.selectionMode !== "multiple") return
-        var ids = []
+        var keys = []
         for (var i = 0; i < root.flatItems.length; i++) {
-            ids.push(root.flatItems[i].id)
+            keys.push(root.flatItems[i].key)
         }
-        root.selectedIds = ids
-        if (ids.length > 0) root.selectedId = ids[0]
+        root.selectedIds = keys
+        if (keys.length > 0) root.selectedId = keys[0]
     }
 
     function clearSelection() {
@@ -291,10 +343,10 @@ Item {
         root.currentIndex = nodeIndex
 
         if (root.selectionMode === "single") {
-            root.selectedId = item.id
-            root.selectedIds = [item.id]
+            root.selectedId = item.key
+            root.selectedIds = [item.key]
             root.anchorIndex = nodeIndex
-            root.nodeSelected(item.id)
+            root.nodeSelected(item.key)
             return
         }
 
@@ -307,39 +359,39 @@ Item {
             var end = Math.max(root.anchorIndex, nodeIndex)
             var newIds = isCtrl ? root.selectedIds.slice() : []
             for (var i = start; i <= end; i++) {
-                var currId = root.flatItems[i].id
-                if (newIds.indexOf(currId) === -1) newIds.push(currId)
+                var currKey = root.flatItems[i].key
+                if (newIds.indexOf(currKey) === -1) newIds.push(currKey)
             }
             root.selectedIds = newIds
-            root.selectedId = item.id
-            root.nodeSelected(item.id)
+            root.selectedId = item.key
+            root.nodeSelected(item.key)
         } else if (isCtrl) {
             var copy = root.selectedIds.slice()
-            var idx = copy.indexOf(item.id)
+            var idx = copy.indexOf(item.key)
             if (idx !== -1) {
                 copy.splice(idx, 1)
             } else {
-                copy.push(item.id)
+                copy.push(item.key)
             }
             root.selectedIds = copy
-            root.selectedId = item.id
+            root.selectedId = item.key
             root.anchorIndex = nodeIndex
-            root.nodeSelected(item.id)
+            root.nodeSelected(item.key)
         } else {
-            root.selectedIds = [item.id]
-            root.selectedId = item.id
+            root.selectedIds = [item.key]
+            root.selectedId = item.key
             root.anchorIndex = nodeIndex
-            root.nodeSelected(item.id)
+            root.nodeSelected(item.key)
         }
     }
 
-    function isDescendantOrSelf(ancestorId, targetId) {
-        if (!ancestorId || !targetId) return false
-        if (ancestorId === targetId) return true
+    function isDescendantOrSelf(ancestorKey, targetKey) {
+        if (!ancestorKey || !targetKey) return false
+        if (ancestorKey === targetKey) return true
         function checkNode(node) {
-            if (node.id === ancestorId) {
+            if (root.nodeKey(node) === ancestorKey) {
                 function scanSub(child) {
-                    if (child.id === targetId) return true
+                    if (root.nodeKey(child) === targetKey) return true
                     if (child.children) {
                         for (var j = 0; j < child.children.length; j++) {
                             if (scanSub(child.children[j])) return true
@@ -427,16 +479,21 @@ Item {
         }
     }
 
-    function toggleExpand(id) {
-        root._saveScrollPosition(id)
+    // All identity-taking expand/collapse APIs accept an occurrence key and fall
+    // back to a logical node id when the key is not present in the current view.
+    function toggleExpand(key) {
+        var item = root.findFlatItem(key)
+        var k = item ? String(item.key) : String(key)
+        var isLoaded = item ? item.isLoaded : true
+        root._saveScrollPosition(k)
         let copy = Object.assign({}, root.expandedIds)
-        let currentExp = copy[id]
+        let currentExp = copy[k]
         if (currentExp === undefined) {
             let found = false
             function findDepth(list, d) {
                 if (!list || found) return
                 for (let i = 0; i < list.length; i++) {
-                    if (list[i].id === id) {
+                    if (root.nodeKey(list[i]) === k) {
                         currentExp = d < root.defaultExpandDepth
                         found = true
                         return
@@ -447,16 +504,17 @@ Item {
             findDepth(root.nodes, 0)
         }
         let nextExp = !currentExp
-        copy[id] = nextExp
+        copy[k] = nextExp
         root.expandedIds = copy
-        root.nodeToggled(id, nextExp)
+        root.nodeToggled(k, nextExp)
         if (nextExp) {
-            root.nodeExpanded(id)
+            root.nodeExpanded(k)
+            if (!isLoaded) root.nodeExpandRequested(k)
         } else {
-            root.selectedId = id
-            root.selectedIds = [id]
-            root.nodeSelected(id)
-            root.nodeCollapsed(id)
+            root.selectedId = k
+            root.selectedIds = [k]
+            root.nodeSelected(k)
+            root.nodeCollapsed(k)
         }
     }
 
@@ -466,9 +524,11 @@ Item {
             if (!list) return
             for (let i = 0; i < list.length; i++) {
                 let n = list[i]
-                if (n.children && n.children.length > 0) {
-                    all[n.id] = true
-                    collect(n.children)
+                let hasCh = n.hasChildren !== undefined ? !!n.hasChildren : !!(n.children && n.children.length > 0)
+                if (hasCh) {
+                    all[root.nodeKey(n)] = true
+                    let isLoaded = n.isLoaded !== undefined ? !!n.isLoaded : true
+                    if (isLoaded && n.children) collect(n.children)
                 }
             }
         }
@@ -480,24 +540,24 @@ Item {
         root.expandedIds = ({})
     }
 
-    function expandId(id) {
-        if (id === undefined || id === null) return
+    function expandId(key) {
+        if (key === undefined || key === null) return
         let copy = Object.assign({}, root.expandedIds)
-        if (copy[id] === true) return
-        copy[id] = true
+        if (copy[key] === true) return
+        copy[key] = true
         root.expandedIds = copy
-        root.nodeToggled(id, true)
-        root.nodeExpanded(id)
+        root.nodeToggled(key, true)
+        root.nodeExpanded(key)
     }
 
-    function expandIds(idsArray) {
-        if (!idsArray || idsArray.length === 0) return
+    function expandIds(keysArray) {
+        if (!keysArray || keysArray.length === 0) return
         let copy = Object.assign({}, root.expandedIds)
         let changed = false
-        for (let i = 0; i < idsArray.length; i++) {
-            let id = idsArray[i]
-            if (id !== undefined && id !== null && copy[id] !== true) {
-                copy[id] = true
+        for (let i = 0; i < keysArray.length; i++) {
+            let key = keysArray[i]
+            if (key !== undefined && key !== null && copy[key] !== true) {
+                copy[key] = true
                 changed = true
             }
         }
@@ -506,21 +566,21 @@ Item {
         }
     }
 
-    function collapseId(id) {
-        if (id === undefined || id === null) return
+    function collapseId(key) {
+        if (key === undefined || key === null) return
         let copy = Object.assign({}, root.expandedIds)
-        if (copy[id] === false) return
-        copy[id] = false
+        if (copy[key] === false) return
+        copy[key] = false
         root.expandedIds = copy
-        root.selectedId = id
-        root.selectedIds = [id]
-        root.nodeSelected(id)
-        root.nodeToggled(id, false)
-        root.nodeCollapsed(id)
+        root.selectedId = key
+        root.selectedIds = [key]
+        root.nodeSelected(key)
+        root.nodeToggled(key, false)
+        root.nodeCollapsed(key)
     }
 
-    function isExpanded(id) {
-        if (root.expandedIds && root.expandedIds[id] !== undefined) return !!root.expandedIds[id]
+    function isExpanded(key) {
+        if (root.expandedIds && root.expandedIds[key] !== undefined) return !!root.expandedIds[key]
         return false
     }
 
@@ -531,9 +591,9 @@ Item {
         }
     }
 
-    function scrollToId(id) {
+    function scrollToId(key) {
         for (let i = 0; i < root.flatItems.length; i++) {
-            if (root.flatItems[i].id === id) {
+            if (root.flatItems[i].key === key) {
                 scrollToIndex(i)
                 return true
             }
@@ -556,7 +616,7 @@ Item {
                 if (root.anchorIndex < 0) root.anchorIndex = root.currentIndex
                 root.handleNodeClick(nextIdx, event.modifiers)
             } else {
-                root.selectedId = root.flatItems[root.currentIndex].id
+                root.selectedId = root.flatItems[root.currentIndex].key
                 root.selectedIds = [root.selectedId]
                 root.nodeSelected(root.selectedId)
             }
@@ -574,7 +634,7 @@ Item {
                 if (root.anchorIndex < 0) root.anchorIndex = root.currentIndex
                 root.handleNodeClick(prevIdx, event.modifiers)
             } else {
-                root.selectedId = root.flatItems[root.currentIndex].id
+                root.selectedId = root.flatItems[root.currentIndex].key
                 root.selectedIds = [root.selectedId]
                 root.nodeSelected(root.selectedId)
             }
@@ -588,10 +648,10 @@ Item {
             let curr = root.flatItems[root.currentIndex]
             if (curr.hasChildren) {
                 if (!curr.isExpanded) {
-                    root.toggleExpand(curr.id)
+                    root.toggleExpand(curr.key)
                 } else if (root.currentIndex + 1 < root.flatItems.length) {
                     root.currentIndex += 1
-                    root.selectedId = root.flatItems[root.currentIndex].id
+                    root.selectedId = root.flatItems[root.currentIndex].key
                     root.selectedIds = [root.selectedId]
                     root.nodeSelected(root.selectedId)
                     treeList.positionViewAtIndex(root.currentIndex, ListView.Contain)
@@ -605,13 +665,13 @@ Item {
             event.accepted = true
             let curr = root.flatItems[root.currentIndex]
             if (curr.hasChildren && curr.isExpanded) {
-                root.toggleExpand(curr.id)
+                root.toggleExpand(curr.key)
             } else if (curr.depth > 0) {
                 // Find parent node
                 for (let i = root.currentIndex - 1; i >= 0; i--) {
                     if (root.flatItems[i].depth === curr.depth - 1) {
                         root.currentIndex = i
-                        root.selectedId = root.flatItems[i].id
+                        root.selectedId = root.flatItems[i].key
                         root.selectedIds = [root.selectedId]
                         root.nodeSelected(root.selectedId)
                         treeList.positionViewAtIndex(root.currentIndex, ListView.Contain)
@@ -651,7 +711,7 @@ Item {
             var currNode = null
             if (targetId) {
                 for (var f = 0; f < root.flatItems.length; f++) {
-                    if (root.flatItems[f].id === targetId) {
+                    if (root.flatItems[f].key === targetId) {
                         currNode = root.flatItems[f]
                         break
                     }
@@ -660,7 +720,7 @@ Item {
             if (!currNode && root.currentIndex >= 0 && root.currentIndex < root.flatItems.length) {
                 currNode = root.flatItems[root.currentIndex]
             }
-            root.nodePasted(currNode ? currNode.id : "", currNode && currNode.hasChildren ? "inside" : "after")
+            root.nodePasted(currNode ? currNode.key : "", currNode && currNode.hasChildren ? "inside" : "after")
             return
         }
         if (event.key === Qt.Key_Escape) {
@@ -684,7 +744,7 @@ Item {
                 let curr = root.flatItems[root.currentIndex]
                 root.handleNodeClick(root.currentIndex, event.modifiers)
                 if (curr.hasChildren) {
-                    root.toggleExpand(curr.id)
+                    root.toggleExpand(curr.key)
                 }
             }
         } else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
@@ -693,7 +753,7 @@ Item {
                 let curr = root.flatItems[root.currentIndex]
                 root.handleNodeClick(root.currentIndex, event.modifiers)
                 if (curr.hasChildren) {
-                    root.toggleExpand(curr.id)
+                    root.toggleExpand(curr.key)
                 }
             }
         }
@@ -819,6 +879,7 @@ Item {
 
         ListView {
             id: treeList
+            objectName: "vtTreeList"
             z: 1
             anchors.fill: parent
             anchors.margins: ThemeTokens.dp(8)
@@ -862,10 +923,10 @@ Item {
 
                 readonly property bool isHovered: root.modality === "pointer" && (rowMouse.containsMouse || chevronMouse.containsMouse)
                 readonly property bool isKeyboardFocused: root.modality === "keyboard" && root.currentIndex === index
-                readonly property bool isSelected: root.isSelected(modelData.id)
-                readonly property bool isDimmed: root.isDimmed(modelData.id)
-                readonly property bool isCopied: root.isCopied(modelData.id)
-                readonly property bool isDropTarget: root.enableDnd && root.isDragging && root.dropTargetId === modelData.id
+                readonly property bool isSelected: root.isSelected(modelData.key)
+                readonly property bool isDimmed: root.isDimmed(modelData.key)
+                readonly property bool isCopied: root.isCopied(modelData.key)
+                readonly property bool isDropTarget: root.enableDnd && root.isDragging && root.dropTargetId === modelData.key
 
                 Rectangle {
                     id: delegateRow
@@ -980,6 +1041,7 @@ Item {
 
                 Row {
                     id: contentRow
+                    visible: root.rowDelegate === null
                     anchors.left: parent.left
                     anchors.leftMargin: ThemeTokens.dp(8) + modelData.depth * ThemeTokens.dp(16)
                     anchors.right: dirBadge.visible ? dirBadge.left : parent.right
@@ -1010,7 +1072,7 @@ Item {
                             onClicked: function(mouse) {
                                 mouse.accepted = true
                                 root.forceActiveFocus()
-                                root.toggleExpand(modelData.id)
+                                root.toggleExpand(modelData.key)
                             }
                         }
                     }
@@ -1043,11 +1105,22 @@ Item {
                         font.weight: isSelected ? Typography.weightMedium : Font.Normal
                         font.italic: isDimmed
                     }
+
+                    // Lazy-loading indicator: hosts flip `isLoading` while the
+                    // children request is in flight. Custom row slots render
+                    // their own indicator from `rowContext.isLoading`.
+                    Text {
+                        visible: !!modelData.isLoading
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: "…"
+                        color: ThemeTokens.subduedText
+                        font.pixelSize: Typography.sizeSmall
+                    }
                 }
 
                 ChaSetBadge {
                     id: dirBadge
-                    visible: root.showBadges && modelData.badge !== undefined && modelData.badge !== ""
+                    visible: root.rowDelegate === null && root.showBadges && modelData.badge !== undefined && modelData.badge !== ""
                     size: "sm"
                     variant: "outline"
                     text: modelData.badge !== undefined ? modelData.badge : ""
@@ -1055,6 +1128,56 @@ Item {
                     anchors.rightMargin: ThemeTokens.dp(8)
                     anchors.verticalCenter: parent.verticalCenter
                     z: 2
+                }
+
+                // Row content slot (mirrors React `renderRow`). Replaces the
+                // built-in chevron / bullet / icon / label / badge content only;
+                // the row shell above (background, selection, drop indicators)
+                // and the interaction plumbing below stay component-owned.
+                Item {
+                    id: customRowSlot
+                    visible: root.rowDelegate !== null
+                    anchors.left: parent.left
+                    anchors.leftMargin: ThemeTokens.dp(8) + modelData.depth * ThemeTokens.dp(16)
+                    anchors.right: parent.right
+                    anchors.rightMargin: ThemeTokens.dp(8)
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    z: 2
+
+                    readonly property QtObject rowContextObject: contextNode
+
+                    // Live context: every property is bound, so the host row
+                    // re-renders as selection / expansion / loading change.
+                    QtObject {
+                        id: contextNode
+                        readonly property var node: delegateRowRoot.modelData.rawNode
+                        readonly property string id: String(delegateRowRoot.modelData.id)
+                        readonly property string key: String(delegateRowRoot.modelData.key)
+                        readonly property int depth: delegateRowRoot.modelData.depth
+                        readonly property bool hasChildren: !!delegateRowRoot.modelData.hasChildren
+                        readonly property bool isExpanded: !!delegateRowRoot.modelData.isExpanded
+                        readonly property bool isSelected: delegateRowRoot.isSelected
+                        readonly property bool isDimmed: delegateRowRoot.isDimmed
+                        readonly property bool isCopied: delegateRowRoot.isCopied
+                        readonly property bool isLoaded: !!delegateRowRoot.modelData.isLoaded
+                        readonly property bool isLoading: !!delegateRowRoot.modelData.isLoading
+                        readonly property int childCount: delegateRowRoot.modelData.children ? delegateRowRoot.modelData.children.length : 0
+                        function toggleExpand() { root.toggleExpand(delegateRowRoot.modelData.key) }
+                        function select() { root.handleNodeClick(delegateRowRoot.index, Qt.NoModifier) }
+                    }
+
+                    Loader {
+                        id: customRowLoader
+                        anchors.fill: parent
+                        sourceComponent: root.rowDelegate
+                        onLoaded: {
+                            // The delegate root must declare `property var rowContext`.
+                            if (item && item.rowContext !== undefined) {
+                                item.rowContext = customRowSlot.rowContextObject
+                            }
+                        }
+                    }
                 }
 
                 DropArea {
@@ -1080,9 +1203,9 @@ Item {
                             pos = "inside"
                         }
 
-                        root.dropTargetId = modelData.id
+                        root.dropTargetId = modelData.key
                         root.dropPosition = pos
-                        root.isDropValid = root.isDropValidFor(modelData.id)
+                        root.isDropValid = root.isDropValidFor(modelData.key)
                         if (drag.accept) {
                             drag.accept(root.effectiveIsCopy ? Qt.CopyAction : Qt.MoveAction)
                         }
@@ -1090,7 +1213,7 @@ Item {
 
                     onExited: {
                         if (!root.isDropping && root.isDragging) {
-                            if (root.dropTargetId === modelData.id) {
+                            if (root.dropTargetId === modelData.key) {
                                 root.dropTargetId = ""
                                 root.dropPosition = ""
                             }
@@ -1100,7 +1223,7 @@ Item {
                     onDropped: function(drop) {
                         if (drop) drop.acceptProposedAction()
                         var isCopy = root.effectiveIsCopy || (drop && drop.keyboardModifiers !== undefined && ((drop.keyboardModifiers & Qt.ControlModifier) !== 0 || (drop.keyboardModifiers & Qt.MetaModifier) !== 0)) || ((Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0) || ((Qt.application.keyboardModifiers & Qt.MetaModifier) !== 0)
-                        root.executeDrop(isCopy, modelData.id, root.dropPosition)
+                        root.executeDrop(isCopy, modelData.key, root.dropPosition)
                     }
                 }
 
@@ -1113,8 +1236,8 @@ Item {
                     Drag.hotSpot.x: ThemeTokens.dp(10)
                     Drag.hotSpot.y: ThemeTokens.dp(10)
                     Drag.mimeData: {
-                        "text/plain": (root.draggedIds.length > 1 ? root.draggedIds.join("\n") : parent.modelData.id),
-                        "application/x-chaset-tree-ids": (root.draggedIds.length > 1 ? root.draggedIds.join("\n") : parent.modelData.id)
+                        "text/plain": (root.draggedIds.length > 1 ? root.draggedIds.join("\n") : parent.modelData.key),
+                        "application/x-chaset-tree-ids": (root.draggedIds.length > 1 ? root.draggedIds.join("\n") : parent.modelData.key)
                     }
                     onXChanged: {
                         if (rowMouse.drag.active && !root.isDragging) root.isDragging = true
@@ -1137,17 +1260,17 @@ Item {
                         dragProxy.y = 0
                         root.forceActiveFocus()
                         if (root.enableDnd) {
-                            root.draggedId = parent.modelData.id
+                            root.draggedId = parent.modelData.key
                             if (root.selectedIds && root.selectedIds.length > 1) {
-                                if (root.selectedIds.indexOf(parent.modelData.id) !== -1) {
+                                if (root.selectedIds.indexOf(parent.modelData.key) !== -1) {
                                     root.draggedIds = root.selectedIds.slice()
                                 } else {
                                     var copy = root.selectedIds.slice()
-                                    if (copy.indexOf(parent.modelData.id) === -1) copy.push(parent.modelData.id)
+                                    if (copy.indexOf(parent.modelData.key) === -1) copy.push(parent.modelData.key)
                                     root.draggedIds = copy
                                 }
                             } else {
-                                root.draggedIds = [parent.modelData.id]
+                                root.draggedIds = [parent.modelData.key]
                             }
                             if ((mouse.modifiers & Qt.ControlModifier) !== 0 || (mouse.modifiers & Qt.MetaModifier) !== 0 || ((Qt.application.keyboardModifiers & Qt.ControlModifier) !== 0) || ((Qt.application.keyboardModifiers & Qt.MetaModifier) !== 0)) {
                                 root.isCtrlHeld = true
@@ -1178,17 +1301,17 @@ Item {
                     onPositionChanged: function(mouse) {
                         if (drag.active && !root.isDragging) {
                             root.isDragging = true
-                            root.draggedId = parent.modelData.id
+                            root.draggedId = parent.modelData.key
                             if (root.selectedIds && root.selectedIds.length > 1) {
-                                if (root.selectedIds.indexOf(parent.modelData.id) !== -1) {
+                                if (root.selectedIds.indexOf(parent.modelData.key) !== -1) {
                                     root.draggedIds = root.selectedIds.slice()
                                 } else {
                                     var copy = root.selectedIds.slice()
-                                    if (copy.indexOf(parent.modelData.id) === -1) copy.push(parent.modelData.id)
+                                    if (copy.indexOf(parent.modelData.key) === -1) copy.push(parent.modelData.key)
                                     root.draggedIds = copy
                                 }
                             } else {
-                                root.draggedIds = [parent.modelData.id]
+                                root.draggedIds = [parent.modelData.key]
                             }
                         }
                         if (drag.active || root.isDragging) {
@@ -1211,13 +1334,13 @@ Item {
 
                     onClicked: function(mouse) {
                         root.forceActiveFocus()
-                        root.nodeClicked(parent.modelData.id)
+                        root.nodeClicked(parent.modelData.key)
                         root.handleNodeClick(parent.index, mouse.modifiers)
                     }
 
                     onDoubleClicked: function(mouse) {
                         root.forceActiveFocus()
-                        root.nodeDoubleClicked(parent.modelData.id)
+                        root.nodeDoubleClicked(parent.modelData.key)
                     }
                 }
             }

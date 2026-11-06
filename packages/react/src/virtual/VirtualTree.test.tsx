@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent, createEvent, act } from '@testing-library/react';
+import { render, screen, fireEvent, createEvent, act, within } from '@testing-library/react';
 import { VirtualTree } from './VirtualTree';
 
 interface TreeNode {
@@ -518,5 +518,162 @@ describe('VirtualTree', () => {
     expect(afterIndicator.firstElementChild?.className).toContain('rounded-full');
 
     fireEvent.dragEnd(row1);
+  });
+
+  it('isolates expansion per occurrence key when the same entity is mounted twice', () => {
+    interface OccurrenceNode {
+      id: string;
+      occurrence: string;
+      name: string;
+      children?: OccurrenceNode[];
+    }
+
+    // Same logical ids mounted under two roots — exactly what a file tree sees
+    // when a folder is reachable from two entry points.
+    const occurrenceTree: OccurrenceNode[] = [
+      {
+        id: 'shared-root',
+        occurrence: 'A',
+        name: 'Root A',
+        children: [
+          {
+            id: 'shared',
+            occurrence: 'A/shared',
+            name: 'Shared A',
+            children: [{ id: 'leaf-a', occurrence: 'A/shared/leaf-a', name: 'Leaf A' }],
+          },
+        ],
+      },
+      {
+        id: 'shared-root',
+        occurrence: 'B',
+        name: 'Root B',
+        children: [
+          {
+            id: 'shared',
+            occurrence: 'B/shared',
+            name: 'Shared B',
+            children: [{ id: 'leaf-b', occurrence: 'B/shared/leaf-b', name: 'Leaf B' }],
+          },
+        ],
+      },
+    ];
+
+    const { container } = render(
+      <VirtualTree
+        rootNodes={occurrenceTree}
+        getChildren={(node) => node.children ?? []}
+        getNodeKey={(node) => node.occurrence}
+        estimateSize={30}
+      />,
+    );
+
+    const expandRow = (index: number) => {
+      const row = container.querySelector(`[data-index="${index}"]`) as HTMLElement;
+      fireEvent.click(within(row).getByText('▶'));
+    };
+
+    // Expand A -> Shared A, then A/shared -> Leaf A.
+    expandRow(0);
+    expect(screen.getByText('Shared A')).toBeInTheDocument();
+    expect(screen.queryByText('Shared B')).not.toBeInTheDocument();
+
+    expandRow(1);
+    expect(screen.getByText('Leaf A')).toBeInTheDocument();
+
+    // Expand B -> Shared B appears, but B/shared must NOT inherit the expansion
+    // recorded for A/shared even though both logical nodes are id "shared".
+    expandRow(3);
+    expect(screen.getByText('Shared B')).toBeInTheDocument();
+    expect(screen.getByText('Leaf A')).toBeInTheDocument();
+    expect(screen.queryByText('Leaf B')).not.toBeInTheDocument();
+  });
+
+  it('requests children when opening an unloaded node and renders them after load', () => {
+    interface LazyNode {
+      id: string;
+      name: string;
+      hasChildren?: boolean;
+      isLoaded?: boolean;
+      isLoading?: boolean;
+      children?: LazyNode[];
+    }
+
+    const onExpandRequest = vi.fn();
+    const lazyRoot: LazyNode = {
+      id: 'lazy',
+      name: 'Lazy Folder',
+      hasChildren: true,
+      isLoaded: false,
+      isLoading: true,
+    };
+
+    const { container, rerender } = render(
+      <VirtualTree
+        rootNodes={[lazyRoot]}
+        onExpandRequest={onExpandRequest}
+        estimateSize={30}
+      />,
+    );
+
+    // Chevron is driven by hasChildren, not children.length, so it exists even
+    // before anything was fetched.
+    const row = container.querySelector('[data-index="0"]') as HTMLElement;
+    expect(within(row).getByText('▶')).toBeInTheDocument();
+    // Loading state is surfaced to the row shell and default renderer.
+    expect(row.getAttribute('data-loading')).toBe('true');
+    expect(row.querySelector('[data-slot="virtual-tree-row-loading"]')).not.toBeNull();
+
+    fireEvent.click(within(row).getByText('▶'));
+    expect(onExpandRequest).toHaveBeenCalledTimes(1);
+    expect(onExpandRequest.mock.calls[0]![1]).toBe('lazy');
+
+    // Collapsing must not re-request.
+    fireEvent.click(within(row).getByText('▼'));
+    expect(onExpandRequest).toHaveBeenCalledTimes(1);
+
+    // Reopening while still unloaded issues one more request.
+    fireEvent.click(within(row).getByText('▶'));
+    expect(onExpandRequest).toHaveBeenCalledTimes(2);
+
+    // Batched host update: children arrive, the recorded expansion reveals them.
+    rerender(
+      <VirtualTree
+        rootNodes={[
+          { ...lazyRoot, isLoaded: true, isLoading: false, children: [{ id: 'loaded-child', name: 'Loaded Child' }] },
+        ]}
+        onExpandRequest={onExpandRequest}
+        estimateSize={30}
+      />,
+    );
+    const loadedRow = container.querySelector('[data-index="0"]') as HTMLElement;
+    expect(loadedRow.getAttribute('data-loading')).toBeNull();
+    expect(screen.getByText('Loaded Child')).toBeInTheDocument();
+  });
+
+  it('exposes occurrence key and lazy state in the row slot context', () => {
+    const contexts: any[] = [];
+    render(
+      <VirtualTree
+        rootNodes={[
+          { id: 'logical', occurrence: 'slot-key', name: 'Slot Row', hasChildren: true, isLoaded: false, isLoading: true },
+        ]}
+        getNodeKey={(node: any) => node.occurrence}
+        renderRow={(context) => {
+          contexts.push(context);
+          return <div>{context.key}</div>;
+        }}
+        estimateSize={30}
+      />,
+    );
+
+    expect(contexts.length).toBeGreaterThan(0);
+    const context = contexts[contexts.length - 1];
+    expect(context.id).toBe('logical');
+    expect(context.key).toBe('slot-key');
+    expect(context.isLoaded).toBe(false);
+    expect(context.isLoading).toBe(true);
+    expect(context.hasChildren).toBe(true);
+    expect(context.childCount).toBe(0);
   });
 });
