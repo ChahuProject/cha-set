@@ -84,7 +84,7 @@ static QVector<QPointF> computeClockwiseNormals(const QVector<QPointF> &pts)
         return normals;
 
     QVector<QPointF> edgeNormals(N);
-    QPointF fallbackNormal(0, -1);
+    bool hasValidEdge = false;
     for (int i = 0; i < N; ++i) {
         const int next = (i + 1 == N) ? 0 : (i + 1);
         const qreal dx = pts[next].x() - pts[i].x();
@@ -92,32 +92,38 @@ static QVector<QPointF> computeClockwiseNormals(const QVector<QPointF> &pts)
         const qreal len = std::hypot(dx, dy);
         if (len > 1e-6) {
             edgeNormals[i] = QPointF(dy / len, -dx / len);
-            fallbackNormal = edgeNormals[i];
+            hasValidEdge = true;
         } else {
             edgeNormals[i] = QPointF(0, 0);
         }
     }
 
-    // Propagate forward and backward to fill degenerate edges
-    for (int i = 0; i < N; ++i) {
-        if (edgeNormals[i].isNull()) {
-            edgeNormals[i] = fallbackNormal;
-        } else {
-            fallbackNormal = edgeNormals[i];
-        }
+    if (!hasValidEdge) {
+        normals.fill(QPointF(0, -1));
+        return normals;
     }
 
     for (int i = 0; i < N; ++i) {
-        const int prev = (i == 0) ? (N - 1) : (i - 1);
-        QPointF n1 = edgeNormals[prev];
-        QPointF n2 = edgeNormals[i];
-        if (n1.isNull()) n1 = n2;
-        if (n2.isNull()) n2 = n1;
+        // Find preceding valid edge normal (skip degenerate corner runs)
+        int prev = (i == 0) ? (N - 1) : (i - 1);
+        while (edgeNormals[prev].isNull() && prev != i) {
+            prev = (prev == 0) ? (N - 1) : (prev - 1);
+        }
+        const QPointF n1 = edgeNormals[prev];
 
-        QPointF sum = n1 + n2;
+        // Find succeeding valid edge normal (skip degenerate corner runs)
+        int curr = i;
+        while (edgeNormals[curr].isNull()) {
+            curr = (curr + 1 == N) ? 0 : (curr + 1);
+            if (curr == i)
+                break;
+        }
+        const QPointF n2 = edgeNormals[curr];
+
+        const QPointF sum = n1 + n2;
         const qreal sumLen = std::hypot(sum.x(), sum.y());
         if (sumLen > 1e-6) {
-            QPointF u = sum / sumLen;
+            const QPointF u = sum / sumLen;
             const qreal dot = u.x() * n2.x() + u.y() * n2.y();
             const qreal miter = 1.0 / std::max(0.5, dot);
             normals[i] = u * std::min(2.0, miter);
