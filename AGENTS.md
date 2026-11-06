@@ -148,10 +148,12 @@
     - **Canonical Table of Contents Standard (TOC 五大标准锚点律)**:
       Every living DocPage on both React and Qt MUST provide the identical 5 canonical sections with matching IDs and titles:
       1. `overview`: **Interactive Overview** (strict ban on legacy `preview` / `Interactive Preview`)
-      2. `installation`: **Installation**
+      2. `anatomy`: **Anatomy** (standardized dual-tab React & Qt Quick import & structure definition via `<DocAnatomy>` / `DocAnatomy`; strict ban on raw `npm install` blocks or custom installation rectangles)
       3. `animations`: **Animations** (motion tokens, transitions, reduced motion per Golden Red Line 10)
       4. `keyboard`: **Keyboard Navigation** (backed by a `table shortcuts` block in `spec/content/<doc-id>/<locale>.md`)
       5. `props`: **Props Reference** (strict ban on legacy `api` / `API Reference`)
+    - **Mandatory Navigation Localization (中文导航名全量汉化律)**:
+      Every component registered in `spec/showcase/navigation.json` MUST immediately receive its localized Chinese name in `spec/i18n/locales/zh-CN.json` (and `en-US.json`) under `"navigation"`, synchronized via `just gen-showcase` and `node spec/generators/generate-i18n.mjs`. Never leave English fallback titles leaking into the Chinese sidebar navigation.
     - **Authentic Code Snippet Contract (Qt 演示页真实 React 代码契约)**:
       Qt's `ComponentPreview` `reactCode` property MUST provide authentic, valid React JSX conforming to the component's actual TypeScript API contract. Speculative, synthetically hallucinated, or placeholder JSX in QML is strictly forbidden.
     - **Sandbox Visual & Content Equivalence (沙盒内容与状态等价律)**:

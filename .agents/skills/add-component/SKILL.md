@@ -19,7 +19,7 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
    - **Single Source of Truth for Metadata**: `category`, `title` (React) / `pageTitle` (Qt), and `description` MUST strictly match `spec/showcase/navigation.json`. Never place sandbox preview item strings (e.g. card titles, modal headlines) into `DocLayout` titles.
    - **Canonical Table of Contents (TOC) Contract**: Every DocPage MUST implement the 5 standard sections with identical anchor IDs and titles across both stacks:
      - `overview`: **Interactive Overview** (strict ban on legacy `preview` / `Interactive Preview`)
-     - `installation`: **Installation**
+     - `anatomy`: **Anatomy** (standardized dual-tab React & Qt Quick import & structure definition via `<DocAnatomy>` / `DocAnatomy`; strict ban on hand-written `npm install` blocks or custom installation rectangles)
      - `animations`: **Animations** (motion tokens per Golden Rule 11)
      - `keyboard`: **Keyboard Navigation** (backed by a `table shortcuts` block in `spec/content/<doc-id>/<locale>.md`)
      - `props`: **Props Reference** (strict ban on legacy `api` / `API Reference`)
@@ -267,7 +267,15 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
      ```json
      { "id": "<name>", "title": "<Display Name>", "href": "#/components/<name>", "desc": "<Short Description>" }
      ```
-   - Run `node spec/generators/generate-showcase-data.mjs` to regenerate `qt/src/ShowcaseData.generated.qml`.
+   - **Register Navigation Localization (Mandatory)**:
+     Add component title translations to `spec/i18n/locales/zh-CN.json` and `spec/i18n/locales/en-US.json` under `"navigation"`:
+     - `zh-CN.json`: `"<name>": "<中文名称>"`
+     - `en-US.json`: `"<name>": "<English Name>"`
+   - Run generators to emit updated metadata and i18n dictionaries:
+     ```bash
+     just gen-showcase
+     node spec/generators/generate-i18n.mjs
+     ```
    - **Strict Metadata Alignment**: Both React `<DocLayout>` and Qt `DocLayout` MUST strictly mirror `navigation.json`:
      - `title` (React) / `pageTitle` (Qt) === `title` from `navigation.json` (NEVER use sandbox/card titles).
      - `category` === `category` from `navigation.json`.
@@ -291,14 +299,14 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
    - Incorporate:
      - Header with title, badge, and description from `navigation.json`.
      - Interactive `ComponentPreview` with live preview and controls.
-     - Section `#installation` with package install and import snippet.
+     - Standardized `<DocAnatomy id="anatomy" reactCode={...} qtCode={...} />` for cross-stack import and basic structure definitions (`#anatomy`). NEVER output raw `<code>npm install ...</code>` blocks.
      - Section `#animations` describing motion tokens, transitions, and `prefers-reduced-motion`.
      - Section `#keyboard` with `<DocMarkdown id="<doc-id>" section="keyboard" />`.
      - Section `#props` with `<DocMarkdown id="<doc-id>" section="props" />` — the table itself is authored in the Markdown (strictly zero `px` or "in pixels" in descriptions).
      - Variant showcase sections.
 
 5. **Qt Living DocPage Component & Main Route (`qt/src/<Name>DocPage.qml`)**:
-   - Create `qt/src/<Name>DocPage.qml` with interactive preview, variant controls, `DocMarkdown` sections, and code blocks.
+   - Create `qt/src/<Name>DocPage.qml` with interactive preview (`#overview`), standardized `DocAnatomy { sectionId: "anatomy"; reactCode: "..."; qtCode: "..." }` (`#anatomy`), variant controls, and `DocMarkdown` sections (`animations`, `keyboard`, `props`).
    - Register `qt/src/<Name>DocPage.qml` in `qt/CMakeLists.txt` under `QtChaSetDemo` `QML_FILES`.
    - Register `qt/src/ChaSet<Name>.qml` in `qt/CMakeLists.txt` under `ChaSet` `QML_FILES`.
    - Add route mapping in `qt/src/Main.qml` (`getPageSource`).
