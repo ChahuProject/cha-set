@@ -95,6 +95,22 @@ Popup {
     /// 弹窗圆角半径
     property real customRadius: ThemeTokens.dp(8)
 
+    /// 记录最近一次由于外部点击触发关闭的时间戳（毫秒）
+    property double lastOutsideCloseMsecs: 0
+
+    /// 便捷切换方法（内建外部点击防重开守卫）
+    function toggle() {
+        if (Date.now() - root.lastOutsideCloseMsecs < 400) {
+            root.lastOutsideCloseMsecs = 0
+            return
+        }
+        if (root.visible) {
+            root.close()
+        } else {
+            root.open()
+        }
+    }
+
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
     // ---- 内容挂载点（头 / 体 / 尾 三段式）----
@@ -186,7 +202,10 @@ Popup {
         target: root
         function onAboutToShow() { root.anchorRevision++ }
         function onOpened() { root.anchorRevision++ }
-        function onClosed() { root.anchorRevision++ }
+        function onClosed() {
+            root.anchorRevision++
+            root.lastOutsideCloseMsecs = Date.now()
+        }
     }
 
     /// 锚点矩形（**父项坐标系**）。anchorItem 优先；无 anchorItem 时退化为

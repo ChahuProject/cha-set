@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { createPortal } from 'react-dom';
 import { cn } from '../lib/utils';
+import { ScrollArea } from '../scroll-area/ScrollArea';
 
 export interface AdaptivePopupProps extends React.HTMLAttributes<HTMLDivElement> {
   open?: boolean;
@@ -114,8 +115,11 @@ export const AdaptivePopup = React.forwardRef<HTMLDivElement, AdaptivePopupProps
         if (anchorRef?.current) {
           const rect = anchorRef.current.getBoundingClientRect();
           if (containerEl) {
-            originX = rect.left - hostRect.left;
-            originY = placement === 'up' ? rect.top - hostRect.top : rect.bottom - hostRect.top + 4;
+            originX = rect.left - hostRect.left + containerEl.scrollLeft;
+            originY =
+              placement === 'up'
+                ? rect.top - hostRect.top + containerEl.scrollTop
+                : rect.bottom - hostRect.top + containerEl.scrollTop + 4;
           } else {
             originX = rect.left;
             originY = placement === 'up' ? rect.top : rect.bottom + 4;
@@ -130,7 +134,9 @@ export const AdaptivePopup = React.forwardRef<HTMLDivElement, AdaptivePopupProps
         // Measure natural heights
         const headerH = headerRef.current ? headerRef.current.offsetHeight : 0;
         const footerH = footerRef.current ? footerRef.current.offsetHeight : 0;
-        const contentH = contentRef.current ? contentRef.current.scrollHeight : 0;
+        const contentH = contentRef.current
+          ? Math.max(contentRef.current.offsetHeight, contentRef.current.scrollHeight)
+          : 0;
         const desiredH = Math.ceil(headerH + contentH + footerH);
 
         // Calculate host available height
@@ -253,16 +259,19 @@ export const AdaptivePopup = React.forwardRef<HTMLDivElement, AdaptivePopupProps
             {header}
           </div>
         )}
-        <div
-          ref={contentRef}
-          className="flex-1 overflow-y-auto"
-          style={{
+        <ScrollArea
+          className="flex-1 min-h-0 w-full"
+          viewportClassName="w-full"
+          contentClassName="w-full"
+          contentStyle={{
             paddingLeft: `${contentInset * 0.0625}rem`,
             paddingRight: `${contentInset * 0.0625}rem`,
           }}
         >
-          {children}
-        </div>
+          <div ref={contentRef} className="w-full">
+            {children}
+          </div>
+        </ScrollArea>
         {footer && (
           <div ref={footerRef} className="flex-none border-t border-border/50">
             {footer}

@@ -85,7 +85,7 @@ export function AdaptivePopupDocPage() {
         anchors.topMargin: "${placement}" === "down" ? ThemeTokens.dp(32) : 0
         anchors.bottom: "${placement}" === "up" ? parent.bottom : undefined
         anchors.bottomMargin: "${placement}" === "up" ? ThemeTokens.dp(32) : 0
-        onClicked: popup.open()
+        onClicked: popup.toggle()
     }
 
     ChaSetAdaptivePopup {
@@ -205,52 +205,52 @@ export function AdaptivePopupDocPage() {
               >
                 {open ? t('overlays.adaptivePopup.closePopup', 'Close Adaptive Popup') : t('overlays.adaptivePopup.openPopup', 'Open Adaptive Popup')}
               </Button>
+            </div>
 
-              <AdaptivePopup
-                open={open}
-                onOpenChange={setOpen}
-                placement={placement}
-                align="center"
-                maxHeight={maxHeightLimit}
-                anchorRef={triggerRef}
-                containerRef={containerRef}
-                className="w-80"
-                header={
-                  <div className="p-3 flex items-center justify-between">
-                    <span className="text-xs font-semibold text-foreground">
-                      {t('desktopComposite.adaptivePopup.headerTitle', 'Active Render Targets')}
-                    </span>
-                    <Badge variant="secondary" size="sm" className="text-[0.625rem]">
-                      {sampleTargets.length}
+            <AdaptivePopup
+              open={open}
+              onOpenChange={setOpen}
+              placement={placement}
+              align="center"
+              maxHeight={maxHeightLimit}
+              anchorRef={triggerRef}
+              containerRef={containerRef}
+              className="w-80"
+              header={
+                <div className="p-3 flex items-center justify-between">
+                  <span className="text-xs font-semibold text-foreground">
+                    {t('desktopComposite.adaptivePopup.headerTitle', 'Active Render Targets')}
+                  </span>
+                  <Badge variant="secondary" size="sm" className="text-[0.625rem]">
+                    {sampleTargets.length}
+                  </Badge>
+                </div>
+              }
+              footer={
+                <div className="p-2.5 flex items-center justify-between bg-muted/20">
+                  <span className="text-[0.6875rem] text-muted-foreground">
+                    {placement === 'up' ? 'Placement: Up' : 'Placement: Down'}
+                  </span>
+                  <Button size="sm" variant="outline" onClick={() => setOpen(false)}>
+                    {t('overlays.adaptivePopup.done', 'Done')}
+                  </Button>
+                </div>
+              }
+            >
+              <div className="py-2 space-y-1.5">
+                {sampleTargets.map((target) => (
+                  <div
+                    key={target.id}
+                    className="p-2 rounded border border-border/40 bg-card/50 flex items-center justify-between text-xs"
+                  >
+                    <span className="font-medium text-foreground">{target.name}</span>
+                    <Badge variant="outline" size="sm" className="font-mono text-[0.625rem]">
+                      {target.type}
                     </Badge>
                   </div>
-                }
-                footer={
-                  <div className="p-2.5 flex items-center justify-between bg-muted/20">
-                    <span className="text-[0.6875rem] text-muted-foreground">
-                      {placement === 'up' ? 'Placement: Up' : 'Placement: Down'}
-                    </span>
-                    <Button size="sm" variant="outline" onClick={() => setOpen(false)}>
-                      {t('overlays.adaptivePopup.done', 'Done')}
-                    </Button>
-                  </div>
-                }
-              >
-                <div className="py-2 space-y-1.5">
-                  {sampleTargets.map((target) => (
-                    <div
-                      key={target.id}
-                      className="p-2 rounded border border-border/40 bg-card/50 flex items-center justify-between text-xs"
-                    >
-                      <span className="font-medium text-foreground">{target.name}</span>
-                      <Badge variant="outline" size="sm" className="font-mono text-[0.625rem]">
-                        {target.type}
-                      </Badge>
-                    </div>
-                  ))}
-                </div>
-              </AdaptivePopup>
-            </div>
+                ))}
+              </div>
+            </AdaptivePopup>
           </div>
         </ComponentPreview>
       </section>

@@ -121,4 +121,62 @@ describe('AdaptivePopup', () => {
     fireEvent.pointerDown(outsideBtn);
     expect(onOpenChange).toHaveBeenCalledWith(false);
   });
+
+  it('embeds ChaSet ScrollArea inside the popup content area', () => {
+    render(
+      <AdaptivePopup open={true}>
+        <div>Scrollable Item 1</div>
+        <div>Scrollable Item 2</div>
+      </AdaptivePopup>,
+    );
+
+    const scrollAreaRoot = document.querySelector('[data-slot="adaptive-popup"] [data-floating]');
+    expect(scrollAreaRoot).toBeTruthy();
+
+    const scrollBar = document.querySelector('[data-slot="adaptive-popup"] [data-orientation="vertical"]');
+    expect(scrollBar).toBeTruthy();
+  });
+
+  it('computes capped height and clamps top within container when bounded', () => {
+    const originalOffsetHeight = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetHeight');
+    Object.defineProperty(HTMLElement.prototype, 'offsetHeight', {
+      configurable: true,
+      get() {
+        if (this.getAttribute?.('data-slot') === 'adaptive-popup') return 200;
+        return 600;
+      },
+    });
+
+    try {
+      function ClampedWrapper() {
+        const containerRef = React.useRef<HTMLDivElement>(null);
+        return (
+          <div
+            ref={containerRef}
+            data-testid="stage-container"
+            style={{ position: 'relative', width: '25rem', height: '18.75rem' }}
+          >
+            <AdaptivePopup
+              open={true}
+              containerRef={containerRef}
+              edgeMargin={12}
+              placement="down"
+              maxHeight={200}
+            >
+              <div>Large Scrollable List</div>
+            </AdaptivePopup>
+          </div>
+        );
+      }
+      render(<ClampedWrapper />);
+
+      const popup = document.querySelector('[data-slot="adaptive-popup"]') as HTMLDivElement;
+      expect(popup).toBeTruthy();
+      expect(popup.getAttribute('data-height-capped')).toBe('true');
+    } finally {
+      if (originalOffsetHeight) {
+        Object.defineProperty(HTMLElement.prototype, 'offsetHeight', originalOffsetHeight);
+      }
+    }
+  });
 });

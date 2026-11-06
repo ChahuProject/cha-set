@@ -74,7 +74,7 @@ DocLayout {
         anchors.topMargin: "${root.demoPlacement}" === "down" ? ThemeTokens.dp(32) : 0
         anchors.bottom: "${root.demoPlacement}" === "up" ? parent.bottom : undefined
         anchors.bottomMargin: "${root.demoPlacement}" === "up" ? ThemeTokens.dp(32) : 0
-        onClicked: popup.open()
+        onClicked: popup.toggle()
     }
 
     ChaSetAdaptivePopup {
@@ -208,11 +208,7 @@ DocLayout {
                 text: popupOpen ? ChaSetI18n.tr("overlays.adaptivePopup.closePopup", "Close Adaptive Popup") : ChaSetI18n.tr("overlays.adaptivePopup.openPopup", "Open Adaptive Popup")
                 variant: "default"
                 onClicked: {
-                    if (demoPopup.visible) {
-                        demoPopup.close();
-                    } else {
-                        demoPopup.open();
-                    }
+                    demoPopup.toggle()
                 }
             }
 
@@ -227,22 +223,37 @@ DocLayout {
                 maxHeight: root.demoMaxHeight > 0 ? ThemeTokens.dp(root.demoMaxHeight) : -1
 
                 headerItems: [
-                    RowLayout {
-                        width: parent.width
-                        DocText {
-                            Layout.fillWidth: true
-                            Layout.leftMargin: ThemeTokens.dp(12)
-                            Layout.topMargin: ThemeTokens.dp(10)
-                            Layout.bottomMargin: ThemeTokens.dp(10)
-                            text: ChaSetI18n.tr("desktopComposite.adaptivePopup.headerTitle", "Active Render Targets")
-                            font.pixelSize: Typography.sizeSmall
-                            font.bold: true
-                            color: ThemeTokens.text
+                    Rectangle {
+                        Layout.fillWidth: true
+                        implicitHeight: headerRow.implicitHeight
+                        color: "transparent"
+
+                        RowLayout {
+                            id: headerRow
+                            width: parent.width
+                            DocText {
+                                Layout.fillWidth: true
+                                Layout.leftMargin: ThemeTokens.dp(12)
+                                Layout.topMargin: ThemeTokens.dp(10)
+                                Layout.bottomMargin: ThemeTokens.dp(10)
+                                text: ChaSetI18n.tr("desktopComposite.adaptivePopup.headerTitle", "Active Render Targets")
+                                font.pixelSize: Typography.sizeSmall
+                                font.bold: true
+                                color: ThemeTokens.text
+                            }
+                            ChaSetBadge {
+                                Layout.rightMargin: ThemeTokens.dp(12)
+                                text: String(root.demoItemCount)
+                                variant: "secondary"
+                            }
                         }
-                        ChaSetBadge {
-                            Layout.rightMargin: ThemeTokens.dp(12)
-                            text: String(root.demoItemCount)
-                            variant: "secondary"
+
+                        Rectangle {
+                            anchors.bottom: parent.bottom
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            height: 1
+                            color: ThemeTokens.color("borderSubtle")
                         }
                     }
                 ]
@@ -284,23 +295,42 @@ DocLayout {
                 }
 
                 footerItems: [
-                    RowLayout {
-                        width: parent.width
-                        DocText {
-                            Layout.leftMargin: ThemeTokens.dp(12)
-                            Layout.topMargin: ThemeTokens.dp(8)
-                            Layout.bottomMargin: ThemeTokens.dp(8)
-                            text: root.demoPlacement === "up" ? "Placement: Up" : "Placement: Down"
-                            color: ThemeTokens.subduedText
-                            font.pixelSize: Typography.sizeMicro
+                    Rectangle {
+                        Layout.fillWidth: true
+                        implicitHeight: footerRow.implicitHeight
+                        color: ThemeTokens.color("panelRaised")
+
+                        Rectangle {
+                            anchors.top: parent.top
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            height: 1
+                            color: ThemeTokens.color("borderSubtle")
                         }
-                        Item { Layout.fillWidth: true }
-                        ChaSetButton {
-                            Layout.rightMargin: ThemeTokens.dp(12)
-                            size: "sm"
-                            variant: "outline"
-                            text: ChaSetI18n.tr("overlays.adaptivePopup.done", "Done")
-                            onClicked: demoPopup.close()
+
+                        RowLayout {
+                            id: footerRow
+                            width: parent.width
+                            DocText {
+                                Layout.leftMargin: ThemeTokens.dp(12)
+                                Layout.topMargin: ThemeTokens.dp(10)
+                                Layout.bottomMargin: ThemeTokens.dp(10)
+                                Layout.alignment: Qt.AlignVCenter
+                                text: root.demoPlacement === "up" ? "Placement: Up" : "Placement: Down"
+                                color: ThemeTokens.subduedText
+                                font.pixelSize: Typography.sizeMicro
+                            }
+                            Item { Layout.fillWidth: true }
+                            ChaSetButton {
+                                Layout.rightMargin: ThemeTokens.dp(12)
+                                Layout.topMargin: ThemeTokens.dp(10)
+                                Layout.bottomMargin: ThemeTokens.dp(10)
+                                Layout.alignment: Qt.AlignVCenter
+                                size: "sm"
+                                variant: "outline"
+                                text: ChaSetI18n.tr("overlays.adaptivePopup.done", "Done")
+                                onClicked: demoPopup.close()
+                            }
                         }
                     }
                 ]
