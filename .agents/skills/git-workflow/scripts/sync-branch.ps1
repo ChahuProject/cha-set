@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Worktree 感知的极速线性化全分支同步脚本 (Branch Sync Fast-Track Engine)
 
@@ -519,13 +519,8 @@ function Test-ContentPreserved {
     }
     $srcAddedCount = 0
     $srcAddedMatched = 0
-    $currentFile = ""
     foreach ($ln in ($srcRes.Output -split "`r?`n")) {
-        if ($ln -match "^diff --git a/.*? b/(.*)$") {
-            $currentFile = $Matches[1].Trim()
-            continue
-        }
-        if ($ln.StartsWith("index ") -or $ln.StartsWith("---") -or $ln.StartsWith("+++") -or $ln.StartsWith("@@")) {
+        if ($ln.StartsWith("diff --git") -or $ln.StartsWith("index ") -or $ln.StartsWith("---") -or $ln.StartsWith("+++") -or $ln.StartsWith("@@")) {
             continue
         }
         if ($ln.StartsWith("+")) {
@@ -536,38 +531,21 @@ function Test-ContentPreserved {
             $srcAddedCount++
             if ($landedSet.Contains($t)) {
                 $srcAddedMatched++
-            } elseif (-not [string]::IsNullOrWhiteSpace($currentFile)) {
-                $checkPre = Invoke-Git @("grep", "-F", "-q", "-e", $t, $LandedHash, "--", $currentFile)
-                if ($checkPre.ExitCode -eq 0) {
-                    $srcAddedMatched++
-                }
             }
         }
     }
     if ($srcAddedCount -eq 0) {
         $delCount = 0
         $delMatched = 0
-        $currentFile = ""
         foreach ($ln in ($srcRes.Output -split "`r?`n")) {
-            if ($ln -match "^diff --git a/.*? b/(.*)$") {
-                $currentFile = $Matches[1].Trim()
-                continue
-            }
-            if ($ln.StartsWith("index ") -or $ln.StartsWith("---") -or $ln.StartsWith("+++") -or $ln.StartsWith("@@")) {
+            if ($ln.StartsWith("diff --git") -or $ln.StartsWith("index ") -or $ln.StartsWith("---") -or $ln.StartsWith("+++") -or $ln.StartsWith("@@")) {
                 continue
             }
             if ($ln.StartsWith("-")) {
                 $t = $ln.Substring(1).Trim()
                 if (-not [string]::IsNullOrWhiteSpace($t)) {
                     $delCount++
-                    if ($landedSet.Contains($t)) {
-                        $delMatched++
-                    } elseif (-not [string]::IsNullOrWhiteSpace($currentFile)) {
-                        $checkPre = Invoke-Git @("grep", "-F", "-q", "-e", $t, $LandedHash, "--", $currentFile)
-                        if ($checkPre.ExitCode -ne 0) {
-                            $delMatched++
-                        }
-                    }
+                    if ($landedSet.Contains($t)) { $delMatched++ }
                 }
             }
         }
@@ -615,23 +593,6 @@ function Test-BranchFullyMerged {
                         if ($matched) {
                             continue
                         }
-                    }
-                }
-                if (Test-ContentPreserved $resHash $TargetBranch) {
-                    continue
-                }
-                $descendants = Invoke-Git @("rev-list", "$resHash..$SourceSnapshotRef", "--reverse")
-                if ($descendants.ExitCode -eq 0 -and (-not [string]::IsNullOrWhiteSpace($descendants.Output))) {
-                    $descMerged = $false
-                    foreach ($descHash in ($descendants.Output -split "`r?`n")) {
-                        $dh = $descHash.Trim()
-                        if (-not [string]::IsNullOrWhiteSpace($dh) -and (Test-ContentPreserved $dh $TargetBranch)) {
-                            $descMerged = $true
-                            break
-                        }
-                    }
-                    if ($descMerged) {
-                        continue
                     }
                 }
                 $missingCommits.Add($pcl.Trim())
