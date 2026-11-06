@@ -9,6 +9,7 @@ import {
 import { DocLayout } from '../../layout/DocLayout';
 import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
+import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
 
 export function StepTimelineDocPage() {
@@ -97,13 +98,6 @@ export function StepTimelineDocPage() {
         'components.stepTimeline.description',
         'Sequential vertical execution step timeline with status indicators and formatted durations.',
       )}
-      tocItems={[
-        { id: 'overview', title: t('showcase.interactiveOverview', 'Interactive Overview') },
-        { id: 'installation', title: t('showcase.installation', 'Installation') },
-        { id: 'animations', title: t('showcase.animations', 'Animations') },
-        { id: 'keyboard', title: t('showcase.keyboardNavigation', 'Keyboard Navigation') },
-        { id: 'props', title: t('showcase.propsReference', 'Props Reference') },
-      ]}
     >
       <DocText id="overview-desc" className="text-muted-foreground text-sm mb-4">
         {t(
@@ -139,12 +133,27 @@ export function StepTimelineDocPage() {
         </div>
       </ComponentPreview>
 
-      <section id="installation" className="mt-8 scroll-mt-20">
-        <DocText role="h2">{t('showcase.installation', 'Installation')}</DocText>
-        <div className="mt-4 rounded-lg border border-border bg-card p-4 font-mono text-xs">
-          <code>npm install @chahu/cha-set</code>
-        </div>
-      </section>
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { StepTimeline } from '@chahu/cha-set';
+
+<StepTimeline
+  steps={[
+    { name: 'Lint & Typecheck', status: 'success', durationMs: 1450 },
+    { name: 'Compile Bundle', status: 'running', durationMs: 4200 },
+    { name: 'Unit Tests', status: 'pending' },
+  ]}
+/>`}
+        qtCode={`import ChaSet
+
+ChaSetStepTimeline {
+    steps: [
+        { name: "Lint & Typecheck", status: "success", durationMs: 1450 },
+        { name: "Compile Bundle", status: "running", durationMs: 4200 },
+        { name: "Unit Tests", status: "pending" }
+    ]
+}`}
+      />
 
       <DocMarkdown id="step-timeline" section="animations" />
       <DocMarkdown id="step-timeline" section="keyboard" />

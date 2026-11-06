@@ -9,13 +9,6 @@ DocLayout {
     category: "Overlays & Feedback"
     pageTitle: "Activity Stack"
     description: ChaSetI18n.tr("components.activityStack.description", "Floating viewport-anchored stack of activity cards with 8-way placement, overflow, and collapse.")
-    tocItems: [
-        { id: "overview", title: ChaSetI18n.tr("showcase.interactiveOverview", "Interactive Overview") },
-        { id: "installation", title: ChaSetI18n.tr("showcase.installation", "Installation") },
-        { id: "animations", title: ChaSetI18n.tr("showcase.animations", "Animations") },
-        { id: "keyboard", title: ChaSetI18n.tr("showcase.keyboardNavigation", "Keyboard Navigation") },
-        { id: "props", title: ChaSetI18n.tr("showcase.propsReference", "Props Reference") }
-    ]
 
     property string demoPlacement: "bottom-right"
     property int demoMaxVisible: 3
@@ -236,26 +229,30 @@ DocLayout {
         }
     }
 
-    DocText {
-        text: ChaSetI18n.tr("showcase.installation", "Installation")
-        font.pixelSize: Typography.sizeH2
-        font.weight: Typography.weightBold
-        color: ThemeTokens.text
-    }
-    Rectangle {
+    DocAnatomy {
+        sectionId: "anatomy"
         width: parent.width
-        implicitHeight: ThemeTokens.dp(40)
-        radius: ThemeTokens.dp(6)
-        color: ThemeTokens.panel
-        border.width: 1
-        border.color: ThemeTokens.border
-        Text {
-            anchors.centerIn: parent
-            text: "import ChaSet"
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeSmall
-            font.family: Typography.familyMono
-        }
+        reactCode: `import { ActivityStack } from '@chahu/cha-set';
+
+<ActivityStack
+  entries={entries}
+  placement="bottom-right"
+  maxVisible={3}
+  collapsible
+  onDismissed={(id) => handleDismiss(id)}
+/>`
+        qtCode: `import ChaSet
+
+ChaSetActivityStack {
+    anchorItem: viewportItem
+    placement: "bottom-right"
+    maxVisible: 3
+    collapsible: true
+    entries: demoEntries
+    onDismissed: function(id) {
+        dismissCard(id)
+    }
+}`
     }
 
     DocText {

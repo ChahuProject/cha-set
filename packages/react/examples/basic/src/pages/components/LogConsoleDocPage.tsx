@@ -7,6 +7,7 @@ import {
 import { DocLayout } from '../../layout/DocLayout';
 import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
+import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
 
 const INITIAL_LOGS = [
@@ -85,13 +86,6 @@ export function LogConsoleDocPage() {
         'components.logConsole.description',
         'High-performance virtualized terminal log viewer with auto-scroll, ANSI color parsing, and copy support.',
       )}
-      tocItems={[
-        { id: 'overview', title: t('showcase.interactiveOverview', 'Interactive Overview') },
-        { id: 'installation', title: t('showcase.installation', 'Installation') },
-        { id: 'animations', title: t('showcase.animations', 'Animations') },
-        { id: 'keyboard', title: t('showcase.keyboardNavigation', 'Keyboard Navigation') },
-        { id: 'props', title: t('showcase.propsReference', 'Props Reference') },
-      ]}
     >
       <DocText id="overview-desc" className="text-muted-foreground text-sm mb-4">
         {t(
@@ -133,12 +127,33 @@ export function LogConsoleDocPage() {
         </div>
       </ComponentPreview>
 
-      <section id="installation" className="mt-8 scroll-mt-20">
-        <DocText role="h2">{t('showcase.installation', 'Installation')}</DocText>
-        <div className="mt-4 rounded-lg border border-border bg-card p-4 font-mono text-xs">
-          <code>npm install @chahu/cha-set</code>
-        </div>
-      </section>
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { LogConsole } from '@chahu/cha-set';
+
+<LogConsole
+  lines={[
+    '[compiler] Initializing Vulkan GLSL compiler...',
+    '[ok] Pipeline layout validated',
+  ]}
+  showCopy
+  showLineCount
+  autoScroll
+/>`}
+        qtCode={`import ChaSet
+
+ChaSetLogConsole {
+    width: parent.width
+    height: 220
+    lines: [
+        "[compiler] Initializing Vulkan GLSL compiler...",
+        "[ok] Pipeline layout validated"
+    ]
+    showCopy: true
+    showLineCount: true
+    autoScroll: true
+}`}
+      />
 
       <DocMarkdown id="log-console" section="animations" />
       <DocMarkdown id="log-console" section="keyboard" />

@@ -12,6 +12,7 @@ import type { ActivityPlacement } from '@chahu/spec/shared/placement';
 import { DocLayout } from '../../layout/DocLayout';
 import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
+import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
 
 interface SampleCardData {
@@ -164,13 +165,6 @@ export function ActivityStackDocPage() {
         'components.activityStack.description',
         'Floating viewport-anchored stack of activity cards with 8-way placement, overflow, and collapse.',
       )}
-      tocItems={[
-        { id: 'overview', title: t('showcase.interactiveOverview', 'Interactive Overview') },
-        { id: 'installation', title: t('showcase.installation', 'Installation') },
-        { id: 'animations', title: t('showcase.animations', 'Animations') },
-        { id: 'keyboard', title: t('showcase.keyboardNavigation', 'Keyboard Navigation') },
-        { id: 'props', title: t('showcase.propsReference', 'Props Reference') },
-      ]}
     >
       <section id="overview" className="scroll-mt-20">
         <DocText role="h2">{t('overlays.activityStack.overviewHeading', 'Interactive Overview')}</DocText>
@@ -241,12 +235,30 @@ export function ActivityStackDocPage() {
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="mt-8 scroll-mt-20">
-        <DocText role="h2">{t('showcase.installation', 'Installation')}</DocText>
-        <div className="mt-4 rounded-lg border border-border bg-card p-4 font-mono text-xs">
-          <code>npm install @chahu/cha-set</code>
-        </div>
-      </section>
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { ActivityStack } from '@chahu/cha-set';
+
+<ActivityStack
+  entries={entries}
+  placement="bottom-right"
+  maxVisible={3}
+  collapsible
+  onDismissed={(id) => handleDismiss(id)}
+/>`}
+        qtCode={`import ChaSet
+
+ChaSetActivityStack {
+    anchorItem: viewportItem
+    placement: "bottom-right"
+    maxVisible: 3
+    collapsible: true
+    entries: demoEntries
+    onDismissed: function(id) {
+        dismissCard(id)
+    }
+}`}
+      />
 
       <section id="animations" className="mt-8 scroll-mt-20">
         <DocText role="h2">{t('overlays.activityStack.animationsTitle', 'Animations')}</DocText>

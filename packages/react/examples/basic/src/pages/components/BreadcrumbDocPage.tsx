@@ -9,6 +9,7 @@ import {
 import { DocLayout } from '../../layout/DocLayout';
 import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
+import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
 
 export function BreadcrumbDocPage() {
@@ -74,13 +75,6 @@ export function BreadcrumbDocPage() {
         'components.breadcrumb.description',
         'Hierarchical path navigation trail with overflow ellipsis and dropdown subfolder browsing.',
       )}
-      tocItems={[
-        { id: 'overview', title: t('showcase.interactiveOverview', 'Interactive Overview') },
-        { id: 'installation', title: t('showcase.installation', 'Installation') },
-        { id: 'animations', title: t('showcase.animations', 'Animations') },
-        { id: 'keyboard', title: t('showcase.keyboardNavigation', 'Keyboard Navigation') },
-        { id: 'props', title: t('showcase.propsReference', 'Props Reference') },
-      ]}
     >
       <section id="overview" className="scroll-mt-20">
         <DocText role="h2">{t('surfaces.breadcrumb.overviewHeading', 'Interactive Overview')}</DocText>
@@ -105,7 +99,7 @@ export function BreadcrumbDocPage() {
                 variant="outline"
                 onClick={() => setDisabled((prev) => !prev)}
               >
-                {disabled ? 'Enable' : 'Disable'}
+                {disabled ? t('common.enabled', 'Enable') : t('common.disabled', 'Disable')}
               </Button>
               <div className="flex items-center gap-2">
                 <span className="text-xs text-muted-foreground">{t('surfaces.breadcrumb.maxVisible', 'Max Visible:')}</span>
@@ -142,12 +136,32 @@ export function BreadcrumbDocPage() {
         </ComponentPreview>
       </section>
 
-      <section id="installation" className="mt-8 scroll-mt-20">
-        <DocText role="h2">{t('showcase.installation', 'Installation')}</DocText>
-        <div className="mt-4 rounded-lg border border-border bg-card p-4 font-mono text-xs">
-          <code>npm install @chahu/cha-set</code>
-        </div>
-      </section>
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import { Breadcrumb } from '@chahu/cha-set';
+
+<Breadcrumb
+  segments={[
+    { label: 'Home', path: '/', isRoot: true, icon: 'monitor' },
+    { label: 'Workspace', path: '/workspace', icon: 'folder' },
+    { label: 'ChaSet', path: '/workspace/chaset', icon: 'folder' },
+  ]}
+  activePath="/workspace/chaset"
+  onNavigate={(path) => console.log(path)}
+/>`}
+        qtCode={`import ChaSet
+
+ChaSetBreadcrumb {
+    segments: [
+        { label: "Home", path: "/", isRoot: true, icon: "monitor" },
+        { label: "Workspace", path: "/workspace", icon: "folder" },
+        { label: "ChaSet", path: "/workspace/chaset", icon: "folder" }
+    ]
+    onNavigateRequested: function(path) {
+        console.log(path)
+    }
+}`}
+      />
 
       <section id="animations" className="mt-8 scroll-mt-20">
         <DocText role="h2">{t('surfaces.breadcrumb.animationsTitle', 'Animations')}</DocText>

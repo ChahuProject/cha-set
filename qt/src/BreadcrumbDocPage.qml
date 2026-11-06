@@ -9,13 +9,6 @@ DocLayout {
     category: "Surfaces & Layout"
     pageTitle: "Breadcrumb"
     description: ChaSetI18n.tr("components.breadcrumb.description", "Hierarchical path navigation trail with overflow ellipsis and dropdown subfolder browsing.")
-    tocItems: [
-        { id: "overview", title: ChaSetI18n.tr("showcase.interactiveOverview", "Interactive Overview") },
-        { id: "installation", title: ChaSetI18n.tr("showcase.installation", "Installation") },
-        { id: "animations", title: ChaSetI18n.tr("showcase.animations", "Animations") },
-        { id: "keyboard", title: ChaSetI18n.tr("showcase.keyboardNavigation", "Keyboard Navigation") },
-        { id: "props", title: ChaSetI18n.tr("showcase.propsReference", "Props Reference") }
-    ]
 
     readonly property var initialSegments: [
         { label: ChaSetI18n.tr("surfaces.breadcrumb.computer", "Computer"), path: "/", isRoot: true, icon: "monitor" },
@@ -125,26 +118,32 @@ DocLayout {
         }
     }
 
-    DocText {
-        text: ChaSetI18n.tr("showcase.installation", "Installation")
-        font.pixelSize: Typography.sizeH2
-        font.weight: Typography.weightBold
-        color: ThemeTokens.text
-    }
-    Rectangle {
+    DocAnatomy {
+        sectionId: "anatomy"
         width: parent.width
-        implicitHeight: ThemeTokens.dp(40)
-        radius: ThemeTokens.dp(6)
-        color: ThemeTokens.panel
-        border.width: 1
-        border.color: ThemeTokens.border
-        Text {
-            anchors.centerIn: parent
-            text: "import ChaSet"
-            color: ThemeTokens.text
-            font.pixelSize: Typography.sizeSmall
-            font.family: Typography.familyMono
-        }
+        reactCode: `import { Breadcrumb } from '@chahu/cha-set';
+
+<Breadcrumb
+  segments={[
+    { label: 'Home', path: '/', isRoot: true, icon: 'monitor' },
+    { label: 'Workspace', path: '/workspace', icon: 'folder' },
+    { label: 'ChaSet', path: '/workspace/chaset', icon: 'folder' },
+  ]}
+  activePath="/workspace/chaset"
+  onNavigate={(path) => console.log(path)}
+/>`
+        qtCode: `import ChaSet
+
+ChaSetBreadcrumb {
+    segments: [
+        { label: "Home", path: "/", isRoot: true, icon: "monitor" },
+        { label: "Workspace", path: "/workspace", icon: "folder" },
+        { label: "ChaSet", path: "/workspace/chaset", icon: "folder" }
+    ]
+    onNavigateRequested: function(path) {
+        console.log(path)
+    }
+}`
     }
 
     DocText {

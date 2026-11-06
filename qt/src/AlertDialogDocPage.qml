@@ -9,13 +9,6 @@ DocLayout {
     category: "Overlays & Feedback"
     pageTitle: "Alert Dialog"
     description: ChaSetI18n.tr("components.alertDialog.description", "Modal dialog that interrupts the user with important, critical, or destructive confirmations.")
-    tocItems: [
-        { id: "overview", title: ChaSetI18n.tr("showcase.interactiveOverview", "Interactive Overview") },
-        { id: "installation", title: ChaSetI18n.tr("showcase.installation", "Installation") },
-        { id: "animations", title: ChaSetI18n.tr("showcase.animations", "Animations") },
-        { id: "keyboard", title: ChaSetI18n.tr("showcase.keyboardNavigation", "Keyboard Navigation") },
-        { id: "props", title: ChaSetI18n.tr("showcase.propsReference", "Props Reference") }
-    ]
 
     property string statusText: ""
 
@@ -94,6 +87,50 @@ DocLayout {
         onCancelled: {
             alertPopup.open = false
         }
+    }
+
+    DocAnatomy {
+        sectionId: "anatomy"
+        width: parent.width
+        reactCode: `import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogAction,
+  AlertDialogCancel,
+  Button
+} from '@chahu/cha-set';
+
+<AlertDialog>
+  <AlertDialogTrigger asChild>
+    <Button variant="destructive">Delete Item</Button>
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+      <AlertDialogDescription>
+        This action cannot be undone.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction>Delete</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>`
+        qtCode: `import ChaSet
+
+ChaSetAlertDialog {
+    title: "Delete Item"
+    description: "This action cannot be undone."
+    confirmText: "Delete"
+    cancelText: "Cancel"
+    onConfirmed: console.log("confirmed")
+}`
     }
 
     DocMarkdown {

@@ -9,13 +9,6 @@ DocLayout {
     category: "Composite Engines"
     pageTitle: "Log Console"
     description: ChaSetI18n.tr("components.logConsole.description", "High-performance virtualized terminal log viewer with auto-scroll, ANSI color parsing, and copy support.")
-    tocItems: [
-        { id: "overview", title: ChaSetI18n.tr("showcase.interactiveOverview", "Interactive Overview") },
-        { id: "installation", title: ChaSetI18n.tr("showcase.installation", "Installation") },
-        { id: "animations", title: ChaSetI18n.tr("showcase.animations", "Animations") },
-        { id: "keyboard", title: ChaSetI18n.tr("showcase.keyboardNavigation", "Keyboard Navigation") },
-        { id: "props", title: ChaSetI18n.tr("showcase.propsReference", "Props Reference") }
-    ]
 
     readonly property var initialLogs: [
         "[compiler] Initializing Vulkan GLSL compiler v1.3.268...",
@@ -135,6 +128,35 @@ DocLayout {
                 emptyText: ChaSetI18n.tr("components.logConsole.empty", "No logs")
             }
         }
+    }
+
+    DocAnatomy {
+        sectionId: "anatomy"
+        width: parent.width
+        reactCode: `import { LogConsole } from '@chahu/cha-set';
+
+<LogConsole
+  lines={[
+    '[compiler] Initializing Vulkan GLSL compiler...',
+    '[ok] Pipeline layout validated',
+  ]}
+  showCopy
+  showLineCount
+  autoScroll
+/>`
+        qtCode: `import ChaSet
+
+ChaSetLogConsole {
+    width: parent.width
+    height: 220
+    lines: [
+        "[compiler] Initializing Vulkan GLSL compiler...",
+        "[ok] Pipeline layout validated"
+    ]
+    showCopy: true
+    showLineCount: true
+    autoScroll: true
+}`
     }
 
     DocMarkdown {

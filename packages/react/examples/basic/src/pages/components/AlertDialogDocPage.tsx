@@ -15,6 +15,7 @@ import {
 import { DocLayout } from '../../layout/DocLayout';
 import { DocMarkdown } from '../../components/DocMarkdown';
 import { ComponentPreview } from '../../components/ComponentPreview';
+import { DocAnatomy } from '../../components/DocAnatomy';
 import { DocText } from '../../components/DocText';
 
 export function AlertDialogDocPage() {
@@ -76,13 +77,6 @@ export function AlertDialogDocPage() {
         'components.alertDialog.description',
         'Modal dialog that interrupts the user with important, critical, or destructive confirmations.',
       )}
-      tocItems={[
-        { id: 'overview', title: t('showcase.interactiveOverview', 'Interactive Overview') },
-        { id: 'installation', title: t('showcase.installation', 'Installation') },
-        { id: 'animations', title: t('showcase.animations', 'Animations') },
-        { id: 'keyboard', title: t('showcase.keyboardNavigation', 'Keyboard Navigation') },
-        { id: 'props', title: t('showcase.propsReference', 'Props Reference') },
-      ]}
     >
       <DocText id="overview-desc" className="text-muted-foreground text-sm mb-4">
         {t(
@@ -134,12 +128,48 @@ export function AlertDialogDocPage() {
         </div>
       </ComponentPreview>
 
-      <section id="installation" className="mt-8 scroll-mt-20">
-        <DocText role="h2">{t('showcase.installation', 'Installation')}</DocText>
-        <div className="mt-4 rounded-lg border border-border bg-card p-4 font-mono text-xs">
-          <code>npm install @chahu/cha-set</code>
-        </div>
-      </section>
+      <DocAnatomy
+        id="anatomy"
+        reactCode={`import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogAction,
+  AlertDialogCancel,
+  Button
+} from '@chahu/cha-set';
+
+<AlertDialog>
+  <AlertDialogTrigger asChild>
+    <Button variant="destructive">Delete Item</Button>
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+      <AlertDialogDescription>
+        This action cannot be undone.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction>Delete</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>`}
+        qtCode={`import ChaSet
+
+ChaSetAlertDialog {
+    title: "Delete Item"
+    description: "This action cannot be undone."
+    confirmText: "Delete"
+    cancelText: "Cancel"
+    onConfirmed: console.log("confirmed")
+}`}
+      />
 
       <DocMarkdown id="alert-dialog" section="animations" />
       <DocMarkdown id="alert-dialog" section="keyboard" />

@@ -9,13 +9,6 @@ DocLayout {
     category: "Composite Engines"
     pageTitle: "Step Timeline"
     description: ChaSetI18n.tr("components.stepTimeline.description", "Sequential vertical execution step timeline with status indicators and formatted durations.")
-    tocItems: [
-        { id: "overview", title: ChaSetI18n.tr("showcase.interactiveOverview", "Interactive Overview") },
-        { id: "installation", title: ChaSetI18n.tr("showcase.installation", "Installation") },
-        { id: "animations", title: ChaSetI18n.tr("showcase.animations", "Animations") },
-        { id: "keyboard", title: ChaSetI18n.tr("showcase.keyboardNavigation", "Keyboard Navigation") },
-        { id: "props", title: ChaSetI18n.tr("showcase.propsReference", "Props Reference") }
-    ]
 
     readonly property var initialSteps: [
         {
@@ -140,6 +133,29 @@ DocLayout {
                 }
             }
         }
+    }
+
+    DocAnatomy {
+        sectionId: "anatomy"
+        width: parent.width
+        reactCode: `import { StepTimeline } from '@chahu/cha-set';
+
+<StepTimeline
+  steps={[
+    { name: 'Lint & Typecheck', status: 'success', durationMs: 1450 },
+    { name: 'Compile Bundle', status: 'running', durationMs: 4200 },
+    { name: 'Unit Tests', status: 'pending' },
+  ]}
+/>`
+        qtCode: `import ChaSet
+
+ChaSetStepTimeline {
+    steps: [
+        { name: "Lint & Typecheck", status: "success", durationMs: 1450 },
+        { name: "Compile Bundle", status: "running", durationMs: 4200 },
+        { name: "Unit Tests", status: "pending" }
+    ]
+}`
     }
 
     DocMarkdown {
