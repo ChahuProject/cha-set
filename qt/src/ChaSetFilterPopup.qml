@@ -407,19 +407,22 @@ Popup {
             Layout.fillHeight: true
             Layout.minimumHeight: ThemeTokens.dp(60)
             Layout.maximumHeight: ThemeTokens.dp(240)
+            Layout.preferredHeight: Math.min(ThemeTokens.dp(240), Math.max(ThemeTokens.dp(60), listCol.implicitHeight))
+            implicitHeight: Layout.preferredHeight
+            contentHeight: listCol.implicitHeight
+            contentWidth: availableWidth
             clip: true
+            ScrollBar.vertical: ChaSetScrollBar {
+                barSize: "sm"
+            }
 
-            MouseArea {
-                anchors.fill: parent
-                z: -1
-                onClicked: {
-                    rootPopup.applyFocus()
-                }
+            TapHandler {
+                onTapped: rootPopup.applyFocus()
             }
 
             ColumnLayout {
                 id: listCol
-                width: scrollView.width
+                width: Math.max(0, scrollView.availableWidth)
                 spacing: ThemeTokens.dp(2)
 
                 Repeater {
@@ -430,6 +433,7 @@ Popup {
                         required property var modelData
                         Layout.fillWidth: true
                         Layout.preferredHeight: ThemeTokens.dp(26)
+                        implicitHeight: ThemeTokens.dp(26)
                         radius: ThemeTokens.dp(4)
 
                         readonly property int starsCount: (rowDelegate.modelData && typeof rowDelegate.modelData.stars === "number")
@@ -585,6 +589,7 @@ Popup {
                     visible: !rootPopup.displayItems || rootPopup.displayItems.length === 0
                     Layout.fillWidth: true
                     Layout.preferredHeight: ThemeTokens.dp(36)
+                    implicitHeight: ThemeTokens.dp(36)
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                     text: rootPopup.searchFilterText ? qsTr("未匹配到相关项") : qsTr("暂无可选项")
