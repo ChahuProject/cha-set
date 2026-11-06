@@ -182,10 +182,10 @@ Popup {
             if (ch.charCodeAt(0) >= 32) {
                 rootPopup.searchActive = true
                 if (searchInput) {
-                    searchInput.text = ch
-                    rootPopup.searchFilterText = ch
+                    searchInput.text = searchInput.text + ch
+                    rootPopup.searchFilterText = searchInput.text.trim()
                     searchInput.forceActiveFocus()
-                    searchInput.cursorPosition = ch.length
+                    searchInput.cursorPosition = searchInput.text.length
                     Qt.callLater(() => {
                         if (searchInput) {
                             searchInput.forceActiveFocus()
