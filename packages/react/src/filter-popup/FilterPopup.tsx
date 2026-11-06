@@ -335,7 +335,7 @@ export function FilterPopup({
                       className={cn(
                         'group flex h-7 items-center gap-1.5 rounded-md px-1.5 text-xs transition-colors duration-quick ease-standard select-none cursor-pointer border border-transparent',
                         isChecked && 'bg-primary/10 border-primary/30 text-foreground font-medium',
-                        isExcluded && 'bg-[#ef4444]/10 border-[#ef4444]/40 text-[#ef4444] line-through font-medium',
+                        isExcluded && 'bg-destructive/10 border-destructive/40 text-destructive line-through font-medium',
                         !isChecked && !isExcluded && 'hover:bg-muted text-foreground',
                       )}
                     >
@@ -344,7 +344,7 @@ export function FilterPopup({
                         className={cn(
                           'flex size-4 items-center justify-center rounded-[0.1875rem] border shrink-0 transition-colors',
                           isChecked && 'border-primary bg-primary text-primary-foreground',
-                          isExcluded && 'border-[#ef4444] bg-[#ef4444]/20 text-[#ef4444]',
+                          isExcluded && 'border-destructive bg-destructive/20 text-destructive',
                           !isChecked && !isExcluded && 'border-border bg-transparent group-hover:border-muted-foreground/50',
                         )}
                       >

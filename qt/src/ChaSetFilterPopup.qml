@@ -189,7 +189,7 @@ Popup {
 
             ChaSetIcon {
                 name: rootPopup.iconName
-                size: ThemeTokens.dp(14)
+                size: 14
                 color: rootPopup.hasActive ? ThemeTokens.accent : ThemeTokens.subduedText
             }
 
@@ -250,7 +250,7 @@ Popup {
 
                 ChaSetIcon {
                     name: "search"
-                    size: ThemeTokens.dp(12)
+                    size: 12
                     color: ThemeTokens.subduedText
                 }
 
@@ -301,7 +301,7 @@ Popup {
                 ChaSetIcon {
                     visible: searchInput.text.length > 0
                     name: "close"
-                    size: ThemeTokens.dp(12)
+                    size: 12
                     color: ThemeTokens.subduedText
                     MouseArea {
                         anchors.fill: parent
@@ -379,13 +379,13 @@ Popup {
                         }
 
                         color: {
-                            if (isExc) return Qt.alpha("#ef4444", 0.12)
+                            if (isExc) return Qt.alpha(ThemeTokens.danger, 0.12)
                             if (isInc) return Qt.alpha(ThemeTokens.accent, 0.14)
                             return itemMouse.containsMouse ? ThemeTokens.hover : "transparent"
                         }
 
                         border.color: {
-                            if (isExc) return Qt.alpha("#ef4444", 0.4)
+                            if (isExc) return Qt.alpha(ThemeTokens.danger, 0.4)
                             if (isInc) return Qt.alpha(ThemeTokens.accent, 0.4)
                             return "transparent"
                         }
@@ -402,12 +402,12 @@ Popup {
                                 Layout.preferredHeight: ThemeTokens.dp(16)
                                 radius: ThemeTokens.dp(3)
                                 color: {
-                                    if (rowDelegate.isExc) return Qt.alpha("#ef4444", 0.2)
+                                    if (rowDelegate.isExc) return Qt.alpha(ThemeTokens.danger, 0.2)
                                     if (rowDelegate.isInc) return ThemeTokens.accent
                                     return "transparent"
                                 }
                                 border.color: {
-                                    if (rowDelegate.isExc) return "#ef4444"
+                                    if (rowDelegate.isExc) return ThemeTokens.danger
                                     if (rowDelegate.isInc) return ThemeTokens.accent
                                     return ThemeTokens.border
                                 }
@@ -417,16 +417,16 @@ Popup {
                                     anchors.centerIn: parent
                                     visible: rowDelegate.isInc
                                     name: "check"
-                                    size: ThemeTokens.dp(12)
-                                    color: "#ffffff"
+                                    size: 12
+                                    color: ThemeTokens.onAccentColor
                                 }
 
                                 ChaSetIcon {
                                     anchors.centerIn: parent
                                     visible: rowDelegate.isExc
                                     name: "close"
-                                    size: ThemeTokens.dp(12)
-                                    color: "#ef4444"
+                                    size: 12
+                                    color: ThemeTokens.danger
                                 }
                             }
 
@@ -450,7 +450,8 @@ Popup {
                                         required property int index
                                         readonly property bool isLit: index < rowDelegate.starsCount
                                         name: "star"
-                                        size: ThemeTokens.dp(14)
+                                        size: 14
+                                        fill: isLit ? 1.0 : 0.0
                                         color: isLit ? "#f59e0b" : ThemeTokens.subduedText
                                         opacity: isLit ? 1.0 : 0.35
                                     }
@@ -466,7 +467,7 @@ Popup {
                                 font.strikeout: rowDelegate.isExc
                                 elide: Text.ElideRight
                                 color: {
-                                    if (rowDelegate.isExc) return "#ef4444"
+                                    if (rowDelegate.isExc) return ThemeTokens.danger
                                     if (rowDelegate.isInc) return ThemeTokens.accent
                                     return ThemeTokens.text
                                 }
