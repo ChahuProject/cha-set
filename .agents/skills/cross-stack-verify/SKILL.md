@@ -117,7 +117,7 @@ When developing or modifying components across React and Qt, you MUST follow thi
    - **Single Source of Truth for Metadata**: Showcase page titles, categories, and descriptions MUST strictly mirror `spec/showcase/navigation.json`. React `<DocLayout title=...>` and Qt `DocLayout { pageTitle: ... }` must display the official component name. Never displace component titles with sandbox-specific preview card text.
    - **Canonical Table of Contents (TOC) Standard**: Every DocPage on React and Qt MUST define the identical 5 canonical sections with identical anchor IDs:
      1. `overview`: **Interactive Overview** (strict ban on legacy `preview` / `Interactive Preview`)
-     2. `installation`: **Installation**
+     2. `anatomy`: **Anatomy** (standardized dual-tab React & Qt Quick import & structure definition via `<DocAnatomy>` / `DocAnatomy`; strict ban on raw `npm install` blocks or custom installation sections)
      3. `animations`: **Animations** (motion tokens, transitions, reduced motion per Red Line 10)
      4. `keyboard`: **Keyboard Navigation** (backed by a `table shortcuts` block in `spec/content/<doc-id>/<locale>.md`)
      5. `props`: **Props Reference** (strict ban on legacy `api` / `API Reference`)

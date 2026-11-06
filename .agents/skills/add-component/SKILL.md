@@ -154,8 +154,18 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
    - e.g. `variant`, `size`, `styling`, `disabled`, `keyboard`.
 4. **Initialize Conformance Snapshots**:
    Register initial capability flags in `packages/react/conformance/coverage.json` and `qt/conformance/coverage.json`.
-5. **Register Keyboard Interaction Matrix**:
-   Create `spec/content/<doc-id>/en-US.md` and `zh-CN.md`, then author the `## Keyboard Navigation {#keyboard}` section as a `table shortcuts` block — one row per shortcut, key in the first column, action in the second.
+5. **Register Living Documentation & Content Matrices**:
+   Create `spec/content/<doc-id>/zh-CN.md` and `en-US.md`:
+   - `zh-CN.md`:
+     - Front matter: `id`, `component`, `category`, `title` (matching `navigation.json`), `description` (Chinese).
+     - `## 动效规范 {#animations}`: Chinese motion token description, `prefers-reduced-motion` and `ThemeTokens.animationsEnabled`.
+     - `## 键盘导航 {#keyboard}`: authored as a `table shortcuts` block with localized Chinese headers `| 按键 | 行为 |` (one row per shortcut, key in the first column, action in the second).
+     - `## 属性 {#props}`: authored as a `table props` block with localized Chinese headers `| 属性 | 类型 | 默认值 | 描述 |` (strictly zero raw `px` units, use rem or neutral units).
+   - `en-US.md`:
+     - Front matter: `id`, `component`, `category`, `title`, `description` (English).
+     - `## Animations {#animations}`: English motion token description.
+     - `## Keyboard Navigation {#keyboard}`: authored as a `table shortcuts` block with English headers `| Key | Interaction |`.
+     - `## Props Reference {#props}`: authored as a `table props` block with English headers `| Prop | Type | Default | Description |`.
 
 ---
 
@@ -262,15 +272,21 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
 > [!IMPORTANT]
 > **Zero Blindspots & 1:1 Showcase Parity (SPAS)**: An Agent is strictly forbidden from finishing a task without creating the living showcase documentation on both React and Qt, and verifying they pass the Showcase Parity Assurance System (`just check-showcase`). `just gate` mechanically enforces this rule and will fail if skipped!
 
-1. **Metadata & Single Source of Truth**:
+1. **Metadata, Multi-Language (i18n) & Single Source of Truth**:
    - Register the component in `spec/showcase/navigation.json` under its category:
      ```json
      { "id": "<name>", "title": "<Display Name>", "href": "#/components/<name>", "desc": "<Short Description>" }
      ```
    - **Register Navigation Localization (Mandatory)**:
      Add component title translations to `spec/i18n/locales/zh-CN.json` and `spec/i18n/locales/en-US.json` under `"navigation"`:
-     - `zh-CN.json`: `"<name>": "<中文名称>"`
-     - `en-US.json`: `"<name>": "<English Name>"`
+     - `zh-CN.json`: `"<name>": "<中文名称>"` (e.g. `"reorderable-list": "可重排列表"`)
+     - `en-US.json`: `"<name>": "<English Name>"` (e.g. `"reorderable-list": "Reorderable List"`)
+   - **Register Component Description Localization (Mandatory)**:
+     Add component description translations to `spec/i18n/locales/zh-CN/<category-file>.json` and `spec/i18n/locales/en-US/<category-file>.json` under `"components"`:
+     - `zh-CN`: `"components": { "<name>": { "description": "<中文描述>" } }`
+     - `en-US`: `"components": { "<name>": { "description": "<English Description>" } }`
+   - **Register Sandbox Labels & Controls (Mandatory)**:
+     Register any sandbox-specific buttons, badges, or field labels under the appropriate namespace (e.g. `desktopComposite.<camelCase>`).
    - Run generators to emit updated metadata and i18n dictionaries:
      ```bash
      just gen-showcase
@@ -279,15 +295,20 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
    - **Strict Metadata Alignment**: Both React `<DocLayout>` and Qt `DocLayout` MUST strictly mirror `navigation.json`:
      - `title` (React) / `pageTitle` (Qt) === `title` from `navigation.json` (NEVER use sandbox/card titles).
      - `category` === `category` from `navigation.json`.
-     - `description` === `desc` from `navigation.json`.
+     - `description` === `t('components.<name>.description', '<English Desc>')` (React) / `ChaSetI18n.tr('components.<name>.description', '<English Desc>')` (Qt).
 
 2. **Canonical Table of Contents (TOC) Standard (5 Standard Sections)**:
-   Both React `tocItems` and Qt `tocItems` MUST define the identical 5 canonical sections with identical anchor IDs:
+   Living DocPages follow the 5 canonical sections with identical anchor IDs across both stacks:
    - `{ id: 'overview', title: 'Interactive Overview' }` (strict ban on legacy `preview` / `Interactive Preview`).
-   - `{ id: 'installation', title: 'Installation' }`.
-   - `{ id: 'animations', title: 'Animations' }` (documenting motion tokens per Golden Rule 11, reduced motion, and kill switch).
-   - `{ id: 'keyboard', title: 'Keyboard Navigation' }` (backed by a `table shortcuts` block in `spec/content/<doc-id>/<locale>.md`).
-   - `{ id: 'props', title: 'Props Reference' }` (strict ban on legacy `api` / `API Reference`).
+   - `{ id: 'anatomy', title: 'Anatomy' }` (standardized dual-tab React & Qt Quick import & structure definition via `<DocAnatomy id="anatomy" reactCode={...} qtCode={...} />` / `DocAnatomy { sectionId: "anatomy"; reactCode: "..."; qtCode: "..." }`).
+     > [!IMPORTANT]
+     > **STRICT BAN ON INSTALLATION SECTIONS & NPM INSTALL**: DocPages showcase component usage and API; package installation instructions (`npm install @chahu/cha-set`) belong exclusively to the root Get Started guide. Hand-written installation sections, bash code blocks, or custom installation rectangles are STRICTLY FORBIDDEN on component doc pages.
+   - `{ id: 'animations', title: 'Animations' }` (documenting motion tokens per Golden Rule 11, reduced motion, and kill switch; rendered via `<DocMarkdown id="<doc-id>" section="animations" />`).
+   - `{ id: 'keyboard', title: 'Keyboard Navigation' }` (backed by a `table shortcuts` block in `spec/content/<doc-id>/<locale>.md`; rendered via `<DocMarkdown id="<doc-id>" section="keyboard" />`).
+   - `{ id: 'props', title: 'Props Reference' }` (strict ban on legacy `api` / `API Reference`; rendered via `<DocMarkdown id="<doc-id>" section="props" />`).
+
+   > [!TIP]
+   > **Auto-TOC Recommendation**: Because `<DocLayout>` and the SPAS parity validator (`verify-showcase-parity.mjs`) automatically discover `<ComponentPreview>` (`overview`), `<DocAnatomy>` (`anatomy`), and `<DocMarkdown>` (`animations`, `keyboard`, `props`), you can safely omit the `tocItems` prop entirely from `<DocLayout>`. Both stacks will automatically synthesize the identical canonical 5-section TOC.
 
 3. **Authentic Code Snippets, Multi-Example Cardinality & Sandbox Equivalence**:
    - **Multi-Example Cardinality & Sequence Parity**: Every interactive example (`ComponentPreview`) in React MUST have an identical counterpart in Qt. `ComponentPreview` count (`previews.length`), sequence, and preview titles (`title="..."`) MUST match 1:1 bit-for-bit across stacks.
@@ -297,16 +318,20 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
 
 4. **React Living DocPage Component (`packages/react/examples/basic/src/pages/components/<Name>DocPage.tsx`)**:
    - Incorporate:
-     - Header with title, badge, and description from `navigation.json`.
-     - Interactive `ComponentPreview` with live preview and controls.
-     - Standardized `<DocAnatomy id="anatomy" reactCode={...} qtCode={...} />` for cross-stack import and basic structure definitions (`#anatomy`). NEVER output raw `<code>npm install ...</code>` blocks.
-     - Section `#animations` describing motion tokens, transitions, and `prefers-reduced-motion`.
+     - Header with title, badge, and localized description from `navigation.json` via `t('components.<name>.description', '...')`.
+     - Interactive `ComponentPreview` with live preview and controls; wrap all user-facing labels, buttons, and badges in `t(...)`.
+     - Standardized `<DocAnatomy id="anatomy" reactCode={...} qtCode={...} />` for cross-stack import and basic structure definitions (`#anatomy`). NEVER output raw `<code>npm install ...</code>` blocks or `<section id="installation">`.
+     - Section `#animations` describing motion tokens, transitions, and `prefers-reduced-motion` via `<DocMarkdown id="<doc-id>" section="animations" />`.
      - Section `#keyboard` with `<DocMarkdown id="<doc-id>" section="keyboard" />`.
      - Section `#props` with `<DocMarkdown id="<doc-id>" section="props" />` — the table itself is authored in the Markdown (strictly zero `px` or "in pixels" in descriptions).
-     - Variant showcase sections.
+     - Variant showcase sections (if applicable).
+     - Never add redundant subtitle paragraphs outside `<ComponentPreview>` that duplicate the header description.
 
 5. **Qt Living DocPage Component & Main Route (`qt/src/<Name>DocPage.qml`)**:
-   - Create `qt/src/<Name>DocPage.qml` with interactive preview (`#overview`), standardized `DocAnatomy { sectionId: "anatomy"; reactCode: "..."; qtCode: "..." }` (`#anatomy`), variant controls, and `DocMarkdown` sections (`animations`, `keyboard`, `props`).
+   - Create `qt/src/<Name>DocPage.qml` with interactive preview (`#overview`), standardized `DocAnatomy { width: parent.width; reactCode: "..."; qtCode: "..." }` (`#anatomy`), variant controls, and `DocMarkdown` sections (`animations`, `keyboard`, `props`).
+   - Use `description: ChaSetI18n.tr("components.<name>.description", "...")`.
+   - Wrap all sandbox labels, buttons, and badges in `ChaSetI18n.tr(...)`.
+   - NEVER output raw `installation` items or `npm install` text.
    - Register `qt/src/<Name>DocPage.qml` in `qt/CMakeLists.txt` under `QtChaSetDemo` `QML_FILES`.
    - Register `qt/src/ChaSet<Name>.qml` in `qt/CMakeLists.txt` under `ChaSet` `QML_FILES`.
    - Add route mapping in `qt/src/Main.qml` (`getPageSource`).
