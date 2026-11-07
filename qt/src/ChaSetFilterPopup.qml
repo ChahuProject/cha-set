@@ -50,6 +50,74 @@ Popup {
     }
     readonly property bool hasInvalidChars: invalidFileNameChars.length > 0
 
+    // Custom item input properties:
+    // allowCustomInput: whether user can manually submit a custom filter item not in list
+    property bool allowCustomInput: false
+    property string customActionPrefix: ""
+    property string customActionText: ""
+    property var customItemValidator: null // function(text): bool
+    signal customItemSubmitted(string text, string mode)
+
+    readonly property bool hasExactMatch: {
+        if (!searchFilterText) return true
+        var q = searchFilterText.trim().toLowerCase()
+        var prefix = customActionPrefix ? customActionPrefix.toLowerCase() : ""
+        var itemsList = displayItems || []
+        for (var i = 0; i < itemsList.length; ++i) {
+            var it = itemsList[i]
+            if (!it) continue
+            var k = String(it.key !== undefined && it.key !== null ? it.key : "").toLowerCase()
+            var l = String(it.label || "").toLowerCase()
+            if (k === q || l === q) return true
+            if (prefix) {
+                if (prefix + k === q || k === prefix + q || prefix + l === q || l === prefix + q) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    readonly property string cleanCustomInputText: {
+        var t = (searchFilterText || "").trim()
+        if (!t) return ""
+        if (customActionPrefix && t.startsWith(customActionPrefix)) {
+            t = t.slice(customActionPrefix.length).trim()
+        }
+        return t
+    }
+
+    readonly property bool showCustomActionItem: {
+        if (!allowCustomInput || !searchFilterText) return false
+        if (hasInvalidChars) return false
+        var clean = cleanCustomInputText
+        if (!clean) return false
+        if (typeof customItemValidator === "function" && !customItemValidator(clean)) return false
+        return !hasExactMatch
+    }
+
+    readonly property string displayCustomActionLabel: {
+        var clean = cleanCustomInputText
+        var target = customActionPrefix ? (customActionPrefix + clean) : clean
+        if (customActionText) {
+            return customActionText.replace("{{text}}", target)
+        }
+        var isZh = typeof ChaSetI18n !== "undefined" && ChaSetI18n && ChaSetI18n.locale && ChaSetI18n.locale.indexOf("zh") >= 0
+        var fallback = isZh ? "添加 \"{{text}}\"" : "Add \"{{text}}\""
+        return ChaSetI18n.tr("overlays.filterPopup.addCustom", fallback, { text: target })
+    }
+
+    function submitCustomItem(mode) {
+        if (!showCustomActionItem) return
+        var clean = cleanCustomInputText
+        if (!clean) return
+        rootPopup.customItemSubmitted(clean, mode || "include")
+        if (searchInput) searchInput.text = ""
+        rootPopup.searchFilterText = ""
+        rootPopup.refresh()
+        rootPopup.applyFocus()
+    }
+
     // Callbacks / overrides for dynamic inclusion & exclusion state
     property var checkIncluded: null // function(key): bool
     property var checkExcluded: null // function(key): bool
@@ -327,6 +395,19 @@ Popup {
                     }
 
                     Keys.onPressed: (event) => {
+                        if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+                            if (rootPopup.showCustomActionItem) {
+                                rootPopup.submitCustomItem("include")
+                                event.accepted = true
+                                return
+                            } else if (rootPopup.displayItems && rootPopup.displayItems.length === 1) {
+                                rootPopup.itemIncludeToggled(rootPopup.displayItems[0].key)
+                                rootPopup.refresh()
+                                rootPopup.applyFocus()
+                                event.accepted = true
+                                return
+                            }
+                        }
                         if (event.key === Qt.Key_Backspace && searchInput.text.length === 0) {
                             event.accepted = true
                             return
@@ -588,8 +669,64 @@ Popup {
                     }
                 }
 
+                // Custom Action Row (when allowCustomInput is enabled and no exact match)
+                Rectangle {
+                    id: customActionRow
+                    visible: rootPopup.showCustomActionItem
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: ThemeTokens.dp(26)
+                    implicitHeight: ThemeTokens.dp(26)
+                    radius: ThemeTokens.dp(4)
+                    color: customMouse.containsMouse ? Qt.alpha(ThemeTokens.accent, 0.16) : Qt.alpha(ThemeTokens.accent, 0.08)
+                    border.color: customMouse.containsMouse ? ThemeTokens.accent : Qt.alpha(ThemeTokens.accent, 0.4)
+                    border.width: 1
+
+                    RowLayout {
+                        anchors.fill: parent
+                        anchors.leftMargin: ThemeTokens.dp(6)
+                        anchors.rightMargin: ThemeTokens.dp(6)
+                        spacing: ThemeTokens.dp(6)
+
+                        ChaSetIcon {
+                            name: "add"
+                            size: 14
+                            color: ThemeTokens.accent
+                        }
+
+                        Text {
+                            Layout.fillWidth: true
+                            text: rootPopup.displayCustomActionLabel
+                            font.pixelSize: Typography.sizeCaption
+                            font.bold: true
+                            elide: Text.ElideRight
+                            color: ThemeTokens.accent
+                        }
+
+                        Text {
+                            text: "Enter"
+                            font.pixelSize: Typography.sizeMicro
+                            color: ThemeTokens.subduedText
+                        }
+                    }
+
+                    MouseArea {
+                        id: customMouse
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
+                        acceptedButtons: Qt.LeftButton | Qt.RightButton
+                        onClicked: (mouse) => {
+                            if (mouse.button === Qt.RightButton) {
+                                rootPopup.submitCustomItem("exclude")
+                            } else {
+                                rootPopup.submitCustomItem("include")
+                            }
+                        }
+                    }
+                }
+
                 Text {
-                    visible: !rootPopup.displayItems || rootPopup.displayItems.length === 0
+                    visible: (!rootPopup.displayItems || rootPopup.displayItems.length === 0) && !rootPopup.showCustomActionItem
                     Layout.fillWidth: true
                     Layout.preferredHeight: ThemeTokens.dp(36)
                     horizontalAlignment: Text.AlignHCenter
