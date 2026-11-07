@@ -117,6 +117,9 @@
       "presetTree": "Tree View",
       "sandboxTitle": "Shortcut Bar Sandbox"
     },
+    "shortcut-bar": {
+      "description": "Interactive multi-stage responsive keyboard shortcut bar that progressively adapts from full text to compact symbols, overflow drawer, and keyboard icon."
+    },
     "label": {
       "acceptTerms": "I accept the terms and conditions",
       "accountPassword": "Account Password",

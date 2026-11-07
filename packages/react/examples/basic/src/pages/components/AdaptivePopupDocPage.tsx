@@ -27,7 +27,7 @@ export function AdaptivePopupDocPage() {
     type: i % 2 === 0 ? 'Color Attachment' : 'Depth Stencil',
   }));
 
-  const heroReactCode = `<div ref={containerRef} className="relative h-[22.5rem] w-full overflow-hidden ...">
+  const heroReactCode = `<div ref={containerRef} className="relative h-[25rem] w-full overflow-hidden ...">
   <Button
     ref={triggerRef}
     onClick={() => setOpen(!open)}
@@ -69,7 +69,7 @@ export function AdaptivePopupDocPage() {
   const heroQtCode = `Rectangle {
     id: previewArea
     width: parent.width
-    height: ThemeTokens.dp(360)
+    height: ThemeTokens.dp(420)
     color: ThemeTokens.color("panelRaised")
     border.color: ThemeTokens.border
     border.width: 1
@@ -187,7 +187,7 @@ export function AdaptivePopupDocPage() {
         >
           <div
             ref={containerRef}
-            className="relative w-full h-[22.5rem] rounded-lg border border-dashed border-border bg-muted/10 flex items-center justify-center overflow-hidden"
+            className="relative w-full h-[25rem] rounded-lg border border-dashed border-border bg-muted/10 overflow-hidden"
           >
             <div className="text-center text-xs text-muted-foreground/60 absolute top-3 select-none pointer-events-none">
               {t('desktopComposite.adaptivePopup.boundedCanvasHint', 'Bounded preview container (adapts and clamps inside this area)')}

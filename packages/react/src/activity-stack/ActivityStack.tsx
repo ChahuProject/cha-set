@@ -310,7 +310,7 @@ export const ActivityStack = React.forwardRef<HTMLDivElement, ActivityStackProps
       onClick={() => setExpanded(true)}
       className="pointer-events-auto flex cursor-pointer items-center gap-1 rounded-full border border-border/60 bg-muted/90 px-3 py-1 text-xs font-medium text-muted-foreground shadow-sm backdrop-blur-sm transition-colors hover:bg-muted hover:text-foreground"
     >
-      <span>{t('desktopComposite.activityStack.overflowLabel', '还有 {{count}} 项', { count: hiddenCount })}</span>
+      <span>{t('desktopComposite.activityStack.overflowLabel', '{{count}} more items', { count: hiddenCount })}</span>
       {top ? <ChevronDownIcon className="size-3" /> : <ChevronUpIcon className="size-3" />}
     </button>
   );
@@ -341,7 +341,7 @@ export const ActivityStack = React.forwardRef<HTMLDivElement, ActivityStackProps
         ))}
       </span>
       <span className="min-w-0 flex-1 truncate text-left">
-        {t('desktopComposite.activityStack.summaryText', '{{count}} 项{{label}}', {
+        {t('desktopComposite.activityStack.summaryText', '{{count}} items {{label}}', {
           count: orderedAll.length,
           label: summaryLabel ?? '',
         })}

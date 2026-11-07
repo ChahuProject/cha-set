@@ -16,7 +16,7 @@ export const adaptivePopupSchema = z.object({
   placement: adaptivePopupPlacementSchema.default('down'),
   edgeMargin: z.number().default(12),
   contentInset: z.number().default(16),
-  useFullHostBand: z.boolean().default(true),
+  useFullHostBand: z.boolean().default(false),
   className: z.string().optional(),
 });
 

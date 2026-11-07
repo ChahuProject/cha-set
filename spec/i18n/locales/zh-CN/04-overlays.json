@@ -1,5 +1,11 @@
 {
   "components": {
+    "adaptive-popup": {
+      "description": "内容驱动的自适应高度弹窗原语，具备宿主空间封顶与头/体/尾三段式布局，绝不误出多余滚动条。"
+    },
+    "filter-popup": {
+      "description": "多维分面筛选弹窗组件，支持实时拼音搜索、排除过滤、星级评分与快捷键提示。"
+    },
     "alert-dialog": {
       "description": "打断用户并需要确认的重要模态确认弹窗。"
     },
@@ -231,18 +237,27 @@
       "upwardTitle": "向上贴靠展开（Placement: Up）"
     },
     "filterPopup": {
+      "clear": "清除",
       "clearDimension": "清除本维筛选",
       "dimension": "筛选维度：",
+      "empty": "暂无可选项",
       "filtered": "已筛选",
       "filteredBadge": "已筛选",
       "format": "格式",
       "formatFilter": "格式筛选",
       "hint": "点击下方按钮展开过滤弹窗，或直接键入字符触发快速搜索过滤。",
+      "invalidChars": "不支持字符: {{chars}}",
+      "logicAndTip": "同时满足所选标签",
+      "logicOrTip": "满足任一所选标签",
+      "noMatch": "未匹配到相关项",
       "rating": "评分",
       "ratingFilter": "评分筛选",
+      "searchPlaceholder": "快速搜索...",
       "stars": "星",
+      "starsCount": "{{count}} 颗星",
       "tag": "标签",
-      "tagFilter": "标签筛选"
+      "tagFilter": "标签筛选",
+      "unrated": "0 星 (未评级)"
     },
     "contextMenu": {
       "back": "返回",

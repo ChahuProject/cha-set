@@ -12,6 +12,8 @@ import {
   TableCell,
   GenericDataTable,
   ScrollArea,
+  DocumentTabs,
+  TabItem,
 } from '../src';
 
 describe('Performance Suite: Data & Virtualization (7 Components)', () => {
@@ -146,5 +148,16 @@ describe('Performance Suite: Data & Virtualization (7 Components)', () => {
       const ease = 1 - Math.pow(1 - progress, 3);
       currentPos = currentPos + (targetPos - currentPos) * ease;
     }
+  });
+
+  bench('DocumentTabs & TabItem (50 tabs mount)', () => {
+    const { unmount } = render(
+      <DocumentTabs>
+        {Array.from({ length: 50 }, (_, i) => (
+          <TabItem key={i} text={`Tab ${i}`} selected={i === 0} />
+        ))}
+      </DocumentTabs>
+    );
+    unmount();
   });
 });

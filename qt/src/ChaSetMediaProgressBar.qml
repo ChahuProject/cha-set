@@ -89,7 +89,7 @@ Item {
     function formatFrames(ms) {
         const fps = root.frameRate > 0 ? root.frameRate : 30.0
         const f = Math.max(0, Math.floor((ms / 1000.0) * fps))
-        return ChaSetI18n.tr("components.mediaProgressBar.framesUnit", "{{f}} 帧", { f: f })
+        return ChaSetI18n.tr("components.mediaProgressBar.framesUnit", "{{f}} frames", { f: f })
     }
 
     readonly property real currentPositionMs: {
@@ -302,9 +302,9 @@ Item {
                 side: "top"
                 active: posMouseArea.containsMouse && !contextMenuPopup.visible
                 text: root.timingMode === "elapsed"
-                      ? ChaSetI18n.tr("components.mediaProgressBar.currentElapsedTooltip", "当前：正计时 (已播放时间)")
-                      : ChaSetI18n.tr("components.mediaProgressBar.currentRemainingTooltip", "当前：倒计时 (剩余时间)")
-                shortcut: ChaSetI18n.tr("components.mediaProgressBar.toggleTooltip", "点击切换 · 右键打开菜单")
+                      ? ChaSetI18n.tr("components.mediaProgressBar.currentElapsedTooltip", "Current: Elapsed (playback time)")
+                      : ChaSetI18n.tr("components.mediaProgressBar.currentRemainingTooltip", "Current: Remaining (time left)")
+                shortcut: ChaSetI18n.tr("components.mediaProgressBar.toggleTooltip", "Click to toggle · Right click for menu")
             }
         }
 
@@ -365,7 +365,7 @@ Item {
 
             // 计时方式标题
             Text {
-                text: ChaSetI18n.tr("components.mediaProgressBar.timingModeMenuTitle", "计时方式")
+                text: ChaSetI18n.tr("components.mediaProgressBar.timingModeMenuTitle", "Timing Mode")
                 font.pixelSize: Typography.sizeMicro
                 font.bold: true
                 color: ThemeTokens.subduedText
@@ -400,7 +400,7 @@ Item {
                     }
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: ChaSetI18n.tr("components.mediaProgressBar.elapsedMode", "正计时 (已播放)")
+                        text: ChaSetI18n.tr("components.mediaProgressBar.elapsedMode", "Elapsed (Played)")
                         font.pixelSize: Typography.sizeCaption
                         color: ThemeTokens.text
                     }
@@ -443,7 +443,7 @@ Item {
                     }
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: ChaSetI18n.tr("components.mediaProgressBar.remainingMode", "倒计时 (剩余)")
+                        text: ChaSetI18n.tr("components.mediaProgressBar.remainingMode", "Remaining (Left)")
                         font.pixelSize: Typography.sizeCaption
                         color: ThemeTokens.text
                     }
@@ -470,7 +470,7 @@ Item {
 
             // 时间格式标题
             Text {
-                text: ChaSetI18n.tr("components.mediaProgressBar.timeFormatMenuTitle", "时间格式")
+                text: ChaSetI18n.tr("components.mediaProgressBar.timeFormatMenuTitle", "Time Format")
                 font.pixelSize: Typography.sizeMicro
                 font.bold: true
                 color: ThemeTokens.subduedText
@@ -505,7 +505,7 @@ Item {
                     }
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: ChaSetI18n.tr("components.mediaProgressBar.formatHms", "时分秒 (00:00)")
+                        text: ChaSetI18n.tr("components.mediaProgressBar.formatHms", "HMS (00:00)")
                         font.pixelSize: Typography.sizeCaption
                         color: ThemeTokens.text
                     }
@@ -548,7 +548,7 @@ Item {
                     }
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: ChaSetI18n.tr("components.mediaProgressBar.formatSeconds", "按秒显示 (0.0s)")
+                        text: ChaSetI18n.tr("components.mediaProgressBar.formatSeconds", "Seconds (0.0s)")
                         font.pixelSize: Typography.sizeCaption
                         color: ThemeTokens.text
                     }
@@ -592,7 +592,7 @@ Item {
                     }
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: ChaSetI18n.tr("components.mediaProgressBar.formatFrames", "按帧率显示 (0 帧)")
+                        text: ChaSetI18n.tr("components.mediaProgressBar.formatFrames", "Frames (0 frames)")
                         font.pixelSize: Typography.sizeCaption
                         color: ThemeTokens.text
                     }

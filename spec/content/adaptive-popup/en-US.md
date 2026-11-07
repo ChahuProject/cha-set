@@ -33,6 +33,6 @@ Names and semantics are identical on both stacks; `Type` gives the TypeScript si
 | `anchorY` | `number` | `0` | Expected Y coordinate (top for down, bottom for up). |
 | `edgeMargin` | `number` | `12` | Safe margin distance from host window bounds. |
 | `contentInset` | `number` | `16` | Horizontal padding inset for scrollable content area. |
-| `useFullHostBand` | `boolean` | `true` | Whether to utilize full vertical window band when expanding. |
+| `useFullHostBand` | `boolean` | `false` | Whether to utilize full vertical window band when expanding (defaults to anchor side only, preventing overflow or covering anchor). |
 | `container` | `HTMLElement \| RefObject \| Item` | `null` | Optional host viewport container, bounding popup expansion and clamping. |
 ```

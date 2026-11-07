@@ -145,6 +145,12 @@ When developing or modifying components across React and Qt, you MUST follow thi
    - Interactive sandbox containers (`ComponentPreview`, `TabsDocPage`) must never use fixed unscaled heights that clip components under high zoom.
    - Mechanically enforced via static linter `just check-scaling` (`scripts/check-qt-scaling.mjs`) and headless runtime scenario (`QtChaSetDemo.exe --test-scenario uiscale`), both embedded directly in `just gate`.
 
+17. **Mandatory Cross-Stack i18n Zero-Hardcoding & Search Parity Contract (全量组件与演示多语言零硬编码律 — 搜索框与占位符强制对齐红线)**
+   - **Universal Input/Search i18n**: All search boxes, input placeholders, filter prompts, and clear buttons (`placeholder`, `searchPlaceholder`, `filterPlaceholder`, `queryPlaceholder`, `searchTooltip`, `clearTooltip`, `emptySearchText`, `noMatchesText`, `noResultsText`) across both React component library, Qt component library, and living showcase pages MUST use `t(key, defaultText)` / `ChaSetI18n.tr(key, defaultText)`. Hardcoding strings like `"搜索..."` or `"Search..."` is strictly prohibited.
+   - **English Default Fallbacks in Code**: Fallbacks in code (the 2nd argument to `t(key, defaultText)` in React or `ChaSetI18n.tr(key, defaultText)` in Qt) MUST strictly be English. Zero CJK characters are allowed in code fallbacks; Chinese translations belong exclusively in `spec/i18n/locales/zh-CN/*.json`.
+   - **Strict Ban on `qsTr(...)` in QML**: Never use `qsTr(...)` in QML — it bypasses the runtime `ChaSetI18n` dictionary and reactivity system. All translations in QML must invoke `ChaSetI18n.tr(key, defaultText)`.
+   - **Mandatory Ratchet Gate**: Mechanically enforced via `just check-i18n`, embedded directly in `just check` and `just gate`.
+
 ## 2. Verification Commands Checklist
 
 Before declaring any component task complete, execute:
@@ -152,8 +158,12 @@ Before declaring any component task complete, execute:
 ```bash
 # 1. Regenerate tokens & showcase datasets (if contracts or tokens modified)
 just gen-tokens
+just gen-i18n
 
-# 2. Run showcase parity assurance system (SPAS)
+# 2. Run i18n translation coverage gate
+just check-i18n
+
+# 3. Run showcase parity assurance system (SPAS)
 just check-showcase
 
 # 3. Check UI scaling compliance (ThemeTokens.dp) across all Qt components

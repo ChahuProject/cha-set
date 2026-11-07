@@ -25,6 +25,7 @@ import { Badge } from '../badge';
 import { Card } from '../card';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '../resizable';
 import { DraggableModal } from '../draggable-modal';
+import { TabItem } from '../document-tabs';
 import { WindowTitleBar } from '../window-title-bar';
 import {
   DropdownMenu,
@@ -407,6 +408,19 @@ describe('Cross-Stack Cursor Semantics Conformance (React vs Contract)', () => {
         expect(btn.className).toContain('cursor-pointer');
         expect(btn.className).not.toContain('cursor-default');
       });
+    });
+  });
+
+  describe('DocumentTabs & TabItem (action -> cursor-pointer, disabled -> cursor-not-allowed)', () => {
+    it('TabItem exhibits cursor-pointer when enabled and cursor-not-allowed when disabled', () => {
+      const { container, rerender } = render(<TabItem text="Document.tsx" />);
+      const tab = container.querySelector('button');
+      expect(tab?.className).toContain('cursor-pointer');
+      expect(tab?.className).not.toContain('cursor-not-allowed');
+
+      rerender(<TabItem text="Document.tsx" disabled />);
+      const disabledTab = container.querySelector('button');
+      expect(disabledTab?.className).toContain('cursor-not-allowed');
     });
   });
 });

@@ -3,6 +3,12 @@
     "window-title-bar": {
       "description": "Desktop window frame header with title, drag region, and minimize/maximize/close buttons."
     },
+    "document-tabs": {
+      "description": "Desktop workspace document tab strip container with smooth horizontal scroll, adaptive width, close actions, and shell chrome integration."
+    },
+    "documentTabs": {
+      "description": "Desktop workspace document tab strip container with smooth horizontal scroll, adaptive width, close actions, and shell chrome integration."
+    },
     "smooth-wheel-handler": {
       "description": "Desktop kinematic scrolling helper with continuous damping, Shift-horizontal conversion, and gesture mutex."
     },
@@ -136,6 +142,37 @@
       "minimizeClicked": "Minimize clicked",
       "overviewDesc": "Frameless window title bar with native-style action buttons.",
       "sandboxTitle": "Window Title Bar Sandbox"
+    },
+    "documentTabs": {
+      "sandboxTitle": "Document Tabs Sandbox",
+      "overviewDesc": "Desktop multi-document and workspace tab bar container with smooth close animations, pinned tabs, dynamic additions, and trailing action slots.",
+      "newTab": "New Tab",
+      "tabTitle": "Doc {{index}}",
+      "pinnedTab": "README.md (Pinned)",
+      "activeTab": "Active: {{title}}",
+      "totalTabs": "Total Tabs: {{count}}",
+      "widthModeTitle": "Width Modes (Adaptive vs Fixed)",
+      "widthModeDesc": "Switch between VS Code-style content-adaptive width and Chrome-style fixed width.",
+      "modeContent": "Adaptive Width (Content)",
+      "modeFixed": "Fixed Width",
+      "overflowTitle": "Overflow & Smooth Kinematic Scrolling",
+      "overflowDesc": "Simulate 20+ tabs under heavy load to verify horizontal wheel scrolling, boundary damping, and responsive clipping.",
+      "addBatch": "Batch Add 15 Tabs",
+      "resetTabs": "Reset Tabs",
+      "shellChromeTitle": "Frameless Title Bar Integration",
+      "shellChromeDesc": "Enable useShellChrome and transparent fill to embed the document tabs directly into the frameless native title bar.",
+      "windowMockTitle": "Chahu Workspace Studio",
+      "tabItemTitle": "ChaSetTabItem Atomic Micro-Interactions",
+      "tabItemDesc": "Inspect TabItem standalone micro-interactions: close button hover highlight, long text tooltip, middle-click close, and right-click context menu.",
+      "singleTabNormal": "RegularDoc.tsx",
+      "singleTabPinned": "CoreConfig.json (Pinned)",
+      "singleTabLong": "ExtremelyLongFileNameForTooltipTruncationExample.tsx",
+      "lastAction": "Last Event: {{event}}",
+      "actionIdle": "Idle",
+      "actionClosed": "Closed Tab: {{id}}",
+      "actionMiddleClicked": "Middle-click Closed: {{id}}",
+      "actionContextMenu": "Context Menu: {{id}}",
+      "actionSelected": "Selected Tab: {{id}}"
     }
   }
 }

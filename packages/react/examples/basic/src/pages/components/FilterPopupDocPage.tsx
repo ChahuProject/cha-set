@@ -58,10 +58,10 @@ export function FilterPopupDocPage() {
 
   const currentTitle =
     activeTab === 'format'
-      ? t('overlays.filterPopup.formatFilter', '格式筛选')
+      ? t('overlays.filterPopup.formatFilter', 'Format Filter')
       : activeTab === 'rating'
-        ? t('overlays.filterPopup.ratingFilter', '评分筛选')
-        : t('overlays.filterPopup.tagFilter', '标签筛选');
+        ? t('overlays.filterPopup.ratingFilter', 'Rating Filter')
+        : t('overlays.filterPopup.tagFilter', 'Tag Filter');
 
   const currentIcon =
     activeTab === 'format'
@@ -222,7 +222,7 @@ export function FilterPopupDocPage() {
                   <span>{currentTitle}</span>
                   {hasActive && (
                     <Badge size="sm" variant="secondary" className="px-1 text-[0.625rem]">
-                      {t('overlays.filterPopup.filteredBadge', '已筛选')}
+                      {t('overlays.filterPopup.filteredBadge', 'Filtered')}
                     </Badge>
                   )}
                 </Button>

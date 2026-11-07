@@ -38,6 +38,7 @@ import { createHash } from 'node:crypto';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const REACT_SRC = resolve(root, 'packages', 'react', 'examples', 'basic', 'src');
+const REACT_LIB_SRC = resolve(root, 'packages', 'react', 'src');
 const QT_SRC = resolve(root, 'qt', 'src');
 const I18N_DIR = resolve(root, 'spec', 'i18n');
 const BASELINE_PATH = resolve(I18N_DIR, 'coverage-baseline.json');
@@ -152,11 +153,26 @@ const QT_TR_RE = /ChaSetI18n\.tr\(\s*(['"])((?:\\.|(?!\1).)*)\1\s*(?:,\s*(['"])(
 // Visible string props: JSX attributes (title="...") and property literals
 // (title: "...") shared by React option objects and QML property bindings.
 // React components do not use a `text` prop for user-facing prose (only CopyButton/CopyableBadge clipboard payloads).
-const REACT_VISIBLE_PROP_RE =
-  /\b(title|pageTitle|sectionTitle|label|description|placeholder|placeholderText|tooltip|caption|header|headerTitle|statusText|emptyText|confirmText|cancelText)\s*(?:=|:)\s*(['"])((?:\\.|(?!\2).)*)\2/g;
+const BASE_VISIBLE_PROPS = [
+  'title', 'pageTitle', 'sectionTitle', 'label', 'description',
+  'placeholder', 'placeholderText', 'searchPlaceholder', 'filterPlaceholder', 'queryPlaceholder',
+  'tooltip', 'searchTooltip', 'clearTooltip', 'caption', 'header', 'headerTitle',
+  'statusText', 'helperText', 'errorText', 'emptyText', 'emptySearchText', 'emptyState',
+  'noMatchesText', 'noResultsText', 'confirmText', 'cancelText', 'clearText',
+  'prompt', 'searchPrompt', 'filterPrompt', 'ariaLabel', 'aria-label',
+];
 
-const QT_VISIBLE_PROP_RE =
-  /\b(title|pageTitle|sectionTitle|label|description|placeholder|placeholderText|tooltip|caption|header|headerTitle|text|statusText|emptyText|confirmText|cancelText)\s*(?:=|:)\s*(['"])((?:\\.|(?!\2).)*)\2/g;
+const REACT_VISIBLE_PROP_RE = new RegExp(
+  `\\b(${BASE_VISIBLE_PROPS.join('|')})\\s*(?:=|:)\\s*(['"])((?:\\\\.|(?!\\2).)*)\\2`,
+  'g'
+);
+
+const QT_VISIBLE_PROP_RE = new RegExp(
+  `\\b(text|${BASE_VISIBLE_PROPS.join('|')})\\s*(?:=|:)\\s*(['"])((?:\\\\.|(?!\\2).)*)\\2`,
+  'g'
+);
+
+const QT_BANNED_QSTR_RE = /\bqsTr\s*\(/g;
 
 const JSX_TEXT_RE = />([^<>{}]+)</g;
 
@@ -166,7 +182,13 @@ function isProseCandidate(raw) {
   if (!/[A-Za-z\u3400-\u4dbf\u4e00-\u9fff]/.test(s)) return false;
   if (/[;=]/.test(s)) return false;
   if (/\$\{/.test(s)) return false; // template literal interpolation
-  if (/\|/.test(s)) return false; // type union
+  if (/[?&|]/.test(s)) return false; // ternary, logical, or bitwise operators
+  if (/=>/.test(s)) return false; // arrow functions
+  if (/\b(as|typeof|instanceof|keyof|return)\b/.test(s)) return false; // JS/TS keywords
+  if (/\b(React\.|Math\.|console\.)/.test(s)) return false; // library calls
+  if (/^(Promise|Record|Array|Map|Set|Function|Object)$/.test(s)) return false; // TS built-in generics
+  if (/\)[^)]*\(/.test(s)) return false; // unbalanced / chained parens from code
+  if (/\)\s*:\s*[A-Z]/.test(s)) return false; // return types
   if (/^@[\w.-]+(\/[\w.-]+)*$/.test(s)) return false; // npm package or handle (@radix-ui/primitives, @arivera)
   if (/^#[0-9a-fA-F]{3,8}$/.test(s)) return false; // hex color
   if (/^e\.g\.\s*#[0-9a-fA-F]+/i.test(s)) return false; // hex placeholder
@@ -192,7 +214,7 @@ function lineOf(content, index) {
   return line;
 }
 
-function scanReactContent(content) {
+export function scanReactContent(content) {
   const masked = maskSource(content);
   const i18nCalls = [];
   for (const m of masked.matchAll(REACT_T_RE)) {
@@ -223,7 +245,7 @@ function scanReactContent(content) {
   return { i18nCalls, hardcoded };
 }
 
-function scanQtContent(content) {
+export function scanQtContent(content) {
   const masked = maskSource(content);
   const i18nCalls = [];
   for (const m of masked.matchAll(QT_TR_RE)) {
@@ -245,7 +267,13 @@ function scanQtContent(content) {
       hardcoded.push({ text: val, index: m.index, kind: `prop:${m[1]}` });
     }
   }
-  return { i18nCalls, hardcoded };
+
+  const bannedQsTr = [];
+  for (const m of masked.matchAll(QT_BANNED_QSTR_RE)) {
+    bannedQsTr.push({ index: m.index });
+  }
+
+  return { i18nCalls, hardcoded, bannedQsTr };
 }
 
 // Find the matching closing paren of a call that opens at `openParenIndex`
@@ -307,11 +335,166 @@ function findingId(type, stack, relFile, identity) {
   return createHash('sha1').update(`${type}|${stack}|${relFile}|${identity}`).digest('hex').slice(0, 12);
 }
 
+export function auditNavigationItems(navCategories, zhDict, enDict) {
+  const findings = [];
+  const relFile = 'spec/showcase/navigation.json';
+
+  for (const cat of navCategories) {
+    const catTitle = cat.title || '';
+    const catKey = 'categories.' + catTitle;
+    const catZh = dictLookup(zhDict, catKey) || dictLookup(zhDict, 'showcase.categories.' + catTitle);
+    const catEn = dictLookup(enDict, catKey) || dictLookup(enDict, 'showcase.categories.' + catTitle);
+
+    if (catZh === undefined && catEn === undefined) {
+      findings.push({
+        id: findingId('missing-key', 'spec', relFile, catKey),
+        type: 'missing-key', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+        key: catKey,
+        detail: `Category "${catTitle}" missing from locale dictionaries`,
+      });
+    } else {
+      if (catZh === undefined) {
+        findings.push({
+          id: findingId('missing-key', 'spec', relFile, catKey + ':zh-CN'),
+          type: 'missing-key', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+          key: catKey,
+          detail: `Category "${catTitle}" missing from zh-CN`,
+        });
+      } else if (classifyText(catZh) === 'latin') {
+        findings.push({
+          id: findingId('zh-latin', 'spec', relFile, catKey),
+          type: 'zh-latin', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+          key: catKey,
+          detail: `Category "${catTitle}" zh-CN renders "${catZh}" (untranslated English)`,
+        });
+      }
+
+      if (catEn === undefined) {
+        findings.push({
+          id: findingId('missing-key', 'spec', relFile, catKey + ':en-US'),
+          type: 'missing-key', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+          key: catKey,
+          detail: `Category "${catTitle}" missing from en-US`,
+        });
+      } else if (classifyText(catEn) === 'cjk') {
+        findings.push({
+          id: findingId('en-cjk', 'spec', relFile, catKey),
+          type: 'en-cjk', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+          key: catKey,
+          detail: `Category "${catTitle}" en-US renders "${catEn}" (leaked CJK)`,
+        });
+      }
+    }
+
+    for (const item of (cat.items || [])) {
+      // 1. Navigation item title
+      const navKey = 'navigation.' + item.id;
+      const navZh = dictLookup(zhDict, navKey);
+      const navEn = dictLookup(enDict, navKey);
+
+      if (navZh === undefined && navEn === undefined) {
+        findings.push({
+          id: findingId('missing-key', 'spec', relFile, navKey),
+          type: 'missing-key', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+          key: navKey,
+          detail: `Item "${item.id}" title missing from locale dictionaries`,
+        });
+      } else {
+        if (navZh === undefined) {
+          findings.push({
+            id: findingId('missing-key', 'spec', relFile, navKey + ':zh-CN'),
+            type: 'missing-key', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+            key: navKey,
+            detail: `Item "${item.id}" title missing from zh-CN`,
+          });
+        } else if (classifyText(navZh) === 'latin') {
+          findings.push({
+            id: findingId('zh-latin', 'spec', relFile, navKey),
+            type: 'zh-latin', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+            key: navKey,
+            detail: `Item "${item.id}" title zh-CN renders "${navZh}" (untranslated English)`,
+          });
+        }
+
+        if (navEn === undefined) {
+          findings.push({
+            id: findingId('missing-key', 'spec', relFile, navKey + ':en-US'),
+            type: 'missing-key', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+            key: navKey,
+            detail: `Item "${item.id}" title missing from en-US`,
+          });
+        } else if (classifyText(navEn) === 'cjk') {
+          findings.push({
+            id: findingId('en-cjk', 'spec', relFile, navKey),
+            type: 'en-cjk', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+            key: navKey,
+            detail: `Item "${item.id}" title en-US renders "${navEn}" (leaked CJK)`,
+          });
+        }
+      }
+
+      // 2. Component description (rendered in Search Modal and Sidebar)
+      const descKey = 'components.' + item.id + '.description';
+      const camelId = item.id.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+      const camelDescKey = 'components.' + camelId + '.description';
+
+      const descZh = dictLookup(zhDict, descKey) || dictLookup(zhDict, camelDescKey);
+      const descEn = dictLookup(enDict, descKey) || dictLookup(enDict, camelDescKey);
+
+      if (descZh === undefined && descEn === undefined) {
+        findings.push({
+          id: findingId('missing-key', 'spec', relFile, descKey),
+          type: 'missing-key', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+          key: descKey,
+          detail: `Description for "${item.id}" missing from locale dictionaries (leaks raw text in search dialog)`,
+        });
+      } else {
+        if (descZh === undefined) {
+          findings.push({
+            id: findingId('missing-key', 'spec', relFile, descKey + ':zh-CN'),
+            type: 'missing-key', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+            key: descKey,
+            detail: `Description for "${item.id}" missing from zh-CN (fallback would leak English in search dialog)`,
+          });
+        } else if (classifyText(descZh) === 'latin') {
+          findings.push({
+            id: findingId('zh-latin', 'spec', relFile, descKey),
+            type: 'zh-latin', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+            key: descKey,
+            detail: `Description for "${item.id}" zh-CN renders "${descZh}" (untranslated English in search dialog)`,
+          });
+        }
+
+        if (descEn === undefined) {
+          findings.push({
+            id: findingId('missing-key', 'spec', relFile, descKey + ':en-US'),
+            type: 'missing-key', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+            key: descKey,
+            detail: `Description for "${item.id}" missing from en-US`,
+          });
+        } else if (classifyText(descEn) === 'cjk') {
+          findings.push({
+            id: findingId('en-cjk', 'spec', relFile, descKey),
+            type: 'en-cjk', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+            key: descKey,
+            detail: `Description for "${item.id}" en-US renders "${descEn}" (leaked CJK)`,
+          });
+        }
+      }
+    }
+  }
+
+  return findings;
+}
+
 export function analyzeI18nCoverage() {
   const zhDict = loadLocale('zh-CN');
   const enDict = loadLocale('en-US');
 
-  const reactFiles = walk(REACT_SRC, ['.tsx', '.ts']);
+  const reactFiles = [
+    ...walk(REACT_SRC, ['.tsx', '.ts']),
+    ...walk(REACT_LIB_SRC, ['.tsx']),
+  ];
   const qtFiles = walk(QT_SRC, ['.qml']);
 
   const findings = [];
@@ -319,7 +502,7 @@ export function analyzeI18nCoverage() {
 
   const processFile = (absPath, stack, scanFn) => {
     const content = readFileSync(absPath, 'utf8');
-    const { i18nCalls, hardcoded } = scanFn(content);
+    const { i18nCalls, hardcoded, bannedQsTr } = scanFn(content);
     const relFile = relative(root, absPath).replace(/\\/g, '/');
     const page = basename(absPath).replace(/\.(tsx|ts|qml)$/, '');
 
@@ -330,9 +513,30 @@ export function analyzeI18nCoverage() {
       missing: 0, zhLatin: 0, enCjk: 0,
     };
 
+    if (bannedQsTr && bannedQsTr.length > 0) {
+      for (const b of bannedQsTr) {
+        const line = lineOf(content, b.index);
+        findings.push({
+          id: findingId('banned-qstr', stack, relFile, `qstr:${line}`),
+          type: 'banned-qstr', stack, file: relFile, page, line,
+          detail: 'Forbidden qsTr() detected; use ChaSetI18n.tr() instead',
+        });
+      }
+    }
+
     for (const call of i18nCalls) {
       if (call.key.endsWith('.')) continue;
       const line = lineOf(content, call.index);
+
+      if (call.defaultText && CJK_RE.test(call.defaultText)) {
+        findings.push({
+          id: findingId('cjk-fallback', stack, relFile, `${call.key}:${line}`),
+          type: 'cjk-fallback', stack, file: relFile, page, line,
+          key: call.key,
+          detail: `defaultText contains CJK: "${String(call.defaultText).slice(0, 60)}"`,
+        });
+      }
+
       const zhVal = dictLookup(zhDict, call.key);
       const enVal = dictLookup(enDict, call.key);
 
@@ -393,6 +597,26 @@ export function analyzeI18nCoverage() {
 
   for (const f of reactFiles) processFile(f, 'react', scanReactContent);
   for (const f of qtFiles) processFile(f, 'qt', scanQtContent);
+
+  // ---- Audit showcase navigation & search dataset (spec/showcase/navigation.json) ----
+  const navPath = resolve(root, 'spec', 'showcase', 'navigation.json');
+  if (existsSync(navPath)) {
+    const nav = JSON.parse(readFileSync(navPath, 'utf8'));
+    const navFindings = auditNavigationItems(nav, zhDict, enDict);
+    findings.push(...navFindings);
+
+    const navFileEntry = {
+      stack: 'spec', file: 'spec/showcase/navigation.json', page: 'NavigationDataset',
+      i18nCalls: nav.reduce((acc, c) => acc + 1 + (c.items ? c.items.length * 2 : 0), 0),
+      hardcoded: 0,
+      missing: navFindings.filter(f => f.type === 'missing-key').length,
+      zhLatin: navFindings.filter(f => f.type === 'zh-latin').length,
+      enCjk: navFindings.filter(f => f.type === 'en-cjk').length,
+    };
+    const flaggedCalls = navFileEntry.missing + navFileEntry.zhLatin + navFileEntry.enCjk;
+    navFileEntry.coverage = navFileEntry.i18nCalls > 0 ? 1 - flaggedCalls / navFileEntry.i18nCalls : 1;
+    files.push(navFileEntry);
+  }
 
   // ---- page-level aggregation ----
   const pageMap = new Map();
@@ -484,7 +708,25 @@ export function verifyI18nCoverage(options = {}) {
     errors.push(`Zero-Tolerance Gate Failure: ${missingKeys.length} missing dictionary key(s) detected. Missing keys can never be ratcheted.`);
   }
 
-  // 2. Zero tolerance for zh-latin (untranslated English in zh-CN) and en-cjk (leaked CJK in en-US)
+  // 2. Zero tolerance for banned qsTr() in QML (must use ChaSetI18n.tr)
+  const bannedQsTr = findings.filter(f => f.type === 'banned-qstr');
+  for (const f of bannedQsTr) {
+    errors.push(`BANNED qsTr [${f.stack}] ${f.file}:${f.line} — ${f.detail}`);
+  }
+  if (bannedQsTr.length > 0) {
+    errors.push(`Zero-Tolerance Gate Failure: ${bannedQsTr.length} forbidden qsTr() call(s) detected. Must use ChaSetI18n.tr().`);
+  }
+
+  // 3. Zero tolerance for CJK defaultText in code (fallbacks in code must be English)
+  const cjkFallbacks = findings.filter(f => f.type === 'cjk-fallback');
+  for (const f of cjkFallbacks) {
+    errors.push(`CJK FALLBACK [${f.stack}] ${f.file}:${f.line} — key "${f.key}" ${f.detail}. Fallbacks in code must be English.`);
+  }
+  if (cjkFallbacks.length > 0) {
+    errors.push(`Zero-Tolerance Gate Failure: ${cjkFallbacks.length} CJK code fallback(s) detected. Code defaultText must be English.`);
+  }
+
+  // 4. Zero tolerance for zh-latin (untranslated English in zh-CN) and en-cjk (leaked CJK in en-US)
   const zhLatin = findings.filter(f => f.type === 'zh-latin');
   for (const f of zhLatin) {
     errors.push(`ZH-LATIN [${f.stack}] ${f.file}:${f.line} — key "${f.key}" ${f.detail}`);
@@ -546,6 +788,8 @@ export function verifyI18nCoverage(options = {}) {
         findings: findings.length,
         byType: {
           'missing-key': findings.filter(f => f.type === 'missing-key').length,
+          'banned-qstr': findings.filter(f => f.type === 'banned-qstr').length,
+          'cjk-fallback': findings.filter(f => f.type === 'cjk-fallback').length,
           'zh-latin': findings.filter(f => f.type === 'zh-latin').length,
           'en-cjk': findings.filter(f => f.type === 'en-cjk').length,
           hardcoded: findings.filter(f => f.type === 'hardcoded').length,
@@ -634,6 +878,48 @@ export function selfTest() {
   const enDict = loadLocale('en-US');
   if (dictLookup(zhDict, 'selftest.missing.key') !== undefined || dictLookup(enDict, 'selftest.missing.key') !== undefined) {
     errors.push('self-test key must not exist in dictionaries');
+  }
+
+  // searchPlaceholder prop detection
+  const searchSnippet = '<Input searchPlaceholder="Search components..." />';
+  const searchScan = scanReactContent(searchSnippet);
+  if (!searchScan.hardcoded.some(h => h.kind === 'prop:searchPlaceholder')) {
+    errors.push('react self-test: searchPlaceholder prop was not detected');
+  }
+
+  // Banned qsTr in QML
+  const qtBannedSnippet = 'Item { property string s: qsTr("forbidden text") }';
+  const qtBannedScan = scanQtContent(qtBannedSnippet);
+  if (!qtBannedScan.bannedQsTr || qtBannedScan.bannedQsTr.length !== 1) {
+    errors.push('qt self-test: qsTr() was not detected as banned');
+  }
+
+  // Navigation & search modal dataset audit self-test
+  const mockNav = [
+    {
+      title: 'Mock Cat',
+      items: [
+        { id: 'mock-missing', title: 'Mock Missing', desc: 'Mock missing item' },
+        { id: 'mock-latin', title: 'Mock Latin', desc: 'Mock latin item' },
+      ],
+    },
+  ];
+  const mockZh = {
+    categories: { 'Mock Cat': '模拟分类' },
+    navigation: { 'mock-latin': '模拟条目' },
+    components: { 'mock-latin': { description: 'English prose un-translated in zh' } },
+  };
+  const mockEn = {
+    categories: { 'Mock Cat': 'Mock Cat' },
+    navigation: { 'mock-missing': 'Mock Missing', 'mock-latin': 'Mock Latin' },
+    components: { 'mock-missing': { description: 'English desc' }, 'mock-latin': { description: 'English desc' } },
+  };
+  const navAuditFindings = auditNavigationItems(mockNav, mockZh, mockEn);
+  if (!navAuditFindings.some(f => f.type === 'missing-key' && f.key === 'navigation.mock-missing')) {
+    errors.push('navigation self-test: missing-key not detected for missing nav title in zh-CN');
+  }
+  if (!navAuditFindings.some(f => f.type === 'zh-latin' && f.key === 'components.mock-latin.description')) {
+    errors.push('navigation self-test: zh-latin not detected for English description in zh-CN');
   }
 
   return { ok: errors.length === 0, errors };

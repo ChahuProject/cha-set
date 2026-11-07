@@ -212,7 +212,7 @@ describe('PipelineView subcomponents and utilities', () => {
       expect(screen.getByText('Vulkan Pipeline')).toBeInTheDocument();
 
       // Search input
-      const searchInput = screen.getByPlaceholderText('Filter pipelines...');
+      const searchInput = screen.getByPlaceholderText(/Filter pipelines|过滤流水线/);
       fireEvent.change(searchInput, { target: { value: 'Vulkan' } });
       expect(screen.getByText('Vulkan Pipeline')).toBeInTheDocument();
       expect(screen.queryByText('DirectX Pipeline')).not.toBeInTheDocument();

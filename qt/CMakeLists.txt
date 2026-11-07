@@ -169,6 +169,8 @@ qt_add_qml_module(ChaSet
         src/ChaSetTabsList.qml
         src/ChaSetTabsTrigger.qml
         src/ChaSetTabsContent.qml
+        src/ChaSetTabItem.qml
+        src/ChaSetDocumentTabs.qml
         src/ChaSetBadge.qml
         src/ChaSetLabel.qml
         src/ChaSetCollapsible.qml
@@ -364,6 +366,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/DraggableModalDocPage.qml
             src/ResizableDocPage.qml
             src/WindowTitleBarDocPage.qml
+            src/DocumentTabsDocPage.qml
             src/GenericDataTableDocPage.qml
             src/QueryBuilderDocPage.qml
             src/ViewportConstrainedContainerDocPage.qml

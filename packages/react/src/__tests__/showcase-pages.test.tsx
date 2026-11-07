@@ -52,6 +52,7 @@ import { VirtualTreeDocPage } from '../../examples/basic/src/pages/components/Vi
 import { KbdDocPage } from '../../examples/basic/src/pages/components/KbdDocPage';
 import { ShortcutBarDocPage } from '../../examples/basic/src/pages/components/ShortcutBarDocPage';
 import { WindowTitleBarDocPage } from '../../examples/basic/src/pages/components/WindowTitleBarDocPage';
+import { DocumentTabsDocPage } from '../../examples/basic/src/pages/components/DocumentTabsDocPage';
 import { SegmentedControlDocPage } from '../../examples/basic/src/pages/components/SegmentedControlDocPage';
 import { SmoothWheelHandlerDocPage } from '../../examples/basic/src/pages/components/SmoothWheelHandlerDocPage';
 import { SettingRowDocPage } from '../../examples/basic/src/pages/components/SettingRowDocPage';
@@ -112,6 +113,7 @@ const pages = [
   { name: 'KbdDocPage', Component: KbdDocPage },
   { name: 'ShortcutBarDocPage', Component: ShortcutBarDocPage },
   { name: 'WindowTitleBarDocPage', Component: WindowTitleBarDocPage },
+  { name: 'DocumentTabsDocPage', Component: DocumentTabsDocPage },
   { name: 'SegmentedControlDocPage', Component: SegmentedControlDocPage },
   { name: 'SmoothWheelHandlerDocPage', Component: SmoothWheelHandlerDocPage },
   { name: 'SettingRowDocPage', Component: SettingRowDocPage },

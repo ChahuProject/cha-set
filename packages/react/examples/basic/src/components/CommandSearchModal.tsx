@@ -49,6 +49,17 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
     return list;
   }, []);
 
+  const resolveDesc = (id: string, defaultDesc: string = '') => {
+    const camel = id.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+    const fromKebab = t('components.' + id + '.description', '');
+    if (fromKebab) return fromKebab;
+    if (camel !== id) {
+      const fromCamel = t('components.' + camel + '.description', '');
+      if (fromCamel) return fromCamel;
+    }
+    return defaultDesc;
+  };
+
   const filtered = useMemo(() => {
     if (!query.trim()) return allItems;
     return allItems.filter((entry) => {
@@ -57,7 +68,7 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
       const rawTitle = entry.item.title;
       const rawCat = entry.category;
       const rawDesc = entry.item.description || '';
-      const locDesc = t('components.' + entry.item.id + '.description', entry.item.description || '');
+      const locDesc = resolveDesc(entry.item.id, entry.item.description || '');
       return (
         matchPinyin(rawTitle, query) ||
         matchPinyin(locTitle, query) ||
@@ -125,7 +136,7 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
           <Input
             ref={inputRef}
             type="text"
-            placeholder={t('common.searchPlaceholder', '搜索组件与文档...')}
+            placeholder={t('common.searchPlaceholder', 'Search components & docs...')}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onClear={() => setQuery('')}
@@ -141,7 +152,7 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
         <div className="h-80 w-full p-2">
           {filtered.length === 0 ? (
             <div className="p-8 text-center text-xs text-muted-foreground">
-              {t('common.noMatches', '未找到匹配页面')}
+              {t('common.noMatches', 'No matching pages found')}
             </div>
           ) : (
             <VirtualList
@@ -192,7 +203,7 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
                       </div>
                       {item.description && (
                         <div className="text-xs text-muted-foreground truncate">
-                          {t('components.' + item.id + '.description', item.description)}
+                          {resolveDesc(item.id, item.description)}
                         </div>
                       )}
                     </div>
@@ -209,7 +220,7 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
             <ShortcutBar preset="address-bar" />
           </div>
           <span className="text-micro shrink-0">
-            {t('common.resultCount', '{{count}} 个结果', { count: filtered.length })}
+            {t('common.resultCount', '{{count}} results', { count: filtered.length })}
           </span>
         </div>
       </Card>

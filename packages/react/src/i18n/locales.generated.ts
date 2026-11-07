@@ -110,6 +110,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "tip": "提示",
     "resultCount": "{{count}} 个结果",
     "variant": "变体:",
+    "mode": "模式:",
     "size": "尺寸:",
     "fullWidth": "全宽",
     "pressed": "按下态",
@@ -164,6 +165,10 @@ export const BUILTIN_LOCALES: Record<string, any> = {
         "title": "装饰程度",
         "desc": "控制圆角、阴影与动效强度的全局滑块 (0-100)"
       },
+      "typography": {
+        "title": "排版系统",
+        "desc": "逻辑字体族与字体缩放系数"
+      },
       "uiscale": {
         "title": "界面缩放",
         "desc": "全局显示密度与界面缩放系数"
@@ -191,6 +196,8 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "expressive": "表现力"
     },
     "overrides": {
+      "title": "微调参数",
+      "resetAll": "重置为预设",
       "custom": "微调",
       "hide": "收起",
       "radius": "圆角强度",
@@ -237,6 +244,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "variantsAndOptions": "变体与选项",
     "multiFileTabs": "多文件标签页",
     "variant": "变体:",
+    "mode": "模式:",
     "size": "尺寸:",
     "categories": {
       "Get Started": "起步与主题",
@@ -461,6 +469,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "floating-notice": "浮动提示",
     "window-title-bar": "窗口标题栏",
     "smooth-wheel-handler": "平滑滚轮处理器",
+    "document-tabs": "文档标签页",
     "virtual-list": "虚拟列表",
     "virtual-tree": "虚拟树形控件",
     "virtual-grid": "虚拟网格",
@@ -644,6 +653,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "presetTable": "数据表格",
       "presetTree": "树形视图",
       "sandboxTitle": "快捷键状态栏沙盒"
+    },
+    "shortcut-bar": {
+      "description": "交互式多阶段响应式快捷键状态栏，在容器变窄时自动推进完整文字、紧凑符号、折叠徽章抽屉与小键盘图标形态。"
     },
     "label": {
       "acceptTerms": "我同意并接受服务条款与隐私政策",
@@ -989,6 +1001,12 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "viewportConstrainedContainer": {
       "description": "根据锚点矩形下方可用视口空间动态约束最大高度的容器，支持自定义上限覆盖与平滑垂直滚动。"
     },
+    "adaptive-popup": {
+      "description": "内容驱动的自适应高度弹窗原语，具备宿主空间封顶与头/体/尾三段式布局，绝不误出多余滚动条。"
+    },
+    "filter-popup": {
+      "description": "多维分面筛选弹窗组件，支持实时拼音搜索、排除过滤、星级评分与快捷键提示。"
+    },
     "alert-dialog": {
       "description": "打断用户并需要确认的重要模态确认弹窗。"
     },
@@ -1073,6 +1091,12 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "window-title-bar": {
       "description": "桌面端无边框窗口标题栏组件，包含应用标识、标题、拖拽移动区域以及最小化/最大化/关闭系统控制按钮。"
     },
+    "document-tabs": {
+      "description": "桌面端工作区多文档标签栏容器，支持平滑横向滚动、内容自适应/等宽排版模式、关闭操作与无边框标题栏无缝融合。"
+    },
+    "documentTabs": {
+      "description": "桌面端工作区多文档标签栏容器，支持平滑横向滚动、内容自适应/等宽排版模式、关闭操作与无边框标题栏无缝融合。"
+    },
     "smooth-wheel-handler": {
       "description": "桌面端平滑滚轮运动学辅助组件，提供连续物理动量阻尼累加、Shift+滚轮水平转置及触控拖拽解耦互斥。"
     },
@@ -1133,6 +1157,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "allScopes": "所有作用域",
       "clearSameChord": "清除相同按键筛选",
       "conflict": "冲突",
+      "conflictingChord": "冲突快捷键：",
       "conflictExplanation": "该快捷键在同一作用域内被分配给了多个操作。请选择要保留或重新分配的操作。",
       "conflictTitle": "快捷键冲突",
       "conflictTooltip": "存在快捷键冲突，点击打开冲突解决器",
@@ -1141,6 +1166,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "exportTitle": "导出 Markdown 格式快捷键速查表",
       "noMatches": "未找到匹配的快捷键操作",
       "noMatchesHint": "请尝试调整搜索关键词或切换作用域筛选条件。",
+      "noOtherOccupiers": "未发现冲突操作",
       "resetAction": "还原为出厂默认快捷键",
       "resetAll": "重置全部",
       "resetAllTitle": "将全部快捷键还原为出厂默认设置",
@@ -1162,6 +1188,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     },
     "genericDataTable": {
       "description": "由 TanStack Table 驱动的桌面级全功能数据表，支持列排序、过滤、选择与分页。",
+      "emptyState": "暂无数据记录",
       "filterPlaceholder": "过滤记录……",
       "next": "下一页",
       "pageOf": "第 {{current}} 页，共 {{total}} 页",
@@ -1796,6 +1823,37 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "overviewDesc": "带原生风格操作按钮的无边框窗口标题栏。",
       "sandboxTitle": "窗口标题栏沙盒"
     },
+    "documentTabs": {
+      "sandboxTitle": "文档标签页沙盒",
+      "overviewDesc": "桌面端多文档与工作区标签栏容器，提供平滑关闭动画、固定标签、动态增删与尾部操作插槽。",
+      "newTab": "新建标签页",
+      "tabTitle": "文档 {{index}}",
+      "pinnedTab": "README.md (固定)",
+      "activeTab": "当前激活: {{title}}",
+      "totalTabs": "标签总数: {{count}}",
+      "widthModeTitle": "排版模式 (自适应宽 vs 等宽)",
+      "widthModeDesc": "支持像 VS Code 的内容自适应模式与像 Chrome 的固定等宽模式实时切换。",
+      "modeContent": "自适应宽度 (Content)",
+      "modeFixed": "固定等宽 (Fixed)",
+      "overflowTitle": "海量标签溢出与平滑滚动",
+      "overflowDesc": "模拟 20+ 个超量标签场景，验证横向滚轮滑动、边界阻尼与响应式视口裁剪。",
+      "addBatch": "批量添加 15 个标签",
+      "resetTabs": "重置标签",
+      "shellChromeTitle": "无边框原生标题栏一体化融合",
+      "shellChromeDesc": "启用 useShellChrome 与透明背景，将多文档标签栏直接内嵌于原生无边框标题栏中。",
+      "windowMockTitle": "茶壶工作区桌面端 (Chahu Workspace Studio)",
+      "tabItemTitle": "ChaSetTabItem 原子原语微交互",
+      "tabItemDesc": "走查 TabItem 独立微交互：关闭图标淡入高亮、长文件名省略与 Tooltip、外设中键关闭与右键菜单。",
+      "singleTabNormal": "正常文档.tsx",
+      "singleTabPinned": "核心配置.json (固定)",
+      "singleTabLong": "非常长长长长长长长长长长长的文件名示例.tsx",
+      "lastAction": "最后交互事件: {{event}}",
+      "actionIdle": "空闲",
+      "actionClosed": "已关闭标签: {{id}}",
+      "actionMiddleClicked": "中键点击关闭: {{id}}",
+      "actionContextMenu": "触发右键菜单: {{id}}",
+      "actionSelected": "选中标签: {{id}}"
+    },
     "addressBar": {
       "activePath": "当前路径:",
       "activePathFormat": "当前路径: {{path}}",
@@ -1810,6 +1868,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "sandboxTitle": "Address Bar 沙盒",
       "searchPlaceholder": "搜索...",
       "searchTooltip": "搜索",
+      "thisPc": "此电脑",
       "upTooltip": "上一级"
     },
     "reorderableList": {
@@ -1869,6 +1928,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "sandboxTitle": "日志控制台沙盒"
     },
     "pipelineView": {
+      "filterPlaceholder": "过滤流水线...",
       "jobBenchmark": "性能基准测试集",
       "jobPackage": "打包构建产物",
       "jobShaderComp": "着色器编译",
@@ -2813,18 +2873,27 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "upwardTitle": "向上贴靠展开（Placement: Up）"
     },
     "filterPopup": {
+      "clear": "清除",
       "clearDimension": "清除本维筛选",
       "dimension": "筛选维度：",
+      "empty": "暂无可选项",
       "filtered": "已筛选",
       "filteredBadge": "已筛选",
       "format": "格式",
       "formatFilter": "格式筛选",
       "hint": "点击下方按钮展开过滤弹窗，或直接键入字符触发快速搜索过滤。",
+      "invalidChars": "不支持字符: {{chars}}",
+      "logicAndTip": "同时满足所选标签",
+      "logicOrTip": "满足任一所选标签",
+      "noMatch": "未匹配到相关项",
       "rating": "评分",
       "ratingFilter": "评分筛选",
+      "searchPlaceholder": "快速搜索...",
       "stars": "星",
+      "starsCount": "{{count}} 颗星",
       "tag": "标签",
-      "tagFilter": "标签筛选"
+      "tagFilter": "标签筛选",
+      "unrated": "0 星 (未评级)"
     },
     "contextMenu": {
       "back": "返回",
@@ -3138,6 +3207,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "tip": "Tip",
     "resultCount": "{{count}} results",
     "variant": "Variant:",
+    "mode": "Mode:",
     "size": "Size:",
     "fullWidth": "Full Width",
     "pressed": "Pressed",
@@ -3192,6 +3262,10 @@ export const BUILTIN_LOCALES: Record<string, any> = {
         "title": "Decoration Level",
         "desc": "Master slider (0-100) driving corner radii, shadows, and motion"
       },
+      "typography": {
+        "title": "Typography System",
+        "desc": "Logical font family and type scale multiplier"
+      },
       "uiscale": {
         "title": "Interface Scale",
         "desc": "Global display density and UI scaling factor"
@@ -3219,6 +3293,8 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "expressive": "Expressive"
     },
     "overrides": {
+      "title": "Fine-Tuning Parameters",
+      "resetAll": "Reset to Master",
       "custom": "Tune",
       "hide": "Details",
       "radius": "Corner Radius",
@@ -3265,6 +3341,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "variantsAndOptions": "Variants & Options",
     "multiFileTabs": "Multi-File Tabs",
     "variant": "Variant:",
+    "mode": "Mode:",
     "size": "Size:",
     "categories": {
       "Get Started": "Get Started",
@@ -3489,6 +3566,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "floating-notice": "Floating Notice",
     "window-title-bar": "Window Title Bar",
     "smooth-wheel-handler": "Smooth Wheel Handler",
+    "document-tabs": "Document Tabs",
     "virtual-list": "Virtual List",
     "virtual-tree": "Virtual Tree",
     "virtual-grid": "Virtual Grid",
@@ -3672,6 +3750,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "presetTable": "Data Table",
       "presetTree": "Tree View",
       "sandboxTitle": "Shortcut Bar Sandbox"
+    },
+    "shortcut-bar": {
+      "description": "Interactive multi-stage responsive keyboard shortcut bar that progressively adapts from full text to compact symbols, overflow drawer, and keyboard icon."
     },
     "label": {
       "acceptTerms": "I accept the terms and conditions",
@@ -4017,6 +4098,12 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "viewportConstrainedContainer": {
       "description": "Container that dynamically bounds max-height based on available viewport space below the anchor rect, supporting custom upper limit overrides and smooth vertical scrolling."
     },
+    "adaptive-popup": {
+      "description": "Content-driven adaptive height popup with zero unnecessary scrollbars and 3-tier layout."
+    },
+    "filter-popup": {
+      "description": "Multi-dimensional facet filtering popup with search, exclusions, ratings and shortcuts."
+    },
     "alert-dialog": {
       "description": "A modal dialog that interrupts the user with important content and requires confirmation."
     },
@@ -4101,6 +4188,12 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "window-title-bar": {
       "description": "Desktop window frame header with title, drag region, and minimize/maximize/close buttons."
     },
+    "document-tabs": {
+      "description": "Desktop workspace document tab strip container with smooth horizontal scroll, adaptive width, close actions, and shell chrome integration."
+    },
+    "documentTabs": {
+      "description": "Desktop workspace document tab strip container with smooth horizontal scroll, adaptive width, close actions, and shell chrome integration."
+    },
     "smooth-wheel-handler": {
       "description": "Desktop kinematic scrolling helper with continuous damping, Shift-horizontal conversion, and gesture mutex."
     },
@@ -4161,6 +4254,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "allScopes": "All Scopes",
       "clearSameChord": "Clear chord filter",
       "conflict": "Conflict",
+      "conflictingChord": "Conflicting shortcut:",
       "conflictExplanation": "The shortcut key is assigned to multiple actions in the same active scope. Choose an action to keep or reassign.",
       "conflictTitle": "Shortcut Key Conflict",
       "conflictTooltip": "Shortcut key conflict detected; click to resolve",
@@ -4169,6 +4263,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "exportTitle": "Export Markdown reference cheat sheet",
       "noMatches": "No matching actions found",
       "noMatchesHint": "Try adjusting your search query or scope filter.",
+      "noOtherOccupiers": "No conflicting actions found.",
       "resetAction": "Reset to factory default",
       "resetAll": "Reset All",
       "resetAllTitle": "Revert all shortcuts to factory defaults",
@@ -4190,6 +4285,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     },
     "genericDataTable": {
       "description": "Full-featured desktop-grade data table powered by TanStack Table, with column sorting, filtering, selection, and pagination.",
+      "emptyState": "No records found",
       "filterPlaceholder": "Filter records...",
       "next": "Next",
       "pageOf": "Page {{current}} of {{total}}",
@@ -4824,6 +4920,37 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "overviewDesc": "Frameless window title bar with native-style action buttons.",
       "sandboxTitle": "Window Title Bar Sandbox"
     },
+    "documentTabs": {
+      "sandboxTitle": "Document Tabs Sandbox",
+      "overviewDesc": "Desktop multi-document and workspace tab bar container with smooth close animations, pinned tabs, dynamic additions, and trailing action slots.",
+      "newTab": "New Tab",
+      "tabTitle": "Doc {{index}}",
+      "pinnedTab": "README.md (Pinned)",
+      "activeTab": "Active: {{title}}",
+      "totalTabs": "Total Tabs: {{count}}",
+      "widthModeTitle": "Width Modes (Adaptive vs Fixed)",
+      "widthModeDesc": "Switch between VS Code-style content-adaptive width and Chrome-style fixed width.",
+      "modeContent": "Adaptive Width (Content)",
+      "modeFixed": "Fixed Width",
+      "overflowTitle": "Overflow & Smooth Kinematic Scrolling",
+      "overflowDesc": "Simulate 20+ tabs under heavy load to verify horizontal wheel scrolling, boundary damping, and responsive clipping.",
+      "addBatch": "Batch Add 15 Tabs",
+      "resetTabs": "Reset Tabs",
+      "shellChromeTitle": "Frameless Title Bar Integration",
+      "shellChromeDesc": "Enable useShellChrome and transparent fill to embed the document tabs directly into the frameless native title bar.",
+      "windowMockTitle": "Chahu Workspace Studio",
+      "tabItemTitle": "ChaSetTabItem Atomic Micro-Interactions",
+      "tabItemDesc": "Inspect TabItem standalone micro-interactions: close button hover highlight, long text tooltip, middle-click close, and right-click context menu.",
+      "singleTabNormal": "RegularDoc.tsx",
+      "singleTabPinned": "CoreConfig.json (Pinned)",
+      "singleTabLong": "ExtremelyLongFileNameForTooltipTruncationExample.tsx",
+      "lastAction": "Last Event: {{event}}",
+      "actionIdle": "Idle",
+      "actionClosed": "Closed Tab: {{id}}",
+      "actionMiddleClicked": "Middle-click Closed: {{id}}",
+      "actionContextMenu": "Context Menu: {{id}}",
+      "actionSelected": "Selected Tab: {{id}}"
+    },
     "addressBar": {
       "activePath": "Active Path:",
       "activePathFormat": "Active Path: {{path}}",
@@ -4838,6 +4965,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "sandboxTitle": "Address Bar Sandbox",
       "searchPlaceholder": "Search...",
       "searchTooltip": "Search",
+      "thisPc": "This PC",
       "upTooltip": "Up one level"
     },
     "reorderableList": {
@@ -4897,6 +5025,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "sandboxTitle": "Log Console Sandbox"
     },
     "pipelineView": {
+      "filterPlaceholder": "Filter pipelines...",
       "jobBenchmark": "Benchmark Suite",
       "jobPackage": "Package Artifacts",
       "jobShaderComp": "Shader Compilation",
@@ -5841,18 +5970,27 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "upwardTitle": "Upward Clamping (Placement: Up)"
     },
     "filterPopup": {
+      "clear": "Clear",
       "clearDimension": "Clear Dimension",
       "dimension": "Dimension:",
+      "empty": "No items available",
       "filtered": "Filtered",
       "filteredBadge": "Filtered",
       "format": "Format",
       "formatFilter": "Format Filter",
       "hint": "Click the button below to open the filter popup, or press printable characters to test quick search.",
+      "invalidChars": "Invalid characters: {{chars}}",
+      "logicAndTip": "Match all selected tags",
+      "logicOrTip": "Match any selected tag",
+      "noMatch": "No matching items",
       "rating": "Rating",
       "ratingFilter": "Rating Filter",
+      "searchPlaceholder": "Quick search...",
       "stars": "Stars",
+      "starsCount": "{{count}} Stars",
       "tag": "Tag",
-      "tagFilter": "Tag Filter"
+      "tagFilter": "Tag Filter",
+      "unrated": "0 Stars (Unrated)"
     },
     "contextMenu": {
       "back": "Back",

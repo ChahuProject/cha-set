@@ -78,20 +78,44 @@ Item {
                 ? Typography.sizeCaption : Math.round(11 * root.uiScaleFactor)
     }
 
+    FontMetrics {
+        id: descFm
+        font: descMetrics.font
+    }
+
+    FontMetrics {
+        id: textFm
+        font: textMetrics.font
+    }
+
     // 声明式单行/多行判定（基于离线 TextMetrics，彻底断绝 Text 内部 lineCount 布局依赖形成的 Binding loop）
     readonly property bool isMultilineText: root.text !== "" && (root.text.indexOf("\n") !== -1 || textMetrics.width > root.maxTextW)
 
-    // 单行/多行紧凑内容宽度：**纯 TextMetrics 同步推导**。
-    // 严禁掺入 bubbleText.implicitWidth / contentRow.width 这类「上一帧布局
-    // 产物」——它们在新内容写入后仍是旧值（QML 子项尺寸要等 polish 才更新），
-    // 会把气泡锁在旧宽度上，表现为右侧被裁或右侧空一大截。
+    // 单行/多行紧凑内容宽度：**纯 FontMetrics/TextMetrics 同步推导**。
+    // 当存在显式换行符 '\n' 时，TextMetrics.width 会累加全部行字符导致假性超宽；
+    // 必须拆分各行取最大 advance，并与 bubbleText.implicitWidth 取较大值吸收 CJK 塑形差异。
+    readonly property real rawTextW: {
+        if (root.text === "")
+            return 0
+        if (root.text.indexOf("\n") === -1)
+            return textMetrics.width
+        var lines = root.text.split("\n")
+        var maxW = 0
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i]
+            if (line.length === 0) continue
+            var lw = textFm.advanceWidth(line)
+            if (lw > maxW) {
+                maxW = lw
+            }
+        }
+        return maxW
+    }
+
     readonly property real naturalTextW: {
         if (root.text === "")
             return 0
-        // TextMetrics 与 Text 的塑形器存在固有差异（CJK 逐字 1~3px，2.5x 下可达
-        // 12px/4 字），单靠它会算窄气泡，文字就溢出到黑框外面。取两者较大值：
-        // Text.implicitWidth 只会「滞后偏大」，不会偏小，方向安全。
-        return Math.min(Math.max(textMetrics.width, bubbleText.implicitWidth), root.maxTextW)
+        return Math.min(Math.max(rawTextW, bubbleText.implicitWidth), root.maxTextW)
     }
 
     readonly property real naturalRowW: {
@@ -127,11 +151,29 @@ Item {
         return w
     }
 
-    // 描述宽度同样只由 descMetrics（同步）决定：
-    // 用 paintedWidth / implicitWidth 会让宽度跟随上一帧排版，产生「宽窄漂移」，
-    // 而窗口宽度又由它驱动 —— 回环一旦成立，气泡就会在两档宽度之间摆动。
+    // 描述紧凑宽度：纯 FontMetrics 同步推导。
+    // 当存在显式换行符 '\n' 时，TextMetrics.width 会累加所有行字符导致假性超宽；
+    // 必须拆分各行取最大 advance，并与 descText.implicitWidth 取较大值吸收 CJK 塑形差异。
+    readonly property real rawDescW: {
+        if (root.description === "")
+            return 0
+        if (root.description.indexOf("\n") === -1)
+            return descMetrics.width
+        var lines = root.description.split("\n")
+        var maxW = 0
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i]
+            if (line.length === 0) continue
+            var lw = descFm.advanceWidth(line)
+            if (lw > maxW) {
+                maxW = lw
+            }
+        }
+        return maxW
+    }
+
     readonly property real naturalDescW: root.description === ""
-            ? 0 : Math.min(descMetrics.width, root.maxDescW)
+            ? 0 : Math.min(Math.max(rawDescW, descText.implicitWidth), root.maxDescW)
 
     // 宽度一律由 TextMetrics 同步推导，不掺入任何 Positioner/Text 的布局尺寸
     readonly property real contentW: Math.max(naturalRowW, naturalDescW)
@@ -172,9 +214,23 @@ Item {
         if (root.description === "")
             return 0
         var maxD = Math.max(1, root.maxDescW)
-        var lineCount = Math.max(1, Math.ceil(descMetrics.width / maxD))
-        lineCount = Math.max(lineCount, root.description.split("\n").length)
-        return lineCount * descMetrics.height
+        if (root.description.indexOf("\n") === -1) {
+            var lineCount = Math.max(1, Math.ceil(descMetrics.width / maxD))
+            return lineCount * descMetrics.height
+        }
+        var lines = root.description.split("\n")
+        var totalLines = 0
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i]
+            if (line.length === 0) {
+                totalLines += 1
+                continue
+            }
+            var lw = descFm.advanceWidth(line)
+            var wrapped = Math.max(1, Math.ceil(lw / maxD))
+            totalLines += wrapped
+        }
+        return Math.max(1, totalLines) * descMetrics.height
     }
 
     readonly property real contentH: {
@@ -312,7 +368,7 @@ Item {
                     anchors.top: root.isMultilineText ? parent.top : undefined
                     anchors.topMargin: 0
                     wrapMode: root.isMultilineText ? Text.Wrap : Text.NoWrap
-                    width: (wrapMode === Text.Wrap) ? Math.min(textMetrics.width, root.maxTextW) : undefined
+                    width: (wrapMode === Text.Wrap) ? Math.min(root.naturalTextW, root.maxTextW) : undefined
                 }
 
                 ChaSetKbd {
@@ -341,7 +397,7 @@ Item {
                 font.pixelSize: (typeof Typography !== "undefined" && Typography)
                         ? Typography.sizeCaption : Math.round(11 * root.uiScaleFactor)
                 readonly property real maxDescW: root.maxDescW
-                readonly property bool shouldWrap: (descMetrics.width > maxDescW)
+                readonly property bool shouldWrap: (root.rawDescW > maxDescW)
                 wrapMode: shouldWrap ? Text.Wrap : Text.NoWrap
                 // 折行宽度只由内容上限决定，**不读 root.width**：
                 // root.width 在全局提示窗里等于「窗口宽度」，而窗口宽度又来自

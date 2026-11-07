@@ -1102,23 +1102,23 @@ export function VirtualTree<T>({
                   ? t('desktopComposite.virtualTree.hudInside', '{{prefix}}{{verb}}: {{target}}', {
                       prefix:
                         (draggedKeys?.length ?? 0) > 1
-                          ? t('desktopComposite.virtualTree.hudCountPrefix', '{{count}} 项 · ', {
+                          ? t('desktopComposite.virtualTree.hudCountPrefix', '{{count}} items · ', {
                               count: draggedKeys?.length ?? 0,
                             })
                           : '',
                       verb:
                         dragModifier === 'copy'
-                          ? t('desktopComposite.virtualTree.hudCopyVerb', '复制到')
-                          : t('desktopComposite.virtualTree.hudMoveVerb', '移入'),
+                          ? t('desktopComposite.virtualTree.hudCopyVerb', 'Copy to')
+                          : t('desktopComposite.virtualTree.hudMoveVerb', 'Move into'),
                       target:
                         (visibleNodes.find((n) => safeGetNodeKey(n.node) === dropTarget.key)?.node as any)?.label ||
                         (visibleNodes.find((n) => safeGetNodeKey(n.node) === dropTarget.key)?.node as any)?.name ||
                         dropTarget.key,
                     })
-                  : t('desktopComposite.virtualTree.hudSibling', '{{prefix}}放置在同级: {{target}}', {
+                  : t('desktopComposite.virtualTree.hudSibling', '{{prefix}}Place alongside: {{target}}', {
                       prefix:
                         (draggedKeys?.length ?? 0) > 1
-                          ? t('desktopComposite.virtualTree.hudCountPrefix', '{{count}} 项 · ', {
+                          ? t('desktopComposite.virtualTree.hudCountPrefix', '{{count}} items · ', {
                               count: draggedKeys?.length ?? 0,
                             })
                           : '',
@@ -1128,7 +1128,7 @@ export function VirtualTree<T>({
                         dropTarget.key,
                     })
               ) : (
-                t('desktopComposite.virtualTree.hudDragging', '拖拽中 ({{count}} 项)', {
+                t('desktopComposite.virtualTree.hudDragging', 'Dragging ({{count}} items)', {
                   count: draggedKeys?.length ?? 0,
                 })
               )}
@@ -1153,9 +1153,9 @@ export function VirtualTree<T>({
                   variant={dragModifier === 'move' ? 'solid' : 'subtle'}
                   shortcut="mouse-left"
                 />
-                <span>{t('desktopComposite.virtualTree.hudReleaseLeft', '松开左键')}</span>
+                <span>{t('desktopComposite.virtualTree.hudReleaseLeft', 'Release left button')}</span>
               </span>
-              <span className="text-micro font-sans">{t('desktopComposite.virtualTree.hudMoveToTarget', '移动到目标')}</span>
+              <span className="text-micro font-sans">{t('desktopComposite.virtualTree.hudMoveToTarget', 'Move to target')}</span>
             </div>
 
             <div
@@ -1172,17 +1172,17 @@ export function VirtualTree<T>({
                   variant={dragModifier === 'copy' ? 'solid' : 'subtle'}
                   shortcut="Ctrl+mouse-left"
                 />
-                <span>{t('desktopComposite.virtualTree.hudHoldCtrl', '按住 Ctrl')}</span>
+                <span>{t('desktopComposite.virtualTree.hudHoldCtrl', 'Hold Ctrl')}</span>
               </span>
-              <span className="text-micro font-sans">{t('desktopComposite.virtualTree.hudCopyToTarget', '复制到目标')}</span>
+              <span className="text-micro font-sans">{t('desktopComposite.virtualTree.hudCopyToTarget', 'Copy to target')}</span>
             </div>
 
             <div className="flex items-center justify-between gap-3 text-muted-foreground/75">
               <span className="flex items-center gap-1.5">
                 <Kbd size="xs" variant="subtle" shortcut="Esc" />
-                <span>{t('desktopComposite.virtualTree.hudPressEsc', '按 Esc')}</span>
+                <span>{t('desktopComposite.virtualTree.hudPressEsc', 'Press Esc')}</span>
               </span>
-              <span className="text-micro font-sans">{t('desktopComposite.virtualTree.hudCancel', '取消')}</span>
+              <span className="text-micro font-sans">{t('desktopComposite.virtualTree.hudCancel', 'Cancel')}</span>
             </div>
           </div>
         </div>

@@ -1,5 +1,11 @@
 {
   "components": {
+    "adaptive-popup": {
+      "description": "Content-driven adaptive height popup with zero unnecessary scrollbars and 3-tier layout."
+    },
+    "filter-popup": {
+      "description": "Multi-dimensional facet filtering popup with search, exclusions, ratings and shortcuts."
+    },
     "alert-dialog": {
       "description": "A modal dialog that interrupts the user with important content and requires confirmation."
     },
@@ -231,18 +237,27 @@
       "upwardTitle": "Upward Clamping (Placement: Up)"
     },
     "filterPopup": {
+      "clear": "Clear",
       "clearDimension": "Clear Dimension",
       "dimension": "Dimension:",
+      "empty": "No items available",
       "filtered": "Filtered",
       "filteredBadge": "Filtered",
       "format": "Format",
       "formatFilter": "Format Filter",
       "hint": "Click the button below to open the filter popup, or press printable characters to test quick search.",
+      "invalidChars": "Invalid characters: {{chars}}",
+      "logicAndTip": "Match all selected tags",
+      "logicOrTip": "Match any selected tag",
+      "noMatch": "No matching items",
       "rating": "Rating",
       "ratingFilter": "Rating Filter",
+      "searchPlaceholder": "Quick search...",
       "stars": "Stars",
+      "starsCount": "{{count}} Stars",
       "tag": "Tag",
-      "tagFilter": "Tag Filter"
+      "tagFilter": "Tag Filter",
+      "unrated": "0 Stars (Unrated)"
     },
     "contextMenu": {
       "back": "Back",
