@@ -90,8 +90,8 @@ Popup {
     /// 内容区左右内缩
     property real contentInset: ThemeTokens.dp(16)
     /// true：可用高度取整条宿主纵向可用带（必要时会把弹窗上移吃掉上方空间）；
-    /// false：只取「锚点一侧」的剩余空间（锚点固定不动，更保守）。
-    property bool useFullHostBand: true
+    /// false：只取「锚点一侧」的剩余空间（锚点固定不动，更保守）。默认 false 杜绝越界或覆盖锚点。
+    property bool useFullHostBand: false
     /// 弹窗圆角半径
     property real customRadius: ThemeTokens.dp(8)
 
@@ -356,10 +356,11 @@ Popup {
         }
         if (root.maxHeight > 0)
             usable = Math.min(usable, root.maxHeight)
-        return Math.max(root.minHeight, usable)
+        const effectiveMinH = Math.min(root.minHeight, usable > 0 ? usable : root.minHeight)
+        return Math.max(effectiveMinH, usable)
     }
 
-    height: Math.max(root.minHeight, Math.min(root.desiredHeight, root.hostAvailableHeight))
+    height: Math.min(root.desiredHeight, root.hostAvailableHeight)
     implicitHeight: root.height
 
     /// 是否真的被宿主空间截断了 —— 滚动条出现的唯一合法依据。
@@ -375,7 +376,7 @@ Popup {
         const minLeft = root.edgeMargin - offset
         const maxLeft = root.hostBandWidth - root.width - root.edgeMargin - offset
         if (maxLeft < minLeft)
-            return left
+            return minLeft
         return Math.max(minLeft, Math.min(left, maxLeft))
     }
     y: {
@@ -387,7 +388,7 @@ Popup {
         const minTop = root.edgeMargin - offset
         const maxTop = root.hostBandHeight - root.height - root.edgeMargin - offset
         if (maxTop < minTop)
-            return top
+            return minTop
         return Math.max(minTop, Math.min(top, maxTop))
     }
 
