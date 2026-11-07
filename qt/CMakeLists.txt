@@ -170,6 +170,7 @@ qt_add_qml_module(ChaSet
         src/ChaSetTabsTrigger.qml
         src/ChaSetTabsContent.qml
         src/ChaSetTabItem.qml
+        src/ChaSetDocumentTabs.qml
         src/ChaSetBadge.qml
         src/ChaSetLabel.qml
         src/ChaSetCollapsible.qml
