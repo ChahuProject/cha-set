@@ -179,4 +179,78 @@ describe('AdaptivePopup', () => {
       }
     }
   });
+
+  it('clamps height to available space below anchor to avoid bottom overflow', () => {
+    const originalOffsetHeight = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetHeight');
+    const originalGetBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
+
+    // Simulate container: 360px high; anchor: top 32px, height 36px (bottom 68px)
+    HTMLElement.prototype.getBoundingClientRect = function () {
+      if (this.getAttribute?.('data-testid') === 'test-container') {
+        return { top: 100, left: 100, width: 400, height: 360, bottom: 460, right: 500 } as DOMRect;
+      }
+      if (this.getAttribute?.('data-testid') === 'test-anchor') {
+        return { top: 132, left: 150, width: 120, height: 36, bottom: 168, right: 270 } as DOMRect;
+      }
+      return { top: 0, left: 0, width: 320, height: 320, bottom: 320, right: 320 } as DOMRect;
+    };
+
+    Object.defineProperty(HTMLElement.prototype, 'offsetHeight', {
+      configurable: true,
+      get() {
+        if (this.getAttribute?.('data-slot') === 'adaptive-popup') return 340;
+        return 400; // Large natural content
+      },
+    });
+
+    try {
+      function BoundedAnchorWrapper() {
+        const containerRef = React.useRef<HTMLDivElement>(null);
+        const anchorRef = React.useRef<HTMLButtonElement>(null);
+        return (
+          <div
+            ref={containerRef}
+            data-testid="test-container"
+            style={{ position: 'relative', width: '25rem', height: '22.5rem' }}
+          >
+            <button ref={anchorRef} data-testid="test-anchor" style={{ position: 'absolute', top: '2rem' }}>
+              Anchor
+            </button>
+            <AdaptivePopup
+              open={true}
+              anchorRef={anchorRef}
+              containerRef={containerRef}
+              edgeMargin={12}
+              placement="down"
+            >
+              <div>Large Content Requiring 400px</div>
+            </AdaptivePopup>
+          </div>
+        );
+      }
+      render(<BoundedAnchorWrapper />);
+
+      const popup = document.querySelector('[data-slot="adaptive-popup"]') as HTMLDivElement;
+      expect(popup).toBeTruthy();
+
+      // Top should be anchor bottom (68) + 4 = 72
+      // Available below = 360 - 72 - 12 = 276
+      // Height should be capped to 276
+      // Top (72) + Height (276) = 348 <= 360 - 12 (348)
+      const topRem = parseFloat(popup.style.top);
+      const heightRem = parseFloat(popup.style.height);
+      const topPx = topRem / 0.0625;
+      const heightPx = heightRem / 0.0625;
+
+      expect(topPx).toBe(72);
+      expect(heightPx).toBe(276);
+      expect(topPx + heightPx).toBeLessThanOrEqual(360 - 12);
+      expect(popup.getAttribute('data-height-capped')).toBe('true');
+    } finally {
+      HTMLElement.prototype.getBoundingClientRect = originalGetBoundingClientRect;
+      if (originalOffsetHeight) {
+        Object.defineProperty(HTMLElement.prototype, 'offsetHeight', originalOffsetHeight);
+      }
+    }
+  });
 });

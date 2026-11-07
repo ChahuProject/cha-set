@@ -33,6 +33,6 @@ description: Content-driven adaptive height popup with zero unnecessary scrollba
 | `anchorY` | `number` | `0` | 期望 Y 坐标（down 为期望顶边，up 为期望底边）。 |
 | `edgeMargin` | `number` | `12` | 距离宿主窗口边缘的安全间距。 |
 | `contentInset` | `number` | `16` | 可滚动内容区的左右内缩边距。 |
-| `useFullHostBand` | `boolean` | `true` | 是否允许使用宿主纵向全量可用空间进行自适应。 |
+| `useFullHostBand` | `boolean` | `false` | 是否允许使用宿主纵向全量可用空间进行自适应（默认仅使用锚点同侧可用空间，防止越界或遮挡锚点）。 |
 | `container` | `HTMLElement \| RefObject \| Item` | `null` | 可选宿主容器视口，指定后弹窗将被限制在该容器内自适应与 clamp。 |
 ```

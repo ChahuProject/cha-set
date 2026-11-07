@@ -37,7 +37,7 @@ export const AdaptivePopup = React.forwardRef<HTMLDivElement, AdaptivePopupProps
       anchorY = 0,
       edgeMargin = 12,
       contentInset = 16,
-      useFullHostBand = true,
+      useFullHostBand = false,
       anchorRef,
       containerRef,
       container,
@@ -93,13 +93,14 @@ export const AdaptivePopup = React.forwardRef<HTMLDivElement, AdaptivePopupProps
       return Number.isFinite(parsed) ? parsed : -1;
     }, [maxHeight]);
 
+    const updatePositionRef = React.useRef<() => void>(() => {});
+
     // Recompute measurements whenever open, placement or dimensions change
     React.useLayoutEffect(() => {
       if (!open || typeof window === 'undefined') return;
 
-      const containerEl = resolveContainer();
-
       const updatePosition = () => {
+        const containerEl = resolveContainer();
         let originX = anchorX;
         let originY = anchorY;
 
@@ -153,8 +154,9 @@ export const AdaptivePopup = React.forwardRef<HTMLDivElement, AdaptivePopupProps
           usable = Math.min(usable, maxH);
         }
 
-        const hostAvailableH = Math.max(minH, usable);
-        const finalHeight = Math.max(minH, Math.min(desiredH, hostAvailableH));
+        const effectiveMinH = Math.min(minH, usable > 0 ? usable : minH);
+        const hostAvailableH = Math.max(effectiveMinH, usable);
+        const finalHeight = Math.max(effectiveMinH, Math.min(desiredH, hostAvailableH));
         const heightCapped = finalHeight < desiredH - 1;
 
         // Calculate clamped position
@@ -179,9 +181,11 @@ export const AdaptivePopup = React.forwardRef<HTMLDivElement, AdaptivePopupProps
         });
       };
 
+      updatePositionRef.current = updatePosition;
       updatePosition();
 
       let resizeObserver: ResizeObserver | null = null;
+      const containerEl = resolveContainer();
       if (typeof ResizeObserver !== 'undefined' && containerEl) {
         resizeObserver = new ResizeObserver(() => updatePosition());
         resizeObserver.observe(containerEl);
@@ -196,6 +200,12 @@ export const AdaptivePopup = React.forwardRef<HTMLDivElement, AdaptivePopupProps
         window.removeEventListener('scroll', updatePosition, true);
       };
     }, [open, placement, anchorX, anchorY, edgeMargin, useFullHostBand, minH, maxH, anchorRef, containerRef, container, align, children, header, footer, resolveContainer]);
+
+    // Re-run in useEffect so late-attaching containerRef / anchorRef on parent DOM nodes are picked up
+    React.useEffect(() => {
+      if (!open) return;
+      updatePositionRef.current();
+    }, [open]);
 
     // Dismiss on Escape
     React.useEffect(() => {

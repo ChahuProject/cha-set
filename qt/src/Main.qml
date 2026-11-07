@@ -1983,6 +1983,65 @@ ApplicationWindow {
             }
         }
 
+        // Scenario 15b: AdaptivePopup Bounded Containment & Non-Overflow Parity
+        if (scenario === "all" || scenario === "adaptive-popup" || scenario === "popup") {
+            console.log("[qt-scenario] Running AdaptivePopup bounded containment & non-overflow verification...");
+            var popupFailures = 0;
+            if (!testAdaptivePopup || !testAdaptiveBtn || !testAdaptiveContainer) {
+                console.log("[qt-scenario] FAIL: testAdaptivePopup test harness item not found");
+                popupFailures++;
+            } else {
+                // 1. Open popup downwards with trigger near top
+                testAdaptiveBtn.y = ThemeTokens.dp(20);
+                testAdaptivePopup.placement = "down";
+                testAdaptivePopup.open();
+                if (!testAdaptivePopup.visible) {
+                    console.log("[qt-scenario] FAIL: testAdaptivePopup failed to open");
+                    popupFailures++;
+                } else {
+                    var parentH = testAdaptiveContainer.height;
+                    var popupBottom = testAdaptivePopup.y + testAdaptivePopup.height;
+                    var maxAllowedBottom = parentH - testAdaptivePopup.edgeMargin;
+                    if (popupBottom > maxAllowedBottom + 1.0) {
+                        console.log("[qt-scenario] FAIL: testAdaptivePopup overflowed parent container bottom! y=" + testAdaptivePopup.y + ", height=" + testAdaptivePopup.height + ", bottom=" + popupBottom + ", maxAllowed=" + maxAllowedBottom);
+                        popupFailures++;
+                    } else if (testAdaptivePopup.y < testAdaptiveBtn.y + testAdaptiveBtn.height - 1.0) {
+                        console.log("[qt-scenario] FAIL: testAdaptivePopup top overlapped anchor button! y=" + testAdaptivePopup.y);
+                        popupFailures++;
+                    } else {
+                        console.log("[qt-scenario] PASS: testAdaptivePopup placement=down strictly contained within bounds (bottom=" + popupBottom + " <= " + maxAllowedBottom + ")");
+                    }
+                }
+                testAdaptivePopup.close();
+
+                // 2. Open popup upwards with trigger near bottom
+                testAdaptiveBtn.y = ThemeTokens.dp(220);
+                testAdaptivePopup.placement = "up";
+                testAdaptivePopup.open();
+                if (!testAdaptivePopup.visible) {
+                    console.log("[qt-scenario] FAIL: testAdaptivePopup failed to open upwards");
+                    popupFailures++;
+                } else {
+                    var popupTop = testAdaptivePopup.y;
+                    var minAllowedTop = testAdaptivePopup.edgeMargin;
+                    var anchorTop = testAdaptiveBtn.y;
+                    if (popupTop < minAllowedTop - 1.0) {
+                        console.log("[qt-scenario] FAIL: testAdaptivePopup placement=up overflowed top boundary! y=" + popupTop + ", minAllowed=" + minAllowedTop);
+                        popupFailures++;
+                    } else if (testAdaptivePopup.y + testAdaptivePopup.height > anchorTop + 1.0) {
+                        console.log("[qt-scenario] FAIL: testAdaptivePopup bottom overlapped anchor button! bottom=" + (testAdaptivePopup.y + testAdaptivePopup.height) + ", anchorTop=" + anchorTop);
+                        popupFailures++;
+                    } else {
+                        console.log("[qt-scenario] PASS: testAdaptivePopup placement=up strictly contained within bounds (top=" + popupTop + " >= " + minAllowedTop + ")");
+                    }
+                }
+                testAdaptivePopup.close();
+            }
+            if (popupFailures > 0) {
+                failures += popupFailures;
+            }
+        }
+
         // Scenario 16: Dynamic QML Component Instantiation Benchmark (All 63 Components)
         if (scenario === "all" || scenario === "benchmark" || scenario === "perf") {
             console.log("[qt-scenario] Running dynamic QML component instantiation benchmark for all ChaSet components...");
@@ -2290,6 +2349,64 @@ ApplicationWindow {
             size: 0.3
             position: 0.2
             visible: true
+        }
+
+        // Test container for ChaSetAdaptivePopup bounded containment
+        Item {
+            id: testAdaptiveContainer
+            objectName: "testAdaptiveContainer"
+            x: -2000
+            y: -500
+            width: ThemeTokens.dp(400)
+            height: ThemeTokens.dp(300)
+            visible: true
+
+            ChaSetButton {
+                id: testAdaptiveBtn
+                objectName: "testAdaptiveBtn"
+                x: ThemeTokens.dp(50)
+                y: ThemeTokens.dp(20)
+                width: ThemeTokens.dp(120)
+                height: ThemeTokens.dp(36)
+                text: ChaSetI18n.tr("common.test", "Test")
+            }
+
+            ChaSetAdaptivePopup {
+                id: testAdaptivePopup
+                objectName: "testAdaptivePopup"
+                container: testAdaptiveContainer
+                anchorItem: testAdaptiveBtn
+                placement: "down"
+                width: ThemeTokens.dp(200)
+
+                headerItems: [
+                    Rectangle {
+                        implicitHeight: ThemeTokens.dp(40)
+                        width: parent ? parent.width : 200
+                        color: "transparent"
+                    }
+                ]
+
+                Column {
+                    spacing: 0
+                    Repeater {
+                        model: 10
+                        Rectangle {
+                            width: ThemeTokens.dp(200)
+                            height: ThemeTokens.dp(40)
+                            color: "transparent"
+                        }
+                    }
+                }
+
+                footerItems: [
+                    Rectangle {
+                        implicitHeight: ThemeTokens.dp(40)
+                        width: parent ? parent.width : 200
+                        color: "transparent"
+                    }
+                ]
+            }
         }
 
         // Isolated Component Harness Container (for visual unit tests)

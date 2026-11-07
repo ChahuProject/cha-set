@@ -14,6 +14,9 @@ DocLayout {
     property int demoMaxHeight: -1
     property int demoItemCount: 5
 
+    property alias demoPopup: demoPopup
+    property alias triggerBtn: triggerBtn
+
     ComponentPreview {
         title: ChaSetI18n.tr("desktopComposite.adaptivePopup.sandboxTitle", "Adaptive Popup Sandbox")
         stageHeight: 380
@@ -199,6 +202,7 @@ DocLayout {
 
             ChaSetButton {
                 id: triggerBtn
+                objectName: "adaptiveTriggerBtn"
                 property bool popupOpen: demoPopup.visible
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: root.demoPlacement === "down" ? parent.top : undefined
@@ -214,6 +218,7 @@ DocLayout {
 
             ChaSetAdaptivePopup {
                 id: demoPopup
+                objectName: "adaptiveDemoPopup"
                 parent: previewStage
                 container: previewStage
                 anchorItem: triggerBtn
