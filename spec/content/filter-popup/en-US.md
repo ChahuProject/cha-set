@@ -18,6 +18,7 @@ Keyboard operations supported by this component, matching its behaviour without 
 | Left Click | Toggle inclusion filter on item |
 | Right Click | Toggle exclusion filter on item (red cross indicator) |
 | ArrowUp / ArrowDown | Navigate through facet item rows |
+| Digit 0-9 | In the `numeric` variant, cycle the matching facet through include / exclude / off |
 ```
 
 ## Props {#props}
@@ -38,4 +39,5 @@ Names and semantics are identical on both stacks; `Type` gives the TypeScript si
 | `showLogicToggle` | `boolean` | `false` | Whether to display AND / OR logic toggle capsule. |
 | `logicMode` | `'and' \| 'or'` | `'and'` | Active boolean logic filtering mode. |
 | `hasActive` | `boolean` | `false` | Whether any filters are currently active in this dimension. |
+| `variant` | `'default' \| 'numeric'` | `'default'` | Numeric facet variant (Qt extension): `numeric` targets up to 10 integer facets, hides the search bar, keeps zero-count items visible, renders digit keycaps and cycles facets through include / exclude / off via digit keys. |
 ```

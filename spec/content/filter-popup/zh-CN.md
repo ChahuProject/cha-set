@@ -18,6 +18,7 @@ description: Multi-dimensional facet filtering popup with search, exclusions, ra
 | Left Click | 左键单击切换包含过滤 |
 | Right Click | 右键单击切换排除过滤（红色叉叉视觉标记） |
 | ArrowUp / ArrowDown | 上下方向键遍历过滤条目 |
+| Digit 0-9 | `numeric` 变体下按数字键对对应档位执行「包含 → 排除 → 取消」三态循环 |
 ```
 
 ## Props {#props}
@@ -38,4 +39,5 @@ description: Multi-dimensional facet filtering popup with search, exclusions, ra
 | `showLogicToggle` | `boolean` | `false` | 是否显示 AND / OR 逻辑切换分段器。 |
 | `logicMode` | `'and' \| 'or'` | `'and'` | 激活的布尔筛选逻辑模式。 |
 | `hasActive` | `boolean` | `false` | 本维度是否有生效的过滤条件。 |
+| `variant` | `'default' \| 'numeric'` | `'default'` | 数字分面变体（Qt 端扩展）：`numeric` 面向不超过 10 个整数档位，隐藏搜索框、零计数档位恒显、每个档位展示数字键帽并由数字键驱动三态循环。 |
 ```
