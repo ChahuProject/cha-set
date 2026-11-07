@@ -49,7 +49,7 @@ Button {
         id: tabMeasure
         visible: false
         text: root.text
-        font.pixelSize: root.controlHeight / 2
+        font.pixelSize: root.controlHeight <= 28 ? Typography.sizeCaption : Typography.sizeSmall
         font.family: Typography.familySans
         font.weight: root.selected ? Typography.weightMedium : Typography.weightRegular
     }
@@ -94,7 +94,7 @@ Button {
             id: tabLabel
             objectName: root.labelObjectName
             color: root.selected || root.hovered ? ThemeTokens.text : ThemeTokens.subduedText
-            font.pixelSize: root.controlHeight / 2
+            font.pixelSize: root.controlHeight <= 28 ? Typography.sizeCaption : Typography.sizeSmall
             font.family: Typography.familySans
             font.weight: root.selected ? Typography.weightMedium : Typography.weightRegular
             horizontalAlignment: root.canClose ? Text.AlignLeft : Text.AlignHCenter

@@ -31,6 +31,19 @@ Rectangle {
     property string query: ""
     property int selectedIndex: 0
 
+    function resolveDesc(item) {
+        if (!item) return ""
+        var id = item.id || ""
+        var camel = id.replace(/-([a-z])/g, function(_, c) { return c.toUpperCase() })
+        var res = (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr)
+            ? ChaSetI18n.tr("components." + id + ".description", "")
+            : ""
+        if (!res && camel !== id && typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) {
+            res = ChaSetI18n.tr("components." + camel + ".description", "")
+        }
+        return res || item.desc || ""
+    }
+
     readonly property var filteredItems: {
         if (!query || query.trim() === "") return allItems
         var q = query.trim()
@@ -40,7 +53,7 @@ Rectangle {
         return allItems.filter(function(item) {
             var locTitle = (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("navigation." + item.id, item.title || "") : ""
             var locCat = (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("categories." + item.category, ChaSetI18n.tr("showcase.categories." + item.category, item.category || "")) : ""
-            var locDesc = (typeof ChaSetI18n !== "undefined" && ChaSetI18n.tr) ? ChaSetI18n.tr("components." + item.id + ".description", item.desc || "") : ""
+            var locDesc = root.resolveDesc(item)
             return pinyinMatch(item.title, q) ||
                    pinyinMatch(locTitle, q) ||
                    pinyinMatch(item.desc, q) ||
@@ -196,7 +209,7 @@ Rectangle {
                     }
 
                     Text {
-                        text: itemDelegate.modelData ? ChaSetI18n.tr("components." + itemDelegate.modelData.id + ".description", itemDelegate.modelData.desc || "") : ""
+                        text: itemDelegate.modelData ? root.resolveDesc(itemDelegate.modelData) : ""
                         color: ThemeTokens.subduedText
                         font.family: Typography.familySans
                         font.pixelSize: Typography.sizeCaption
