@@ -143,7 +143,7 @@ export const AdaptivePopup = React.forwardRef<HTMLDivElement, AdaptivePopupProps
         const contentH = contentRef.current
           ? Math.max(contentRef.current.offsetHeight, contentRef.current.scrollHeight)
           : 0;
-        const desiredH = Math.ceil(headerH + contentH + footerH);
+        const desiredH = Math.ceil(headerH + contentH + footerH + 2);
 
         // Calculate host available height
         let usable: number;
@@ -282,6 +282,7 @@ export const AdaptivePopup = React.forwardRef<HTMLDivElement, AdaptivePopupProps
           className="flex-1 min-h-0 w-full"
           viewportClassName="w-full"
           contentClassName="w-full"
+          showVerticalScrollBar={computedStyle.heightCapped}
           contentStyle={{
             paddingLeft: `${contentInset * 0.0625}rem`,
             paddingRight: `${contentInset * 0.0625}rem`,

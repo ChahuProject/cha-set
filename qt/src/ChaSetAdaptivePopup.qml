@@ -429,6 +429,7 @@ Popup {
             height: Math.max(0, parent.height - headerHost.height - footerHost.height)
             clip: true
             floating: true
+            showVerticalScrollBar: root.heightCapped
             // 必须闭合横向度量：ChaSetScrollArea 默认 contentWidth 派生自
             // childrenRect，而面板内容宽度又派生自 scrollArea.width，两者构成回环
             // （Qt 报 "Binding loop detected for property contentWidth"）。

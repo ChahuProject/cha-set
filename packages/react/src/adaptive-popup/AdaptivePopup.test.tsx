@@ -122,8 +122,8 @@ describe('AdaptivePopup', () => {
     expect(onOpenChange).toHaveBeenCalledWith(false);
   });
 
-  it('embeds ChaSet ScrollArea inside the popup content area', () => {
-    render(
+  it('embeds ChaSet ScrollArea inside the popup and only shows scrollbar when height-capped', () => {
+    const { rerender } = render(
       <AdaptivePopup open={true}>
         <div>Scrollable Item 1</div>
         <div>Scrollable Item 2</div>
@@ -133,8 +133,35 @@ describe('AdaptivePopup', () => {
     const scrollAreaRoot = document.querySelector('[data-slot="adaptive-popup"] [data-floating]');
     expect(scrollAreaRoot).toBeTruthy();
 
-    const scrollBar = document.querySelector('[data-slot="adaptive-popup"] [data-orientation="vertical"]');
-    expect(scrollBar).toBeTruthy();
+    // When space is sufficient / uncapped: zero scrollbar
+    let scrollBar = document.querySelector('[data-slot="adaptive-popup"] [data-orientation="vertical"]');
+    expect(scrollBar).toBeNull();
+
+    // When height-capped: scrollbar is rendered
+    const originalOffsetHeight = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetHeight');
+    Object.defineProperty(HTMLElement.prototype, 'offsetHeight', {
+      configurable: true,
+      get() {
+        return 500;
+      },
+    });
+
+    try {
+      rerender(
+        <AdaptivePopup open={true} maxHeight={200}>
+          <div>Scrollable Item 1</div>
+          <div>Scrollable Item 2</div>
+          <div>Scrollable Item 3</div>
+        </AdaptivePopup>,
+      );
+
+      scrollBar = document.querySelector('[data-slot="adaptive-popup"] [data-orientation="vertical"]');
+      expect(scrollBar).toBeTruthy();
+    } finally {
+      if (originalOffsetHeight) {
+        Object.defineProperty(HTMLElement.prototype, 'offsetHeight', originalOffsetHeight);
+      }
+    }
   });
 
   it('computes capped height and clamps top within container when bounded', () => {
