@@ -18,7 +18,10 @@ DocLayout {
     property color cAccentBg: ThemeTokens.hover
 
     property string demoSide: "top"
-    property string demoText: "Save document"
+    property string defaultText: ChaSetI18n.tr("overlays.tooltip.saveDocument", "Save document")
+    property string customText: ""
+    property bool isCustomText: false
+    property string demoText: isCustomText ? customText : defaultText
     property string demoShortcut: "Ctrl+S"
     property bool demoArrow: true
     property int demoDelay: 200
@@ -50,8 +53,8 @@ DocLayout {
         id: heroPreview
         width: parent.width
         title: ChaSetI18n.tr("desktopComposite.tooltip.sandboxTitle", "Tooltip Sandbox")
-        reactCode: `<Tooltip\n  content="${root.demoText}"\n  shortcut="${root.demoShortcut}"\n  arrow={${root.demoArrow}}\n  side="${root.demoSide}"\n  delayDuration={${root.demoDelay}}\n  disabled={${root.demoDisabled}}\n>\n  <Button variant="outline">Hover or Focus Me</Button>\n</Tooltip>`
-        qtCode: `ChaSetTooltip {\n    text: "${root.demoText}"\n    shortcut: "${root.demoShortcut}"\n    arrow: ${root.demoArrow}\n    side: "${root.demoSide}"\n    delay: ${root.demoDelay}\n    disabled: ${root.demoDisabled}\n\n    ChaSetButton {\n        text: "Hover or Focus Me"\n        variant: "outline"\n    }\n}`
+        reactCode: `<Tooltip\n  content="${root.demoText}"\n  shortcut="${root.demoShortcut}"\n  arrow={${root.demoArrow}}\n  side="${root.demoSide}"\n  delayDuration={${root.demoDelay}}\n  disabled={${root.demoDisabled}}\n>\n  <Button variant="outline">${ChaSetI18n.tr("overlays.tooltip.hoverOrFocus", "Hover or Focus Me")}</Button>\n</Tooltip>`
+        qtCode: `ChaSetTooltip {\n    text: "${root.demoText}"\n    shortcut: "${root.demoShortcut}"\n    arrow: ${root.demoArrow}\n    side: "${root.demoSide}"\n    delay: ${root.demoDelay}\n    disabled: ${root.demoDisabled}\n\n    ChaSetButton {\n        text: "${ChaSetI18n.tr("overlays.tooltip.hoverOrFocus", "Hover or Focus Me")}"\n        variant: "outline"\n    }\n}`
 
         stageData: [
             Item {
@@ -120,7 +123,10 @@ DocLayout {
                     width: ThemeTokens.dp(140)
                     size: "sm"
                     text: root.demoText
-                    onTextEdited: root.demoText = text
+                    onTextEdited: {
+                        root.isCustomText = true
+                        root.customText = text
+                    }
                 }
             },
 

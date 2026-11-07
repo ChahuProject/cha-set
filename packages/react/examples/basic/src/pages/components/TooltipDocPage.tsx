@@ -8,15 +8,17 @@ import { DocText } from '../../components/DocText';
 
 export function TooltipDocPage() {
   const { t } = useChaSetI18n();
+  const defaultText = t('overlays.tooltip.saveDocument', 'Save document');
   const [side, setSide] = useState<TooltipSide>('top');
-  const [text, setText] = useState('Save document');
+  const [customText, setCustomText] = useState<string | null>(null);
+  const text = customText !== null ? customText : defaultText;
   const [shortcut, setShortcut] = useState('Ctrl+S');
   const [arrow, setArrow] = useState(true);
   const [delay, setDelay] = useState(200);
   const [disabled, setDisabled] = useState(false);
 
   const heroReactCode = `<Tooltip content="${text}" shortcut="${shortcut}" arrow={${arrow}} side="${side}" delayDuration={${delay}} disabled={${disabled}}>
-  <Button variant="outline">Hover or Focus Me</Button>
+  <Button variant="outline">${t('overlays.tooltip.hoverOrFocus', 'Hover or Focus Me')}</Button>
 </Tooltip>`;
 
   const heroQtCode = `ChaSetTooltip {
@@ -28,7 +30,7 @@ export function TooltipDocPage() {
     disabled: ${disabled}
 
     ChaSetButton {
-        text: "Hover or Focus Me"
+        text: "${t('overlays.tooltip.hoverOrFocus', 'Hover or Focus Me')}"
         variant: "outline"
     }
 }`;
@@ -94,7 +96,7 @@ export function TooltipDocPage() {
                 <Input
                   size="sm"
                   value={text}
-                  onChange={(e) => setText(e.target.value)}
+                  onChange={(e) => setCustomText(e.target.value)}
                   className="w-36 h-8 text-xs"
                 />
               </div>
