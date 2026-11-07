@@ -7,8 +7,7 @@ import ChaSet
 Button {
     id: root
 
-    // Core Tab Contract
-    property string text: ""
+    // Core Tab Contract (inherits text from AbstractButton)
     property bool selected: false
     property bool canClose: true
     property bool useShellChrome: false
