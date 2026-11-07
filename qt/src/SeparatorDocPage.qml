@@ -228,6 +228,8 @@ DocLayout {
                 }
 
                 ChaSetCardContent {
+                    topPadding: 16
+                    bottomPadding: 16
                     Column {
                         width: parent.width
                         spacing: 8
@@ -254,6 +256,8 @@ DocLayout {
                 }
 
                 ChaSetCardFooter {
+                    topPadding: 14
+                    bottomPadding: 16
                     Item {
                         width: parent.width
                         implicitHeight: manageBtn.implicitHeight

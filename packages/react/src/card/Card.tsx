@@ -1,4 +1,5 @@
 import React from 'react';
+import { cn } from '../lib/utils';
 
 export type CardVariant = 'default' | 'secondary' | 'outline';
 export type CardSize = 'default' | 'sm';
@@ -110,7 +111,7 @@ export const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes
       <div
         ref={ref}
         data-slot="card-content"
-        className={`p-[var(--card-spacing,1rem)] pt-0 ${className}`.trim()}
+        className={cn('p-[var(--card-spacing,1rem)] pt-0', className)}
         {...props}
       >
         {children}
@@ -126,7 +127,10 @@ export const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<
       <div
         ref={ref}
         data-slot="card-footer"
-        className={`flex items-center p-[var(--card-spacing,1rem)] gap-2 border-t border-border/50 bg-muted/20 rounded-b-xl ${className}`.trim()}
+        className={cn(
+          'flex items-center p-[var(--card-spacing,1rem)] gap-2 border-t border-border/50 bg-muted/20 rounded-b-xl',
+          className,
+        )}
         {...props}
       >
         {children}

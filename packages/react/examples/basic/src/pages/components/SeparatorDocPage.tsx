@@ -260,7 +260,7 @@ export function SeparatorDocPage() {
               </div>
             </CardContent>
             <Separator orientation="horizontal" />
-            <CardFooter className="pt-3 flex justify-end">
+            <CardFooter className="py-3.5 flex justify-end border-t-0 bg-transparent">
               <Button size="sm">{t('components.separator.manage', 'Manage')}</Button>
             </CardFooter>
           </Card>
