@@ -80,7 +80,8 @@ DocLayout {
                         { label: ChaSetI18n.tr("common.ghost", "Ghost"), value: "ghost" },
                         { label: ChaSetI18n.tr("common.destructive", "Destructive"), value: "destructive" },
                         { label: ChaSetI18n.tr("common.link", "Link"), value: "link" },
-                        { label: ChaSetI18n.tr("common.overlay", "Overlay"), value: "overlay" }
+                        { label: ChaSetI18n.tr("common.overlay", "Overlay"), value: "overlay" },
+                        { label: ChaSetI18n.tr("common.toggle", "Toggle"), value: "toggle" }
                     ]
                     onValueSelected: function(v) { root.btnVariant = String(v); }
                 }

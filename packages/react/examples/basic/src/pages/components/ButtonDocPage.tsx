@@ -65,6 +65,7 @@ export function ButtonDocPage() {
                     { label: t('common.destructive', 'Destructive'), value: 'destructive' },
                     { label: t('common.link', 'Link'), value: 'link' },
                     { label: t('common.overlay', 'Overlay'), value: 'overlay' },
+                    { label: t('common.toggle', 'Toggle'), value: 'toggle' },
                   ]}
                 />
               </div>

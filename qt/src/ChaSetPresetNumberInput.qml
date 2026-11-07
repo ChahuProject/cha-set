@@ -11,6 +11,7 @@ Item {
     property string placeholder: ""
     property bool disabled: false
     property bool allowClear: true
+    property bool clearable: false
     property string clearLabel: "None"
     property int customRadius: 6
     readonly property int effectiveRadius: ThemeTokens.dp(customRadius)
@@ -41,6 +42,8 @@ Item {
         customRadius: root.customRadius
         size: "sm"
         type: "number"
+        clearable: root.clearable
+        extraRightPadding: arrowBtn.visible ? arrowBtn.width : 0
 
         onTextEdited: {
             root.value = textInput.text;

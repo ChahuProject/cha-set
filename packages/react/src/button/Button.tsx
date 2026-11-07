@@ -12,7 +12,8 @@ export type ButtonVariant =
   | 'secondary'
   | 'ghost'
   | 'link'
-  | 'overlay';
+  | 'overlay'
+  | 'toggle';
 
 export type ButtonSize =
   | 'default'
@@ -48,6 +49,8 @@ export const buttonVariants = cva(
           'text-primary underline-offset-4 hover:underline',
         overlay:
           'border border-[rgba(203,213,225,0.6)] bg-[rgba(232,236,243,0.85)] text-foreground shadow-none hover:border-[rgba(203,213,225,0.9)] hover:bg-background/95 active:border-[rgba(203,213,225,0.9)] active:bg-background dark:border-[rgba(60,72,88,0.6)] dark:bg-[rgba(37,45,61,0.85)] dark:hover:border-[rgba(60,72,88,0.9)] dark:hover:bg-[rgba(48,59,79,0.94)] dark:active:border-[rgba(60,72,88,0.9)] dark:active:bg-[rgba(55,67,89,0.97)]',
+        toggle:
+          'border border-input bg-transparent text-muted-foreground shadow-xs hover:bg-accent hover:text-accent-foreground active:bg-accent/80 data-pressed:border-primary data-pressed:bg-primary data-pressed:text-primary-foreground',
       },
       size: {
         default: 'h-8 gap-1.5 px-2.5 text-sm',
@@ -78,6 +81,12 @@ export interface ButtonProps
   fullWidth?: boolean;
   /** Toggle or selected state (renders aria-pressed and active styles). @default false */
   pressed?: boolean;
+  /** Whether the button can be toggled on click. @default false */
+  checkable?: boolean;
+  /** Controlled checked state when checkable. */
+  checked?: boolean;
+  /** Callback fired when checkable state changes. */
+  onCheckedChange?: (checked: boolean) => void;
   /** Optional icon rendered before label/children. */
   leftIcon?: React.ReactNode;
   /** Optional icon rendered after label/children. */
@@ -111,6 +120,7 @@ const forceHoverClasses: Record<string, string> = {
   ghost: 'bg-muted text-foreground',
   link: 'underline',
   overlay: 'border-[rgba(203,213,225,0.9)] bg-background/95 text-foreground dark:border-[rgba(60,72,88,0.9)] dark:bg-[rgba(48,59,79,0.94)]',
+  toggle: 'bg-accent text-accent-foreground',
 };
 
 const forceActiveClasses: Record<string, string> = {
@@ -121,6 +131,7 @@ const forceActiveClasses: Record<string, string> = {
   ghost: 'bg-muted/80 text-foreground',
   link: 'underline',
   overlay: 'border-[rgba(203,213,225,0.9)] bg-background text-foreground dark:border-[rgba(60,72,88,0.9)] dark:bg-[rgba(55,67,89,0.97)]',
+  toggle: 'border-primary bg-primary text-primary-foreground',
 };
 
 export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
@@ -131,6 +142,9 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
     loadingText,
     fullWidth = false,
     pressed = false,
+    checkable = false,
+    checked,
+    onCheckedChange,
     leftIcon,
     rightIcon,
     iconSize,
@@ -145,13 +159,15 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
     children,
     style,
     render,
+    onClick,
     ...rest
   },
   ref,
 ) {
   const currentVariant = variant ?? 'default';
   const currentSize = size ?? 'default';
-  const isPressed = pressed || forceActive;
+  const effectivePressedState = checkable ? (checked ?? pressed) : pressed;
+  const isPressed = effectivePressedState || forceActive;
   const forceClass =
     isPressed
       ? (forceActiveClasses[currentVariant] ?? '')
@@ -173,6 +189,13 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
 
   const effectiveRender = asChild && React.isValidElement(children) ? children : render;
 
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (checkable && onCheckedChange) {
+      onCheckedChange(!effectivePressedState);
+    }
+    onClick?.(e);
+  };
+
   return (
     <BaseButton
       ref={ref}
@@ -181,8 +204,9 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
       style={mergedStyle}
       disabled={isDisabled}
       aria-busy={loading || undefined}
-      aria-pressed={pressed ? true : undefined}
-      data-pressed={pressed ? 'true' : undefined}
+      aria-pressed={effectivePressedState ? true : undefined}
+      data-pressed={effectivePressedState ? 'true' : undefined}
+      onClick={handleClick}
       render={effectiveRender}
       nativeButton={asChild ? false : undefined}
       data-slot="button"

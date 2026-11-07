@@ -14,6 +14,7 @@ export const buttonVariantSchema = z.enum([
   'ghost',
   'link',
   'overlay',
+  'toggle',
 ]);
 export const buttonSizeSchema = z.enum([
   'default',
@@ -34,6 +35,8 @@ export const buttonSchema = z.object({
   disabled: z.boolean().default(false),
   type: z.enum(['button', 'submit', 'reset']).default('button'),
   pressed: z.boolean().default(false),
+  checkable: z.boolean().default(false),
+  checked: z.boolean().default(false),
   /** Logical unscaled icon size; enlarges/overrides the icon rendered inside the button. */
   iconSize: z.number().int().positive().optional(),
   /** Optional keyboard shortcut serialized string (e.g. 'Ctrl+Enter'). */

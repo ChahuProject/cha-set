@@ -8,13 +8,16 @@ Item {
     id: root
 
     // ---- API Contract (shadcn/ui aligned) ----
-    property string variant: "default"   // default | destructive | outline | secondary | ghost | link | overlay
+    property string variant: "default"   // default | destructive | outline | secondary | ghost | link | overlay | toggle
     property string size: "default"      // default | sm | lg | icon | xs | icon-xs | icon-sm | icon-lg
     property bool loading: false
     property string loadingText: ""
     property bool fullWidth: false
     property bool disabled: false
     property bool pressed: false
+    property bool checkable: false
+    property bool checked: false
+    readonly property bool effectivePressed: checkable ? checked : pressed
     property string text: ""
     property string shortcut: ""
     property string shortcutCompact: "auto" // "auto" | "always" | "never"
@@ -32,6 +35,7 @@ Item {
     property bool forceActive: false
 
     signal clicked()
+    signal toggled(bool checked)
 
     readonly property bool effectiveDisabled: disabled || loading
     readonly property bool effectiveHovered: (hovered || forceHover) && !effectiveDisabled
@@ -86,39 +90,45 @@ Item {
 
     function bgColor() {
         if (variant === "overlay") {
-            if (effectiveDown || (pressed && !effectiveDisabled)) return ThemeTokens.dark ? Qt.rgba(55.0 / 255.0, 67.0 / 255.0, 89.0 / 255.0, 0.97) : Qt.rgba(1.0, 1.0, 1.0, 1.0)
+            if (effectiveDown || (effectivePressed && !effectiveDisabled)) return ThemeTokens.dark ? Qt.rgba(55.0 / 255.0, 67.0 / 255.0, 89.0 / 255.0, 0.97) : Qt.rgba(1.0, 1.0, 1.0, 1.0)
             if (effectiveHovered) return ThemeTokens.dark ? Qt.rgba(48.0 / 255.0, 59.0 / 255.0, 79.0 / 255.0, 0.94) : Qt.rgba(1.0, 1.0, 1.0, 0.96)
             return ThemeTokens.dark ? Qt.rgba(37.0 / 255.0, 45.0 / 255.0, 61.0 / 255.0, 0.85) : Qt.rgba(232.0 / 255.0, 236.0 / 255.0, 243.0 / 255.0, 0.85)
         }
 
+        if (variant === "toggle") {
+            if (effectiveDown || (effectivePressed && !effectiveDisabled)) return cPrimary
+            if (effectiveHovered) return cAccentBg
+            return "transparent"
+        }
+
         if (variant === "ghost" || variant === "link") {
             if (variant === "link") return "transparent"
-            if (effectiveDown || (pressed && !effectiveDisabled)) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.8) : Qt.rgba(226.0 / 255.0, 232.0 / 255.0, 240.0 / 255.0, 1.0)
+            if (effectiveDown || (effectivePressed && !effectiveDisabled)) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.8) : Qt.rgba(226.0 / 255.0, 232.0 / 255.0, 240.0 / 255.0, 1.0)
             if (effectiveHovered) return cAccentBg
             return "transparent"
         }
 
         if (variant === "outline") {
-            if (effectiveDown || (pressed && !effectiveDisabled)) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.8) : Qt.rgba(226.0 / 255.0, 232.0 / 255.0, 240.0 / 255.0, 1.0)
+            if (effectiveDown || (effectivePressed && !effectiveDisabled)) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.8) : Qt.rgba(226.0 / 255.0, 232.0 / 255.0, 240.0 / 255.0, 1.0)
             if (effectiveHovered) return cAccentBg
             return cBackground
         }
 
         if (variant === "secondary") {
-            if (effectiveDown || (pressed && !effectiveDisabled)) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.7) : Qt.rgba(203.0 / 255.0, 213.0 / 255.0, 225.0 / 255.0, 1.0)
+            if (effectiveDown || (effectivePressed && !effectiveDisabled)) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.7) : Qt.rgba(203.0 / 255.0, 213.0 / 255.0, 225.0 / 255.0, 1.0)
             if (effectiveHovered) return ThemeTokens.dark ? Qt.rgba(30.0 / 255.0, 41.0 / 255.0, 59.0 / 255.0, 0.8) : Qt.rgba(226.0 / 255.0, 232.0 / 255.0, 240.0 / 255.0, 1.0)
             return cSecondaryBg
         }
 
         if (variant === "destructive") {
-            if (effectiveDown || (pressed && !effectiveDisabled)) return Qt.rgba(cDestructive.r, cDestructive.g, cDestructive.b, 0.25)
+            if (effectiveDown || (effectivePressed && !effectiveDisabled)) return Qt.rgba(cDestructive.r, cDestructive.g, cDestructive.b, 0.25)
             if (effectiveHovered) return Qt.rgba(cDestructive.r, cDestructive.g, cDestructive.b, 0.2)
             return ThemeTokens.dark ? Qt.rgba(cDestructive.r, cDestructive.g, cDestructive.b, 0.2) : Qt.rgba(253.0 / 255.0, 236.0 / 255.0, 236.0 / 255.0, 1.0)
         }
 
         // default / primary
         const base = cPrimary
-        if (effectiveDown || (pressed && !effectiveDisabled)) return ThemeTokens.dark ? Qt.rgba(74.0 / 255.0, 149.0 / 255.0, 230.0 / 255.0, 1.0) : Qt.rgba(21.0 / 255.0, 101.0 / 255.0, 192.0 / 255.0, 1.0)
+        if (effectiveDown || (effectivePressed && !effectiveDisabled)) return ThemeTokens.dark ? Qt.rgba(74.0 / 255.0, 149.0 / 255.0, 230.0 / 255.0, 1.0) : Qt.rgba(21.0 / 255.0, 101.0 / 255.0, 192.0 / 255.0, 1.0)
         if (effectiveHovered) return ThemeTokens.dark ? Qt.rgba(51.0 / 255.0, 135.0 / 255.0, 227.0 / 255.0, 1.0) : Qt.rgba(25.0 / 255.0, 110.0 / 255.0, 205.0 / 255.0, 1.0)
         return base
     }
@@ -126,11 +136,12 @@ Item {
     function fgColor() {
         switch (variant) {
         case "destructive": return cDestructive
-        case "outline":     return (effectiveHovered || (pressed && !effectiveDisabled)) ? cAccentFg : cFg
+        case "outline":     return (effectiveHovered || (effectivePressed && !effectiveDisabled)) ? cAccentFg : cFg
         case "secondary":   return cSecondaryFg
         case "overlay":     return cFg
-        case "ghost":       return (effectiveHovered || (pressed && !effectiveDisabled)) ? cAccentFg : cFg
+        case "ghost":       return (effectiveHovered || (effectivePressed && !effectiveDisabled)) ? cAccentFg : cFg
         case "link":        return cPrimary
+        case "toggle":      return (effectiveDown || (effectivePressed && !effectiveDisabled)) ? cPrimaryFg : (effectiveHovered ? cAccentFg : ThemeTokens.subduedText)
         case "default":
         case "primary":
         default:            return cPrimaryFg
@@ -138,18 +149,27 @@ Item {
     }
 
     function hasBorder() {
-        return variant === "outline" || variant === "overlay"
+        return variant === "outline" || variant === "overlay" || variant === "toggle"
     }
 
     function borderColor() {
         if (variant === "overlay") {
-            if (effectiveHovered || (pressed && !effectiveDisabled)) {
+            if (effectiveHovered || (effectivePressed && !effectiveDisabled)) {
                 return ThemeTokens.dark ? Qt.rgba(60.0 / 255.0, 72.0 / 255.0, 88.0 / 255.0, 0.9) : Qt.rgba(203.0 / 255.0, 213.0 / 255.0, 225.0 / 255.0, 0.9)
             }
             return ThemeTokens.dark ? Qt.rgba(60.0 / 255.0, 72.0 / 255.0, 88.0 / 255.0, 0.6) : Qt.rgba(203.0 / 255.0, 213.0 / 255.0, 225.0 / 255.0, 0.6)
         }
+        if (variant === "toggle") {
+            if (effectiveDown || (effectivePressed && !effectiveDisabled)) {
+                return cPrimary
+            }
+            if (effectiveHovered) {
+                return ThemeTokens.dark ? Qt.lighter(cBorder, 1.4) : Qt.darker(cBorder, 1.18)
+            }
+            return cBorder
+        }
         if (!hasBorder()) return "transparent"
-        if (effectiveHovered || (pressed && !effectiveDisabled)) {
+        if (effectiveHovered || (effectivePressed && !effectiveDisabled)) {
             return ThemeTokens.dark ? Qt.lighter(cBorder, 1.4) : Qt.darker(cBorder, 1.18)
         }
         return cBorder
@@ -166,7 +186,7 @@ Item {
     height: buttonHeight()
     width: fullWidth && parent ? parent.width : implicitWidth
 
-    scale: (root.effectiveDown || (root.pressed && !root.effectiveDisabled)) ? 0.985 : 1.0
+    scale: (root.effectiveDown || (root.effectivePressed && !root.effectiveDisabled)) ? 0.985 : 1.0
     Behavior on scale {
         enabled: ThemeTokens.animationsEnabled && !root.forceActive && (typeof harnessMode === "undefined" || harnessMode === "")
         NumberAnimation { duration: ThemeTokens.motionQuick; easing.type: ThemeTokens.easeStandard }
@@ -187,10 +207,10 @@ Item {
         radius: root.effectiveRadius
         roundLeft: root.roundLeft
         roundRight: root.roundRight
-        color: root.hasBorder() || root.variant === "default" || root.variant === "primary" || root.variant === "secondary" || root.variant === "destructive"
+        color: root.hasBorder() || root.variant === "default" || root.variant === "primary" || root.variant === "secondary" || root.variant === "destructive" || root.variant === "toggle"
                ? Qt.rgba(0, 0, 0, ThemeTokens.dark ? 0.25 : 0.06)
                : "transparent"
-        visible: !root.effectiveDown && !root.pressed && !root.effectiveDisabled && (root.variant !== "ghost" && root.variant !== "link" && root.variant !== "destructive" && root.variant !== "overlay")
+        visible: !root.effectiveDown && !root.effectivePressed && !root.effectiveDisabled && (root.variant !== "ghost" && root.variant !== "link" && root.variant !== "destructive" && root.variant !== "overlay")
     }
 
     // Background surface
@@ -357,7 +377,13 @@ Item {
         id: tap
         acceptedButtons: Qt.LeftButton
         enabled: !root.effectiveDisabled
-        onTapped: root.clicked()
+        onTapped: {
+            if (root.checkable) {
+                root.checked = !root.checked
+                root.toggled(root.checked)
+            }
+            root.clicked()
+        }
         onPressedChanged: {
             root.down = tap.pressed
             if (!tap.pressed) root.hovered = hoverHandler.hovered
@@ -367,11 +393,24 @@ Item {
 
     Keys.onSpacePressed: (event) => {
         event.accepted = true
-        if (!effectiveDisabled) { down = true; root.clicked() }
+        if (!effectiveDisabled) {
+            down = true
+            if (root.checkable) {
+                root.checked = !root.checked
+                root.toggled(root.checked)
+            }
+            root.clicked()
+        }
     }
     Keys.onReturnPressed: (event) => {
         event.accepted = true
-        if (!effectiveDisabled) root.clicked()
+        if (!effectiveDisabled) {
+            if (root.checkable) {
+                root.checked = !root.checked
+                root.toggled(root.checked)
+            }
+            root.clicked()
+        }
     }
     Keys.onReleased: (event) => { if (event.key === Qt.Key_Space) down = false }
 }

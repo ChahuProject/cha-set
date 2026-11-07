@@ -28,6 +28,7 @@ ChaSetSquircle {
     property bool forceHover: false
     property bool forceFocus: false
     property int customRadius: -1
+    property real extraRightPadding: 0
 
     signal textEdited()
     signal accepted()
@@ -136,7 +137,7 @@ ChaSetSquircle {
     Row {
         id: rightActions
         anchors.right: parent.right
-        anchors.rightMargin: ThemeTokens.dp(root.isSm ? 6 : 8)
+        anchors.rightMargin: ThemeTokens.dp(root.isSm ? 6 : 8) + root.extraRightPadding
         anchors.verticalCenter: parent.verticalCenter
         spacing: ThemeTokens.dp(4)
         z: 5
@@ -230,7 +231,7 @@ ChaSetSquircle {
         id: inputInner
         anchors.fill: parent
         anchors.leftMargin: leftIcon.visible ? (leftIcon.width + ThemeTokens.dp(root.isSm ? 12 : 14)) : ThemeTokens.dp(root.isSm ? 8 : 10)
-        anchors.rightMargin: (clearBtn.visible || eyeBtn.visible || rightIcon.visible) ? (rightActions.width + ThemeTokens.dp(root.isSm ? 10 : 12)) : ThemeTokens.dp(root.isSm ? 8 : 10)
+        anchors.rightMargin: ((clearBtn.visible || eyeBtn.visible || rightIcon.visible) ? (rightActions.width + ThemeTokens.dp(root.isSm ? 10 : 12)) : ThemeTokens.dp(root.isSm ? 8 : 10)) + root.extraRightPadding
         verticalAlignment: TextInput.AlignVCenter
 
         text: root.text
