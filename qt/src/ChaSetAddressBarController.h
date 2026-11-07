@@ -90,6 +90,7 @@ private:
   void rebuildSegments();
   bool navigateValidated(const QString &rawPath, bool recordStack);
   void navigateToThisPc();
+  void refreshVirtualIdentity();
   const QHash<QString, QString> &knownFolders() const;
   const QHash<QString, QString> &driveLabels() const;
   void buildFolderMaps() const;

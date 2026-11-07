@@ -6,6 +6,7 @@
 
 #include <QClipboard>
 #include <QDir>
+#include <QEvent>
 #include <QFileInfo>
 #include <QGuiApplication>
 #include <QStandardPaths>
@@ -103,6 +104,9 @@ ChaSetAddressBarController::ChaSetAddressBarController(QObject *parent)
   connect(&ChaSetPathHistoryStore::instance(),
           &ChaSetPathHistoryStore::historyChanged, this,
           &ChaSetAddressBarController::historyChanged);
+  if (qGuiApp) {
+    qGuiApp->installEventFilter(this);
+  }
   rebuildSegments();
 }
 
@@ -134,6 +138,18 @@ void ChaSetAddressBarController::setSubfolderPopup(QObject *popup) {
 }
 
 bool ChaSetAddressBarController::eventFilter(QObject *watched, QEvent *event) {
+  if (event->type() == QEvent::LanguageChange ||
+      event->type() == QEvent::LocaleChange) {
+    // 语言切换：已知文件夹/磁盘名称缓存与虚拟视图名称需按新语言重建，否则
+    // 面包屑与编辑框会一直停留在旧语言（直到用户重新导航）。
+    // LanguageChange 来自 QTranslator 装卸，LocaleChange 来自
+    // QLocale::setDefault；两者都可能先于另一方到达，故各自触发一次重建。
+    m_foldersDirty = true;
+    refreshVirtualIdentity();
+    rebuildSegments();
+    emit editingTextChanged();
+    return false;
+  }
   if (m_editing && (event->type() == QEvent::MouseButtonPress ||
                     event->type() == QEvent::TouchBegin)) {
     if (m_visualItem && m_visualItem->window()) {
@@ -283,13 +299,6 @@ void ChaSetAddressBarController::setEditing(bool editing) {
   if (m_editing == editing)
     return;
   m_editing = editing;
-  if (qGuiApp) {
-    if (m_editing) {
-      qGuiApp->installEventFilter(this);
-    } else {
-      qGuiApp->removeEventFilter(this);
-    }
-  }
   emit editingChanged();
 }
 
@@ -856,31 +865,43 @@ const QHash<QString, QString> &ChaSetAddressBarController::driveLabels() const {
   return m_driveLabels;
 }
 
-void ChaSetAddressBarController::buildFolderMaps() const {
-  m_foldersDirty = false;
-  m_knownFolders.clear();
-  m_driveLabels.clear();
-
-  struct KnownEntry {
-    QStandardPaths::StandardLocation location;
-    const char *displayName;
-  };
-  const KnownEntry known[] = {
-      {QStandardPaths::DesktopLocation, "桌面"},
-      {QStandardPaths::DocumentsLocation, "文档"},
-      {QStandardPaths::DownloadLocation, "下载"},
-      {QStandardPaths::PicturesLocation, "图片"},
-      {QStandardPaths::MusicLocation, "音乐"},
-      {QStandardPaths::MoviesLocation, "视频"},
-  };
-  for (const KnownEntry &entry : known) {
-    const QString dir = QStandardPaths::writableLocation(entry.location);
+void ChaSetAddressBarController::refreshVirtualIdentity() {
+  if (m_virtualBase.isEmpty())
+    return;
+  const QString cleanBase =
+      QDir::fromNativeSeparators(QDir::cleanPath(m_virtualBase));
+  for (const KnownSpec &spec : kKnownSpecs) {
+    const QString dir = QStandardPaths::writableLocation(spec.loc);
     if (dir.isEmpty())
       continue;
     const QFileInfo info(dir);
     if (!info.isDir())
       continue;
-    m_knownFolders.insert(info.absoluteFilePath(), tr(entry.displayName));
+    if (QDir::fromNativeSeparators(info.absoluteFilePath())
+            .compare(cleanBase, Qt::CaseInsensitive) == 0) {
+      m_virtualName = localizedKnownName(spec);
+      m_virtualIcon = QString::fromLatin1(spec.icon);
+      return;
+    }
+  }
+}
+
+void ChaSetAddressBarController::buildFolderMaps() const {
+  m_foldersDirty = false;
+  m_knownFolders.clear();
+  m_driveLabels.clear();
+
+  // 名称统一走 localizedKnownName：翻译优先、缺翻译时按当前 locale 回退英文，
+  // 保证语言切换后重建即生效（此前的 tr(变量) 既无法被 lupdate 抽取，也不会
+  // 随语言变化）。
+  for (const KnownSpec &spec : kKnownSpecs) {
+    const QString dir = QStandardPaths::writableLocation(spec.loc);
+    if (dir.isEmpty())
+      continue;
+    const QFileInfo info(dir);
+    if (!info.isDir())
+      continue;
+    m_knownFolders.insert(info.absoluteFilePath(), localizedKnownName(spec));
   }
 
   for (const QStorageInfo &volume : QStorageInfo::mountedVolumes()) {
