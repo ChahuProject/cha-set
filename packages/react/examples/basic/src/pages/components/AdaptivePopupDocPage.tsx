@@ -187,7 +187,7 @@ export function AdaptivePopupDocPage() {
         >
           <div
             ref={containerRef}
-            className="relative w-full h-[22.5rem] rounded-lg border border-dashed border-border bg-muted/10 flex items-center justify-center overflow-hidden"
+            className="relative w-full h-[22.5rem] rounded-lg border border-dashed border-border bg-muted/10 overflow-hidden"
           >
             <div className="text-center text-xs text-muted-foreground/60 absolute top-3 select-none pointer-events-none">
               {t('desktopComposite.adaptivePopup.boundedCanvasHint', 'Bounded preview container (adapts and clamps inside this area)')}

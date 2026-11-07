@@ -2036,6 +2036,46 @@ ApplicationWindow {
                     }
                 }
                 testAdaptivePopup.close();
+
+                // 3. Test Living DocPage: AdaptivePopupDocPage centering and positioning
+                win.activePage = "adaptive-popup";
+                contentScroll.contentY = ThemeTokens.dp(300);
+                if (!pageLoader.item || !pageLoader.item.demoPopup || !pageLoader.item.triggerBtn) {
+                    console.log("[qt-scenario] FAIL: AdaptivePopupDocPage or demoPopup/triggerBtn not found in pageLoader");
+                    popupFailures++;
+                } else {
+                    var docPopup = pageLoader.item.demoPopup;
+                    var docBtn = pageLoader.item.triggerBtn;
+                    docPopup.open();
+
+                    var btnCenter = docBtn.x + docBtn.width / 2;
+                    var popupCenter = docPopup.x + docPopup.width / 2;
+                    var centerDelta = Math.abs(btnCenter - popupCenter);
+                    if (centerDelta > 2) {
+                        console.log("[qt-scenario] FAIL: demoPopup not centered with triggerBtn: btnCenter=" + btnCenter + ", popupCenter=" + popupCenter + ", delta=" + centerDelta);
+                        popupFailures++;
+                    } else {
+                        console.log("[qt-scenario] PASS: demoPopup horizontally centered beneath triggerBtn (delta=" + centerDelta + ")");
+                    }
+
+                    var expectedTop = docBtn.y + docBtn.height + docPopup.gap;
+                    var topDelta = Math.abs(docPopup.y - expectedTop);
+                    if (topDelta > 2) {
+                        console.log("[qt-scenario] FAIL: demoPopup not directly below triggerBtn: actual=" + docPopup.y + ", expected=" + expectedTop + ", delta=" + topDelta);
+                        popupFailures++;
+                    } else {
+                        console.log("[qt-scenario] PASS: demoPopup directly below triggerBtn (actual=" + docPopup.y + ", expected=" + expectedTop + ")");
+                    }
+
+                    if (docPopup.x < docPopup.edgeMargin || docPopup.x + docPopup.width > docPopup.hostBandWidth - docPopup.edgeMargin + 1) {
+                        console.log("[qt-scenario] FAIL: demoPopup horizontal bounds violation: x=" + docPopup.x + ", max=" + (docPopup.hostBandWidth - docPopup.edgeMargin));
+                        popupFailures++;
+                    } else {
+                        console.log("[qt-scenario] PASS: demoPopup horizontal bounds strictly maintained");
+                    }
+
+                    docPopup.close();
+                }
             }
             if (popupFailures > 0) {
                 failures += popupFailures;
@@ -3411,7 +3451,7 @@ ApplicationWindow {
                 delayedCommit: true
                 debounceDuration: 500
                 format: function(v) {
-                    return ChaSetI18n.tr("desktopComposite.scaleOsd.uiScaleFormat", "界面缩放 {{percent}}%", { percent: Math.round(v * 100) });
+                    return ChaSetI18n.tr("desktopComposite.scaleOsd.uiScaleFormat", "UI Scale {{percent}}%", { percent: Math.round(v * 100) });
                 }
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 36
