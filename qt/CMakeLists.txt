@@ -366,6 +366,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR OR CHASET_BUILD_DEMO)
             src/DraggableModalDocPage.qml
             src/ResizableDocPage.qml
             src/WindowTitleBarDocPage.qml
+            src/DocumentTabsDocPage.qml
             src/GenericDataTableDocPage.qml
             src/QueryBuilderDocPage.qml
             src/ViewportConstrainedContainerDocPage.qml

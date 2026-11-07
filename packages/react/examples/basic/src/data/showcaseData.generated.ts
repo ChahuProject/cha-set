@@ -1528,6 +1528,13 @@ export const NAVIGATION_DATA: NavCategory[] = [
         "description": "Desktop kinematic scrolling helper with continuous damping, Shift-horizontal conversion, and gesture mutex."
       },
       {
+        "id": "document-tabs",
+        "title": "Document Tabs",
+        "href": "#/components/document-tabs",
+        "desc": "Desktop workspace document tab strip container with smooth horizontal scroll, adaptive width, close actions, and shell chrome integration.",
+        "description": "Desktop workspace document tab strip container with smooth horizontal scroll, adaptive width, close actions, and shell chrome integration."
+      },
+      {
         "id": "virtual-list",
         "title": "Virtual List",
         "href": "#/components/virtual-list",

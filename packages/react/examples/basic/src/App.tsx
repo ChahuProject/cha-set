@@ -83,6 +83,7 @@ import { VirtualGridDocPage } from './pages/components/VirtualGridDocPage';
 import { DraggableModalDocPage } from './pages/components/DraggableModalDocPage';
 import { ResizableDocPage } from './pages/components/ResizableDocPage';
 import { WindowTitleBarDocPage } from './pages/components/WindowTitleBarDocPage';
+import { DocumentTabsDocPage } from './pages/components/DocumentTabsDocPage';
 import { GenericDataTableDocPage } from './pages/components/GenericDataTableDocPage';
 import { HoverCopyDocPage } from './pages/components/HoverCopyDocPage';
 import { QueryBuilderDocPage } from './pages/components/QueryBuilderDocPage';
@@ -938,6 +939,8 @@ export function App() {
         return <ResizableDocPage />;
       case '#/components/window-title-bar':
         return <WindowTitleBarDocPage />;
+      case '#/components/document-tabs':
+        return <DocumentTabsDocPage />;
       case '#/components/generic-data-table':
         return <GenericDataTableDocPage />;
       case '#/components/query-builder':

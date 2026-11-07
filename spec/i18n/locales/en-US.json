@@ -41,6 +41,7 @@
     "tip": "Tip",
     "resultCount": "{{count}} results",
     "variant": "Variant:",
+    "mode": "Mode:",
     "size": "Size:",
     "fullWidth": "Full Width",
     "pressed": "Pressed",
@@ -170,6 +171,7 @@
     "variantsAndOptions": "Variants & Options",
     "multiFileTabs": "Multi-File Tabs",
     "variant": "Variant:",
+    "mode": "Mode:",
     "size": "Size:",
     "categories": {
       "Get Started": "Get Started",
@@ -301,6 +303,7 @@
     "floating-notice": "Floating Notice",
     "window-title-bar": "Window Title Bar",
     "smooth-wheel-handler": "Smooth Wheel Handler",
+    "document-tabs": "Document Tabs",
     "virtual-list": "Virtual List",
     "virtual-tree": "Virtual Tree",
     "virtual-grid": "Virtual Grid",

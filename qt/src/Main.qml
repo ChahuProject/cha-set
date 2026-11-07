@@ -442,6 +442,7 @@ ApplicationWindow {
         case "splitter": return "ResizableDocPage.qml";
         case "resizable": return "ResizableDocPage.qml";
         case "window-title-bar": return "WindowTitleBarDocPage.qml";
+        case "document-tabs": return "DocumentTabsDocPage.qml";
         case "generic-data-table": return "GenericDataTableDocPage.qml";
         case "query-builder": return "QueryBuilderDocPage.qml";
         case "viewport-constrained-container": return "ViewportConstrainedContainerDocPage.qml";
@@ -2178,7 +2179,8 @@ ApplicationWindow {
                 { id: "virtual-grid", name: "ChaSetVirtualGrid" },
                 { id: "virtual-list", name: "ChaSetVirtualList" },
                 { id: "virtual-tree", name: "ChaSetVirtualTree" },
-                { id: "window-title-bar", name: "ChaSetWindowTitleBar" }
+                { id: "window-title-bar", name: "ChaSetWindowTitleBar" },
+                { id: "document-tabs", name: "ChaSetDocumentTabs" }
             ];
 
             var batchCount = 5;

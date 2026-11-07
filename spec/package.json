@@ -67,6 +67,7 @@
     "./floating-notice": "./components/floating-notice.ts",
     "./keybinding-manager": "./components/keybinding-manager.ts",
     "./filter-popup": "./components/filter-popup.ts",
+    "./document-tabs": "./components/document-tabs.ts",
     "./showcase/shortcuts.json": "./showcase/shortcuts.json"
   },
   "dependencies": {

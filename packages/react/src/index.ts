@@ -43,6 +43,7 @@ export * from './draggable-modal';
 export * from './splitter';
 export * from './resizable';
 export * from './window-title-bar';
+export * from './document-tabs';
 export * from './data-table';
 export * from './query-builder';
 export * from './viewport-constrained-container';

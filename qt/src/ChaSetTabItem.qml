@@ -44,6 +44,10 @@ Button {
     padding: 0
     property bool suppressClick: false
 
+    HoverHandler {
+        cursorShape: root.enabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
+    }
+
     // 隐藏测量 Text：content 模式下计算标签宽度的文本宽度
     Text {
         id: tabMeasure
@@ -124,10 +128,14 @@ Button {
             contentItem: ChaSetIcon {
                 anchors.centerIn: parent
                 name: "close"
-                size: Math.max(10, Math.round(closeArea.height * 0.75))
+                size: 14
                 color: closeArea.hovered
                        ? (ThemeTokens.danger !== undefined ? ThemeTokens.danger : ThemeTokens.text)
                        : (root.selected ? ThemeTokens.text : ThemeTokens.subduedText)
+            }
+
+            HoverHandler {
+                cursorShape: Qt.PointingHandCursor
             }
 
             background: ChaSetSquircle {

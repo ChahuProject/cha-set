@@ -110,6 +110,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "tip": "提示",
     "resultCount": "{{count}} 个结果",
     "variant": "变体:",
+    "mode": "模式:",
     "size": "尺寸:",
     "fullWidth": "全宽",
     "pressed": "按下态",
@@ -243,6 +244,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "variantsAndOptions": "变体与选项",
     "multiFileTabs": "多文件标签页",
     "variant": "变体:",
+    "mode": "模式:",
     "size": "尺寸:",
     "categories": {
       "Get Started": "起步与主题",
@@ -467,6 +469,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "floating-notice": "浮动提示",
     "window-title-bar": "窗口标题栏",
     "smooth-wheel-handler": "平滑滚轮处理器",
+    "document-tabs": "文档标签页",
     "virtual-list": "虚拟列表",
     "virtual-tree": "虚拟树形控件",
     "virtual-grid": "虚拟网格",
@@ -1087,6 +1090,12 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     },
     "window-title-bar": {
       "description": "桌面端无边框窗口标题栏组件，包含应用标识、标题、拖拽移动区域以及最小化/最大化/关闭系统控制按钮。"
+    },
+    "document-tabs": {
+      "description": "桌面端工作区多文档标签栏容器，支持平滑横向滚动、内容自适应/等宽排版模式、关闭操作与无边框标题栏无缝融合。"
+    },
+    "documentTabs": {
+      "description": "桌面端工作区多文档标签栏容器，支持平滑横向滚动、内容自适应/等宽排版模式、关闭操作与无边框标题栏无缝融合。"
     },
     "smooth-wheel-handler": {
       "description": "桌面端平滑滚轮运动学辅助组件，提供连续物理动量阻尼累加、Shift+滚轮水平转置及触控拖拽解耦互斥。"
@@ -1813,6 +1822,37 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "minimizeClicked": "点击最小化",
       "overviewDesc": "带原生风格操作按钮的无边框窗口标题栏。",
       "sandboxTitle": "窗口标题栏沙盒"
+    },
+    "documentTabs": {
+      "sandboxTitle": "文档标签页沙盒",
+      "overviewDesc": "桌面端多文档与工作区标签栏容器，提供平滑关闭动画、固定标签、动态增删与尾部操作插槽。",
+      "newTab": "新建标签页",
+      "tabTitle": "文档 {{index}}",
+      "pinnedTab": "README.md (固定)",
+      "activeTab": "当前激活: {{title}}",
+      "totalTabs": "标签总数: {{count}}",
+      "widthModeTitle": "排版模式 (自适应宽 vs 等宽)",
+      "widthModeDesc": "支持像 VS Code 的内容自适应模式与像 Chrome 的固定等宽模式实时切换。",
+      "modeContent": "自适应宽度 (Content)",
+      "modeFixed": "固定等宽 (Fixed)",
+      "overflowTitle": "海量标签溢出与平滑滚动",
+      "overflowDesc": "模拟 20+ 个超量标签场景，验证横向滚轮滑动、边界阻尼与响应式视口裁剪。",
+      "addBatch": "批量添加 15 个标签",
+      "resetTabs": "重置标签",
+      "shellChromeTitle": "无边框原生标题栏一体化融合",
+      "shellChromeDesc": "启用 useShellChrome 与透明背景，将多文档标签栏直接内嵌于原生无边框标题栏中。",
+      "windowMockTitle": "茶壶工作区桌面端 (Chahu Workspace Studio)",
+      "tabItemTitle": "ChaSetTabItem 原子原语微交互",
+      "tabItemDesc": "走查 TabItem 独立微交互：关闭图标淡入高亮、长文件名省略与 Tooltip、外设中键关闭与右键菜单。",
+      "singleTabNormal": "正常文档.tsx",
+      "singleTabPinned": "核心配置.json (固定)",
+      "singleTabLong": "非常长长长长长长长长长长长的文件名示例.tsx",
+      "lastAction": "最后交互事件: {{event}}",
+      "actionIdle": "空闲",
+      "actionClosed": "已关闭标签: {{id}}",
+      "actionMiddleClicked": "中键点击关闭: {{id}}",
+      "actionContextMenu": "触发右键菜单: {{id}}",
+      "actionSelected": "选中标签: {{id}}"
     },
     "addressBar": {
       "activePath": "当前路径:",
@@ -3167,6 +3207,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "tip": "Tip",
     "resultCount": "{{count}} results",
     "variant": "Variant:",
+    "mode": "Mode:",
     "size": "Size:",
     "fullWidth": "Full Width",
     "pressed": "Pressed",
@@ -3300,6 +3341,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "variantsAndOptions": "Variants & Options",
     "multiFileTabs": "Multi-File Tabs",
     "variant": "Variant:",
+    "mode": "Mode:",
     "size": "Size:",
     "categories": {
       "Get Started": "Get Started",
@@ -3524,6 +3566,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     "floating-notice": "Floating Notice",
     "window-title-bar": "Window Title Bar",
     "smooth-wheel-handler": "Smooth Wheel Handler",
+    "document-tabs": "Document Tabs",
     "virtual-list": "Virtual List",
     "virtual-tree": "Virtual Tree",
     "virtual-grid": "Virtual Grid",
@@ -4144,6 +4187,12 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     },
     "window-title-bar": {
       "description": "Desktop window frame header with title, drag region, and minimize/maximize/close buttons."
+    },
+    "document-tabs": {
+      "description": "Desktop workspace document tab strip container with smooth horizontal scroll, adaptive width, close actions, and shell chrome integration."
+    },
+    "documentTabs": {
+      "description": "Desktop workspace document tab strip container with smooth horizontal scroll, adaptive width, close actions, and shell chrome integration."
     },
     "smooth-wheel-handler": {
       "description": "Desktop kinematic scrolling helper with continuous damping, Shift-horizontal conversion, and gesture mutex."
@@ -4870,6 +4919,37 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "minimizeClicked": "Minimize clicked",
       "overviewDesc": "Frameless window title bar with native-style action buttons.",
       "sandboxTitle": "Window Title Bar Sandbox"
+    },
+    "documentTabs": {
+      "sandboxTitle": "Document Tabs Sandbox",
+      "overviewDesc": "Desktop multi-document and workspace tab bar container with smooth close animations, pinned tabs, dynamic additions, and trailing action slots.",
+      "newTab": "New Tab",
+      "tabTitle": "Doc {{index}}",
+      "pinnedTab": "README.md (Pinned)",
+      "activeTab": "Active: {{title}}",
+      "totalTabs": "Total Tabs: {{count}}",
+      "widthModeTitle": "Width Modes (Adaptive vs Fixed)",
+      "widthModeDesc": "Switch between VS Code-style content-adaptive width and Chrome-style fixed width.",
+      "modeContent": "Adaptive Width (Content)",
+      "modeFixed": "Fixed Width",
+      "overflowTitle": "Overflow & Smooth Kinematic Scrolling",
+      "overflowDesc": "Simulate 20+ tabs under heavy load to verify horizontal wheel scrolling, boundary damping, and responsive clipping.",
+      "addBatch": "Batch Add 15 Tabs",
+      "resetTabs": "Reset Tabs",
+      "shellChromeTitle": "Frameless Title Bar Integration",
+      "shellChromeDesc": "Enable useShellChrome and transparent fill to embed the document tabs directly into the frameless native title bar.",
+      "windowMockTitle": "Chahu Workspace Studio",
+      "tabItemTitle": "ChaSetTabItem Atomic Micro-Interactions",
+      "tabItemDesc": "Inspect TabItem standalone micro-interactions: close button hover highlight, long text tooltip, middle-click close, and right-click context menu.",
+      "singleTabNormal": "RegularDoc.tsx",
+      "singleTabPinned": "CoreConfig.json (Pinned)",
+      "singleTabLong": "ExtremelyLongFileNameForTooltipTruncationExample.tsx",
+      "lastAction": "Last Event: {{event}}",
+      "actionIdle": "Idle",
+      "actionClosed": "Closed Tab: {{id}}",
+      "actionMiddleClicked": "Middle-click Closed: {{id}}",
+      "actionContextMenu": "Context Menu: {{id}}",
+      "actionSelected": "Selected Tab: {{id}}"
     },
     "addressBar": {
       "activePath": "Active Path:",
