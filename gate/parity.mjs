@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Parity gate: validates capabilities, living showcase docs completeness, and behavioral/pixel parity.
-import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
@@ -137,6 +137,81 @@ if (existsSync(componentsDir) && existsSync(navPath)) {
     process.exit(1);
   }
   console.log(`[gate] OK — 100% Dual-Stack Living Showcase documentation coverage (${specFiles.length} components registered across React & Qt)`);
+
+  // 1c. Mandatory Showcase Navigation & Search Modal i18n Completeness Gate
+  const i18nDir = resolve(root, 'spec', 'i18n');
+  if (existsSync(i18nDir)) {
+    function deepMergeLocale(target, source) {
+      if (!source || typeof source !== 'object') return target;
+      const result = Array.isArray(target) ? [...target] : { ...target };
+      for (const key of Object.keys(source)) {
+        if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+          result[key] = deepMergeLocale(result[key] || {}, source[key]);
+        } else {
+          result[key] = source[key];
+        }
+      }
+      return result;
+    }
+
+    function loadMergedLocale(code) {
+      const mainFile = resolve(i18nDir, 'locales', `${code}.json`);
+      let data = existsSync(mainFile) ? JSON.parse(readFileSync(mainFile, 'utf8')) : {};
+      const subDir = resolve(i18nDir, 'locales', code);
+      if (existsSync(subDir) && statSync(subDir).isDirectory()) {
+        const files = readdirSync(subDir).filter(f => f.endsWith('.json')).sort();
+        for (const f of files) {
+          data = deepMergeLocale(data, JSON.parse(readFileSync(resolve(subDir, f), 'utf8')));
+        }
+      }
+      return data;
+    }
+
+    const zhCN = loadMergedLocale('zh-CN');
+    const enUS = loadMergedLocale('en-US');
+
+    function dictGet(dict, key) {
+      let cur = dict;
+      for (const part of key.split('.')) {
+        if (cur === undefined || cur === null || typeof cur !== 'object') return undefined;
+        cur = cur[part];
+      }
+      return typeof cur === 'string' ? cur : undefined;
+    }
+
+    const CJK_TEST = /[\u3400-\u4dbf\u4e00-\u9fff]/;
+    let navI18nFailures = [];
+
+    for (const cat of nav) {
+      const catZh = dictGet(zhCN, 'categories.' + cat.title) || dictGet(zhCN, 'showcase.categories.' + cat.title);
+      const catEn = dictGet(enUS, 'categories.' + cat.title) || dictGet(enUS, 'showcase.categories.' + cat.title);
+      if (!catZh || !CJK_TEST.test(catZh)) navI18nFailures.push(`Category "${cat.title}": missing or non-CJK zh-CN translation`);
+      if (!catEn || CJK_TEST.test(catEn)) navI18nFailures.push(`Category "${cat.title}": missing or CJK-leaked en-US translation`);
+
+      for (const item of (cat.items || [])) {
+        const titleZh = dictGet(zhCN, 'navigation.' + item.id);
+        const titleEn = dictGet(enUS, 'navigation.' + item.id);
+        if (!titleZh || !CJK_TEST.test(titleZh)) navI18nFailures.push(`Item "${item.id}" title: missing or non-CJK zh-CN translation (navigation.${item.id})`);
+        if (!titleEn || CJK_TEST.test(titleEn)) navI18nFailures.push(`Item "${item.id}" title: missing or CJK-leaked en-US translation (navigation.${item.id})`);
+
+        const camel = item.id.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+        const descZh = dictGet(zhCN, 'components.' + item.id + '.description') || dictGet(zhCN, 'components.' + camel + '.description');
+        const descEn = dictGet(enUS, 'components.' + item.id + '.description') || dictGet(enUS, 'components.' + camel + '.description');
+
+        if (!descZh || !CJK_TEST.test(descZh)) navI18nFailures.push(`Item "${item.id}" description: missing or non-CJK zh-CN translation (components.${item.id}.description) — leaks English in search dialog!`);
+        if (!descEn || CJK_TEST.test(descEn)) navI18nFailures.push(`Item "${item.id}" description: missing or CJK-leaked en-US translation (components.${item.id}.description)`);
+      }
+    }
+
+    if (navI18nFailures.length > 0) {
+      console.error(`[gate] FAIL: Showcase Navigation & Search i18n Completeness Gate failed (${navI18nFailures.length} errors):`);
+      for (const err of navI18nFailures) {
+        console.error(`  - ${err}`);
+      }
+      process.exit(1);
+    }
+    console.log(`[gate] OK — 100% Showcase Navigation & Search i18n Completeness Gate passed (${nav.reduce((a, c) => a + (c.items ? c.items.length : 0), 0)} items verified in zh-CN & en-US, zero English fallback)`);
+  }
 
   // 1b. Component Performance Benchmark Coverage Gate (100% Dual-Stack Coverage)
   const reactBenchDir = resolve(root, 'packages', 'react', 'bench');
