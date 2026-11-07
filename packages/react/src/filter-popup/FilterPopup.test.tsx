@@ -61,7 +61,7 @@ describe('FilterPopup (React)', () => {
       />,
     );
 
-    const input = screen.getByPlaceholderText('快速搜索...');
+    const input = screen.getByPlaceholderText(/快速搜索|Quick search/);
     fireEvent.change(input, { target: { value: '5' } });
 
     expect(screen.getByText('9')).toBeInTheDocument();
@@ -80,7 +80,7 @@ describe('FilterPopup (React)', () => {
       />,
     );
 
-    const clearBtn = screen.getByText('清除');
+    const clearBtn = screen.getByText(/清除|Clear/);
     fireEvent.click(clearBtn);
     expect(onClear).toHaveBeenCalled();
   });
@@ -96,10 +96,10 @@ describe('FilterPopup (React)', () => {
       />,
     );
 
-    const input = screen.getByPlaceholderText('快速搜索...');
+    const input = screen.getByPlaceholderText(/快速搜索|Quick search/);
     fireEvent.change(input, { target: { value: 'test*?file' } });
 
-    expect(screen.getByText(/不支持字符.*[*?]/)).toBeInTheDocument();
+    expect(screen.getByText(/(不支持字符|Invalid characters).*[\\*\\?]/)).toBeInTheDocument();
   });
 
   it('allows legal filename symbols like #, _, - without warning', () => {
@@ -117,10 +117,10 @@ describe('FilterPopup (React)', () => {
       />,
     );
 
-    const input = screen.getByPlaceholderText('快速搜索...');
+    const input = screen.getByPlaceholderText(/快速搜索|Quick search/);
     fireEvent.change(input, { target: { value: 'name#1-test' } });
 
-    expect(screen.queryByText(/不支持字符/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/不支持字符|Invalid characters/)).not.toBeInTheDocument();
     expect(screen.getByText('file_name#1-test.jpg')).toBeInTheDocument();
   });
 });

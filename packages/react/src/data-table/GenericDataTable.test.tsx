@@ -43,7 +43,7 @@ describe('GenericDataTable', () => {
   it('filters data rows using global search input', () => {
     render(<GenericDataTable data={data} columns={columns} enableGlobalFilter />);
 
-    const searchInput = screen.getByPlaceholderText('Search records...');
+    const searchInput = screen.getByPlaceholderText(/Search records|Filter records|过滤记录/);
     fireEvent.change(searchInput, { target: { value: 'Alice' } });
 
     expect(screen.getByText('Alice')).toBeInTheDocument();
@@ -78,7 +78,7 @@ describe('GenericDataTable', () => {
     ];
 
     render(<GenericDataTable data={hashData} columns={hashColumns} enableGlobalFilter />);
-    const searchInput = screen.getByPlaceholderText('Search records...');
+    const searchInput = screen.getByPlaceholderText(/Search records|Filter records|过滤记录/);
 
     // 搜索 0x422a
     fireEvent.change(searchInput, { target: { value: '0x422a' } });

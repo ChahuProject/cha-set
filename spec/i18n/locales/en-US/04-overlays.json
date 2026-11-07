@@ -231,18 +231,27 @@
       "upwardTitle": "Upward Clamping (Placement: Up)"
     },
     "filterPopup": {
+      "clear": "Clear",
       "clearDimension": "Clear Dimension",
       "dimension": "Dimension:",
+      "empty": "No items available",
       "filtered": "Filtered",
       "filteredBadge": "Filtered",
       "format": "Format",
       "formatFilter": "Format Filter",
       "hint": "Click the button below to open the filter popup, or press printable characters to test quick search.",
+      "invalidChars": "Invalid characters: {{chars}}",
+      "logicAndTip": "Match all selected tags",
+      "logicOrTip": "Match any selected tag",
+      "noMatch": "No matching items",
       "rating": "Rating",
       "ratingFilter": "Rating Filter",
+      "searchPlaceholder": "Quick search...",
       "stars": "Stars",
+      "starsCount": "{{count}} Stars",
       "tag": "Tag",
-      "tagFilter": "Tag Filter"
+      "tagFilter": "Tag Filter",
+      "unrated": "0 Stars (Unrated)"
     },
     "contextMenu": {
       "back": "Back",

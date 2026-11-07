@@ -146,8 +146,8 @@ check-concentric:
     node scripts/check-concentric-radii.mjs
 
 # 国际化文案覆盖率检查
-check-i18n:
-    node scripts/check-i18n-coverage.mjs
+check-i18n *ARGS:
+    node scripts/check-i18n-coverage.mjs {{ARGS}}
 
 # 文档内容完整性检查
 check-docs:

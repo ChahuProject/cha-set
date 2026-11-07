@@ -107,7 +107,7 @@ DocLayout {
 
                 ChaSetCheckbox {
                     anchors.verticalCenter: parent.verticalCenter
-                    label: ChaSetI18n.tr("overlays.scaleOsd.delayedCommitLabel", "延迟生效 (1.5s)")
+                    label: ChaSetI18n.tr("overlays.scaleOsd.delayedCommitLabel", "Delayed Commit (1.5s)")
                     checked: root.delayedCommit
                     onToggled: (val) => {
                         root.delayedCommit = val;
@@ -116,7 +116,7 @@ DocLayout {
 
                 ChaSetCheckbox {
                     anchors.verticalCenter: parent.verticalCenter
-                    label: ChaSetI18n.tr("overlays.scaleOsd.autoHideLabel", "自动隐藏 (2s)")
+                    label: ChaSetI18n.tr("overlays.scaleOsd.autoHideLabel", "Auto Hide (2s)")
                     checked: root.autoHideEnabled
                     onToggled: (val) => {
                         root.autoHideEnabled = val;
@@ -136,7 +136,7 @@ DocLayout {
                 ChaSetBadge {
                     anchors.horizontalCenter: parent.horizontalCenter
                     variant: (root.delayedCommit && Math.abs(root.pendingScale - root.demoScale) > 0.001) ? "secondary" : "outline"
-                    text: (root.delayedCommit && Math.abs(root.pendingScale - root.demoScale) > 0.001) ? ChaSetI18n.tr("overlays.scaleOsd.pendingStatus", "防抖生效中... (待生效: {{percent}}%)", { percent: Math.round(root.pendingScale * 100) }) : ChaSetI18n.tr("overlays.scaleOsd.appliedStatus", "已生效: {{percent}}%", { percent: Math.round(root.demoScale * 100) })
+                    text: (root.delayedCommit && Math.abs(root.pendingScale - root.demoScale) > 0.001) ? ChaSetI18n.tr("overlays.scaleOsd.pendingStatus", "Debouncing... (Pending: {{percent}}%)", { percent: Math.round(root.pendingScale * 100) }) : ChaSetI18n.tr("overlays.scaleOsd.appliedStatus", "Applied: {{percent}}%", { percent: Math.round(root.demoScale * 100) })
                 }
 
                 Rectangle {

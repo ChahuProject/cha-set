@@ -91,6 +91,10 @@
         "title": "Decoration Level",
         "desc": "Master slider (0-100) driving corner radii, shadows, and motion"
       },
+      "typography": {
+        "title": "Typography System",
+        "desc": "Logical font family and type scale multiplier"
+      },
       "uiscale": {
         "title": "Interface Scale",
         "desc": "Global display density and UI scaling factor"
@@ -118,6 +122,8 @@
       "expressive": "Expressive"
     },
     "overrides": {
+      "title": "Fine-Tuning Parameters",
+      "resetAll": "Reset to Master",
       "custom": "Tune",
       "hide": "Details",
       "radius": "Corner Radius",

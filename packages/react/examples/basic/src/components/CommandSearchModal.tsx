@@ -125,7 +125,7 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
           <Input
             ref={inputRef}
             type="text"
-            placeholder={t('common.searchPlaceholder', '搜索组件与文档...')}
+            placeholder={t('common.searchPlaceholder', 'Search components & docs...')}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onClear={() => setQuery('')}
@@ -141,7 +141,7 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
         <div className="h-80 w-full p-2">
           {filtered.length === 0 ? (
             <div className="p-8 text-center text-xs text-muted-foreground">
-              {t('common.noMatches', '未找到匹配页面')}
+              {t('common.noMatches', 'No matching pages found')}
             </div>
           ) : (
             <VirtualList
@@ -209,7 +209,7 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
             <ShortcutBar preset="address-bar" />
           </div>
           <span className="text-micro shrink-0">
-            {t('common.resultCount', '{{count}} 个结果', { count: filtered.length })}
+            {t('common.resultCount', '{{count}} results', { count: filtered.length })}
           </span>
         </div>
       </Card>

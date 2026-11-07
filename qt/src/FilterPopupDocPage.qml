@@ -46,9 +46,9 @@ DocLayout {
     }
 
     readonly property string currentTitle: {
-        if (demoTab === "format") return ChaSetI18n.tr("overlays.filterPopup.formatFilter", "格式筛选")
-        if (demoTab === "rating") return ChaSetI18n.tr("overlays.filterPopup.ratingFilter", "评分筛选")
-        return ChaSetI18n.tr("overlays.filterPopup.tagFilter", "标签筛选")
+        if (demoTab === "format") return ChaSetI18n.tr("overlays.filterPopup.formatFilter", "Format Filter")
+        if (demoTab === "rating") return ChaSetI18n.tr("overlays.filterPopup.ratingFilter", "Rating Filter")
+        return ChaSetI18n.tr("overlays.filterPopup.tagFilter", "Tag Filter")
     }
 
     readonly property string currentIcon: {

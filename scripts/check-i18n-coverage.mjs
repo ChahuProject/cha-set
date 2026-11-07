@@ -38,6 +38,7 @@ import { createHash } from 'node:crypto';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const REACT_SRC = resolve(root, 'packages', 'react', 'examples', 'basic', 'src');
+const REACT_LIB_SRC = resolve(root, 'packages', 'react', 'src');
 const QT_SRC = resolve(root, 'qt', 'src');
 const I18N_DIR = resolve(root, 'spec', 'i18n');
 const BASELINE_PATH = resolve(I18N_DIR, 'coverage-baseline.json');
@@ -152,11 +153,26 @@ const QT_TR_RE = /ChaSetI18n\.tr\(\s*(['"])((?:\\.|(?!\1).)*)\1\s*(?:,\s*(['"])(
 // Visible string props: JSX attributes (title="...") and property literals
 // (title: "...") shared by React option objects and QML property bindings.
 // React components do not use a `text` prop for user-facing prose (only CopyButton/CopyableBadge clipboard payloads).
-const REACT_VISIBLE_PROP_RE =
-  /\b(title|pageTitle|sectionTitle|label|description|placeholder|placeholderText|tooltip|caption|header|headerTitle|statusText|emptyText|confirmText|cancelText)\s*(?:=|:)\s*(['"])((?:\\.|(?!\2).)*)\2/g;
+const BASE_VISIBLE_PROPS = [
+  'title', 'pageTitle', 'sectionTitle', 'label', 'description',
+  'placeholder', 'placeholderText', 'searchPlaceholder', 'filterPlaceholder', 'queryPlaceholder',
+  'tooltip', 'searchTooltip', 'clearTooltip', 'caption', 'header', 'headerTitle',
+  'statusText', 'helperText', 'errorText', 'emptyText', 'emptySearchText', 'emptyState',
+  'noMatchesText', 'noResultsText', 'confirmText', 'cancelText', 'clearText',
+  'prompt', 'searchPrompt', 'filterPrompt', 'ariaLabel', 'aria-label',
+];
 
-const QT_VISIBLE_PROP_RE =
-  /\b(title|pageTitle|sectionTitle|label|description|placeholder|placeholderText|tooltip|caption|header|headerTitle|text|statusText|emptyText|confirmText|cancelText)\s*(?:=|:)\s*(['"])((?:\\.|(?!\2).)*)\2/g;
+const REACT_VISIBLE_PROP_RE = new RegExp(
+  `\\b(${BASE_VISIBLE_PROPS.join('|')})\\s*(?:=|:)\\s*(['"])((?:\\\\.|(?!\\2).)*)\\2`,
+  'g'
+);
+
+const QT_VISIBLE_PROP_RE = new RegExp(
+  `\\b(text|${BASE_VISIBLE_PROPS.join('|')})\\s*(?:=|:)\\s*(['"])((?:\\\\.|(?!\\2).)*)\\2`,
+  'g'
+);
+
+const QT_BANNED_QSTR_RE = /\bqsTr\s*\(/g;
 
 const JSX_TEXT_RE = />([^<>{}]+)</g;
 
@@ -166,7 +182,13 @@ function isProseCandidate(raw) {
   if (!/[A-Za-z\u3400-\u4dbf\u4e00-\u9fff]/.test(s)) return false;
   if (/[;=]/.test(s)) return false;
   if (/\$\{/.test(s)) return false; // template literal interpolation
-  if (/\|/.test(s)) return false; // type union
+  if (/[?&|]/.test(s)) return false; // ternary, logical, or bitwise operators
+  if (/=>/.test(s)) return false; // arrow functions
+  if (/\b(as|typeof|instanceof|keyof|return)\b/.test(s)) return false; // JS/TS keywords
+  if (/\b(React\.|Math\.|console\.)/.test(s)) return false; // library calls
+  if (/^(Promise|Record|Array|Map|Set|Function|Object)$/.test(s)) return false; // TS built-in generics
+  if (/\)[^)]*\(/.test(s)) return false; // unbalanced / chained parens from code
+  if (/\)\s*:\s*[A-Z]/.test(s)) return false; // return types
   if (/^@[\w.-]+(\/[\w.-]+)*$/.test(s)) return false; // npm package or handle (@radix-ui/primitives, @arivera)
   if (/^#[0-9a-fA-F]{3,8}$/.test(s)) return false; // hex color
   if (/^e\.g\.\s*#[0-9a-fA-F]+/i.test(s)) return false; // hex placeholder
@@ -192,7 +214,7 @@ function lineOf(content, index) {
   return line;
 }
 
-function scanReactContent(content) {
+export function scanReactContent(content) {
   const masked = maskSource(content);
   const i18nCalls = [];
   for (const m of masked.matchAll(REACT_T_RE)) {
@@ -223,7 +245,7 @@ function scanReactContent(content) {
   return { i18nCalls, hardcoded };
 }
 
-function scanQtContent(content) {
+export function scanQtContent(content) {
   const masked = maskSource(content);
   const i18nCalls = [];
   for (const m of masked.matchAll(QT_TR_RE)) {
@@ -245,7 +267,13 @@ function scanQtContent(content) {
       hardcoded.push({ text: val, index: m.index, kind: `prop:${m[1]}` });
     }
   }
-  return { i18nCalls, hardcoded };
+
+  const bannedQsTr = [];
+  for (const m of masked.matchAll(QT_BANNED_QSTR_RE)) {
+    bannedQsTr.push({ index: m.index });
+  }
+
+  return { i18nCalls, hardcoded, bannedQsTr };
 }
 
 // Find the matching closing paren of a call that opens at `openParenIndex`
@@ -311,7 +339,10 @@ export function analyzeI18nCoverage() {
   const zhDict = loadLocale('zh-CN');
   const enDict = loadLocale('en-US');
 
-  const reactFiles = walk(REACT_SRC, ['.tsx', '.ts']);
+  const reactFiles = [
+    ...walk(REACT_SRC, ['.tsx', '.ts']),
+    ...walk(REACT_LIB_SRC, ['.tsx']),
+  ];
   const qtFiles = walk(QT_SRC, ['.qml']);
 
   const findings = [];
@@ -319,7 +350,7 @@ export function analyzeI18nCoverage() {
 
   const processFile = (absPath, stack, scanFn) => {
     const content = readFileSync(absPath, 'utf8');
-    const { i18nCalls, hardcoded } = scanFn(content);
+    const { i18nCalls, hardcoded, bannedQsTr } = scanFn(content);
     const relFile = relative(root, absPath).replace(/\\/g, '/');
     const page = basename(absPath).replace(/\.(tsx|ts|qml)$/, '');
 
@@ -330,9 +361,30 @@ export function analyzeI18nCoverage() {
       missing: 0, zhLatin: 0, enCjk: 0,
     };
 
+    if (bannedQsTr && bannedQsTr.length > 0) {
+      for (const b of bannedQsTr) {
+        const line = lineOf(content, b.index);
+        findings.push({
+          id: findingId('banned-qstr', stack, relFile, `qstr:${line}`),
+          type: 'banned-qstr', stack, file: relFile, page, line,
+          detail: 'Forbidden qsTr() detected; use ChaSetI18n.tr() instead',
+        });
+      }
+    }
+
     for (const call of i18nCalls) {
       if (call.key.endsWith('.')) continue;
       const line = lineOf(content, call.index);
+
+      if (call.defaultText && CJK_RE.test(call.defaultText)) {
+        findings.push({
+          id: findingId('cjk-fallback', stack, relFile, `${call.key}:${line}`),
+          type: 'cjk-fallback', stack, file: relFile, page, line,
+          key: call.key,
+          detail: `defaultText contains CJK: "${String(call.defaultText).slice(0, 60)}"`,
+        });
+      }
+
       const zhVal = dictLookup(zhDict, call.key);
       const enVal = dictLookup(enDict, call.key);
 
@@ -484,7 +536,25 @@ export function verifyI18nCoverage(options = {}) {
     errors.push(`Zero-Tolerance Gate Failure: ${missingKeys.length} missing dictionary key(s) detected. Missing keys can never be ratcheted.`);
   }
 
-  // 2. Zero tolerance for zh-latin (untranslated English in zh-CN) and en-cjk (leaked CJK in en-US)
+  // 2. Zero tolerance for banned qsTr() in QML (must use ChaSetI18n.tr)
+  const bannedQsTr = findings.filter(f => f.type === 'banned-qstr');
+  for (const f of bannedQsTr) {
+    errors.push(`BANNED qsTr [${f.stack}] ${f.file}:${f.line} — ${f.detail}`);
+  }
+  if (bannedQsTr.length > 0) {
+    errors.push(`Zero-Tolerance Gate Failure: ${bannedQsTr.length} forbidden qsTr() call(s) detected. Must use ChaSetI18n.tr().`);
+  }
+
+  // 3. Zero tolerance for CJK defaultText in code (fallbacks in code must be English)
+  const cjkFallbacks = findings.filter(f => f.type === 'cjk-fallback');
+  for (const f of cjkFallbacks) {
+    errors.push(`CJK FALLBACK [${f.stack}] ${f.file}:${f.line} — key "${f.key}" ${f.detail}. Fallbacks in code must be English.`);
+  }
+  if (cjkFallbacks.length > 0) {
+    errors.push(`Zero-Tolerance Gate Failure: ${cjkFallbacks.length} CJK code fallback(s) detected. Code defaultText must be English.`);
+  }
+
+  // 4. Zero tolerance for zh-latin (untranslated English in zh-CN) and en-cjk (leaked CJK in en-US)
   const zhLatin = findings.filter(f => f.type === 'zh-latin');
   for (const f of zhLatin) {
     errors.push(`ZH-LATIN [${f.stack}] ${f.file}:${f.line} — key "${f.key}" ${f.detail}`);
@@ -546,6 +616,8 @@ export function verifyI18nCoverage(options = {}) {
         findings: findings.length,
         byType: {
           'missing-key': findings.filter(f => f.type === 'missing-key').length,
+          'banned-qstr': findings.filter(f => f.type === 'banned-qstr').length,
+          'cjk-fallback': findings.filter(f => f.type === 'cjk-fallback').length,
           'zh-latin': findings.filter(f => f.type === 'zh-latin').length,
           'en-cjk': findings.filter(f => f.type === 'en-cjk').length,
           hardcoded: findings.filter(f => f.type === 'hardcoded').length,
@@ -634,6 +706,20 @@ export function selfTest() {
   const enDict = loadLocale('en-US');
   if (dictLookup(zhDict, 'selftest.missing.key') !== undefined || dictLookup(enDict, 'selftest.missing.key') !== undefined) {
     errors.push('self-test key must not exist in dictionaries');
+  }
+
+  // searchPlaceholder prop detection
+  const searchSnippet = '<Input searchPlaceholder="Search components..." />';
+  const searchScan = scanReactContent(searchSnippet);
+  if (!searchScan.hardcoded.some(h => h.kind === 'prop:searchPlaceholder')) {
+    errors.push('react self-test: searchPlaceholder prop was not detected');
+  }
+
+  // Banned qsTr in QML
+  const qtBannedSnippet = 'Item { property string s: qsTr("forbidden text") }';
+  const qtBannedScan = scanQtContent(qtBannedSnippet);
+  if (!qtBannedScan.bannedQsTr || qtBannedScan.bannedQsTr.length !== 1) {
+    errors.push('qt self-test: qsTr() was not detected as banned');
   }
 
   return { ok: errors.length === 0, errors };

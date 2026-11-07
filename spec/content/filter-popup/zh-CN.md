@@ -33,6 +33,7 @@ description: Multi-dimensional facet filtering popup with search, exclusions, ra
 | `open` | `boolean` | `false` | 受控的弹窗开启/关闭状态。 |
 | `searchEnabled` | `boolean` | `true` | 是否启用搜索功能。 |
 | `searchVisibility` | `'autoHidden' \| 'always'` | `'autoHidden'` | 搜索栏展现模式（自动隐藏按键展开或常驻）。 |
+| `searchPlaceholder` | `string` | `"快速搜索..."` | 搜索输入框占位符文本。 |
 | `validateFileName` | `boolean` | `false` | 是否校验搜索词中的非法文件名字符并显示警示。 |
 | `showLogicToggle` | `boolean` | `false` | 是否显示 AND / OR 逻辑切换分段器。 |
 | `logicMode` | `'and' \| 'or'` | `'and'` | 激活的布尔筛选逻辑模式。 |

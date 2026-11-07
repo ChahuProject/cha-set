@@ -32,6 +32,7 @@ import {
   SearchIcon,
 } from '../lib/icons';
 import { cn } from '../lib/utils';
+import { useChaSetI18n } from '../i18n';
 
 declare module '@tanstack/react-table' {
   interface ColumnMeta<TData extends RowData, TValue> {
@@ -119,7 +120,7 @@ export function GenericDataTable<TData>({
   data,
   columns,
   enableGlobalFilter = true,
-  globalFilterPlaceholder = 'Search records...',
+  globalFilterPlaceholder,
   globalFilterFn,
   enableSorting = true,
   enableFooter = false,
@@ -127,7 +128,7 @@ export function GenericDataTable<TData>({
   pageSize = 10,
   enableVirtualization = false,
   virtualContainerHeight = '20rem',
-  emptyText = 'No records found',
+  emptyText,
   emptyNode,
   selectionMode,
   selectedRows,
@@ -139,6 +140,11 @@ export function GenericDataTable<TData>({
   onSortingChange: onSortingChangeProp,
   className,
 }: GenericDataTableProps<TData>) {
+  const { t } = useChaSetI18n();
+  const resolvedFilterPlaceholder =
+    globalFilterPlaceholder ?? t('components.genericDataTable.filterPlaceholder', 'Filter records...');
+  const resolvedEmptyText = emptyText ?? t('components.genericDataTable.emptyState', 'No records found');
+
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = React.useState('');
   const [internalSelection, setInternalSelection] = React.useState<RowSelectionState>({});
@@ -262,7 +268,7 @@ export function GenericDataTable<TData>({
           <Input
             value={globalFilter ?? ''}
             onChange={(e) => setGlobalFilter(e.target.value)}
-            placeholder={globalFilterPlaceholder}
+            placeholder={resolvedFilterPlaceholder}
             className="pl-8 h-8 text-xs"
           />
         </div>
@@ -324,7 +330,7 @@ export function GenericDataTable<TData>({
                   colSpan={displayColumns.length}
                   className="h-24 text-center text-xs text-muted-foreground"
                 >
-                  {emptyNode ?? emptyText}
+                  {emptyNode ?? resolvedEmptyText}
                 </TableCell>
               </TableRow>
             ) : enableVirtualization ? (

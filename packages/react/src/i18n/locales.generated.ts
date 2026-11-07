@@ -164,6 +164,10 @@ export const BUILTIN_LOCALES: Record<string, any> = {
         "title": "装饰程度",
         "desc": "控制圆角、阴影与动效强度的全局滑块 (0-100)"
       },
+      "typography": {
+        "title": "排版系统",
+        "desc": "逻辑字体族与字体缩放系数"
+      },
       "uiscale": {
         "title": "界面缩放",
         "desc": "全局显示密度与界面缩放系数"
@@ -191,6 +195,8 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "expressive": "表现力"
     },
     "overrides": {
+      "title": "微调参数",
+      "resetAll": "重置为预设",
       "custom": "微调",
       "hide": "收起",
       "radius": "圆角强度",
@@ -1133,6 +1139,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "allScopes": "所有作用域",
       "clearSameChord": "清除相同按键筛选",
       "conflict": "冲突",
+      "conflictingChord": "冲突快捷键：",
       "conflictExplanation": "该快捷键在同一作用域内被分配给了多个操作。请选择要保留或重新分配的操作。",
       "conflictTitle": "快捷键冲突",
       "conflictTooltip": "存在快捷键冲突，点击打开冲突解决器",
@@ -1141,6 +1148,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "exportTitle": "导出 Markdown 格式快捷键速查表",
       "noMatches": "未找到匹配的快捷键操作",
       "noMatchesHint": "请尝试调整搜索关键词或切换作用域筛选条件。",
+      "noOtherOccupiers": "未发现冲突操作",
       "resetAction": "还原为出厂默认快捷键",
       "resetAll": "重置全部",
       "resetAllTitle": "将全部快捷键还原为出厂默认设置",
@@ -1162,6 +1170,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     },
     "genericDataTable": {
       "description": "由 TanStack Table 驱动的桌面级全功能数据表，支持列排序、过滤、选择与分页。",
+      "emptyState": "暂无数据记录",
       "filterPlaceholder": "过滤记录……",
       "next": "下一页",
       "pageOf": "第 {{current}} 页，共 {{total}} 页",
@@ -1810,6 +1819,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "sandboxTitle": "Address Bar 沙盒",
       "searchPlaceholder": "搜索...",
       "searchTooltip": "搜索",
+      "thisPc": "此电脑",
       "upTooltip": "上一级"
     },
     "reorderableList": {
@@ -1869,6 +1879,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "sandboxTitle": "日志控制台沙盒"
     },
     "pipelineView": {
+      "filterPlaceholder": "过滤流水线...",
       "jobBenchmark": "性能基准测试集",
       "jobPackage": "打包构建产物",
       "jobShaderComp": "着色器编译",
@@ -2813,18 +2824,27 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "upwardTitle": "向上贴靠展开（Placement: Up）"
     },
     "filterPopup": {
+      "clear": "清除",
       "clearDimension": "清除本维筛选",
       "dimension": "筛选维度：",
+      "empty": "暂无可选项",
       "filtered": "已筛选",
       "filteredBadge": "已筛选",
       "format": "格式",
       "formatFilter": "格式筛选",
       "hint": "点击下方按钮展开过滤弹窗，或直接键入字符触发快速搜索过滤。",
+      "invalidChars": "不支持字符: {{chars}}",
+      "logicAndTip": "同时满足所选标签",
+      "logicOrTip": "满足任一所选标签",
+      "noMatch": "未匹配到相关项",
       "rating": "评分",
       "ratingFilter": "评分筛选",
+      "searchPlaceholder": "快速搜索...",
       "stars": "星",
+      "starsCount": "{{count}} 颗星",
       "tag": "标签",
-      "tagFilter": "标签筛选"
+      "tagFilter": "标签筛选",
+      "unrated": "0 星 (未评级)"
     },
     "contextMenu": {
       "back": "返回",
@@ -3192,6 +3212,10 @@ export const BUILTIN_LOCALES: Record<string, any> = {
         "title": "Decoration Level",
         "desc": "Master slider (0-100) driving corner radii, shadows, and motion"
       },
+      "typography": {
+        "title": "Typography System",
+        "desc": "Logical font family and type scale multiplier"
+      },
       "uiscale": {
         "title": "Interface Scale",
         "desc": "Global display density and UI scaling factor"
@@ -3219,6 +3243,8 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "expressive": "Expressive"
     },
     "overrides": {
+      "title": "Fine-Tuning Parameters",
+      "resetAll": "Reset to Master",
       "custom": "Tune",
       "hide": "Details",
       "radius": "Corner Radius",
@@ -4161,6 +4187,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "allScopes": "All Scopes",
       "clearSameChord": "Clear chord filter",
       "conflict": "Conflict",
+      "conflictingChord": "Conflicting shortcut:",
       "conflictExplanation": "The shortcut key is assigned to multiple actions in the same active scope. Choose an action to keep or reassign.",
       "conflictTitle": "Shortcut Key Conflict",
       "conflictTooltip": "Shortcut key conflict detected; click to resolve",
@@ -4169,6 +4196,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "exportTitle": "Export Markdown reference cheat sheet",
       "noMatches": "No matching actions found",
       "noMatchesHint": "Try adjusting your search query or scope filter.",
+      "noOtherOccupiers": "No conflicting actions found.",
       "resetAction": "Reset to factory default",
       "resetAll": "Reset All",
       "resetAllTitle": "Revert all shortcuts to factory defaults",
@@ -4190,6 +4218,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     },
     "genericDataTable": {
       "description": "Full-featured desktop-grade data table powered by TanStack Table, with column sorting, filtering, selection, and pagination.",
+      "emptyState": "No records found",
       "filterPlaceholder": "Filter records...",
       "next": "Next",
       "pageOf": "Page {{current}} of {{total}}",
@@ -4838,6 +4867,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "sandboxTitle": "Address Bar Sandbox",
       "searchPlaceholder": "Search...",
       "searchTooltip": "Search",
+      "thisPc": "This PC",
       "upTooltip": "Up one level"
     },
     "reorderableList": {
@@ -4897,6 +4927,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "sandboxTitle": "Log Console Sandbox"
     },
     "pipelineView": {
+      "filterPlaceholder": "Filter pipelines...",
       "jobBenchmark": "Benchmark Suite",
       "jobPackage": "Package Artifacts",
       "jobShaderComp": "Shader Compilation",
@@ -5841,18 +5872,27 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "upwardTitle": "Upward Clamping (Placement: Up)"
     },
     "filterPopup": {
+      "clear": "Clear",
       "clearDimension": "Clear Dimension",
       "dimension": "Dimension:",
+      "empty": "No items available",
       "filtered": "Filtered",
       "filteredBadge": "Filtered",
       "format": "Format",
       "formatFilter": "Format Filter",
       "hint": "Click the button below to open the filter popup, or press printable characters to test quick search.",
+      "invalidChars": "Invalid characters: {{chars}}",
+      "logicAndTip": "Match all selected tags",
+      "logicOrTip": "Match any selected tag",
+      "noMatch": "No matching items",
       "rating": "Rating",
       "ratingFilter": "Rating Filter",
+      "searchPlaceholder": "Quick search...",
       "stars": "Stars",
+      "starsCount": "{{count}} Stars",
       "tag": "Tag",
-      "tagFilter": "Tag Filter"
+      "tagFilter": "Tag Filter",
+      "unrated": "0 Stars (Unrated)"
     },
     "contextMenu": {
       "back": "Back",

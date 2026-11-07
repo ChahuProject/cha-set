@@ -23,6 +23,9 @@ Popup {
     // searchVisibility: "autoHidden" | "always"
     property bool searchEnabled: true
     property string searchVisibility: "autoHidden" // "autoHidden" | "always"
+    property string searchPlaceholder: ChaSetI18n.tr("overlays.filterPopup.searchPlaceholder", "Quick search...")
+    property string emptyText: ChaSetI18n.tr("overlays.filterPopup.empty", "No items available")
+    property string noMatchText: ChaSetI18n.tr("overlays.filterPopup.noMatch", "No matching items")
     property bool validateFileName: false
     property bool searchActive: searchVisibility === "always"
     property string searchFilterText: ""
@@ -241,8 +244,8 @@ Popup {
                 visible: rootPopup.showLogicToggle
                 size: "sm"
                 options: [
-                    { value: "and", label: "AND", tip: qsTr("同时满足所选标签") },
-                    { value: "or", label: "OR", tip: qsTr("满足任一所选标签") }
+                    { value: "and", label: "AND", tip: ChaSetI18n.tr("overlays.filterPopup.logicAndTip", "Match all selected tags") },
+                    { value: "or", label: "OR", tip: ChaSetI18n.tr("overlays.filterPopup.logicOrTip", "Match any selected tag") }
                 ]
                 value: rootPopup.logicMode
                 onValueChanged: {
@@ -257,7 +260,7 @@ Popup {
                 visible: rootPopup.hasActive
                 variant: "ghost"
                 size: "xs"
-                text: qsTr("清除")
+                text: ChaSetI18n.tr("overlays.filterPopup.clear", "Clear")
                 onClicked: {
                     rootPopup.clearRequested()
                     rootPopup.refresh()
@@ -346,7 +349,7 @@ Popup {
 
                     Text {
                         anchors.fill: parent
-                        text: qsTr("快速搜索...")
+                        text: rootPopup.searchPlaceholder
                         font.pixelSize: Typography.sizeCaption
                         color: ThemeTokens.subduedText
                         visible: !searchInput.text && !searchInput.activeFocus
@@ -396,7 +399,7 @@ Popup {
                 font.pixelSize: Typography.sizeMicro
                 color: ThemeTokens.danger
                 elide: Text.ElideRight
-                text: qsTr("不支持字符: %1").arg(rootPopup.invalidFileNameChars.join("  "))
+                text: ChaSetI18n.tr("overlays.filterPopup.invalidChars", "Invalid characters: {{chars}}", { chars: rootPopup.invalidFileNameChars.join("  ") })
             }
         }
 
@@ -457,7 +460,7 @@ Popup {
                         ChaSetTooltip {
                             target: rowDelegate
                             visible: rowDelegate.starsCount >= 0
-                            text: rowDelegate.starsCount > 0 ? qsTr("%1 颗星").arg(rowDelegate.starsCount) : qsTr("0 星 (未评级)")
+                            text: rowDelegate.starsCount > 0 ? ChaSetI18n.tr("overlays.filterPopup.starsCount", "{{count}} Stars", { count: rowDelegate.starsCount }) : ChaSetI18n.tr("overlays.filterPopup.unrated", "0 Stars (Unrated)")
                             delay: 400
                         }
 
@@ -591,7 +594,7 @@ Popup {
                     Layout.preferredHeight: ThemeTokens.dp(36)
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
-                    text: rootPopup.searchFilterText ? qsTr("未匹配到相关项") : qsTr("暂无可选项")
+                    text: rootPopup.searchFilterText ? rootPopup.noMatchText : rootPopup.emptyText
                     font.pixelSize: Typography.sizeCaption
                     color: ThemeTokens.subduedText
                 }

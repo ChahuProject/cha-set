@@ -87,7 +87,7 @@ Rectangle {
             anchors.right: parent.right
             anchors.rightMargin: ThemeTokens.dp(12)
             height: ThemeTokens.dp(34)
-            placeholderText: ChaSetI18n.tr("common.searchPlaceholder", "搜索组件与文档...")
+            placeholderText: ChaSetI18n.tr("common.searchPlaceholder", "Search components & docs...")
             text: root.query
             bordered: false
             clearable: true
@@ -135,7 +135,7 @@ Rectangle {
         DocText {
             anchors.centerIn: resultsList
             visible: root.filteredItems.length === 0
-            text: ChaSetI18n.tr("common.noMatches", "未找到匹配页面")
+            text: ChaSetI18n.tr("common.noMatches", "No matching pages found")
             textColor: ThemeTokens.subduedText
             font.pixelSize: Typography.sizeCaption
         }
@@ -251,7 +251,7 @@ Rectangle {
                 anchors.right: parent.right
                 anchors.rightMargin: ThemeTokens.dp(14)
                 anchors.verticalCenter: parent.verticalCenter
-                text: ChaSetI18n.tr("common.resultCount", "{{count}} 个结果", { count: root.filteredItems.length })
+                text: ChaSetI18n.tr("common.resultCount", "{{count}} results", { count: root.filteredItems.length })
                 color: ThemeTokens.subduedText
                 font.pixelSize: Typography.sizeSmall
             }

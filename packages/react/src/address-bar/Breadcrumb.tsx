@@ -441,7 +441,7 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
           {/* Overflow ellipsis button if ancestors are collapsed */}
           {hasOverflow && (
             <div className="flex items-center shrink-0">
-              <Tooltip content={t('desktopComposite.breadcrumb.showHiddenAncestors', '显示隐藏的祖先文件夹')} side="bottom">
+              <Tooltip content={t('desktopComposite.breadcrumb.showHiddenAncestors', 'Show hidden ancestors')} side="bottom">
                 <button
                   ref={overflowBtnRef}
                   type="button"
@@ -492,7 +492,7 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
 
                 {/* Independent Chevron Trigger */}
                 {showChevron && (
-                  <Tooltip content={t('desktopComposite.breadcrumb.expandSubfolders', '展开 %1 的子文件夹').replace('%1', seg.label || seg.displayName || '')} side="bottom">
+                  <Tooltip content={t('desktopComposite.breadcrumb.expandSubfolders', 'Expand subfolders of %1').replace('%1', seg.label || seg.displayName || '')} side="bottom">
                     <button
                       type="button"
                       aria-label={`Open subfolders for ${seg.label || seg.displayName}`}
@@ -541,7 +541,7 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
                   ref={searchInputRef}
                   size="sm"
                   icon="search"
-                  placeholder={t('desktopComposite.breadcrumb.searchPlaceholder', '搜索文件夹...')}
+                  placeholder={t('desktopComposite.breadcrumb.searchPlaceholder', 'Search folders...')}
                   clearable
                   value={subfolderSearch}
                   onChange={(e) => {
@@ -590,7 +590,7 @@ export const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
               ))}
               {filteredSubfolders.length === 0 && (
                 <div className="px-3 py-6 text-center text-xs text-muted-foreground">
-                  {subfolderSearch ? t('desktopComposite.breadcrumb.noMatch', '未找到匹配文件夹') : t('desktopComposite.breadcrumb.emptyFolder', '（空文件夹）')}
+                  {subfolderSearch ? t('desktopComposite.breadcrumb.noMatch', 'No matching folders') : t('desktopComposite.breadcrumb.emptyFolder', '(Empty folder)')}
                 </div>
               )}
             </div>
