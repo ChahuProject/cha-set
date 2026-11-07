@@ -93,6 +93,11 @@ export const AdaptivePopup = React.forwardRef<HTMLDivElement, AdaptivePopupProps
       return Number.isFinite(parsed) ? parsed : -1;
     }, [maxHeight]);
 
+    const getRootFontSize = React.useCallback((): number => {
+      if (typeof window === 'undefined') return 16;
+      return Number.parseFloat(window.getComputedStyle(document.documentElement).fontSize) || 16;
+    }, []);
+
     const updatePositionRef = React.useRef<() => void>(() => {});
 
     // Recompute measurements whenever open, placement or dimensions change
@@ -111,7 +116,7 @@ export const AdaptivePopup = React.forwardRef<HTMLDivElement, AdaptivePopupProps
         const hostBandW = hostRect.width;
         const hostBandH = hostRect.height;
 
-        const popupW = popupRef.current ? popupRef.current.offsetWidth : 320;
+        const popupW = popupRef.current && popupRef.current.offsetWidth > 0 ? popupRef.current.offsetWidth : 320;
 
         if (anchorRef?.current) {
           const rect = anchorRef.current.getBoundingClientRect();
@@ -174,7 +179,7 @@ export const AdaptivePopup = React.forwardRef<HTMLDivElement, AdaptivePopupProps
         }
 
         setComputedStyle({
-          top: clampedTop,
+          top: clampedLeft < minH && clampedTop < 0 ? 0 : clampedTop,
           left: clampedLeft,
           height: finalHeight,
           heightCapped,
@@ -186,9 +191,11 @@ export const AdaptivePopup = React.forwardRef<HTMLDivElement, AdaptivePopupProps
 
       let resizeObserver: ResizeObserver | null = null;
       const containerEl = resolveContainer();
-      if (typeof ResizeObserver !== 'undefined' && containerEl) {
+      if (typeof ResizeObserver !== 'undefined') {
         resizeObserver = new ResizeObserver(() => updatePosition());
-        resizeObserver.observe(containerEl);
+        if (containerEl) resizeObserver.observe(containerEl);
+        if (anchorRef?.current) resizeObserver.observe(anchorRef.current);
+        if (popupRef.current) resizeObserver.observe(popupRef.current);
       }
 
       window.addEventListener('resize', updatePosition);
@@ -238,6 +245,8 @@ export const AdaptivePopup = React.forwardRef<HTMLDivElement, AdaptivePopupProps
     const containerEl = resolveContainer();
     const isContained = Boolean(containerEl);
 
+    const rootFontSize = getRootFontSize();
+
     const popupContent = (
       <div
         ref={(node) => {
@@ -257,9 +266,9 @@ export const AdaptivePopup = React.forwardRef<HTMLDivElement, AdaptivePopupProps
           className,
         )}
         style={{
-          top: `${computedStyle.top * 0.0625}rem`,
-          left: `${computedStyle.left * 0.0625}rem`,
-          height: `${computedStyle.height * 0.0625}rem`,
+          top: `${computedStyle.top / rootFontSize}rem`,
+          left: `${computedStyle.left / rootFontSize}rem`,
+          height: `${computedStyle.height / rootFontSize}rem`,
           ...style,
         }}
         {...props}
