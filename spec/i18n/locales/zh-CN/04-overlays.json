@@ -237,6 +237,7 @@
       "upwardTitle": "向上贴靠展开（Placement: Up）"
     },
     "filterPopup": {
+      "addCustom": "添加 \"{{text}}\"",
       "clear": "清除",
       "clearDimension": "清除本维筛选",
       "dimension": "筛选维度：",

@@ -14,6 +14,11 @@ Item {
     property bool overflowVisible: false
     readonly property bool isAnyPopupOpen: overflowPopup.opened
 
+    // —— 特殊状态指示与剪贴板注入 (SPEC-FB-042) ——
+    property var pathClipboardStateCallback: null
+    property int clipboardRevision: 0
+    onClipboardRevisionChanged: relayoutSegments()
+
     // —— 分段拖放状态（拖拽文件悬停到某一级面包屑即把该级目录作为投放目标）——
     property int activeDropSegmentIndex: -1
     property var activeDraggedPaths: []
@@ -146,7 +151,13 @@ Item {
         var name = String(seg.displayName || seg.label || "")
         var isIconOnly = (name === "") && Boolean(seg.icon)
         var textW = isIconOnly ? ThemeTokens.dp(16) : ((index === root.segments.length - 1) ? segBoldFontMetrics.advanceWidth(name) : segFontMetrics.advanceWidth(name))
-        var pillW = textW + ThemeTokens.dp(12)
+        var badgeW = 0
+        if (seg.isSystem) badgeW += ThemeTokens.dp(14)
+        var segPath = String(seg.realPath || seg.path || "")
+        if (typeof root.pathClipboardStateCallback === "function" && root.pathClipboardStateCallback(segPath) === 2) {
+            badgeW += ThemeTokens.dp(14)
+        }
+        var pillW = textW + ThemeTokens.dp(12) + badgeW
         var hasChevron = (index < root.segments.length - 1) || (root.segments.length === 1) || Boolean(seg.hasSubfolders)
         var chevronW = hasChevron ? ThemeTokens.dp(20) : 0
         return pillW + chevronW
@@ -253,6 +264,45 @@ Item {
                 readonly property bool isMenuOpen: segItem.index === root.openSegmentIndex
                 readonly property bool isDropTarget: root.activeDropSegmentIndex === segItem.index
 
+                // 特殊状态指示与剪贴板状态 (SPEC-FB-042)
+                readonly property bool segIsHidden: Boolean(modelData && modelData.isHidden)
+                readonly property bool segIsSystem: Boolean(modelData && modelData.isSystem)
+                readonly property int segClipboardState: {
+                    const rev = root.clipboardRevision
+                    if (typeof root.pathClipboardStateCallback === "function" && segItem.segPath) {
+                        return root.pathClipboardStateCallback(segItem.segPath)
+                    }
+                    return 0
+                }
+                readonly property real segOpacity: {
+                    let base = 1.0
+                    if (segIsSystem) {
+                        base = 0.50
+                    } else if (segIsHidden) {
+                        base = 0.65
+                    }
+                    if (segClipboardState === 1) { // Cut
+                        base = base * 0.55
+                    }
+                    return base
+                }
+                readonly property bool hasSpecialState: segIsSystem || segIsHidden || segClipboardState !== 0
+                readonly property string stateTooltipText: {
+                    if (segClipboardState === 1) {
+                        if (segIsSystem) return ChaSetI18n.tr("desktopComposite.breadcrumb.cutSystem", "Cut · Protected system folder")
+                        if (segIsHidden) return ChaSetI18n.tr("desktopComposite.breadcrumb.cutHidden", "Cut · Hidden folder")
+                        return ChaSetI18n.tr("desktopComposite.breadcrumb.cut", "Cut to clipboard")
+                    }
+                    if (segClipboardState === 2) {
+                        if (segIsSystem) return ChaSetI18n.tr("desktopComposite.breadcrumb.copiedSystem", "Copied · Protected system folder")
+                        if (segIsHidden) return ChaSetI18n.tr("desktopComposite.breadcrumb.copiedHidden", "Copied · Hidden folder")
+                        return ChaSetI18n.tr("desktopComposite.breadcrumb.copied", "Copied to clipboard")
+                    }
+                    if (segIsSystem) return ChaSetI18n.tr("desktopComposite.breadcrumb.system", "Protected system folder")
+                    if (segIsHidden) return ChaSetI18n.tr("desktopComposite.breadcrumb.hidden", "Hidden folder")
+                    return ""
+                }
+
                 visible: segItem.index >= root.firstVisibleIndex
                 Layout.preferredWidth: segPill.implicitWidth + (chevronBox.visible ? chevronBox.width : 0)
                 Layout.fillHeight: true
@@ -271,12 +321,66 @@ Item {
                             height: parent.height
                             implicitWidth: width
                             radius: ThemeTokens.dp(4)
-                            color: segItem.isDropTarget
-                                ? Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.22)
-                                : ((pillMouse.containsMouse && !root.disabled) ? ThemeTokens.hover : "transparent")
-                            // 拖拽悬停到该级：描边与背景双重高亮，明确「松手即投放到此目录」
-                            border.width: segItem.isDropTarget ? 1.5 : 0
-                            border.color: ThemeTokens.accent
+                            opacity: segItem.segOpacity
+                            color: {
+                                if (segItem.isDropTarget) {
+                                    return Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.22)
+                                }
+                                if (segItem.segClipboardState === 2) {
+                                    return Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.08)
+                                }
+                                if (segItem.segIsSystem) {
+                                    return (typeof Theme !== "undefined" && Theme && Theme.warning)
+                                           ? Qt.rgba(Theme.warning.r, Theme.warning.g, Theme.warning.b, 0.08)
+                                           : Qt.rgba(0.9, 0.6, 0.1, 0.08)
+                                }
+                                if (segItem.segClipboardState === 1) {
+                                    return (typeof Theme !== "undefined" && Theme)
+                                           ? Qt.rgba(Theme.panel.r, Theme.panel.g, Theme.panel.b, 0.16)
+                                           : Qt.rgba(0, 0, 0, 0.16)
+                                }
+                                return (pillMouse.containsMouse && !root.disabled) ? ThemeTokens.hover : "transparent"
+                            }
+                            border.width: {
+                                if (segItem.isDropTarget) return 1.5
+                                if (segItem.segClipboardState === 2) return 1.5
+                                if (segItem.segIsSystem || segItem.segClipboardState === 1) return 1
+                                return 0
+                            }
+                            border.color: {
+                                if (segItem.isDropTarget) return ThemeTokens.accent
+                                if (segItem.segClipboardState === 2) return copyBorderAnim.activeBorderColor
+                                if (segItem.segIsSystem) {
+                                    return (typeof Theme !== "undefined" && Theme && Theme.warning)
+                                           ? Qt.rgba(Theme.warning.r, Theme.warning.g, Theme.warning.b, 0.45)
+                                           : Qt.rgba(0.9, 0.6, 0.1, 0.45)
+                                }
+                                if (segItem.segClipboardState === 1) {
+                                    return (typeof Theme !== "undefined" && Theme)
+                                           ? Qt.rgba(Theme.subduedText.r, Theme.subduedText.g, Theme.subduedText.b, 0.35)
+                                           : Qt.rgba(0.6, 0.6, 0.6, 0.35)
+                                }
+                                return "transparent"
+                            }
+
+                            property real copyPulse: 1.0
+                            SequentialAnimation on copyPulse {
+                                id: copyAnim
+                                running: segItem.segClipboardState === 2 && ThemeTokens.animationsEnabled
+                                loops: Animation.Infinite
+                                NumberAnimation { to: 0.55; duration: 1200; easing.type: Easing.InOutQuad }
+                                NumberAnimation { to: 1.0; duration: 1200; easing.type: Easing.InOutQuad }
+                            }
+
+                            QtObject {
+                                id: copyBorderAnim
+                                readonly property color activeBorderColor: Qt.rgba(
+                                    ThemeTokens.accent.r,
+                                    ThemeTokens.accent.g,
+                                    ThemeTokens.accent.b,
+                                    segPill.copyPulse * 0.75
+                                )
+                            }
 
                             Row {
                                 id: pillContent
@@ -299,6 +403,24 @@ Item {
                                     font.pixelSize: Typography.sizeSmall
                                     font.weight: segItem.isCurrent ? Typography.weightSemibold : Typography.weightRegular
                                     verticalAlignment: Text.AlignVCenter
+                                    anchors.verticalCenter: parent.verticalCenter
+                                }
+
+                                ChaSetIcon {
+                                    visible: segItem.segIsSystem
+                                    name: "lock"
+                                    size: 12
+                                    color: (typeof Theme !== "undefined" && Theme && Theme.warning)
+                                           ? Theme.warning
+                                           : "#E5A93C"
+                                    anchors.verticalCenter: parent.verticalCenter
+                                }
+
+                                ChaSetIcon {
+                                    visible: segItem.segClipboardState === 2
+                                    name: "copy"
+                                    size: 12
+                                    color: ThemeTokens.accent
                                     anchors.verticalCenter: parent.verticalCenter
                                 }
                             }
@@ -332,7 +454,13 @@ Item {
 
                             ChaSetTooltip {
                                 target: segPill
-                                text: (segItem.modelData && segItem.modelData.isTopRoot) ? ChaSetI18n.tr("desktopComposite.breadcrumb.allLocations", "All Locations") : (segItem.segPath || segItem.segName)
+                                text: {
+                                    var base = (segItem.modelData && segItem.modelData.isTopRoot) ? ChaSetI18n.tr("desktopComposite.breadcrumb.allLocations", "All Locations") : (segItem.segPath || segItem.segName)
+                                    if (segItem.hasSpecialState) {
+                                        return segItem.stateTooltipText + "\n" + base
+                                    }
+                                    return base
+                                }
                                 side: "bottom"
                                 delay: 400
                                 disabled: root.disabled

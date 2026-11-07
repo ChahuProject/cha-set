@@ -237,6 +237,7 @@
       "upwardTitle": "Upward Clamping (Placement: Up)"
     },
     "filterPopup": {
+      "addCustom": "Add \"{{text}}\"",
       "clear": "Clear",
       "clearDimension": "Clear Dimension",
       "dimension": "Dimension:",

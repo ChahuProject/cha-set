@@ -16,6 +16,13 @@
 #include <QStringList>
 #include <QVariantMap>
 
+#ifdef Q_OS_WIN
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <qt_windows.h>
+#endif
+
 #include <algorithm>
 #include <vector>
 
@@ -30,6 +37,8 @@ struct Segment {
   bool isDrive = false;
   bool isKnownFolder = false;
   bool hasSubfolders = false;
+  bool isHidden = false;
+  bool isSystem = false;
 };
 
 inline QString trOrFallback(const char *sourceZh, const char *fallbackEn) {
@@ -114,6 +123,35 @@ inline void appendDriveSegment(std::vector<Segment> &segs, const QChar &letter,
 
 } // namespace detail
 
+inline void probeFileAttributes(const QString &realPath, bool &isHidden,
+                                bool &isSystem) {
+  isHidden = false;
+  isSystem = false;
+  if (realPath.isEmpty() || realPath == QLatin1String("::root") ||
+      realPath.startsWith(QLatin1String("virtual://")) ||
+      realPath.startsWith(QLatin1String("recycle-bin:"))) {
+    return;
+  }
+  // 驱动器根目录（如 C:/ 或 C:）不标记为隐藏或系统
+  if (realPath.size() <= 3 && realPath.size() >= 2 &&
+      realPath.at(1) == QLatin1Char(':')) {
+    return;
+  }
+#ifdef Q_OS_WIN
+  const QString nativePath = QDir::toNativeSeparators(realPath);
+  const DWORD attr = GetFileAttributesW(
+      reinterpret_cast<LPCWSTR>(nativePath.utf16()));
+  if (attr != INVALID_FILE_ATTRIBUTES) {
+    isHidden = (attr & FILE_ATTRIBUTE_HIDDEN) != 0;
+    isSystem = (attr & FILE_ATTRIBUTE_SYSTEM) != 0;
+  }
+#else
+  QFileInfo fi(realPath);
+  isHidden = fi.isHidden();
+  isSystem = false;
+#endif
+}
+
 inline std::vector<Segment>
 splitPath(const QString &absPath,
           const QHash<QString, QString> &knownFolders = {},
@@ -173,6 +211,7 @@ splitPath(const QString &absPath,
           virtualIcon.isEmpty() ? QStringLiteral("folder") : virtualIcon;
       kfSeg.isKnownFolder = true;
       kfSeg.hasSubfolders = hasSubfolders(cleanBase);
+      probeFileAttributes(cleanBase, kfSeg.isHidden, kfSeg.isSystem);
       segs.push_back(std::move(kfSeg));
 
       if (cleanAbs.size() > cleanBase.size()) {
@@ -188,6 +227,7 @@ splitPath(const QString &absPath,
           seg.realPath = acc;
           seg.icon = QStringLiteral("folder");
           seg.hasSubfolders = hasSubfolders(acc);
+          probeFileAttributes(acc, seg.isHidden, seg.isSystem);
           segs.push_back(std::move(seg));
         }
       }
@@ -261,6 +301,7 @@ splitPath(const QString &absPath,
       seg.displayName = known.isEmpty() ? part : known;
       seg.realPath = acc;
       seg.icon = QStringLiteral("folder");
+      probeFileAttributes(acc, seg.isHidden, seg.isSystem);
       segs.push_back(std::move(seg));
       acc += QLatin1Char('/');
     }
@@ -278,6 +319,7 @@ splitPath(const QString &absPath,
       seg.displayName = part;
       seg.realPath = acc;
       seg.icon = QStringLiteral("folder");
+      probeFileAttributes(acc, seg.isHidden, seg.isSystem);
       segs.push_back(std::move(seg));
     }
     return segs;
@@ -289,6 +331,7 @@ splitPath(const QString &absPath,
       QFileInfo(p).fileName().isEmpty() ? p : QFileInfo(p).fileName();
   seg.realPath = p;
   seg.icon = QStringLiteral("folder");
+  probeFileAttributes(p, seg.isHidden, seg.isSystem);
   segs.push_back(std::move(seg));
   return segs;
 }
@@ -305,6 +348,8 @@ inline QVariantMap segmentToVariantMap(const Segment &seg) {
   map.insert(QStringLiteral("isDrive"), seg.isDrive);
   map.insert(QStringLiteral("isKnownFolder"), seg.isKnownFolder);
   map.insert(QStringLiteral("hasSubfolders"), seg.hasSubfolders);
+  map.insert(QStringLiteral("isHidden"), seg.isHidden);
+  map.insert(QStringLiteral("isSystem"), seg.isSystem);
   return map;
 }
 

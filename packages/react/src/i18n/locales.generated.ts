@@ -1498,11 +1498,19 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "overviewHeading": "交互总览",
       "sandboxTitle": "面包屑交互沙盒",
       "allLocations": "所有位置",
+      "copied": "已复制到剪贴板",
+      "copiedHidden": "已复制 · 隐藏文件夹",
+      "copiedSystem": "已复制 · 受保护系统文件夹",
+      "cut": "已剪切到剪贴板",
+      "cutHidden": "已剪切 · 隐藏文件夹",
+      "cutSystem": "已剪切 · 受保护系统文件夹",
       "emptyFolder": "（空文件夹）",
       "expandSubfolders": "展开 %1 的子文件夹",
+      "hidden": "隐藏文件夹",
       "noMatch": "未找到匹配文件夹",
       "searchPlaceholder": "搜索文件夹...",
-      "showHiddenAncestors": "显示隐藏的祖先文件夹"
+      "showHiddenAncestors": "显示隐藏的祖先文件夹",
+      "system": "受保护系统文件夹"
     },
     "card": {
       "overviewDesc": "通过跨 Web 与桌面端同步的交互式子组件，测试卡片变体。",
@@ -2873,6 +2881,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "upwardTitle": "向上贴靠展开（Placement: Up）"
     },
     "filterPopup": {
+      "addCustom": "添加 \"{{text}}\"",
       "clear": "清除",
       "clearDimension": "清除本维筛选",
       "dimension": "筛选维度：",
@@ -4595,11 +4604,19 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "overviewHeading": "Interactive Overview",
       "sandboxTitle": "Breadcrumb Interactive Sandbox",
       "allLocations": "All locations",
+      "copied": "Copied to clipboard",
+      "copiedHidden": "Copied · Hidden folder",
+      "copiedSystem": "Copied · Protected system folder",
+      "cut": "Cut to clipboard",
+      "cutHidden": "Cut · Hidden folder",
+      "cutSystem": "Cut · Protected system folder",
       "emptyFolder": "(Empty folder)",
       "expandSubfolders": "Expand subfolders of %1",
+      "hidden": "Hidden folder",
       "noMatch": "No matching folders found",
       "searchPlaceholder": "Search folders...",
-      "showHiddenAncestors": "Show hidden ancestor folders"
+      "showHiddenAncestors": "Show hidden ancestor folders",
+      "system": "Protected system folder"
     },
     "card": {
       "overviewDesc": "Test card variants with interactive subcomponents synchronized across Web and Desktop.",
@@ -5970,6 +5987,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "upwardTitle": "Upward Clamping (Placement: Up)"
     },
     "filterPopup": {
+      "addCustom": "Add \"{{text}}\"",
       "clear": "Clear",
       "clearDimension": "Clear Dimension",
       "dimension": "Dimension:",

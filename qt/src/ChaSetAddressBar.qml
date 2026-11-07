@@ -38,6 +38,10 @@ Item {
     readonly property string activeBreadcrumbDropPath: acceptBreadcrumbDrops ? breadcrumbPrimitive.activeDropPath : ""
     readonly property alias breadcrumbDropPointerX: breadcrumbPrimitive.dropPointerX
 
+    // 特殊状态指示与剪贴板状态注入 (SPEC-FB-042)
+    property alias pathClipboardStateCallback: breadcrumbPrimitive.pathClipboardStateCallback
+    property alias clipboardRevision: breadcrumbPrimitive.clipboardRevision
+
     // 拖拽修饰键（Ctrl=复制）响应式追踪：宿主注入 dragModifierState 上下文属性时
     // 直接绑定其 ctrlHeld；独立运行/测试环境回退到 manualCtrlHeld（由宿主手动赋值）。
     property var dragModifierTracker: (typeof dragModifierState !== "undefined") ? dragModifierState : null
@@ -702,6 +706,8 @@ Item {
         objectName: "subfolderPopup"
         x: centerField.x
         y: root.height + ThemeTokens.dp(4)
+        pathClipboardStateCallback: root.pathClipboardStateCallback
+        clipboardRevision: root.clipboardRevision
         onNavigateRequested: (targetPath) => {
             breadcrumbPrimitive.openSegmentIndex = -1
             controller.navigate(targetPath)

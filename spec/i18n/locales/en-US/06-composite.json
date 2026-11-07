@@ -191,11 +191,19 @@
     },
     "breadcrumb": {
       "allLocations": "All locations",
+      "copied": "Copied to clipboard",
+      "copiedHidden": "Copied · Hidden folder",
+      "copiedSystem": "Copied · Protected system folder",
+      "cut": "Cut to clipboard",
+      "cutHidden": "Cut · Hidden folder",
+      "cutSystem": "Cut · Protected system folder",
       "emptyFolder": "(Empty folder)",
       "expandSubfolders": "Expand subfolders of %1",
+      "hidden": "Hidden folder",
       "noMatch": "No matching folders found",
       "searchPlaceholder": "Search folders...",
-      "showHiddenAncestors": "Show hidden ancestor folders"
+      "showHiddenAncestors": "Show hidden ancestor folders",
+      "system": "Protected system folder"
     },
     "reorderableList": {
       "toggleTooltip": "Show/Hide",

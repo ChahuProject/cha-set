@@ -191,11 +191,19 @@
     },
     "breadcrumb": {
       "allLocations": "所有位置",
+      "copied": "已复制到剪贴板",
+      "copiedHidden": "已复制 · 隐藏文件夹",
+      "copiedSystem": "已复制 · 受保护系统文件夹",
+      "cut": "已剪切到剪贴板",
+      "cutHidden": "已剪切 · 隐藏文件夹",
+      "cutSystem": "已剪切 · 受保护系统文件夹",
       "emptyFolder": "（空文件夹）",
       "expandSubfolders": "展开 %1 的子文件夹",
+      "hidden": "隐藏文件夹",
       "noMatch": "未找到匹配文件夹",
       "searchPlaceholder": "搜索文件夹...",
-      "showHiddenAncestors": "显示隐藏的祖先文件夹"
+      "showHiddenAncestors": "显示隐藏的祖先文件夹",
+      "system": "受保护系统文件夹"
     },
     "reorderableList": {
       "toggleTooltip": "显示/隐藏",

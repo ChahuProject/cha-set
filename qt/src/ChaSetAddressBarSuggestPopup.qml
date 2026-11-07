@@ -18,6 +18,10 @@ Popup {
     property int customHeight: ThemeTokens.dp(260)
     property bool userResized: false
 
+    // 特殊状态与剪贴板状态注入 (SPEC-FB-042)
+    property var pathClipboardStateCallback: null
+    property int clipboardRevision: 0
+
     readonly property int naturalContentHeight: {
         var h = (root.isSearchOpen ? ThemeTokens.dp(36) : 0);
         var count = suggestModel.count;
@@ -184,6 +188,30 @@ Popup {
                     required property var modelData
                     required property int index
 
+                    readonly property string itemPath: modelData.realPath || modelData.path || ""
+                    readonly property bool isItemHidden: Boolean(modelData.isHidden)
+                    readonly property bool isItemSystem: Boolean(modelData.isSystem)
+                    readonly property int itemClipboardState: {
+                        const rev = root.clipboardRevision
+                        if (typeof root.pathClipboardStateCallback === "function" && delegateRoot.itemPath) {
+                            return root.pathClipboardStateCallback(delegateRoot.itemPath)
+                        }
+                        return 0
+                    }
+                    readonly property real itemOpacity: {
+                        let base = 1.0
+                        if (isItemSystem) {
+                            base = 0.50
+                        } else if (isItemHidden) {
+                            base = 0.65
+                        }
+                        if (itemClipboardState === 1) { // Cut
+                            base = base * 0.55
+                        }
+                        return base
+                    }
+                    opacity: delegateRoot.itemOpacity
+
                     width: suggestList.width
                     height: ThemeTokens.dp(32)
                     padding: ThemeTokens.dp(4)
@@ -210,23 +238,74 @@ Popup {
                         ChaSetIcon {
                             name: modelData.icon || "folder"
                             size: 16
-                            color: ThemeTokens.subduedText
+                            color: delegateRoot.itemClipboardState === 2 ? ThemeTokens.accent : ThemeTokens.subduedText
                             anchors.verticalCenter: parent.verticalCenter
                         }
 
                         Text {
                             text: modelData.displayName || modelData.label || ""
-                            color: ThemeTokens.text
+                            color: delegateRoot.itemClipboardState === 2 ? ThemeTokens.accent : ThemeTokens.text
                             font.pixelSize: Typography.sizeSmall
                             elide: Text.ElideMiddle
                             verticalAlignment: Text.AlignVCenter
-                            width: delegateRoot.width - ThemeTokens.dp(40)
+                            width: delegateRoot.width - ThemeTokens.dp(56)
+                        }
+
+                        ChaSetIcon {
+                            visible: delegateRoot.isItemSystem
+                            name: "lock"
+                            size: 12
+                            color: (typeof Theme !== "undefined" && Theme && Theme.warning)
+                                   ? Theme.warning
+                                   : "#E5A93C"
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+
+                        ChaSetIcon {
+                            visible: delegateRoot.itemClipboardState === 2
+                            name: "copy"
+                            size: 12
+                            color: ThemeTokens.accent
+                            anchors.verticalCenter: parent.verticalCenter
                         }
                     }
 
                     background: Rectangle {
-                        color: (delegateRoot.index === root.highlightedIndex) ? ThemeTokens.hover : "transparent"
+                        color: {
+                            if (delegateRoot.index === root.highlightedIndex) return ThemeTokens.hover
+                            if (delegateRoot.itemClipboardState === 2) {
+                                return Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.08)
+                            }
+                            if (delegateRoot.isItemSystem) {
+                                return (typeof Theme !== "undefined" && Theme && Theme.warning)
+                                       ? Qt.rgba(Theme.warning.r, Theme.warning.g, Theme.warning.b, 0.08)
+                                       : Qt.rgba(0.9, 0.6, 0.1, 0.08)
+                            }
+                            if (delegateRoot.itemClipboardState === 1) {
+                                return (typeof Theme !== "undefined" && Theme)
+                                       ? Qt.rgba(Theme.panel.r, Theme.panel.g, Theme.panel.b, 0.16)
+                                       : Qt.rgba(0, 0, 0, 0.16)
+                            }
+                            return "transparent"
+                        }
                         radius: ThemeTokens.dp(4)
+                        border.width: (delegateRoot.itemClipboardState === 2 || delegateRoot.isItemSystem || delegateRoot.itemClipboardState === 1) ? 1 : 0
+                        border.color: {
+                            if (delegateRoot.itemClipboardState === 2) {
+                                return Qt.rgba(ThemeTokens.accent.r, ThemeTokens.accent.g, ThemeTokens.accent.b, 0.75)
+                            }
+                            if (delegateRoot.isItemSystem) {
+                                return (typeof Theme !== "undefined" && Theme && Theme.warning)
+                                       ? Qt.rgba(Theme.warning.r, Theme.warning.g, Theme.warning.b, 0.35)
+                                       : Qt.rgba(0.9, 0.6, 0.1, 0.35)
+                            }
+                            if (delegateRoot.itemClipboardState === 1) {
+                                return (typeof Theme !== "undefined" && Theme)
+                                       ? Qt.rgba(Theme.subduedText.r, Theme.subduedText.g, Theme.subduedText.b, 0.35)
+                                       : Qt.rgba(0.6, 0.6, 0.6, 0.35)
+                            }
+                            return "transparent"
+                        }
                     }
                 }
             }

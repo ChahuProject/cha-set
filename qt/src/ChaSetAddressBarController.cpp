@@ -687,17 +687,22 @@ QVariantList ChaSetAddressBarController::subfolders(const QString &path) const {
     return out;
 
   QStringList names =
-      dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::NoSort);
+      dir.entryList(QDir::Dirs | QDir::Hidden | QDir::NoDotAndDotDot, QDir::NoSort);
   if (names.size() > kMaxSubfolderItems)
     names = names.mid(0, kMaxSubfolderItems);
   chaset::naturalSort(names);
   out.reserve(names.size());
   for (const QString &name : std::as_const(names)) {
     QVariantMap item;
+    const QString fullPath = QDir::cleanPath(dir.filePath(name));
     item.insert(QStringLiteral("displayName"), name);
-    item.insert(QStringLiteral("realPath"),
-                QDir::cleanPath(dir.filePath(name)));
+    item.insert(QStringLiteral("realPath"), fullPath);
     item.insert(QStringLiteral("icon"), QStringLiteral("folder"));
+    bool isHidden = false;
+    bool isSystem = false;
+    chaset::probeFileAttributes(fullPath, isHidden, isSystem);
+    item.insert(QStringLiteral("isHidden"), isHidden);
+    item.insert(QStringLiteral("isSystem"), isSystem);
     out.append(item);
   }
   return out;
