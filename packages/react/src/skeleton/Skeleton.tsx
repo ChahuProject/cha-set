@@ -45,7 +45,7 @@ export function Skeleton({
     >
       {effectiveAnimation === 'wave' && (
         <span
-          className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-foreground/8 to-transparent animate-shimmer"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-foreground/25 to-transparent animate-shimmer"
           data-slot="skeleton-wave"
         />
       )}
