@@ -70,11 +70,6 @@ Item {
     }
 
     TextMetrics {
-        id: textLineMetrics
-        font: textMetrics.font
-    }
-
-    TextMetrics {
         id: descMetrics
         text: root.description
         font.family: (typeof Typography !== "undefined" && Typography && Typography.familySans)
@@ -83,15 +78,20 @@ Item {
                 ? Typography.sizeCaption : Math.round(11 * root.uiScaleFactor)
     }
 
-    TextMetrics {
-        id: descLineMetrics
+    FontMetrics {
+        id: descFm
         font: descMetrics.font
+    }
+
+    FontMetrics {
+        id: textFm
+        font: textMetrics.font
     }
 
     // 声明式单行/多行判定（基于离线 TextMetrics，彻底断绝 Text 内部 lineCount 布局依赖形成的 Binding loop）
     readonly property bool isMultilineText: root.text !== "" && (root.text.indexOf("\n") !== -1 || textMetrics.width > root.maxTextW)
 
-    // 单行/多行紧凑内容宽度：**纯 TextMetrics 同步推导**。
+    // 单行/多行紧凑内容宽度：**纯 FontMetrics/TextMetrics 同步推导**。
     // 当存在显式换行符 '\n' 时，TextMetrics.width 会累加全部行字符导致假性超宽；
     // 必须拆分各行取最大 advance，并与 bubbleText.implicitWidth 取较大值吸收 CJK 塑形差异。
     readonly property real rawTextW: {
@@ -104,9 +104,9 @@ Item {
         for (var i = 0; i < lines.length; i++) {
             var line = lines[i]
             if (line.length === 0) continue
-            textLineMetrics.text = line
-            if (textLineMetrics.width > maxW) {
-                maxW = textLineMetrics.width
+            var lw = textFm.advanceWidth(line)
+            if (lw > maxW) {
+                maxW = lw
             }
         }
         return maxW
@@ -151,7 +151,7 @@ Item {
         return w
     }
 
-    // 描述紧凑宽度：纯 TextMetrics 同步推导。
+    // 描述紧凑宽度：纯 FontMetrics 同步推导。
     // 当存在显式换行符 '\n' 时，TextMetrics.width 会累加所有行字符导致假性超宽；
     // 必须拆分各行取最大 advance，并与 descText.implicitWidth 取较大值吸收 CJK 塑形差异。
     readonly property real rawDescW: {
@@ -164,9 +164,9 @@ Item {
         for (var i = 0; i < lines.length; i++) {
             var line = lines[i]
             if (line.length === 0) continue
-            descLineMetrics.text = line
-            if (descLineMetrics.width > maxW) {
-                maxW = descLineMetrics.width
+            var lw = descFm.advanceWidth(line)
+            if (lw > maxW) {
+                maxW = lw
             }
         }
         return maxW
@@ -226,8 +226,8 @@ Item {
                 totalLines += 1
                 continue
             }
-            descLineMetrics.text = line
-            var wrapped = Math.max(1, Math.ceil(descLineMetrics.width / maxD))
+            var lw = descFm.advanceWidth(line)
+            var wrapped = Math.max(1, Math.ceil(lw / maxD))
             totalLines += wrapped
         }
         return Math.max(1, totalLines) * descMetrics.height
