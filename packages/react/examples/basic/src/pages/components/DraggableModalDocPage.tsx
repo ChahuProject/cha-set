@@ -18,7 +18,7 @@ export function DraggableModalDocPage() {
   ];
 
   const modalBody = (
-    <div className="space-y-3 p-4 text-xs text-muted-foreground">
+    <div className="space-y-3 text-xs text-muted-foreground">
       <DocText role="h3">{t('overlays.draggableModal.diagnosticsTitle', 'Memory & Shader Diagnostics')}</DocText>
       <p>
         {t('overlays.draggableModal.diagnosticsDesc', 'Drag anywhere on the modal surface not occupied by controls to move; drag borders to resize.')}
@@ -35,7 +35,7 @@ export function DraggableModalDocPage() {
   );
 
   const modalFooter = (
-    <div className="flex justify-end p-3 bg-muted/20">
+    <div className="flex justify-end px-5 py-3 border-t border-border/50 bg-muted/20">
       <Button variant="secondary" size="xs" onClick={() => setOpen(false)}>
         {t('common.close', 'Close')}
       </Button>
@@ -46,8 +46,8 @@ export function DraggableModalDocPage() {
   <DraggableModal
     bounds="parent"
     initialPositionMode="center"
-    defaultWidthRem={18.75}
-    defaultHeightRem={12.5}
+    defaultWidthRem={22}
+    autoFitHeight
     sizeOptions={[
       { name: 'Default', special: 'default' },
       { name: 'Compact (24rem x 18rem)', widthRem: 24, heightRem: 18 },
@@ -58,14 +58,14 @@ export function DraggableModalDocPage() {
     showCloseButton
     onClose={() => setOpen(false)}
     fixedFooter={
-      <div className="flex justify-end p-3 bg-muted/20">
+      <div className="flex justify-end px-5 py-3 border-t border-border/50 bg-muted/20">
         <Button variant="secondary" size="xs" onClick={() => setOpen(false)}>
           Close
         </Button>
       </div>
     }
   >
-    <div className="space-y-3 p-4 text-xs text-muted-foreground">
+    <div className="space-y-3 text-xs text-muted-foreground">
       <h3 className="text-sm font-medium text-foreground">${t('overlays.draggableModal.diagnosticsTitle', 'Memory & Shader Diagnostics')}</h3>
       <p>Drag anywhere on the modal surface not occupied by controls to move; drag borders to resize.</p>
       <div className="flex items-center justify-between border-t border-border/50 pt-2 font-mono">
@@ -120,8 +120,8 @@ export function DraggableModalDocPage() {
                 <DraggableModal
                   bounds="parent"
                   initialPositionMode="center"
-                  defaultWidthRem={18.75}
-                  defaultHeightRem={12.5}
+                  defaultWidthRem={22}
+                  autoFitHeight
                   sizeOptions={sizeOptions}
                   sizeMenuTooltip={t('overlays.draggableModal.adjustSize', 'Adjust window size')}
                   showCloseButton

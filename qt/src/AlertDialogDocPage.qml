@@ -76,6 +76,8 @@ DocLayout {
 
     ChaSetAlertDialog {
         id: alertPopup
+        size: "sm"
+        dialogWidth: ThemeTokens.dp(400)
         title: ChaSetI18n.tr("overlays.alertDialog.deleteDatabase", "Delete Database Permanently")
         description: ChaSetI18n.tr("overlays.alertDialog.deleteDatabaseDesc", "This action cannot be undone. This database and all associated tables, indexes, and backups will be immediately eradicated.")
         confirmText: ChaSetI18n.tr("overlays.alertDialog.confirm", "Confirm Delete")

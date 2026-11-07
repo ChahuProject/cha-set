@@ -293,7 +293,7 @@ DocLayout {
         id: desktopDialog
         title: ChaSetI18n.tr("overlays.dialog.advancedDesktopTitle", "Advanced Desktop Tool")
         description: ChaSetI18n.tr("overlays.dialog.advancedDesktopDesc", "Drag the title bar or window body to reposition. Switch size presets from the top-right button.")
-        dialogWidth: 520
+        dialogWidth: ThemeTokens.dp(448)
         draggable: true
 
         DocText {
@@ -304,8 +304,15 @@ DocLayout {
             width: parent.width
         }
 
-        Row {
+        footer: Row {
             anchors.right: parent.right
+            spacing: ThemeTokens.dp(8)
+            ChaSetButton {
+                size: "sm"
+                variant: "outline"
+                text: ChaSetI18n.tr("common.close", "Close")
+                onClicked: desktopDialog.reject()
+            }
             ChaSetButton {
                 size: "sm"
                 text: ChaSetI18n.tr("overlays.dialog.confirm", "Confirm")
@@ -319,19 +326,21 @@ DocLayout {
         id: confirmDialog
         variant: "alert"
         destructive: true
+        size: "sm"
         title: ChaSetI18n.tr("overlays.dialog.areYouSure", "Are you absolutely sure?")
         description: ChaSetI18n.tr("overlays.dialog.deleteAccountDesc", "This action cannot be undone. This will permanently delete your account.")
         confirmText: ChaSetI18n.tr("overlays.dialog.yesDeleteAccount", "Yes, delete account")
         cancelText: ChaSetI18n.tr("common.cancel", "Cancel")
-        dialogWidth: 440
+        dialogWidth: ThemeTokens.dp(400)
     }
 
     // Informational Notice Dialog Instance
     ChaSetDialog {
         id: noticeDialog
+        size: "sm"
         title: ChaSetI18n.tr("overlays.dialog.scheduledMaintenance", "Scheduled Maintenance")
         description: ChaSetI18n.tr("overlays.dialog.maintenanceDesc", "The cloud service will be undergoing scheduled infrastructure updates tonight at 02:00 UTC.")
-        dialogWidth: 440
+        dialogWidth: ThemeTokens.dp(400)
 
         DocText {
             text: ChaSetI18n.tr("overlays.dialog.downtimeDesc", "Expected downtime is under 10 minutes. All data remains encrypted and safe.")
@@ -341,7 +350,7 @@ DocLayout {
             width: parent.width
         }
 
-        Row {
+        footer: Row {
             anchors.right: parent.right
             ChaSetButton {
                 size: "sm"

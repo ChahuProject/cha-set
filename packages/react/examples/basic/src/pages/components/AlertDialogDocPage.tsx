@@ -97,7 +97,7 @@ export function AlertDialogDocPage() {
                 {t('overlays.alertDialog.openAlertDialog', 'Open Alert Dialog')}
               </Button>
             </AlertDialogTrigger>
-            <AlertDialogContent>
+            <AlertDialogContent size="sm">
               <AlertDialogHeader>
                 <AlertDialogTitle>
                   {t('overlays.alertDialog.deleteDatabase', 'Delete Database Permanently')}
@@ -113,7 +113,7 @@ export function AlertDialogDocPage() {
                 <AlertDialogCancel onClick={handleCancel}>
                   {t('overlays.alertDialog.cancel', 'Cancel')}
                 </AlertDialogCancel>
-                <AlertDialogAction onClick={handleConfirm}>
+                <AlertDialogAction variant="destructive" onClick={handleConfirm}>
                   {t('overlays.alertDialog.confirm', 'Confirm Delete')}
                 </AlertDialogAction>
               </AlertDialogFooter>
