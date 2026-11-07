@@ -240,6 +240,7 @@
       "addCustom": "Add \"{{text}}\"",
       "clear": "Clear",
       "clearDimension": "Clear Dimension",
+      "digitCycle": "Digits cycle: include / exclude / off",
       "dimension": "Dimension:",
       "empty": "No items available",
       "filtered": "Filtered",

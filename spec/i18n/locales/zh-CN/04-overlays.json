@@ -240,6 +240,7 @@
       "addCustom": "添加 \"{{text}}\"",
       "clear": "清除",
       "clearDimension": "清除本维筛选",
+      "digitCycle": "数字键切换：包含 / 排除 / 取消",
       "dimension": "筛选维度：",
       "empty": "暂无可选项",
       "filtered": "已筛选",

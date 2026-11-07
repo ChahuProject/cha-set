@@ -18,10 +18,19 @@ Popup {
     property bool showLogicToggle: false
     property string logicMode: "and" // "and" | "or"
 
+    // Facet variant:
+    // "default": free-form facet list with search and custom input.
+    // "numeric": small integer-only facets (<= 10 values, e.g. 0-5 star ratings).
+    //            Digit keys 0-9 cycle each facet include -> exclude -> off,
+    //            the search bar is disabled and every item stays visible.
+    property string variant: "default" // "default" | "numeric"
+    readonly property bool numericVariant: variant === "numeric"
+
     // Search settings:
     // searchEnabled: whether search filtering is enabled
     // searchVisibility: "autoHidden" | "always"
     property bool searchEnabled: true
+    readonly property bool searchAvailable: searchEnabled && !numericVariant
     property string searchVisibility: "autoHidden" // "autoHidden" | "always"
     property string searchPlaceholder: ChaSetI18n.tr("overlays.filterPopup.searchPlaceholder", "Quick search...")
     property string emptyText: ChaSetI18n.tr("overlays.filterPopup.empty", "No items available")
@@ -128,6 +137,9 @@ Popup {
 
     signal itemIncludeToggled(var key)
     signal itemExcludeToggled(var key)
+    // Numeric variant only: a digit key cycled the facet to the next state.
+    // nextState is "include" | "exclude" | "none".
+    signal itemStateCycled(var key, string nextState)
     signal clearRequested()
 
     popupType: Popup.Item
@@ -141,7 +153,7 @@ Popup {
 
     function applyFocus() {
         if (!rootPopup.opened) return
-        if (rootPopup.searchEnabled && searchInput) {
+        if (rootPopup.searchAvailable && searchInput) {
             searchInput.forceActiveFocus()
         } else {
             contentCol.forceActiveFocus()
@@ -207,6 +219,7 @@ Popup {
     readonly property var displayItems: {
         var _ = refreshEpoch
         if (!items) return []
+        if (rootPopup.numericVariant) return items
         if (!searchEnabled || !searchFilterText) return items
         var kw = searchFilterText.trim()
         if (!kw) return items
@@ -221,8 +234,81 @@ Popup {
         return filtered
     }
 
+    // Numeric variant: single digit key -> facet lookup (integer key or stars).
+    function numericKeyForItem(it) {
+        if (!it) return -1
+        var raw = (it.key !== undefined && it.key !== null) ? it.key : it.stars
+        if (typeof raw === "number" && raw >= 0 && raw <= 9 && Math.floor(raw) === raw) return raw
+        var text = String(raw === undefined || raw === null ? "" : raw)
+        if (/^[0-9]$/.test(text)) return Number(text)
+        return -1
+    }
+
+    function numericItemForKey(digit) {
+        var list = items || []
+        for (var i = 0; i < list.length; ++i) {
+            if (numericKeyForItem(list[i]) === digit) return list[i]
+        }
+        return null
+    }
+
+    function numericIdentity(it) {
+        if (!it) return null
+        if (it.key !== undefined && it.key !== null) return it.key
+        return numericKeyForItem(it)
+    }
+
+    function numericItemIncluded(it) {
+        var key = numericIdentity(it)
+        if (typeof rootPopup.checkIncluded === "function") {
+            return Boolean(rootPopup.checkIncluded(key))
+        }
+        return Boolean(it.isChecked)
+    }
+
+    function numericItemExcluded(it) {
+        var key = numericIdentity(it)
+        if (typeof rootPopup.checkExcluded === "function") {
+            return Boolean(rootPopup.checkExcluded(key))
+        }
+        return Boolean(it.isExcluded)
+    }
+
+    // Cycle one numeric facet: off -> include -> exclude -> off.
+    function cycleNumericItem(digit) {
+        var it = numericItemForKey(digit)
+        if (!it) return false
+        var nextState = "include"
+        if (numericItemExcluded(it)) {
+            nextState = "none"
+        } else if (numericItemIncluded(it)) {
+            nextState = "exclude"
+        }
+        rootPopup.itemStateCycled(numericIdentity(it), nextState)
+        rootPopup.refresh()
+        return true
+    }
+
     function handleKeyPress(event) {
-        if (!event || !rootPopup.searchEnabled) return false
+        if (!event) return false
+
+        if (rootPopup.numericVariant) {
+            if (event.key === Qt.Key_Escape) {
+                rootPopup.close()
+                event.accepted = true
+                return true
+            }
+            if (!Boolean(event.modifiers & (Qt.ControlModifier | Qt.AltModifier | Qt.MetaModifier))
+                    && event.key >= Qt.Key_0 && event.key <= Qt.Key_9) {
+                if (rootPopup.cycleNumericItem(event.key - Qt.Key_0)) {
+                    event.accepted = true
+                    return true
+                }
+            }
+            return false
+        }
+
+        if (!rootPopup.searchEnabled) return false
 
         if (event.key === Qt.Key_Backspace) {
             if (searchInput && searchInput.text.length > 0) {
@@ -340,8 +426,8 @@ Popup {
         // Search Bar
         Rectangle {
             id: searchBar
-            readonly property bool isBarExpanded: rootPopup.searchEnabled && (rootPopup.searchVisibility === "always" || rootPopup.searchActive || rootPopup.searchFilterText.length > 0)
-            visible: rootPopup.searchEnabled
+            readonly property bool isBarExpanded: rootPopup.searchAvailable && (rootPopup.searchVisibility === "always" || rootPopup.searchActive || rootPopup.searchFilterText.length > 0)
+            visible: rootPopup.searchAvailable
             Layout.fillWidth: true
             Layout.preferredHeight: isBarExpanded ? ThemeTokens.dp(26) : 0
             opacity: isBarExpanded ? 1.0 : 0.0
@@ -522,6 +608,9 @@ Popup {
 
                         readonly property int starsCount: (rowDelegate.modelData && typeof rowDelegate.modelData.stars === "number")
                             ? rowDelegate.modelData.stars : -1
+                        readonly property int numericKeyDigit: rootPopup.numericVariant
+                            ? rootPopup.numericKeyForItem(rowDelegate.modelData) : -1
+                        readonly property string numericKeyText: numericKeyDigit >= 0 ? String(numericKeyDigit) : ""
 
                         readonly property bool isInc: {
                             var _ = rootPopup.refreshEpoch
@@ -647,6 +736,15 @@ Popup {
                                 font.pixelSize: Typography.sizeMicro
                                 color: ThemeTokens.subduedText
                             }
+
+                            ChaSetKbd {
+                                visible: rowDelegate.numericKeyText.length > 0
+                                text: rowDelegate.numericKeyText
+                                size: "xs"
+                                variant: "outline"
+                                Layout.alignment: Qt.AlignVCenter
+                                Layout.preferredHeight: ThemeTokens.dp(18)
+                            }
                         }
 
                         MouseArea {
@@ -741,7 +839,7 @@ Popup {
         // Shortcuts Guide Bar
         Rectangle {
             Layout.fillWidth: true
-            Layout.preferredHeight: ThemeTokens.dp(26)
+            Layout.preferredHeight: ThemeTokens.dp(32)
             color: "transparent"
 
             Rectangle {
@@ -754,7 +852,16 @@ Popup {
             ChaSetShortcutBar {
                 anchors.fill: parent
                 preset: "filter-popup"
-                exclude: rootPopup.searchEnabled ? [] : ["search"]
+                mode: "icon"
+                exclude: rootPopup.searchAvailable ? [] : ["search"]
+                additionalShortcuts: rootPopup.numericVariant ? [
+                    {
+                        "id": "digitCycle",
+                        "keys": ["0-9"],
+                        "label": ChaSetI18n.tr("overlays.filterPopup.digitCycle", "Cycle: include / exclude / off"),
+                        "priority": 1
+                    }
+                ] : []
             }
         }
     }
