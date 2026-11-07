@@ -338,6 +338,49 @@
               "r": 1
             }
           ],
+          "materialSymbol": "drag_handle",
+          "codepoint": "e25d"
+        },
+        "grip-vertical": {
+          "grid": "default",
+          "elements": [
+            {
+              "t": "circle",
+              "cx": 9,
+              "cy": 12,
+              "r": 1
+            },
+            {
+              "t": "circle",
+              "cx": 9,
+              "cy": 5,
+              "r": 1
+            },
+            {
+              "t": "circle",
+              "cx": 9,
+              "cy": 19,
+              "r": 1
+            },
+            {
+              "t": "circle",
+              "cx": 15,
+              "cy": 12,
+              "r": 1
+            },
+            {
+              "t": "circle",
+              "cx": 15,
+              "cy": 5,
+              "r": 1
+            },
+            {
+              "t": "circle",
+              "cx": 15,
+              "cy": 19,
+              "r": 1
+            }
+          ],
           "materialSymbol": "drag_indicator",
           "codepoint": "e945"
         },
@@ -1563,8 +1606,8 @@
         "minimize": "window-minimize",
         "maximize": "window-maximize",
         "restore": "window-restore",
-        "drag_indicator": "grip-horizontal",
-        "drag-indicator": "grip-horizontal",
+        "drag_indicator": "grip-vertical",
+        "drag-indicator": "grip-vertical",
         "drag_handle": "grip-horizontal",
         "drag-handle": "grip-horizontal"
       },
@@ -1656,6 +1699,7 @@
             "mail",
             "log-out",
             "grip-horizontal",
+            "grip-vertical",
             "maximize-2"
           ]
         },

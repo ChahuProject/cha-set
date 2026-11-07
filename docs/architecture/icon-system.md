@@ -83,7 +83,7 @@ None of them is written down beside the metrics it comes from. A number stored n
 
 | Artifact | Contents |
 | :--- | :--- |
-| `packages/react/src/lib/icons.generated.tsx` | `ICON_ELEMENTS` (registry vocabulary, emitted as **data**), `Icon` primitive, 57 `*Icon` components, and the whole contract as metadata: `ICON_SPEC_ID`, `ICON_METRICS`, `ICON_GRIDS`, `ICON_SIZES`, `ICON_WEIGHTS`, `ICON_COLOR`, `ICON_RULES`, `ICON_CATEGORIES`, `ICON_SPECS`, `ICON_ADOPTION`, `ICON_AUDIT`, `ICON_NAMES`, `ICON_ALIASES` |
+| `packages/react/src/lib/icons.generated.tsx` | `ICON_ELEMENTS` (registry vocabulary, emitted as **data**), `Icon` primitive, 63 `*Icon` components, and the whole contract as metadata: `ICON_SPEC_ID`, `ICON_METRICS`, `ICON_GRIDS`, `ICON_SIZES`, `ICON_WEIGHTS`, `ICON_COLOR`, `ICON_RULES`, `ICON_CATEGORIES`, `ICON_SPECS`, `ICON_ADOPTION`, `ICON_AUDIT`, `ICON_NAMES`, `ICON_ALIASES` |
 | `qt/src/ChaSetIcons.generated.qml` | The same contract as a `pragma Singleton`, plus `shapes` — artwork compiled to path data (`d`), with `gridSize`, `strokeWidth`, `linecap`, `linejoin` per shape — and `resolveIcon(name)` / `shapesFor(name)` |
 
 Three deliberate choices keep the artifact trustworthy:

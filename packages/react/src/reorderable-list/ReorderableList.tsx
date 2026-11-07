@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { cn } from '../lib/utils';
-import { GripHorizontalIcon, EyeIcon, EyeOffIcon } from '../lib/icons';
+import { GripVerticalIcon, EyeIcon, EyeOffIcon } from '../lib/icons';
 import { Tooltip } from '../tooltip';
 import type { ReorderableActionColumn, ReorderableListItem } from './types';
 
@@ -245,7 +245,7 @@ export const ReorderableList = React.forwardRef<HTMLDivElement, ReorderableListP
                   onPointerUp={(e) => handlePointerUp(index, e)}
                   onPointerCancel={(e) => handlePointerUp(index, e)}
                 >
-                  <GripHorizontalIcon className="size-3.5" />
+                  <GripVerticalIcon className="size-3.5" />
                 </div>
               )}
 

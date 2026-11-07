@@ -78,6 +78,7 @@ export {
   ChevronUpIcon,
   XIcon,
   GripHorizontalIcon,
+  GripVerticalIcon,
   CopyIcon,
   PencilIcon,
   KeyboardIcon,

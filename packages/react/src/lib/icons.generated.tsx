@@ -298,6 +298,7 @@ export const ICON_CATEGORIES: IconCategory[] = [
       "mail",
       "log-out",
       "grip-horizontal",
+      "grip-vertical",
       "maximize-2"
     ]
   },
@@ -699,6 +700,20 @@ export const ICON_AUDIT: Record<string, IconAudit> = {
     "minY": 7,
     "maxX": 21,
     "maxY": 17,
+    "withinTolerance": true
+  },
+  "grip-vertical": {
+    "grid": "default",
+    "gridSize": 24,
+    "strokeWidth": 2,
+    "centerX": 12,
+    "centerY": 12,
+    "offsetX": 0,
+    "offsetY": 0,
+    "minX": 7,
+    "minY": 3,
+    "maxX": 17,
+    "maxY": 21,
     "withinTolerance": true
   },
   "copy": {
@@ -1471,6 +1486,10 @@ export const ICON_MATERIAL_SYMBOLS: Record<IconName, IconMaterialSymbol> = {
     "codepoint": "e5cd"
   },
   "grip-horizontal": {
+    "symbol": "drag_handle",
+    "codepoint": "e25d"
+  },
+  "grip-vertical": {
     "symbol": "drag_indicator",
     "codepoint": "e945"
   },
@@ -1871,6 +1890,47 @@ export const ICON_ELEMENTS = {
         "t": "circle",
         "cx": 5,
         "cy": 15,
+        "r": 1
+      }
+    ]
+  },
+  "grip-vertical": {
+    "grid": "default",
+    "elements": [
+      {
+        "t": "circle",
+        "cx": 9,
+        "cy": 12,
+        "r": 1
+      },
+      {
+        "t": "circle",
+        "cx": 9,
+        "cy": 5,
+        "r": 1
+      },
+      {
+        "t": "circle",
+        "cx": 9,
+        "cy": 19,
+        "r": 1
+      },
+      {
+        "t": "circle",
+        "cx": 15,
+        "cy": 12,
+        "r": 1
+      },
+      {
+        "t": "circle",
+        "cx": 15,
+        "cy": 5,
+        "r": 1
+      },
+      {
+        "t": "circle",
+        "cx": 15,
+        "cy": 19,
         "r": 1
       }
     ]
@@ -2997,8 +3057,8 @@ export const ICON_ALIASES: Record<string, IconName> = {
   "minimize": "window-minimize",
   "maximize": "window-maximize",
   "restore": "window-restore",
-  "drag_indicator": "grip-horizontal",
-  "drag-indicator": "grip-horizontal",
+  "drag_indicator": "grip-vertical",
+  "drag-indicator": "grip-vertical",
   "drag_handle": "grip-horizontal",
   "drag-handle": "grip-horizontal"
 };
@@ -3096,6 +3156,7 @@ export const ChevronDownIcon = /*#__PURE__*/ makeIcon('chevron-down', 'ChevronDo
 export const ChevronUpIcon = /*#__PURE__*/ makeIcon('chevron-up', 'ChevronUpIcon');
 export const XIcon = /*#__PURE__*/ makeIcon('x', 'XIcon');
 export const GripHorizontalIcon = /*#__PURE__*/ makeIcon('grip-horizontal', 'GripHorizontalIcon');
+export const GripVerticalIcon = /*#__PURE__*/ makeIcon('grip-vertical', 'GripVerticalIcon');
 export const CopyIcon = /*#__PURE__*/ makeIcon('copy', 'CopyIcon');
 export const PencilIcon = /*#__PURE__*/ makeIcon('pencil', 'PencilIcon');
 export const KeyboardIcon = /*#__PURE__*/ makeIcon('keyboard', 'KeyboardIcon');
