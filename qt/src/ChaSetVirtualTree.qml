@@ -1405,17 +1405,17 @@ Item {
                     Text {
                         text: {
                             var count = (root.draggedIds && root.draggedIds.length > 0) ? root.draggedIds.length : 1;
-                            var prefix = count > 1 ? ChaSetI18n.tr("desktopComposite.virtualTree.hudCountPrefix", "{{count}} 项 · ", { count: count }) : "";
+                            var prefix = count > 1 ? ChaSetI18n.tr("desktopComposite.virtualTree.hudCountPrefix", "{{count}} items · ", { count: count }) : "";
                             if (root.dropTargetId !== "") {
                                 var targetName = root.getDropTargetLabel();
-                                var verb = root.effectiveIsCopy ? ChaSetI18n.tr("desktopComposite.virtualTree.hudCopyVerb", "复制到") : ChaSetI18n.tr("desktopComposite.virtualTree.hudMoveVerb", "移入");
+                                var verb = root.effectiveIsCopy ? ChaSetI18n.tr("desktopComposite.virtualTree.hudCopyVerb", "Copy to") : ChaSetI18n.tr("desktopComposite.virtualTree.hudMoveVerb", "Move into");
                                 if (root.dropPosition === "inside") {
                                     return ChaSetI18n.tr("desktopComposite.virtualTree.hudInside", "{{prefix}}{{verb}}: {{target}}", { prefix: prefix, verb: verb, target: targetName });
                                 } else {
-                                    return ChaSetI18n.tr("desktopComposite.virtualTree.hudSibling", "{{prefix}}放置在同级: {{target}}", { prefix: prefix, target: targetName });
+                                    return ChaSetI18n.tr("desktopComposite.virtualTree.hudSibling", "{{prefix}}Place alongside: {{target}}", { prefix: prefix, target: targetName });
                                 }
                             }
-                            return ChaSetI18n.tr("desktopComposite.virtualTree.hudDragging", "拖拽中 ({{count}} 项)", { count: count });
+                            return ChaSetI18n.tr("desktopComposite.virtualTree.hudDragging", "Dragging ({{count}} items)", { count: count });
                         }
                         color: ThemeTokens.text
                         font.pixelSize: Typography.sizeSmall
@@ -1453,7 +1453,7 @@ Item {
                         }
 
                         Text {
-                            text: ChaSetI18n.tr("desktopComposite.virtualTree.hudRelease", "松开")
+                            text: ChaSetI18n.tr("desktopComposite.virtualTree.hudRelease", "Release")
                             color: !root.effectiveIsCopy ? ThemeTokens.text : ThemeTokens.subduedText
                             font.pixelSize: Typography.sizeMicro
                             font.weight: !root.effectiveIsCopy ? Typography.weightMedium : Typography.weightRegular
@@ -1464,7 +1464,7 @@ Item {
                     Text {
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
-                        text: ChaSetI18n.tr("desktopComposite.virtualTree.hudMoveToTarget", "移动到目标")
+                        text: ChaSetI18n.tr("desktopComposite.virtualTree.hudMoveToTarget", "Move to target")
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeMicro
                     }
@@ -1489,7 +1489,7 @@ Item {
                         }
 
                         Text {
-                            text: ChaSetI18n.tr("desktopComposite.virtualTree.hudHold", "按住")
+                            text: ChaSetI18n.tr("desktopComposite.virtualTree.hudHold", "Hold")
                             color: root.effectiveIsCopy ? ThemeTokens.text : ThemeTokens.subduedText
                             font.pixelSize: Typography.sizeMicro
                             font.weight: root.effectiveIsCopy ? Typography.weightMedium : Typography.weightRegular
@@ -1500,7 +1500,7 @@ Item {
                     Text {
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
-                        text: ChaSetI18n.tr("desktopComposite.virtualTree.hudCopyToTarget", "复制到目标")
+                        text: ChaSetI18n.tr("desktopComposite.virtualTree.hudCopyToTarget", "Copy to target")
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeMicro
                     }
@@ -1528,7 +1528,7 @@ Item {
                     Text {
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
-                        text: ChaSetI18n.tr("desktopComposite.virtualTree.hudCancel", "取消")
+                        text: ChaSetI18n.tr("desktopComposite.virtualTree.hudCancel", "Cancel")
                         color: ThemeTokens.subduedText
                         font.pixelSize: Typography.sizeMicro
                     }

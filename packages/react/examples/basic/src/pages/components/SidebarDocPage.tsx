@@ -41,11 +41,11 @@ export function SidebarDocPage() {
   const [collapsibleMode, setCollapsibleMode] = useState<"icon" | "offcanvas" | "none">("icon");
 
   const navItems = [
-    { id: "dashboard", icon: HomeIcon, label: t('surfaces.sidebar.dashboard', '控制台'), group: "overview" },
-    { id: "projects", icon: FolderIcon, label: t('surfaces.sidebar.projects', '项目'), badge: "12", group: "overview" },
-    { id: "analytics", icon: ChartIcon, label: t('surfaces.sidebar.analytics', '分析'), group: "overview" },
-    { id: "diagnostics", icon: SlidersIcon, label: t('surfaces.sidebar.diagnostics', '诊断'), badge: "OK", group: "configuration" },
-    { id: "settings", icon: SettingsIcon, label: t('surfaces.sidebar.preferences', '偏好设置'), group: "configuration" },
+    { id: "dashboard", icon: HomeIcon, label: t('surfaces.sidebar.dashboard', 'Dashboard'), group: "overview" },
+    { id: "projects", icon: FolderIcon, label: t('surfaces.sidebar.projects', 'Projects'), badge: "12", group: "overview" },
+    { id: "analytics", icon: ChartIcon, label: t('surfaces.sidebar.analytics', 'Analytics'), group: "overview" },
+    { id: "diagnostics", icon: SlidersIcon, label: t('surfaces.sidebar.diagnostics', 'Diagnostics'), badge: "OK", group: "configuration" },
+    { id: "settings", icon: SettingsIcon, label: t('surfaces.sidebar.preferences', 'Preferences'), group: "configuration" },
   ];
 
   const currentItem = navItems.find((item) => item.id === activeItem) ?? navItems[0]!;
@@ -140,7 +140,7 @@ export function SidebarDocPage() {
                       </div>
                       <div className="flex flex-col min-w-0 group-data-[collapsible=icon]:hidden">
                         <span className="font-semibold text-xs leading-none truncate text-sidebar-foreground">ChaSet Studio</span>
-                        <span className="text-[0.625rem] text-sidebar-foreground/60 leading-tight truncate mt-0.5">{t('surfaces.sidebar.proWorkspace', '专业工作区')}</span>
+                        <span className="text-[0.625rem] text-sidebar-foreground/60 leading-tight truncate mt-0.5">{t('surfaces.sidebar.proWorkspace', 'Pro Workspace')}</span>
                       </div>
                     </div>
                     <SidebarTrigger tooltip={false} className="size-7" />
@@ -151,7 +151,7 @@ export function SidebarDocPage() {
                   {/* Group 1: Overview / Platform */}
                   <SidebarGroup>
                     <SidebarGroupLabel className="text-[0.6875rem] font-semibold tracking-wider uppercase text-sidebar-foreground/60">
-                      {t('surfaces.sidebar.overview', '概览')}
+                      {t('surfaces.sidebar.overview', 'Overview')}
                     </SidebarGroupLabel>
                     <SidebarGroupContent>
                       <SidebarMenu>
@@ -187,7 +187,7 @@ export function SidebarDocPage() {
                   {/* Group 2: Configuration / System */}
                   <SidebarGroup>
                     <SidebarGroupLabel className="text-[0.6875rem] font-semibold tracking-wider uppercase text-sidebar-foreground/60">
-                      {t('surfaces.sidebar.configuration', '配置')}
+                      {t('surfaces.sidebar.configuration', 'Configuration')}
                     </SidebarGroupLabel>
                     <SidebarGroupContent>
                       <SidebarMenu>
@@ -255,10 +255,10 @@ export function SidebarDocPage() {
 
                   <div className="flex items-center gap-2 shrink-0">
                     <Badge variant="outline" className="text-xs font-mono">
-                      {t('surfaces.sidebar.selectedView', '当前视图:')} {currentItem.id}
+                      {t('surfaces.sidebar.selectedView', 'Selected View:')} {currentItem.id}
                     </Badge>
                     <Badge variant="secondary" className="text-xs">
-                      {t('surfaces.sidebar.expanded', '已展开')}
+                      {t('surfaces.sidebar.expanded', 'Expanded')}
                     </Badge>
                   </div>
                 </div>
@@ -271,7 +271,7 @@ export function SidebarDocPage() {
                       <Card className="p-3 border border-border bg-card text-card-foreground shadow-2xs">
                         <CardContent className="p-0 flex flex-col gap-1">
                           <span className="text-[0.6875rem] text-muted-foreground font-medium">
-                            {t('surfaces.sidebar.activeProjects', '活跃项目')}
+                            {t('surfaces.sidebar.activeProjects', 'Active Projects')}
                           </span>
                           <div className="flex items-baseline justify-between">
                             <span className="text-xl font-bold tracking-tight">12</span>
@@ -283,11 +283,11 @@ export function SidebarDocPage() {
                       <Card className="p-3 border border-border bg-card text-card-foreground shadow-2xs">
                         <CardContent className="p-0 flex flex-col gap-1">
                           <span className="text-[0.6875rem] text-muted-foreground font-medium">
-                            {t('surfaces.sidebar.buildTime', '构建耗时')}
+                            {t('surfaces.sidebar.buildTime', 'Build Time')}
                           </span>
                           <div className="flex items-baseline justify-between">
                             <span className="text-xl font-bold tracking-tight">1.2s</span>
-                            <Badge variant="outline" className="text-[0.625rem] font-mono px-1 py-0">{t('surfaces.sidebar.cached', '缓存命中')}</Badge>
+                            <Badge variant="outline" className="text-[0.625rem] font-mono px-1 py-0">{t('surfaces.sidebar.cached', 'Cache Hit')}</Badge>
                           </div>
                         </CardContent>
                       </Card>
@@ -295,11 +295,11 @@ export function SidebarDocPage() {
                       <Card className="p-3 border border-border bg-card text-card-foreground shadow-2xs">
                         <CardContent className="p-0 flex flex-col gap-1">
                           <span className="text-[0.6875rem] text-muted-foreground font-medium">
-                            {t('surfaces.sidebar.memoryUsage', '内存占用')}
+                            {t('surfaces.sidebar.memoryUsage', 'Memory Usage')}
                           </span>
                           <div className="flex items-baseline justify-between">
                             <span className="text-xl font-bold tracking-tight">42 MB</span>
-                            <Badge variant="secondary" className="text-[0.625rem] font-mono px-1 py-0 text-emerald-600 dark:text-emerald-400">{t('surfaces.sidebar.lightweight', '轻量高效')}</Badge>
+                            <Badge variant="secondary" className="text-[0.625rem] font-mono px-1 py-0 text-emerald-600 dark:text-emerald-400">{t('surfaces.sidebar.lightweight', 'Lightweight')}</Badge>
                           </div>
                         </CardContent>
                       </Card>
@@ -310,31 +310,31 @@ export function SidebarDocPage() {
                       <div>
                         <h4 className="text-xs font-semibold text-foreground flex items-center gap-1.5">
                           <SlidersIcon className="size-3.5 text-primary" />
-                          {t('desktopComposite.sidebar.sandboxTitle', '侧边栏沙盒')}
+                          {t('desktopComposite.sidebar.sandboxTitle', 'Sidebar Sandbox')}
                         </h4>
                         <p className="text-[0.6875rem] text-muted-foreground mt-0.5 leading-relaxed">
-                          {t('surfaces.sidebar.dragHint', '拖拽侧边栏右边缘把手调整尺寸，或点击触发器折叠/展开。')}
+                          {t('surfaces.sidebar.dragHint', 'Drag the rail on the right edge of the sidebar to resize, or click the trigger to collapse/expand.')}
                         </p>
                       </div>
 
                       <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-border/50">
                         <div className="flex items-center gap-2">
                           <span className="text-xs text-muted-foreground font-medium">
-                            {t('surfaces.sidebar.collapsibleMode', '折叠模式:')}
+                            {t('surfaces.sidebar.collapsibleMode', 'Collapsible Mode:')}
                           </span>
                           <SegmentedControl
                             size="sm"
                             value={collapsibleMode}
                             onValueChange={(val) => setCollapsibleMode(val as "icon" | "offcanvas" | "none")}
                             options={[
-                              { label: t('surfaces.sidebar.icon', '图标'), value: "icon" },
-                              { label: t('surfaces.sidebar.offcanvas', '抽屉'), value: "offcanvas" },
-                              { label: t('surfaces.sidebar.none', '无'), value: "none" },
+                              { label: t('surfaces.sidebar.icon', 'Icon'), value: "icon" },
+                              { label: t('surfaces.sidebar.offcanvas', 'Offcanvas'), value: "offcanvas" },
+                              { label: t('surfaces.sidebar.none', 'None'), value: "none" },
                             ]}
                           />
                         </div>
                         <div className="flex items-center gap-2">
-                          <SidebarTrigger variant="outline" size="sm" label={t('surfaces.sidebar.collapseSidebar', '折叠侧边栏')} />
+                          <SidebarTrigger variant="outline" size="sm" label={t('surfaces.sidebar.collapseSidebar', 'Collapse Sidebar')} />
                         </div>
                       </div>
                     </Card>
@@ -350,10 +350,10 @@ export function SidebarDocPage() {
                         </div>
                         <div>
                           <span className="text-xs font-semibold">cha-set-core</span>
-                          <p className="text-[0.6875rem] text-muted-foreground">{t('surfaces.sidebar.coreDesc', 'TypeScript / QML 统一设计系统资产库')}</p>
+                          <p className="text-[0.6875rem] text-muted-foreground">{t('surfaces.sidebar.coreDesc', 'TypeScript / QML unified design system assets')}</p>
                         </div>
                       </div>
-                      <Badge variant="outline" className="text-xs font-mono">{t('surfaces.sidebar.coreVersion', 'v1.4.0 版本')}</Badge>
+                      <Badge variant="outline" className="text-xs font-mono">{t('surfaces.sidebar.coreVersion', 'v1.4.0')}</Badge>
                     </Card>
 
                     <Card className="p-3 border border-border bg-card text-card-foreground shadow-2xs flex items-center justify-between">
@@ -363,10 +363,10 @@ export function SidebarDocPage() {
                         </div>
                         <div>
                           <span className="text-xs font-semibold">qt-desktop-shell</span>
-                          <p className="text-[0.6875rem] text-muted-foreground">{t('surfaces.sidebar.qtShellDesc', 'Qt 6.8 高性能桌面客户端外壳与演示程序')}</p>
+                          <p className="text-[0.6875rem] text-muted-foreground">{t('surfaces.sidebar.qtShellDesc', 'Qt 6.8 high-performance desktop shell and living showcase')}</p>
                         </div>
                       </div>
-                      <Badge variant="secondary" className="text-xs font-mono">{t('surfaces.sidebar.qtShellVersion', 'v0.2.0 版本')}</Badge>
+                      <Badge variant="secondary" className="text-xs font-mono">{t('surfaces.sidebar.qtShellVersion', 'v0.2.0')}</Badge>
                     </Card>
                   </div>
                 )}
@@ -375,10 +375,10 @@ export function SidebarDocPage() {
                   <Card className="p-4 border border-border bg-card text-card-foreground shadow-2xs flex flex-col gap-2">
                     <h4 className="text-xs font-semibold text-foreground flex items-center gap-1.5">
                       <ChartIcon className="size-3.5 text-primary" />
-                      {t('surfaces.sidebar.analyticsTitle', '系统遥测与合规状态')}
+                      {t('surfaces.sidebar.analyticsTitle', 'System Telemetry & Compliance')}
                     </h4>
                     <p className="text-xs text-muted-foreground leading-relaxed">
-                      {t('surfaces.sidebar.analyticsDesc', '318 项规范契约通过率 100%，52 个双端演示页面零白屏加载，全量组件通过无闪烁与颜色对齐测试。')}
+                      {t('surfaces.sidebar.analyticsDesc', '100% pass across 318 specification contracts, zero white screen loads on 52 dual-stack living pages.')}
                     </p>
                   </Card>
                 )}
@@ -387,16 +387,16 @@ export function SidebarDocPage() {
                   <Card className="p-4 border border-border bg-card text-card-foreground shadow-2xs flex flex-col gap-2">
                     <h4 className="text-xs font-semibold text-foreground flex items-center gap-1.5">
                       <SlidersIcon className="size-3.5 text-primary" />
-                      {t('surfaces.sidebar.diagTitle', '主题与布局健康诊断')}
+                      {t('surfaces.sidebar.diagTitle', 'Theme & Layout Health Diagnostics')}
                     </h4>
                     <div className="space-y-1.5 text-xs text-muted-foreground font-mono">
                       <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
                         <CheckIcon className="size-3.5" />
-                        <span>{t('surfaces.sidebar.diagThemeGate', '主题自适应门禁：0 边框缺陷')}</span>
+                        <span>{t('surfaces.sidebar.diagThemeGate', 'Theme-adaptive Gate: 0 bare border violations')}</span>
                       </div>
                       <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
                         <CheckIcon className="size-3.5" />
-                        <span>{t('surfaces.sidebar.diagZeroPx', '零像素规则：100% rem 规范')}</span>
+                        <span>{t('surfaces.sidebar.diagZeroPx', 'Zero-px Rule: 100% rem compliant')}</span>
                       </div>
                     </div>
                   </Card>
@@ -406,10 +406,10 @@ export function SidebarDocPage() {
                   <Card className="p-4 border border-border bg-card text-card-foreground shadow-2xs flex flex-col gap-3">
                     <h4 className="text-xs font-semibold text-foreground flex items-center gap-1.5">
                       <SettingsIcon className="size-3.5 text-primary" />
-                      {t('surfaces.sidebar.prefsTitle', '工作区偏好设置')}
+                      {t('surfaces.sidebar.prefsTitle', 'Workspace Preferences')}
                     </h4>
                     <p className="text-xs text-muted-foreground">
-                      {t('surfaces.sidebar.prefsDesc', '侧边栏支持双向拖拽调整、Icon 折叠记忆以及快捷键 Ctrl+B 快速触发。')}
+                      {t('surfaces.sidebar.prefsDesc', 'Sidebar supports bidirectional drag resizing, icon collapse memory, and Ctrl+B shortcut trigger.')}
                     </p>
                   </Card>
                 )}

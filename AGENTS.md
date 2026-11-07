@@ -241,6 +241,17 @@
       弹窗垂直高度默认且必须自动贴合内容高度（`autoFitHeight: true`），简单表单弹窗随内容高度自适应收缩包裹，绝对禁止硬编码固定高度（如 `height: 400px`）导致底部产生数十至数百像素的大面积无意义黑腔与空洞死寂留白。
     - **Zero Dividing Line (纯净无缝边距与零硬割裂律 — 严禁生硬横向分割线)**:
       遵循 Windows 11 现代 Fluent 规范，弹窗底栏操作按钮（Cancel / Save）与表单处于同一纯净视觉表面，仅依靠 20px~24px 的呼吸边距实现功能分区，严禁在底部操作按钮上方强行绘制全通横向割裂线（`border-t` / `Rectangle { height: 1 }`）。
+21. **Mandatory Cross-Stack i18n Zero-Hardcoding & Search Parity Contract (全量组件与演示多语言零硬编码律 — 搜索框与占位符强制对齐红线)**:
+    - **Search Box & Input Universal i18n (搜索框与输入控件全量多语言覆盖律)**:
+      All search inputs, filter boxes, query bars, and action tooltips (`placeholder`, `searchPlaceholder`, `filterPlaceholder`, `queryPlaceholder`, `searchTooltip`, `clearTooltip`, `emptySearchText`, `noMatchesText`, `noResultsText`) across both React component library, Qt component library, and living showcase pages MUST be internationalized with `t(key, defaultText)` (React) and `ChaSetI18n.tr(key, defaultText)` (Qt). Hardcoding strings like `"搜索..."` or `"Search..."` is strictly prohibited.
+    - **English Default Fallbacks in Code (代码降级文案全量英文律 — 严禁代码直写中文字符串)**:
+      The code fallback parameter (the 2nd argument to `t(key, defaultText)` in React or `ChaSetI18n.tr(key, defaultText)` in Qt) MUST strictly be English. Chinese translations belong exclusively in `spec/i18n/locales/zh-CN/*.json` dictionary files. Writing CJK characters directly into `defaultText` will cause English locales to render Chinese upon fallback and triggers instant gate failure.
+    - **Strict Ban on `qsTr(...)` in QML (严禁 QML 使用 qsTr)**:
+      In Qt/QML, `qsTr(...)` is strictly forbidden because it bypasses the runtime `ChaSetI18n` dictionary and reactivity system. All translations in QML must invoke `ChaSetI18n.tr(key, defaultText)`.
+    - **Single Source of Truth in `spec/i18n/locales/` (多语言词条单一真理源)**:
+      Every translation key used by components or showcase MUST exist in both `spec/i18n/locales/zh-CN/` and `spec/i18n/locales/en-US/`. After editing locale JSONs, run `node spec/generators/generate-i18n.mjs` to synchronize generated artifacts.
+    - **Mandatory Ratchet Gate (`just check-i18n`)**:
+      All component and showcase PRs must pass `just check-i18n` with 0 missing keys, 0 banned `qsTr` calls, 0 CJK fallbacks, 0 untranslated strings, and 0 new un-internationalized findings.
 
 ---
 

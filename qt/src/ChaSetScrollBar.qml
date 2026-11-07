@@ -360,7 +360,7 @@ T.ScrollBar {
         visible: control.showButtons && control._hasSpaceForButtons && control.hasOverflow
         isNearThumb: control._visualThumbStart <= (control.buttonLength + control._proximityBuffer)
         isEnabled: control.canScrollBack
-        tooltipText: control.vertical ? ChaSetI18n.tr("desktopComposite.scrollBar.toTop", "到顶") : ChaSetI18n.tr("desktopComposite.scrollBar.toLeft", "到最左")
+        tooltipText: control.vertical ? ChaSetI18n.tr("desktopComposite.scrollBar.toTop", "Scroll to Top") : ChaSetI18n.tr("desktopComposite.scrollBar.toLeft", "Scroll to Left")
         x: 0
         y: 0
         onTriggered: control.scrollToStart()
@@ -373,7 +373,7 @@ T.ScrollBar {
         visible: control.showButtons && control._hasSpaceForButtons && control.hasOverflow
         isNearThumb: control._visualThumbStart <= (control.buttonLength * 2 + control._proximityBuffer)
         isEnabled: control.canScrollBack
-        tooltipText: control.vertical ? ChaSetI18n.tr("desktopComposite.scrollBar.pageUp", "向上翻一页") : ChaSetI18n.tr("desktopComposite.scrollBar.pageLeft", "向左翻一页")
+        tooltipText: control.vertical ? ChaSetI18n.tr("desktopComposite.scrollBar.pageUp", "Page Up") : ChaSetI18n.tr("desktopComposite.scrollBar.pageLeft", "Page Left")
         x: control.vertical ? 0 : control.buttonLength
         y: control.vertical ? control.buttonLength : 0
         onTriggered: control.scrollPageBack()
@@ -387,7 +387,7 @@ T.ScrollBar {
         visible: control.showButtons && control._hasSpaceForButtons && control.hasOverflow
         isNearThumb: control._visualThumbEnd >= (control._trackLength - control.buttonLength * 2 - control._proximityBuffer)
         isEnabled: control.canScrollForward
-        tooltipText: control.vertical ? ChaSetI18n.tr("desktopComposite.scrollBar.pageDown", "向下翻一页") : ChaSetI18n.tr("desktopComposite.scrollBar.pageRight", "向右翻一页")
+        tooltipText: control.vertical ? ChaSetI18n.tr("desktopComposite.scrollBar.pageDown", "Page Down") : ChaSetI18n.tr("desktopComposite.scrollBar.pageRight", "Page Right")
         x: control.vertical ? 0 : (control.width - control.buttonLength * 2)
         y: control.vertical ? (control.height - control.buttonLength * 2) : 0
         onTriggered: control.scrollPageForward()
@@ -400,7 +400,7 @@ T.ScrollBar {
         visible: control.showButtons && control._hasSpaceForButtons && control.hasOverflow
         isNearThumb: control._visualThumbEnd >= (control._trackLength - control.buttonLength - control._proximityBuffer)
         isEnabled: control.canScrollForward
-        tooltipText: control.vertical ? ChaSetI18n.tr("desktopComposite.scrollBar.toBottom", "到底") : ChaSetI18n.tr("desktopComposite.scrollBar.toEnd", "到最右")
+        tooltipText: control.vertical ? ChaSetI18n.tr("desktopComposite.scrollBar.toBottom", "Scroll to Bottom") : ChaSetI18n.tr("desktopComposite.scrollBar.toEnd", "Scroll to Right")
         x: control.vertical ? 0 : (control.width - control.buttonLength)
         y: control.vertical ? (control.height - control.buttonLength) : 0
         onTriggered: control.scrollToEnd()

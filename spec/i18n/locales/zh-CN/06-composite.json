@@ -97,6 +97,7 @@
       "allScopes": "所有作用域",
       "clearSameChord": "清除相同按键筛选",
       "conflict": "冲突",
+      "conflictingChord": "冲突快捷键：",
       "conflictExplanation": "该快捷键在同一作用域内被分配给了多个操作。请选择要保留或重新分配的操作。",
       "conflictTitle": "快捷键冲突",
       "conflictTooltip": "存在快捷键冲突，点击打开冲突解决器",
@@ -105,6 +106,7 @@
       "exportTitle": "导出 Markdown 格式快捷键速查表",
       "noMatches": "未找到匹配的快捷键操作",
       "noMatchesHint": "请尝试调整搜索关键词或切换作用域筛选条件。",
+      "noOtherOccupiers": "未发现冲突操作",
       "resetAction": "还原为出厂默认快捷键",
       "resetAll": "重置全部",
       "resetAllTitle": "将全部快捷键还原为出厂默认设置",
@@ -126,6 +128,7 @@
     },
     "genericDataTable": {
       "description": "由 TanStack Table 驱动的桌面级全功能数据表，支持列排序、过滤、选择与分页。",
+      "emptyState": "暂无数据记录",
       "filterPlaceholder": "过滤记录……",
       "next": "下一页",
       "pageOf": "第 {{current}} 页，共 {{total}} 页",
@@ -183,6 +186,7 @@
       "sandboxTitle": "Address Bar 沙盒",
       "searchPlaceholder": "搜索...",
       "searchTooltip": "搜索",
+      "thisPc": "此电脑",
       "upTooltip": "上一级"
     },
     "breadcrumb": {
@@ -250,6 +254,7 @@
       "sandboxTitle": "日志控制台沙盒"
     },
     "pipelineView": {
+      "filterPlaceholder": "过滤流水线...",
       "jobBenchmark": "性能基准测试集",
       "jobPackage": "打包构建产物",
       "jobShaderComp": "着色器编译",

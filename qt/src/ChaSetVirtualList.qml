@@ -17,7 +17,7 @@ Item {
     property bool searchable: false
     property bool searchDefaultOpen: false
     property string searchQuery: ""
-    property string searchPlaceholder: ChaSetI18n.tr("desktopComposite.virtualList.searchPlaceholder", "搜索...")
+    property string searchPlaceholder: ChaSetI18n.tr("desktopComposite.virtualList.searchPlaceholder", "Search...")
     property bool isSearchOpen: searchDefaultOpen || (searchQuery.length > 0)
 
     readonly property int effectiveItemHeight: ThemeTokens.dp(root.itemHeight)

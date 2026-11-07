@@ -97,6 +97,7 @@
       "allScopes": "All Scopes",
       "clearSameChord": "Clear chord filter",
       "conflict": "Conflict",
+      "conflictingChord": "Conflicting shortcut:",
       "conflictExplanation": "The shortcut key is assigned to multiple actions in the same active scope. Choose an action to keep or reassign.",
       "conflictTitle": "Shortcut Key Conflict",
       "conflictTooltip": "Shortcut key conflict detected; click to resolve",
@@ -105,6 +106,7 @@
       "exportTitle": "Export Markdown reference cheat sheet",
       "noMatches": "No matching actions found",
       "noMatchesHint": "Try adjusting your search query or scope filter.",
+      "noOtherOccupiers": "No conflicting actions found.",
       "resetAction": "Reset to factory default",
       "resetAll": "Reset All",
       "resetAllTitle": "Revert all shortcuts to factory defaults",
@@ -126,6 +128,7 @@
     },
     "genericDataTable": {
       "description": "Full-featured desktop-grade data table powered by TanStack Table, with column sorting, filtering, selection, and pagination.",
+      "emptyState": "No records found",
       "filterPlaceholder": "Filter records...",
       "next": "Next",
       "pageOf": "Page {{current}} of {{total}}",
@@ -183,6 +186,7 @@
       "sandboxTitle": "Address Bar Sandbox",
       "searchPlaceholder": "Search...",
       "searchTooltip": "Search",
+      "thisPc": "This PC",
       "upTooltip": "Up one level"
     },
     "breadcrumb": {
@@ -250,6 +254,7 @@
       "sandboxTitle": "Log Console Sandbox"
     },
     "pipelineView": {
+      "filterPlaceholder": "Filter pipelines...",
       "jobBenchmark": "Benchmark Suite",
       "jobPackage": "Package Artifacts",
       "jobShaderComp": "Shader Compilation",

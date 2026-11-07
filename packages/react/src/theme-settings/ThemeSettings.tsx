@@ -343,7 +343,7 @@ export const ThemeSettings = React.forwardRef<HTMLDivElement, ThemeSettingsProps
         {importOpen && (
           <div className="flex flex-col gap-2.5 p-3.5 rounded-xl bg-muted/50 border border-border/80 animate-in fade-in-0 duration-quick ease-standard">
             <span className="text-xs font-medium text-foreground">
-              {t('theme.settings.import.hint', 'Paste JSON configuration:')}
+              {t('theme.settings.importHint', 'Paste JSON configuration:')}
             </span>
             <textarea
               className="w-full h-24 p-2.5 text-xs font-mono rounded-lg bg-background border border-border text-foreground focus:outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground/60"

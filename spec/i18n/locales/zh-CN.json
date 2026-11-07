@@ -91,6 +91,10 @@
         "title": "装饰程度",
         "desc": "控制圆角、阴影与动效强度的全局滑块 (0-100)"
       },
+      "typography": {
+        "title": "排版系统",
+        "desc": "逻辑字体族与字体缩放系数"
+      },
       "uiscale": {
         "title": "界面缩放",
         "desc": "全局显示密度与界面缩放系数"
@@ -118,6 +122,8 @@
       "expressive": "表现力"
     },
     "overrides": {
+      "title": "微调参数",
+      "resetAll": "重置为预设",
       "custom": "微调",
       "hide": "收起",
       "radius": "圆角强度",

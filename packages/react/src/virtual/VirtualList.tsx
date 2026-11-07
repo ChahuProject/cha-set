@@ -171,7 +171,7 @@ export function VirtualList<T>({
             ref={searchInputRef}
             size="sm"
             value={activeQuery}
-            placeholder={searchPlaceholder ?? t('desktopComposite.virtualList.searchPlaceholder', '搜索...')}
+            placeholder={searchPlaceholder ?? t('desktopComposite.virtualList.searchPlaceholder', 'Search...')}
             clearable={true}
             leftIcon={<SearchIcon className="size-3.5 text-muted-foreground" />}
             onChange={(e) => {
@@ -203,7 +203,7 @@ export function VirtualList<T>({
         {filteredItems.length === 0 ? (
           emptyNode ?? (
             <div className="p-4 text-center text-xs text-muted-foreground">
-              {activeQuery ? t('desktopComposite.virtualList.emptyFiltered', '无匹配项目') : t('desktopComposite.virtualList.emptyDefault', '列表为空')}
+              {activeQuery ? t('desktopComposite.virtualList.emptyFiltered', 'No matching items') : t('desktopComposite.virtualList.emptyDefault', 'List is empty')}
             </div>
           )
         ) : (

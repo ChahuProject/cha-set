@@ -6,6 +6,7 @@ import { SegmentedControl } from '../segmented-control';
 import { ShortcutBar } from '../kbd';
 import { CheckIcon, XIcon, SearchIcon, StarIcon } from '../lib/icons';
 import { matchPinyin } from '../lib/pinyin';
+import { useChaSetI18n } from '../i18n';
 import type {
   FilterPopupSearchVisibility,
   FilterPopupLogicMode,
@@ -30,6 +31,7 @@ export interface FilterPopupProps {
   onOpenChange?: (open: boolean) => void;
   searchEnabled?: boolean;
   searchVisibility?: FilterPopupSearchVisibility;
+  searchPlaceholder?: string;
   validateFileName?: boolean;
   showLogicToggle?: boolean;
   logicMode?: FilterPopupLogicMode;
@@ -58,6 +60,7 @@ export function FilterPopup({
   onOpenChange,
   searchEnabled = true,
   searchVisibility = 'autoHidden',
+  searchPlaceholder,
   validateFileName = false,
   showLogicToggle = false,
   logicMode = 'and',
@@ -71,9 +74,14 @@ export function FilterPopup({
   align = 'start',
   side = 'bottom',
   sideOffset = 6,
-  emptyText = '暂无可选项',
-  noMatchText = '未匹配到相关项',
+  emptyText,
+  noMatchText,
 }: FilterPopupProps) {
+  const { t } = useChaSetI18n();
+  const resolvedSearchPlaceholder = searchPlaceholder ?? t('overlays.filterPopup.searchPlaceholder', 'Quick search...');
+  const resolvedEmptyText = emptyText ?? t('overlays.filterPopup.empty', 'No items available');
+  const resolvedNoMatchText = noMatchText ?? t('overlays.filterPopup.noMatch', 'No matching items');
+
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen);
   const isControlled = controlledOpen !== undefined;
   const isOpen = isControlled ? controlledOpen : uncontrolledOpen;
@@ -278,7 +286,7 @@ export function FilterPopup({
                   }}
                   className="h-5 px-1.5 text-[0.6875rem] text-muted-foreground hover:text-foreground"
                 >
-                  清除
+                  {t('overlays.filterPopup.clear', 'Clear')}
                 </Button>
               )}
             </div>
@@ -322,7 +330,7 @@ export function FilterPopup({
                       e.preventDefault();
                     }
                   }}
-                  placeholder="快速搜索..."
+                  placeholder={resolvedSearchPlaceholder}
                   className="h-full w-full bg-transparent text-xs text-foreground placeholder:text-muted-foreground outline-hidden"
                 />
                 {searchQuery.length > 0 && (
@@ -350,7 +358,9 @@ export function FilterPopup({
               <div className="flex items-center gap-1.5 px-1 text-2xs text-destructive">
                 <XIcon className="size-3 shrink-0" />
                 <span className="truncate">
-                  {`不支持字符: ${invalidFileNameChars.join('  ')}`}
+                  {t('overlays.filterPopup.invalidChars', 'Invalid characters: {{chars}}', {
+                    chars: invalidFileNameChars.join('  '),
+                  })}
                 </span>
               </div>
             )}
@@ -359,7 +369,7 @@ export function FilterPopup({
             <div className="max-h-[15rem] min-h-[3.75rem] overflow-y-auto overflow-x-hidden flex flex-col gap-0.5 py-0.5">
               {filteredItems.length === 0 ? (
                 <div className="flex h-9 items-center justify-center text-xs text-muted-foreground">
-                  {searchQuery ? noMatchText : emptyText}
+                  {searchQuery ? resolvedNoMatchText : resolvedEmptyText}
                 </div>
               ) : (
                 filteredItems.map((item) => {

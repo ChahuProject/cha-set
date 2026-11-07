@@ -135,6 +135,7 @@ export interface JobListProps {
   activeJobId: string | null;
   onSelectJob?: (id: string) => void;
   title?: string;
+  searchPlaceholder?: string;
   emptyText?: string;
   className?: string;
 }
@@ -168,6 +169,7 @@ export interface PipelineCenterProps {
   activeJobId?: string | null;
   onSelectJob?: (id: string) => void;
   title?: string;
+  searchPlaceholder?: string;
   emptyText?: string;
   noSelectionText?: string;
   headerActionSlot?: (pipeline: PipelineRun) => ReactNode;

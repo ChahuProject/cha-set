@@ -3,6 +3,7 @@ import { Badge } from '../badge/Badge';
 import { Button } from '../button/Button';
 import { Input } from '../input/Input';
 import { cn } from '../lib/utils';
+import { useChaSetI18n } from '../i18n';
 import { VirtualList } from '../virtual/VirtualList';
 import { ClockIcon, FilterIcon, LayersIcon, SearchIcon, StatusIcon } from './icons';
 import { PipelineView } from './PipelineView';
@@ -33,12 +34,15 @@ export function PipelineCenter({
   activeJobId: controlledJobId,
   onSelectJob: controlledSelectJob,
   title = 'Pipelines',
+  searchPlaceholder,
   emptyText = 'No pipelines found',
   noSelectionText = 'Select a pipeline from the list to view execution details',
   headerActionSlot,
   listFooterSlot,
   className,
 }: PipelineCenterProps) {
+  const { t } = useChaSetI18n();
+  const resolvedSearchPlaceholder = searchPlaceholder ?? t('desktopComposite.pipelineView.filterPlaceholder', 'Filter pipelines...');
   const [searchQuery, setSearchQuery] = React.useState('');
   const [statusFilter, setStatusFilter] = React.useState<PipelineStatusFilter>('all');
   const [internalJobId, setInternalJobId] = React.useState<string | null>(null);
@@ -116,7 +120,7 @@ export function PipelineCenter({
           <div className="relative flex items-center">
             <SearchIcon className="absolute left-2 size-3 text-muted-foreground pointer-events-none" />
             <Input
-              placeholder="Filter pipelines..."
+              placeholder={resolvedSearchPlaceholder}
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               className="h-7 pl-7 text-xs bg-background/50"

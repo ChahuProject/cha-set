@@ -113,23 +113,29 @@ export const defaultVirtualFileSystemAdapter: AddressBarFileSystemAdapter = {
   },
 };
 
-export function parsePathSegments(rawPath: string): PathSegment[] {
+export function parsePathSegments(rawPath: string, rootLabel?: string): PathSegment[] {
   if (!rawPath || typeof rawPath !== 'string') return [];
   const normalized = rawPath.replace(/\\/g, '/');
 
-  // Handle explicit "此电脑" root prefix
-  if (normalized === '此电脑' || normalized.startsWith('此电脑/')) {
+  // Handle explicit "This PC" / "此电脑" root prefix
+  const isThisPc =
+    normalized === '此电脑' ||
+    normalized.startsWith('此电脑/') ||
+    normalized === 'This PC' ||
+    normalized.startsWith('This PC/');
+  if (isThisPc) {
+    const prefix = (normalized === '此电脑' || normalized.startsWith('此电脑/')) ? '此电脑' : 'This PC';
     const rootSeg: PathSegment = {
-      label: '此电脑',
-      path: '此电脑',
+      label: rootLabel || prefix,
+      path: prefix,
       realPath: '',
       isRoot: true,
       icon: 'computer',
       hasSubfolders: true,
     };
-    const rest = normalized.slice('此电脑'.length).replace(/^\/+/, '');
+    const rest = normalized.slice(prefix.length).replace(/^\/+/, '');
     if (!rest) return [rootSeg];
-    const sub = parsePathSegments(rest);
+    const sub = parsePathSegments(rest, rootLabel);
     return [rootSeg, ...sub];
   }
 
@@ -227,7 +233,7 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
     const activePath = controlledPath !== undefined ? controlledPath : internalPath;
     const { t } = useChaSetI18n();
     const resolvedSearchPlaceholder =
-      searchPlaceholder ?? t('desktopComposite.addressBar.searchPlaceholder', '搜索...');
+      searchPlaceholder ?? t('desktopComposite.addressBar.searchPlaceholder', 'Search...');
 
     const [isEditing, setIsEditing] = React.useState(false);
     const [editValue, setEditValue] = React.useState(activePath);
@@ -274,7 +280,8 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
       }
     }, [activePath, isEditing]);
 
-    const segments = React.useMemo(() => parsePathSegments(activePath), [activePath]);
+    const thisPcLabel = t('desktopComposite.addressBar.thisPc', 'This PC');
+    const segments = React.useMemo(() => parsePathSegments(activePath, thisPcLabel), [activePath, thisPcLabel]);
 
     const startEditing = () => {
       if (disabled) return;
@@ -403,7 +410,7 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
         {showNavButtons && (
           <div className="flex items-center gap-0.5 shrink-0">
             {/* Back Button */}
-            <Tooltip content={t('desktopComposite.addressBar.backTooltip', '后退')} side="bottom">
+            <Tooltip content={t('desktopComposite.addressBar.backTooltip', 'Back')} side="bottom">
               <button
                 type="button"
                 aria-label="Back"
@@ -421,7 +428,7 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
             </Tooltip>
 
             {/* Forward Button */}
-            <Tooltip content={t('desktopComposite.addressBar.forwardTooltip', '前进')} side="bottom">
+            <Tooltip content={t('desktopComposite.addressBar.forwardTooltip', 'Forward')} side="bottom">
               <button
                 type="button"
                 aria-label="Forward"
@@ -439,7 +446,7 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
             </Tooltip>
 
             {/* Up (Parent) Button */}
-            <Tooltip content={t('desktopComposite.addressBar.upTooltip', '上一级')} side="bottom">
+            <Tooltip content={t('desktopComposite.addressBar.upTooltip', 'Up')} side="bottom">
               <button
                 type="button"
                 aria-label="Up to parent directory"
@@ -458,7 +465,7 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
 
             {/* Refresh Button */}
             {showRefresh && (
-              <Tooltip content={t('desktopComposite.addressBar.refreshTooltip', '刷新')} side="bottom">
+              <Tooltip content={t('desktopComposite.addressBar.refreshTooltip', 'Refresh')} side="bottom">
                 <button
                   type="button"
                   aria-label="Refresh"
@@ -610,10 +617,10 @@ export const AddressBar = React.forwardRef<HTMLDivElement, AddressBarProps>(
         {showSearch && (
           <div className="shrink-0 flex items-center">
             {!isSearchExpanded ? (
-              <Tooltip content={t('desktopComposite.addressBar.searchTooltip', '搜索')} side="bottom">
+              <Tooltip content={t('desktopComposite.addressBar.searchTooltip', 'Search')} side="bottom">
                 <button
                   type="button"
-                  aria-label={t('desktopComposite.addressBar.searchTooltip', '搜索')}
+                  aria-label={t('desktopComposite.addressBar.searchTooltip', 'Search')}
                   disabled={disabled}
                   onClick={() => {
                     if (disabled) return;

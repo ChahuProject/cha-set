@@ -45,9 +45,9 @@ Item {
         return null;
     }
     readonly property string _hoveredBtnText: {
-        if (_hoveredBtn === minusBtn) return ChaSetI18n.tr("desktopComposite.scaleOsd.zoomOut", "缩小");
-        if (_hoveredBtn === plusBtn) return ChaSetI18n.tr("desktopComposite.scaleOsd.zoomIn", "放大");
-        if (_hoveredBtn === resetBtn) return ChaSetI18n.tr("desktopComposite.scaleOsd.reset", "重置");
+        if (_hoveredBtn === minusBtn) return ChaSetI18n.tr("desktopComposite.scaleOsd.zoomOut", "Zoom Out");
+        if (_hoveredBtn === plusBtn) return ChaSetI18n.tr("desktopComposite.scaleOsd.zoomIn", "Zoom In");
+        if (_hoveredBtn === resetBtn) return ChaSetI18n.tr("desktopComposite.scaleOsd.reset", "Reset");
         return "";
     }
     property bool _tooltipVisible: false

@@ -287,6 +287,10 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
      - `en-US`: `"components": { "<name>": { "description": "<English Description>" } }`
    - **Register Sandbox Labels & Controls (Mandatory)**:
      Register any sandbox-specific buttons, badges, or field labels under the appropriate namespace (e.g. `desktopComposite.<camelCase>`).
+   - **Search Box & Input Universal i18n & Zero CJK in Code Fallbacks (Mandatory)**:
+     Every search box, filter input, placeholder, tooltip, and empty state in both the component and DocPage MUST use `t(key, defaultText)` in React and `ChaSetI18n.tr(key, defaultText)` in Qt.
+     - **Zero CJK in Code**: `defaultText` MUST strictly be in English. Chinese translations belong exclusively in `spec/i18n/locales/zh-CN/*.json`.
+     - **Zero `qsTr` in QML**: Never use `qsTr(...)` in QML; all translations must use `ChaSetI18n.tr(...)`.
    - Run generators to emit updated metadata and i18n dictionaries:
      ```bash
      just gen-showcase
@@ -373,6 +377,7 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
 4. **Execute Full Suite Verification**:
    ```bash
    just check-showcase
+   just check-i18n
    just build qt
    just test
    just gate
@@ -381,7 +386,9 @@ When adding a new UI component to `cha-set`, you MUST adhere to this rigorous, m
    ```bash
    just gate-pixel --component <name>
    ```
-3. **Pre-Response Commit Gate**:
+5. **i18n Coverage Verification**:
+   - Run `just check-i18n` and ensure zero missing keys, zero banned `qsTr` calls, zero CJK fallbacks in code, zero untranslated English strings in Chinese, zero CJK leaks in English, and zero new un-internationalized findings.
+6. **Pre-Response Commit Gate**:
    - Split commits cleanly per Conventional Commits with English descriptions:
      - `feat(<name>): implement cross-stack <name> component with spec and conformance`
      - `test(<name>): add pixel-sync verification matrix and harness`

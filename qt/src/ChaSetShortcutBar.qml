@@ -22,34 +22,34 @@ Item {
 
     readonly property var defaultPresets: ({
         "dropdown": [
-            { "id": "nav", "keys": ["Up", "Down"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.nav", "导航"), "priority": 1 },
-            { "id": "select", "keys": ["Enter"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.select", "选择"), "priority": 1 },
-            { "id": "close", "keys": ["Esc"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.close", "关闭"), "priority": 2 }
+            { "id": "nav", "keys": ["Up", "Down"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.nav", "Navigate"), "priority": 1 },
+            { "id": "select", "keys": ["Enter"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.select", "Select"), "priority": 1 },
+            { "id": "close", "keys": ["Esc"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.close", "Close"), "priority": 2 }
         ],
         "dialog": [
-            { "id": "confirm", "keys": ["Enter"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.confirm", "确认"), "priority": 1 },
-            { "id": "cancel", "keys": ["Esc"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.cancel", "取消"), "priority": 1 }
+            { "id": "confirm", "keys": ["Enter"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.confirm", "Confirm"), "priority": 1 },
+            { "id": "cancel", "keys": ["Esc"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.cancel", "Cancel"), "priority": 1 }
         ],
         "tree": [
-            { "id": "nav", "keys": ["Up", "Down"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.nav", "导航"), "priority": 1 },
-            { "id": "toggle", "keys": ["Left", "Right"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.toggle", "折叠/展开"), "priority": 2 },
-            { "id": "select", "keys": ["Enter"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.select", "选择"), "priority": 1 },
-            { "id": "close", "keys": ["Esc"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.cancel", "取消"), "priority": 3 }
+            { "id": "nav", "keys": ["Up", "Down"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.nav", "Navigate"), "priority": 1 },
+            { "id": "toggle", "keys": ["Left", "Right"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.toggle", "Toggle"), "priority": 2 },
+            { "id": "select", "keys": ["Enter"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.select", "Select"), "priority": 1 },
+            { "id": "close", "keys": ["Esc"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.cancel", "Cancel"), "priority": 3 }
         ],
         "table": [
-            { "id": "nav", "keys": ["Up", "Down"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.move", "移动"), "priority": 1 },
-            { "id": "select", "keys": ["Space"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.selected", "选中"), "priority": 2 }
+            { "id": "nav", "keys": ["Up", "Down"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.move", "Move"), "priority": 1 },
+            { "id": "select", "keys": ["Space"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.selected", "Select"), "priority": 2 }
         ],
         "address-bar": [
-            { "id": "nav", "keys": ["Up", "Down"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.nav", "导航"), "priority": 1 },
-            { "id": "open", "keys": ["Enter"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.open", "打开"), "priority": 1 },
-            { "id": "close", "keys": ["Esc"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.close", "关闭"), "priority": 2 }
+            { "id": "nav", "keys": ["Up", "Down"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.nav", "Navigate"), "priority": 1 },
+            { "id": "open", "keys": ["Enter"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.open", "Open"), "priority": 1 },
+            { "id": "close", "keys": ["Esc"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.close", "Close"), "priority": 2 }
         ],
         "filter-popup": [
-            { "id": "include", "keys": ["mouse-left"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.include", "包含"), "priority": 1 },
-            { "id": "exclude", "keys": ["mouse-right"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.exclude", "排除"), "priority": 1 },
-            { "id": "search", "keys": [ChaSetI18n.tr("desktopComposite.shortcutBar.charKey", "字符")], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.startSearch", "输入开始搜索"), "priority": 3 },
-            { "id": "close", "keys": ["Esc"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.close", "关闭"), "priority": 2 }
+            { "id": "include", "keys": ["mouse-left"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.include", "Include"), "priority": 1 },
+            { "id": "exclude", "keys": ["mouse-right"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.exclude", "Exclude"), "priority": 1 },
+            { "id": "search", "keys": [ChaSetI18n.tr("desktopComposite.shortcutBar.charKey", "Char")], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.startSearch", "Type to search"), "priority": 3 },
+            { "id": "close", "keys": ["Esc"], "label": ChaSetI18n.tr("desktopComposite.shortcutBar.close", "Close"), "priority": 2 }
         ]
     })
 
@@ -493,8 +493,8 @@ Item {
                         width: parent.width
                         Text {
                             text: root.visibleItems.length === 0
-                                ? ChaSetI18n.tr("desktopComposite.shortcutBar.allShortcuts", "快捷键列表")
-                                : ChaSetI18n.tr("desktopComposite.shortcutBar.moreShortcuts", "更多快捷键")
+                                ? ChaSetI18n.tr("desktopComposite.shortcutBar.allShortcuts", "All Shortcuts")
+                                : ChaSetI18n.tr("desktopComposite.shortcutBar.moreShortcuts", "More Shortcuts")
                             color: ThemeTokens.subduedText
                             font.pixelSize: Typography.sizeCaption
                             font.weight: Font.Medium
