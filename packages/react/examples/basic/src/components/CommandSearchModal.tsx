@@ -49,6 +49,17 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
     return list;
   }, []);
 
+  const resolveDesc = (id: string, defaultDesc: string = '') => {
+    const camel = id.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+    const fromKebab = t('components.' + id + '.description', '');
+    if (fromKebab) return fromKebab;
+    if (camel !== id) {
+      const fromCamel = t('components.' + camel + '.description', '');
+      if (fromCamel) return fromCamel;
+    }
+    return defaultDesc;
+  };
+
   const filtered = useMemo(() => {
     if (!query.trim()) return allItems;
     return allItems.filter((entry) => {
@@ -57,7 +68,7 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
       const rawTitle = entry.item.title;
       const rawCat = entry.category;
       const rawDesc = entry.item.description || '';
-      const locDesc = t('components.' + entry.item.id + '.description', entry.item.description || '');
+      const locDesc = resolveDesc(entry.item.id, entry.item.description || '');
       return (
         matchPinyin(rawTitle, query) ||
         matchPinyin(locTitle, query) ||
@@ -192,7 +203,7 @@ export function CommandSearchModal({ isOpen, onClose, onSelect }: CommandSearchM
                       </div>
                       {item.description && (
                         <div className="text-xs text-muted-foreground truncate">
-                          {t('components.' + item.id + '.description', item.description)}
+                          {resolveDesc(item.id, item.description)}
                         </div>
                       )}
                     </div>

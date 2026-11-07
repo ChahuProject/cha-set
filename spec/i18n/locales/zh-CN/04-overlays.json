@@ -1,5 +1,11 @@
 {
   "components": {
+    "adaptive-popup": {
+      "description": "内容驱动的自适应高度弹窗原语，具备宿主空间封顶与头/体/尾三段式布局，绝不误出多余滚动条。"
+    },
+    "filter-popup": {
+      "description": "多维分面筛选弹窗组件，支持实时拼音搜索、排除过滤、星级评分与快捷键提示。"
+    },
     "alert-dialog": {
       "description": "打断用户并需要确认的重要模态确认弹窗。"
     },

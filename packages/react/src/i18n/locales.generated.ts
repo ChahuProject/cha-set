@@ -651,6 +651,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "presetTree": "树形视图",
       "sandboxTitle": "快捷键状态栏沙盒"
     },
+    "shortcut-bar": {
+      "description": "交互式多阶段响应式快捷键状态栏，在容器变窄时自动推进完整文字、紧凑符号、折叠徽章抽屉与小键盘图标形态。"
+    },
     "label": {
       "acceptTerms": "我同意并接受服务条款与隐私政策",
       "accountPassword": "账户密码",
@@ -994,6 +997,12 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     },
     "viewportConstrainedContainer": {
       "description": "根据锚点矩形下方可用视口空间动态约束最大高度的容器，支持自定义上限覆盖与平滑垂直滚动。"
+    },
+    "adaptive-popup": {
+      "description": "内容驱动的自适应高度弹窗原语，具备宿主空间封顶与头/体/尾三段式布局，绝不误出多余滚动条。"
+    },
+    "filter-popup": {
+      "description": "多维分面筛选弹窗组件，支持实时拼音搜索、排除过滤、星级评分与快捷键提示。"
     },
     "alert-dialog": {
       "description": "打断用户并需要确认的重要模态确认弹窗。"
@@ -3699,6 +3708,9 @@ export const BUILTIN_LOCALES: Record<string, any> = {
       "presetTree": "Tree View",
       "sandboxTitle": "Shortcut Bar Sandbox"
     },
+    "shortcut-bar": {
+      "description": "Interactive multi-stage responsive keyboard shortcut bar that progressively adapts from full text to compact symbols, overflow drawer, and keyboard icon."
+    },
     "label": {
       "acceptTerms": "I accept the terms and conditions",
       "accountPassword": "Account Password",
@@ -4042,6 +4054,12 @@ export const BUILTIN_LOCALES: Record<string, any> = {
     },
     "viewportConstrainedContainer": {
       "description": "Container that dynamically bounds max-height based on available viewport space below the anchor rect, supporting custom upper limit overrides and smooth vertical scrolling."
+    },
+    "adaptive-popup": {
+      "description": "Content-driven adaptive height popup with zero unnecessary scrollbars and 3-tier layout."
+    },
+    "filter-popup": {
+      "description": "Multi-dimensional facet filtering popup with search, exclusions, ratings and shortcuts."
     },
     "alert-dialog": {
       "description": "A modal dialog that interrupts the user with important content and requires confirmation."

@@ -117,6 +117,9 @@
       "presetTree": "树形视图",
       "sandboxTitle": "快捷键状态栏沙盒"
     },
+    "shortcut-bar": {
+      "description": "交互式多阶段响应式快捷键状态栏，在容器变窄时自动推进完整文字、紧凑符号、折叠徽章抽屉与小键盘图标形态。"
+    },
     "label": {
       "acceptTerms": "我同意并接受服务条款与隐私政策",
       "accountPassword": "账户密码",
