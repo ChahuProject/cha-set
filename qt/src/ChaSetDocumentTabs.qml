@@ -12,6 +12,8 @@ Rectangle {
     // =========================================================================
     property real controlHeight: ThemeTokens.controlHeight
     property real gap: ThemeTokens.gap
+    property real leftPadding: root.gap
+    property real rightPadding: 0
     property bool useShellChrome: false
     property color shellTabFill: "transparent"
 
@@ -46,9 +48,9 @@ Rectangle {
         id: tabFlickable
         objectName: "documentTabsFlickable"
         anchors.left: parent.left
-        anchors.leftMargin: root.gap
+        anchors.leftMargin: root.leftPadding
         anchors.right: trailingContainer.left
-        anchors.rightMargin: root.trailingItems.length > 0 ? (root.gap / 2) : 0
+        anchors.rightMargin: Math.max(root.rightPadding, root.trailingItems.length > 0 ? (root.gap / 2) : 0)
         anchors.verticalCenter: parent.verticalCenter
         height: root.controlHeight
         clip: true
