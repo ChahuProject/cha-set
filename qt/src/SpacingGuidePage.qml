@@ -387,54 +387,41 @@ DocLayout {
                             }
                         }
 
-                        // Form demo preview
-                        Rectangle {
+                        // Form demo preview: Directly on Card Surface (Zero Nested Card)
+                        Column {
+                            id: formRecCol
                             width: parent.width - ThemeTokens.dp(36)
-                            implicitHeight: formRecCol.implicitHeight + ThemeTokens.dp(24)
-                            height: implicitHeight
-                            radius: 6
-                            color: ThemeTokens.background
-                            border.color: ThemeTokens.border
-                            border.width: 1
+                            spacing: ThemeTokens.dp(12)
 
                             Column {
-                                id: formRecCol
-                                width: parent.width - ThemeTokens.dp(24)
-                                anchors.centerIn: parent
-                                spacing: ThemeTokens.dp(12)
+                                width: parent.width
+                                spacing: ThemeTokens.dp(6)
 
-                                Column {
-                                    width: parent.width
-                                    spacing: ThemeTokens.dp(6)
-
-                                    DocText {
-                                        text: ChaSetI18n.tr("getStarted.spacing.forms.nameLabel", "Name")
-                                        font.pixelSize: Typography.sizeSmall
-                                        font.weight: Typography.weightMedium
-                                    }
-
-                                    ChaSetInput {
-                                        width: parent.width
-                                        text: ChaSetI18n.tr("getStarted.spacing.forms.sampleName", "Alex Rivera")
-                                        readOnly: true
-                                    }
+                                ChaSetLabel {
+                                    text: ChaSetI18n.tr("getStarted.spacing.forms.nameLabel", "Name")
+                                    size: "sm"
                                 }
 
-                                Column {
+                                ChaSetInput {
                                     width: parent.width
-                                    spacing: ThemeTokens.dp(6)
+                                    text: ChaSetI18n.tr("getStarted.spacing.forms.sampleName", "Alex Rivera")
+                                    readOnly: true
+                                }
+                            }
 
-                                    DocText {
-                                        text: ChaSetI18n.tr("getStarted.spacing.forms.usernameLabel", "Username")
-                                        font.pixelSize: Typography.sizeSmall
-                                        font.weight: Typography.weightMedium
-                                    }
+                            Column {
+                                width: parent.width
+                                spacing: ThemeTokens.dp(6)
 
-                                    ChaSetInput {
-                                        width: parent.width
-                                        text: ChaSetI18n.tr("getStarted.spacing.forms.sampleUsername", "@arivera")
-                                        readOnly: true
-                                    }
+                                ChaSetLabel {
+                                    text: ChaSetI18n.tr("getStarted.spacing.forms.usernameLabel", "Username")
+                                    size: "sm"
+                                }
+
+                                ChaSetInput {
+                                    width: parent.width
+                                    text: ChaSetI18n.tr("getStarted.spacing.forms.sampleUsername", "@arivera")
+                                    readOnly: true
                                 }
                             }
                         }

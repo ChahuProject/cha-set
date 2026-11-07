@@ -2227,7 +2227,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
         "desc": "统一的间距标尺驱动双端（React rem 与 Qt ThemeTokens.dp）精确吻合。",
         "colLevel": "标尺级别",
         "colRem": "相对单位 (Rem / Dp)",
-        "colPx": "物理基准",
+        "colPx": "物理参考",
         "colSpecimen": "厚度可视化",
         "colUsage": "典型适用场景"
       },
@@ -2245,7 +2245,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
         "usernameLabel": "用户名",
         "sampleName": "亚历克斯",
         "sampleUsername": "@亚历克斯",
-        "antiPoint1": "短标签左侧荒废 100px+ 彻底废弃空白",
+        "antiPoint1": "短标签左侧荒废大量空间，造成严重空白割裂",
         "antiPoint2": "表单重心被迫右倾，整体比例向右塌陷",
         "antiPoint3": "从左上角标题到正文输入框视线产生严重断层"
       },
@@ -5254,7 +5254,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
         "desc": "A unified spacing scale driving exact alignment across both React (rem) and Qt (ThemeTokens.dp).",
         "colLevel": "Scale Level",
         "colRem": "Rem / Dp",
-        "colPx": "Physical Base",
+        "colPx": "Physical Reference",
         "colSpecimen": "Visual Thickness",
         "colUsage": "Typical Use Cases"
       },
@@ -5272,7 +5272,7 @@ export const BUILTIN_LOCALES: Record<string, any> = {
         "usernameLabel": "Username",
         "sampleName": "Alex Rivera",
         "sampleUsername": "@arivera",
-        "antiPoint1": "Wastes 100px+ of dead space to the left of short labels",
+        "antiPoint1": "Wastes excessive dead space to the left of short labels",
         "antiPoint2": "Forces the visual center of gravity rightwards, collapsing layout balance",
         "antiPoint3": "Creates severe visual disconnection between title and input field"
       },

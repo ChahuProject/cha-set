@@ -35,7 +35,7 @@ export function DialogDocPage() {
         <Input id="username" defaultValue="@arivera" />
       </div>
     </div>
-    <DialogFooter className="border-t-0 p-0 pt-4 gap-2">
+    <DialogFooter>
       <DialogClose asChild>
         <Button variant="outline" size="sm">Cancel</Button>
       </DialogClose>
@@ -59,11 +59,9 @@ export function DialogDocPage() {
         Column {
             width: parent.width
             spacing: ThemeTokens.dp(6)
-            DocText {
+            ChaSetLabel {
                 text: "Name"
-                color: root.cFg
-                font.pixelSize: Typography.sizeSmall
-                font.weight: Font.Medium
+                size: "sm"
             }
             ChaSetInput {
                 width: parent.width
@@ -74,11 +72,9 @@ export function DialogDocPage() {
         Column {
             width: parent.width
             spacing: ThemeTokens.dp(6)
-            DocText {
+            ChaSetLabel {
                 text: "Username"
-                color: root.cFg
-                font.pixelSize: Typography.sizeSmall
-                font.weight: Font.Medium
+                size: "sm"
             }
             ChaSetInput {
                 width: parent.width
@@ -166,7 +162,7 @@ export function DialogDocPage() {
                   </div>
                 </div>
 
-                <DialogFooter className="border-t-0 p-0 pt-4 gap-2">
+                <DialogFooter>
                   <DialogClose asChild>
                     <Button variant="outline" size="sm">{t('common.cancel', 'Cancel')}</Button>
                   </DialogClose>

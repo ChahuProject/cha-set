@@ -216,7 +216,7 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
   } else if (defaultHeight !== undefined) {
     resolvedHeight = defaultHeight;
   } else if (shouldAutoFit) {
-    resolvedHeight = resolvedMinHeight;
+    resolvedHeight = 20 * rem;
   } else {
     resolvedHeight = 25 * rem;
   }
@@ -300,7 +300,7 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
     const footerH = footerRef.current?.offsetHeight ?? 0;
     const contentH = content.scrollHeight || content.offsetHeight;
     const paddingH = 3 * rem; // 1.5rem top + 1.5rem bottom = 3rem (p-6)
-    const borderExtra = 4; // border & subpixel headroom to prevent false overflow
+    const borderExtra = 16; // 16px headroom to prevent false scrollbar triggers from subpixel text metrics
     const neededH = contentH + paddingH + footerH + borderExtra;
 
     const { h: boundsH } = getBoundsSize();
@@ -312,6 +312,10 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
     if (Math.abs(targetH - currentSizeRef.current.height) > 1) {
       currentSizeRef.current = { ...currentSizeRef.current, height: targetH };
       rnd.updateSize({ width: currentSizeRef.current.width, height: targetH });
+      const selfEl = rnd.getSelfElement();
+      if (selfEl) {
+        selfEl.style.height = `${targetH}px`;
+      }
 
       // If user has not dragged the modal yet, re-center vertically to avoid pushing below the screen
       if (!hasManuallyAdjustedRef.current && !isTopMode && typeof window !== 'undefined') {
@@ -361,6 +365,9 @@ export const DraggableModal = React.forwardRef<HTMLDivElement, DraggableModalPro
     ro.observe(contentRef.current);
     if (contentRef.current.firstElementChild) {
       ro.observe(contentRef.current.firstElementChild);
+    }
+    if (footerRef.current) {
+      ro.observe(footerRef.current);
     }
     return () => ro.disconnect();
   }, [shouldAutoFit, attemptFitHeight]);

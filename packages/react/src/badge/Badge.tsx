@@ -93,7 +93,7 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
         data-variant={variant}
         data-size={size}
         onClick={onClick}
-        className={`inline-flex items-center justify-center border font-medium transition-colors duration-quick ease-standard focus:outline-hidden focus:ring-2 focus:ring-ring focus:ring-offset-2 [&>svg]:size-3! [&>svg]:shrink-0 select-none ${isClickable ? 'cursor-pointer' : ''} ${variantStyles[variant]} ${sizeStyles[size]} ${forcedStateClass} ${className}`.trim()}
+        className={`inline-flex items-center justify-center whitespace-nowrap shrink-0 border font-medium transition-colors duration-quick ease-standard focus:outline-hidden focus:ring-2 focus:ring-ring focus:ring-offset-2 [&>svg]:size-3! [&>svg]:shrink-0 select-none ${isClickable ? 'cursor-pointer' : ''} ${variantStyles[variant]} ${sizeStyles[size]} ${forcedStateClass} ${className}`.trim()}
         {...props}
       >
         {dot && (

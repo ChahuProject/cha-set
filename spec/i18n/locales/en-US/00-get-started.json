@@ -347,7 +347,7 @@
           "desc": "A unified spacing scale driving exact alignment across both React (rem) and Qt (ThemeTokens.dp).",
           "colLevel": "Scale Level",
           "colRem": "Rem / Dp",
-          "colPx": "Physical Base",
+          "colPx": "Physical Reference",
           "colSpecimen": "Visual Thickness",
           "colUsage": "Typical Use Cases"
         },
@@ -365,7 +365,7 @@
           "usernameLabel": "Username",
           "sampleName": "Alex Rivera",
           "sampleUsername": "@arivera",
-          "antiPoint1": "Wastes 100px+ of dead space to the left of short labels",
+          "antiPoint1": "Wastes excessive dead space to the left of short labels",
           "antiPoint2": "Forces the visual center of gravity rightwards, collapsing layout balance",
           "antiPoint3": "Creates severe visual disconnection between title and input field"
         },

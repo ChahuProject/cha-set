@@ -202,7 +202,8 @@ export function SpacingGuidePage() {
               </div>
             </div>
 
-            <div className="p-4 rounded-lg bg-background text-foreground border border-border flex flex-col gap-3.5">
+            {/* Form Fields: Directly on Card Surface (Zero Nested Card) */}
+            <div className="flex flex-col gap-3.5 py-1">
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor="guide-rec-name" size="sm" className="text-foreground font-medium">
                   {t('getStarted.spacing.forms.nameLabel', 'Name')}
