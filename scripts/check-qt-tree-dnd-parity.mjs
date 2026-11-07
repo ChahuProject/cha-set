@@ -38,7 +38,7 @@ export function verifyQtTreeDndParity({ quiet = false } = {}) {
 
   // Check 3: isDropTarget must require root.isDragging
   checkedCount++;
-  const dropTargetRegex = /readonly\s+property\s+bool\s+isDropTarget:\s*root\.enableDnd\s*&&\s*root\.isDragging\s*&&\s*root\.dropTargetId\s*===\s*modelData\.id/;
+  const dropTargetRegex = /readonly\s+property\s+bool\s+isDropTarget:\s*root\.enableDnd\s*&&\s*root\.isDragging\s*&&\s*root\.dropTargetId\s*===\s*modelData\.(?:id|key)/;
   if (!dropTargetRegex.test(treeContent)) {
     violations.push('ChaSetVirtualTree.qml isDropTarget must enforce root.isDragging (prevents stuck insertion lines).');
   }
