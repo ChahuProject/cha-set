@@ -52,6 +52,7 @@ Item {
     signal refreshRequested()
     signal searchRequested(string query)
     signal dropRequested(string targetPath, var urls)
+    signal breadcrumbContextMenuRequested(int index, string path, string name, real globalX, real globalY)
 
     property string editValue: controller.editingText || controller.currentPath
 
@@ -363,6 +364,10 @@ Item {
 
                     onBlankAreaClicked: {
                         controller.enterEditMode()
+                    }
+
+                    onItemContextMenuRequested: (index, targetPath, name, gx, gy) => {
+                        root.breadcrumbContextMenuRequested(index, targetPath, name, gx, gy)
                     }
 
                     onOpenSubfoldersRequested: (index, targetPath, chevronItem) => {

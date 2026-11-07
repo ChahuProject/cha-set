@@ -35,6 +35,7 @@ Item {
     signal openSubfoldersRequested(int index, string path, Item chevronItem)
     signal dropRequested(string targetPath, var urls)
     signal blankAreaClicked()
+    signal itemContextMenuRequested(int index, string path, string name, real globalX, real globalY)
 
     // 解析拖拽载荷中的本地文件路径：OS 拖入优先 urls；内部拖拽（QQuick Drag）回退
     // 宿主注入路径或多行文本载荷（每行一条路径）。
@@ -307,9 +308,17 @@ Item {
                                 objectName: "pillMouse"
                                 anchors.fill: parent
                                 hoverEnabled: true
+                                acceptedButtons: Qt.LeftButton | Qt.RightButton
                                 cursorShape: !root.disabled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
-                                onClicked: {
+                                onClicked: (mouse) => {
                                     if (!root.disabled) {
+                                        if (mouse.button === Qt.RightButton) {
+                                            const gPos = (typeof pillMouse.mapToGlobal === "function")
+                                                ? pillMouse.mapToGlobal(mouse.x, mouse.y)
+                                                : Qt.point(mouse.x, mouse.y)
+                                            root.itemContextMenuRequested(segItem.index, segItem.segPath, segItem.segName, gPos.x, gPos.y)
+                                            return
+                                        }
                                         if (segItem.index === 0 && segItem.modelData && segItem.modelData.isTopRoot) {
                                             root.openSubfoldersRequested(0, segItem.segPath, chevronBox)
                                         } else if (segItem.isCurrent) {
