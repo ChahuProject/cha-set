@@ -19,7 +19,7 @@ DocLayout {
 
     ComponentPreview {
         title: ChaSetI18n.tr("desktopComposite.adaptivePopup.sandboxTitle", "Adaptive Popup Sandbox")
-        stageHeight: 380
+        stageHeight: 420
         reactCode: `<div ref={containerRef} className="relative h-[22.5rem] w-full overflow-hidden ...">
   <Button
     ref={triggerRef}
@@ -61,7 +61,7 @@ DocLayout {
         qtCode: `Rectangle {
     id: previewArea
     width: parent.width
-    height: ThemeTokens.dp(360)
+    height: ThemeTokens.dp(420)
     color: ThemeTokens.color("panelRaised")
     border.color: ThemeTokens.border
     border.width: 1
@@ -186,9 +186,9 @@ DocLayout {
             anchors.fill: parent
             anchors.margins: ThemeTokens.dp(16)
             radius: ThemeTokens.dp(8)
-            color: ThemeTokens.color("panelRaised")
+            color: ThemeTokens.dark ? Qt.rgba(30/255, 41/255, 59/255, 0.3) : Qt.rgba(241/255, 245/255, 249/255, 0.5)
             border.width: 1
-            border.color: ThemeTokens.border
+            border.color: Qt.rgba(ThemeTokens.border.r, ThemeTokens.border.g, ThemeTokens.border.b, 0.6)
             clip: true
 
             DocText {
@@ -258,7 +258,7 @@ DocLayout {
                             anchors.left: parent.left
                             anchors.right: parent.right
                             height: 1
-                            color: ThemeTokens.color("borderSubtle")
+                            color: Qt.rgba(ThemeTokens.border.r, ThemeTokens.border.g, ThemeTokens.border.b, 0.5)
                         }
                     }
                 ]
@@ -275,9 +275,9 @@ DocLayout {
                             width: parent ? parent.width : ThemeTokens.dp(280)
                             height: ThemeTokens.dp(32)
                             radius: ThemeTokens.dp(4)
-                            color: ThemeTokens.panel
+                            color: ThemeTokens.dark ? Qt.rgba(37/255, 45/255, 61/255, 0.6) : ThemeTokens.color("panelRaised")
                             border.width: 1
-                            border.color: ThemeTokens.border
+                            border.color: Qt.rgba(ThemeTokens.border.r, ThemeTokens.border.g, ThemeTokens.border.b, 0.5)
 
                             DocText {
                                 anchors.left: parent.left
@@ -300,17 +300,21 @@ DocLayout {
                 }
 
                 footerItems: [
-                    Rectangle {
+                    ChaSetSquircle {
                         Layout.fillWidth: true
                         implicitHeight: footerRow.implicitHeight
-                        color: ThemeTokens.color("panelRaised")
+                        color: ThemeTokens.dark ? Qt.rgba(255, 255, 255, 0.04) : Qt.rgba(0, 0, 0, 0.03)
+                        radius: demoPopup.customRadius
+                        roundTop: false
+                        roundBottom: true
+                        border.width: 0
 
                         Rectangle {
                             anchors.top: parent.top
                             anchors.left: parent.left
                             anchors.right: parent.right
                             height: 1
-                            color: ThemeTokens.color("borderSubtle")
+                            color: Qt.rgba(ThemeTokens.border.r, ThemeTokens.border.g, ThemeTokens.border.b, 0.5)
                         }
 
                         RowLayout {

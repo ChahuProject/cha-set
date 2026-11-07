@@ -2011,6 +2011,13 @@ ApplicationWindow {
                     } else {
                         console.log("[qt-scenario] PASS: testAdaptivePopup placement=down strictly contained within bounds (bottom=" + popupBottom + " <= " + maxAllowedBottom + ")");
                     }
+
+                    if (!testAdaptivePopup.scrollArea.verticalScrollBar.visible) {
+                        console.log("[qt-scenario] FAIL: testAdaptivePopup verticalScrollBar hidden when capped (10 items)!");
+                        popupFailures++;
+                    } else {
+                        console.log("[qt-scenario] PASS: testAdaptivePopup verticalScrollBar visible when capped (10 items)");
+                    }
                 }
                 testAdaptivePopup.close();
 
@@ -2073,6 +2080,23 @@ ApplicationWindow {
                     } else {
                         console.log("[qt-scenario] PASS: demoPopup horizontal bounds strictly maintained");
                     }
+
+                    // 4. Test Scrollbar Visibility Parity (Non-Necessary-No-Scrollbar contract)
+                    if (docPopup.scrollArea.verticalScrollBar.visible) {
+                        console.log("[qt-scenario] FAIL: demoPopup verticalScrollBar visible when items fit naturally! height=" + docPopup.height + ", desiredH=" + docPopup.desiredHeight + ", hostAvailH=" + docPopup.hostAvailableHeight);
+                        popupFailures++;
+                    } else {
+                        console.log("[qt-scenario] PASS: demoPopup verticalScrollBar hidden when uncapped (natural height)");
+                    }
+
+                    pageLoader.item.demoMaxHeight = 200;
+                    if (!docPopup.scrollArea.verticalScrollBar.visible) {
+                        console.log("[qt-scenario] FAIL: demoPopup verticalScrollBar hidden when maxHeight=200!");
+                        popupFailures++;
+                    } else {
+                        console.log("[qt-scenario] PASS: demoPopup verticalScrollBar visible when maxHeight=200");
+                    }
+                    pageLoader.item.demoMaxHeight = -1;
 
                     docPopup.close();
                 }
