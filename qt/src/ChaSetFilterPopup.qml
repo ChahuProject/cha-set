@@ -234,12 +234,16 @@ Popup {
         return filtered
     }
 
-    // Numeric variant: single digit key -> facet lookup (integer key or stars).
+    // Numeric variant: single digit key -> facet lookup.
+    // Accepts an explicit numericKey, an integer key/stars value, or a single-digit label.
     function numericKeyForItem(it) {
         if (!it) return -1
-        var raw = (it.key !== undefined && it.key !== null) ? it.key : it.stars
+        var raw = it.numericKey
+        if (raw === undefined || raw === null) raw = it.key
+        if (raw === undefined || raw === null) raw = it.stars
+        if (raw === undefined || raw === null) raw = it.label
         if (typeof raw === "number" && raw >= 0 && raw <= 9 && Math.floor(raw) === raw) return raw
-        var text = String(raw === undefined || raw === null ? "" : raw)
+        var text = String(raw === undefined || raw === null ? "" : raw).trim()
         if (/^[0-9]$/.test(text)) return Number(text)
         return -1
     }
