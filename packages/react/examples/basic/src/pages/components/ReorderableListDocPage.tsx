@@ -87,7 +87,7 @@ export function ReorderableListDocPage() {
         reactCode={heroReactCode}
         qtCode={heroQtCode}
       >
-        <div className="flex flex-col gap-6 w-full max-w-sm items-center text-foreground">
+        <div className="flex flex-col gap-6 w-full max-w-xs items-center text-foreground">
           <div className="flex items-center gap-2">
             <Button variant="outline" size="sm" onClick={handleToggleReorderable}>
               {t('desktopComposite.reorderableList.toggleReorderable', 'Toggle Reorderable')}
@@ -100,7 +100,7 @@ export function ReorderableListDocPage() {
             </Button>
           </div>
 
-          <Card className="p-3 w-full border border-border bg-card text-card-foreground">
+          <Card className="p-2 w-full border border-border bg-card text-card-foreground">
             <ReorderableList
               items={items}
               reorderable={reorderable}

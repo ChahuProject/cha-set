@@ -218,7 +218,8 @@ export const ReorderableList = React.forwardRef<HTMLDivElement, ReorderableListP
               data-slot="reorderable-list-row"
               data-index={index}
               className={cn(
-                'absolute left-0 right-0 rounded-md flex items-center px-2 group transition-colors duration-quick ease-standard',
+                'absolute left-0 right-0 rounded-md flex items-center pr-1.5 gap-1 group transition-colors duration-quick ease-standard',
+                reorderable ? 'pl-1' : 'pl-2.5',
                 isDragging
                   ? 'z-20 bg-muted shadow-sm cursor-grabbing text-foreground'
                   : 'z-0 bg-transparent hover:bg-muted/50 text-foreground',
@@ -237,8 +238,8 @@ export const ReorderableList = React.forwardRef<HTMLDivElement, ReorderableListP
                 <div
                   data-slot="reorderable-grip"
                   className={cn(
-                    'flex items-center justify-center size-6 shrink-0 rounded text-muted-foreground hover:text-foreground touch-none',
-                    isDragging ? 'cursor-grabbing' : 'cursor-grab',
+                    'flex items-center justify-center w-5 h-full shrink-0 rounded text-muted-foreground/60 group-hover:text-muted-foreground hover:!text-foreground hover:bg-muted-foreground/10 transition-colors duration-quick touch-none',
+                    isDragging ? 'cursor-grabbing text-foreground' : 'cursor-grab',
                   )}
                   onPointerDown={(e) => handlePointerDown(index, e)}
                   onPointerMove={(e) => handlePointerMove(index, e)}
@@ -251,7 +252,7 @@ export const ReorderableList = React.forwardRef<HTMLDivElement, ReorderableListP
 
               {/* Optional Item Leading Icon */}
               {item.icon && (
-                <div className="flex items-center justify-center size-5 shrink-0 ml-1 text-muted-foreground">
+                <div className="flex items-center justify-center size-4 shrink-0 text-muted-foreground">
                   {typeof item.icon === 'string' ? (
                     <span className="text-xs">{item.icon}</span>
                   ) : (
@@ -261,12 +262,12 @@ export const ReorderableList = React.forwardRef<HTMLDivElement, ReorderableListP
               )}
 
               {/* Item Label */}
-              <div className="flex-1 min-w-0 px-2 text-sm truncate font-normal">
+              <div className="flex-1 min-w-0 pr-2 text-sm truncate font-normal">
                 {label}
               </div>
 
               {/* Trailing Action Column Buttons */}
-              <div className="flex items-center gap-1 shrink-0 ml-auto">
+              <div className="flex items-center gap-0.5 shrink-0 ml-auto">
                 {effectiveActionColumns.map((col) => {
                   const isActive = Boolean(item[col.key]);
                   const tipText = col.tooltip || 'Show/Hide';
@@ -286,10 +287,10 @@ export const ReorderableList = React.forwardRef<HTMLDivElement, ReorderableListP
                         data-action-key={col.key}
                         aria-label={`${tipText} ${label}`}
                         className={cn(
-                          'inline-flex items-center justify-center size-6 rounded hover:bg-muted transition-colors duration-quick ease-standard cursor-pointer',
+                          'inline-flex items-center justify-center size-6 rounded hover:bg-muted-foreground/10 transition-colors duration-quick ease-standard cursor-pointer',
                           isActive
                             ? 'text-primary opacity-100'
-                            : 'text-muted-foreground opacity-60 hover:opacity-100',
+                            : 'text-muted-foreground/60 hover:text-muted-foreground hover:opacity-100',
                         )}
                         onClick={(e) => handleActionClick(index, col.key, e)}
                       >

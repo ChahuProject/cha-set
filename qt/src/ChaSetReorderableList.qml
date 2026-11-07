@@ -218,7 +218,7 @@ Item {
                     id: gripMouse
                     visible: root.reorderable
                     x: 0
-                    width: ThemeTokens.dp(26)
+                    width: ThemeTokens.dp(20)
                     height: parent.height
                     anchors.verticalCenter: parent.verticalCenter
                     hoverEnabled: true
@@ -268,9 +268,10 @@ Item {
 
                 // 拖拽指示手柄图标
                 ChaSetIcon {
+                    id: gripIcon
                     visible: root.reorderable
                     anchors.left: parent.left
-                    anchors.leftMargin: ThemeTokens.dp(6)
+                    anchors.leftMargin: ThemeTokens.dp(4)
                     anchors.verticalCenter: parent.verticalCenter
                     name: "grip-vertical"
                     size: 14
@@ -281,8 +282,8 @@ Item {
                 ChaSetIcon {
                     id: leftIcon
                     visible: itemRow.itemIcon !== ""
-                    anchors.left: parent.left
-                    anchors.leftMargin: root.reorderable ? ThemeTokens.dp(26) : ThemeTokens.dp(8)
+                    anchors.left: root.reorderable ? gripIcon.right : parent.left
+                    anchors.leftMargin: ThemeTokens.dp(4)
                     anchors.verticalCenter: parent.verticalCenter
                     name: itemRow.itemIcon
                     size: 14
@@ -292,10 +293,10 @@ Item {
                 // 文本标签
                 Text {
                     id: labelText
-                    anchors.left: leftIcon.visible ? leftIcon.right : (root.reorderable ? parent.left : parent.left)
-                    anchors.leftMargin: leftIcon.visible ? ThemeTokens.dp(8) : (root.reorderable ? ThemeTokens.dp(28) : ThemeTokens.dp(8))
+                    anchors.left: leftIcon.visible ? leftIcon.right : (root.reorderable ? gripIcon.right : parent.left)
+                    anchors.leftMargin: leftIcon.visible ? ThemeTokens.dp(6) : (root.reorderable ? ThemeTokens.dp(6) : ThemeTokens.dp(8))
                     anchors.right: actionRow.left
-                    anchors.rightMargin: ThemeTokens.dp(8)
+                    anchors.rightMargin: ThemeTokens.dp(6)
                     anchors.verticalCenter: parent.verticalCenter
                     elide: Text.ElideRight
                     text: itemRow.itemLabel

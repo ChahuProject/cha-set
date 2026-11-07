@@ -73,7 +73,7 @@ DocLayout {
         Column {
             anchors.centerIn: parent
             spacing: ThemeTokens.dp(16)
-            width: ThemeTokens.dp(360)
+            width: ThemeTokens.dp(320)
 
             Row {
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -103,7 +103,7 @@ DocLayout {
 
             Rectangle {
                 width: parent.width
-                height: reorderList.implicitHeight + ThemeTokens.dp(24)
+                height: reorderList.implicitHeight + ThemeTokens.dp(16)
                 color: ThemeTokens.card
                 border.color: ThemeTokens.border
                 border.width: 1
@@ -112,7 +112,7 @@ DocLayout {
                 ChaSetReorderableList {
                     id: reorderList
                     anchors.centerIn: parent
-                    width: parent.width - ThemeTokens.dp(24)
+                    width: parent.width - ThemeTokens.dp(16)
                     reorderable: root.listReorderable
                     items: root.demoItems
                     onItemsEdited: (newItems) => {
