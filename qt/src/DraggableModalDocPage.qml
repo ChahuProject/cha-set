@@ -97,8 +97,8 @@ DocLayout {
 
                 ChaSetDraggableModal {
                     id: demoModal
-                    width: ThemeTokens.dp(300)
-                    height: ThemeTokens.dp(200)
+                    width: ThemeTokens.dp(352)
+                    autoFitHeight: true
                     title: ChaSetI18n.tr("overlays.draggableModal.diagnosticsTitle", "Memory & Shader Diagnostics")
                     initialPositionMode: "center"
                     sizeOptions: [

@@ -211,8 +211,7 @@ export function DialogDocPage() {
               </DialogTrigger>
               <DialogContent
                 draggable={true}
-                defaultWidthRem={32}
-                defaultHeightRem={22}
+                defaultWidthRem={28}
                 sizeOptions={desktopSizeOptions}
                 sizeMenuTooltip={t('overlays.dialog.adjustSize', 'Adjust window size')}
               >
@@ -227,7 +226,12 @@ export function DialogDocPage() {
                     {t('overlays.dialog.fixedFooterDesc', 'The bottom actions area is extracted as a fixed footer that stays pinned during vertical scrolling.')}
                   </p>
                 </div>
-                <DialogFooter showCloseButton>
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <Button variant="outline" size="sm">
+                      {t('common.close', 'Close')}
+                    </Button>
+                  </DialogClose>
                   <Button size="sm" onClick={() => setDesktopOpen(false)}>
                     {t('overlays.dialog.confirm', 'Confirm')}
                   </Button>
@@ -248,7 +252,7 @@ export function DialogDocPage() {
                   {t('overlays.dialog.deleteAccount', 'Delete Account')}
                 </Button>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent size="sm">
                 <DialogHeader>
                   <DialogTitle>{t('overlays.dialog.areYouSure', 'Are you absolutely sure?')}</DialogTitle>
                   <DialogDescription>
@@ -287,19 +291,17 @@ export function DialogDocPage() {
                   {t('overlays.dialog.systemUpdateNotice', 'System Update Notice')}
                 </Button>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent size="sm">
                 <DialogHeader>
                   <div className="flex items-center gap-2">
                     <DialogTitle>{t('overlays.dialog.scheduledMaintenance', 'Scheduled Maintenance')}</DialogTitle>
                     <Badge variant="secondary">{t('overlays.dialog.notice', 'Notice')}</Badge>
                   </div>
-                  <DialogDescription>
-                    {t('overlays.dialog.maintenanceDesc', 'The cloud service will be undergoing scheduled infrastructure updates tonight at 02:00 UTC.')}
+                  <DialogDescription className="space-y-1.5 mt-1">
+                    <p>{t('overlays.dialog.maintenanceDesc', 'The cloud service will be undergoing scheduled infrastructure updates tonight at 02:00 UTC.')}</p>
+                    <p>{t('overlays.dialog.downtimeDesc', 'Expected downtime is under 10 minutes. All data remains encrypted and safe.')}</p>
                   </DialogDescription>
                 </DialogHeader>
-                <p className="text-xs text-muted-foreground">
-                  {t('overlays.dialog.downtimeDesc', 'Expected downtime is under 10 minutes. All data remains encrypted and safe.')}
-                </p>
                 <DialogFooter>
                   <DialogClose asChild>
                     <Button size="sm">{t('overlays.dialog.understood', 'Understood')}</Button>

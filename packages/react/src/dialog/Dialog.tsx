@@ -566,22 +566,26 @@ export const DialogFooter = React.forwardRef<HTMLDivElement, DialogFooterProps>(
   ({ className, showCloseButton = false, children, ...props }, ref) => {
     const context = React.useContext(DialogContext);
     const isAlert = context?.variant === 'alert';
+    const { t } = useChaSetI18n();
     return (
       <div
         ref={ref}
         data-slot={(props as Record<string, any>)['data-slot'] ?? (isAlert ? 'alert-dialog-footer' : 'dialog-footer')}
         className={cn(
-          'flex flex-col-reverse gap-2 sm:flex-row sm:justify-end px-6 pb-6 pt-2',
+          'flex flex-col-reverse gap-2 sm:flex-row sm:justify-end',
+          isAlert ? 'pt-2' : 'px-6 pb-6 pt-2',
           className,
         )}
         {...props}
       >
-        {children}
         {showCloseButton && (
           <DialogClose asChild>
-            <Button variant="outline">Close</Button>
+            <Button variant="outline" size="sm">
+              {t('common.close', 'Close')}
+            </Button>
           </DialogClose>
         )}
+        {children}
       </div>
     );
   },
