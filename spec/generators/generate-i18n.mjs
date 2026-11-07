@@ -90,6 +90,50 @@ if (parityErrors.length > 0) {
   process.exit(1);
 }
 
+// 1b. Validate Showcase Navigation & Search i18n Completeness
+const navPath = path.resolve(repoRoot, 'spec', 'showcase', 'navigation.json');
+if (fs.existsSync(navPath)) {
+  const nav = JSON.parse(fs.readFileSync(navPath, 'utf8'));
+  const CJK_RE = /[\u3400-\u4dbf\u4e00-\u9fff]/;
+  const navErrors = [];
+
+  function getVal(obj, keyPath) {
+    const parts = keyPath.split('.');
+    let cur = obj;
+    for (const p of parts) {
+      if (cur == null || typeof cur !== 'object') return undefined;
+      cur = cur[p];
+    }
+    return cur;
+  }
+
+  for (const cat of nav) {
+    const catZh = getVal(zhCN, 'categories.' + cat.title) || getVal(zhCN, 'showcase.categories.' + cat.title);
+    const catEn = getVal(enUS, 'categories.' + cat.title) || getVal(enUS, 'showcase.categories.' + cat.title);
+    if (!catZh || !CJK_RE.test(catZh)) navErrors.push(`Category "${cat.title}": missing or invalid CJK in zh-CN`);
+    if (!catEn || CJK_RE.test(catEn)) navErrors.push(`Category "${cat.title}": missing or leaked CJK in en-US`);
+
+    for (const item of cat.items) {
+      const titleZh = getVal(zhCN, 'navigation.' + item.id);
+      const titleEn = getVal(enUS, 'navigation.' + item.id);
+      if (!titleZh || !CJK_RE.test(titleZh)) navErrors.push(`Item "${item.id}" title: missing or invalid CJK in zh-CN`);
+      if (!titleEn || CJK_RE.test(titleEn)) navErrors.push(`Item "${item.id}" title: missing or leaked CJK in en-US`);
+
+      const camelId = item.id.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+      const descZh = getVal(zhCN, 'components.' + item.id + '.description') || getVal(zhCN, 'components.' + camelId + '.description');
+      const descEn = getVal(enUS, 'components.' + item.id + '.description') || getVal(enUS, 'components.' + camelId + '.description');
+
+      if (!descZh || !CJK_RE.test(descZh)) navErrors.push(`Item "${item.id}" description: missing or invalid CJK in zh-CN`);
+      if (!descEn || CJK_RE.test(descEn)) navErrors.push(`Item "${item.id}" description: missing or leaked CJK in en-US`);
+    }
+  }
+
+  if (navErrors.length > 0) {
+    console.error(`[gen:i18n] FAIL: Showcase navigation i18n errors:\n${navErrors.join('\n')}`);
+    process.exit(1);
+  }
+}
+
 // 2. React Output
 const reactOutDir = path.resolve(repoRoot, 'packages', 'react', 'src', 'i18n');
 if (!fs.existsSync(reactOutDir)) fs.mkdirSync(reactOutDir, { recursive: true });

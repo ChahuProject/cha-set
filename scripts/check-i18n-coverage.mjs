@@ -335,6 +335,158 @@ function findingId(type, stack, relFile, identity) {
   return createHash('sha1').update(`${type}|${stack}|${relFile}|${identity}`).digest('hex').slice(0, 12);
 }
 
+export function auditNavigationItems(navCategories, zhDict, enDict) {
+  const findings = [];
+  const relFile = 'spec/showcase/navigation.json';
+
+  for (const cat of navCategories) {
+    const catTitle = cat.title || '';
+    const catKey = 'categories.' + catTitle;
+    const catZh = dictLookup(zhDict, catKey) || dictLookup(zhDict, 'showcase.categories.' + catTitle);
+    const catEn = dictLookup(enDict, catKey) || dictLookup(enDict, 'showcase.categories.' + catTitle);
+
+    if (catZh === undefined && catEn === undefined) {
+      findings.push({
+        id: findingId('missing-key', 'spec', relFile, catKey),
+        type: 'missing-key', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+        key: catKey,
+        detail: `Category "${catTitle}" missing from locale dictionaries`,
+      });
+    } else {
+      if (catZh === undefined) {
+        findings.push({
+          id: findingId('missing-key', 'spec', relFile, catKey + ':zh-CN'),
+          type: 'missing-key', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+          key: catKey,
+          detail: `Category "${catTitle}" missing from zh-CN`,
+        });
+      } else if (classifyText(catZh) === 'latin') {
+        findings.push({
+          id: findingId('zh-latin', 'spec', relFile, catKey),
+          type: 'zh-latin', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+          key: catKey,
+          detail: `Category "${catTitle}" zh-CN renders "${catZh}" (untranslated English)`,
+        });
+      }
+
+      if (catEn === undefined) {
+        findings.push({
+          id: findingId('missing-key', 'spec', relFile, catKey + ':en-US'),
+          type: 'missing-key', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+          key: catKey,
+          detail: `Category "${catTitle}" missing from en-US`,
+        });
+      } else if (classifyText(catEn) === 'cjk') {
+        findings.push({
+          id: findingId('en-cjk', 'spec', relFile, catKey),
+          type: 'en-cjk', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+          key: catKey,
+          detail: `Category "${catTitle}" en-US renders "${catEn}" (leaked CJK)`,
+        });
+      }
+    }
+
+    for (const item of (cat.items || [])) {
+      // 1. Navigation item title
+      const navKey = 'navigation.' + item.id;
+      const navZh = dictLookup(zhDict, navKey);
+      const navEn = dictLookup(enDict, navKey);
+
+      if (navZh === undefined && navEn === undefined) {
+        findings.push({
+          id: findingId('missing-key', 'spec', relFile, navKey),
+          type: 'missing-key', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+          key: navKey,
+          detail: `Item "${item.id}" title missing from locale dictionaries`,
+        });
+      } else {
+        if (navZh === undefined) {
+          findings.push({
+            id: findingId('missing-key', 'spec', relFile, navKey + ':zh-CN'),
+            type: 'missing-key', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+            key: navKey,
+            detail: `Item "${item.id}" title missing from zh-CN`,
+          });
+        } else if (classifyText(navZh) === 'latin') {
+          findings.push({
+            id: findingId('zh-latin', 'spec', relFile, navKey),
+            type: 'zh-latin', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+            key: navKey,
+            detail: `Item "${item.id}" title zh-CN renders "${navZh}" (untranslated English)`,
+          });
+        }
+
+        if (navEn === undefined) {
+          findings.push({
+            id: findingId('missing-key', 'spec', relFile, navKey + ':en-US'),
+            type: 'missing-key', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+            key: navKey,
+            detail: `Item "${item.id}" title missing from en-US`,
+          });
+        } else if (classifyText(navEn) === 'cjk') {
+          findings.push({
+            id: findingId('en-cjk', 'spec', relFile, navKey),
+            type: 'en-cjk', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+            key: navKey,
+            detail: `Item "${item.id}" title en-US renders "${navEn}" (leaked CJK)`,
+          });
+        }
+      }
+
+      // 2. Component description (rendered in Search Modal and Sidebar)
+      const descKey = 'components.' + item.id + '.description';
+      const camelId = item.id.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+      const camelDescKey = 'components.' + camelId + '.description';
+
+      const descZh = dictLookup(zhDict, descKey) || dictLookup(zhDict, camelDescKey);
+      const descEn = dictLookup(enDict, descKey) || dictLookup(enDict, camelDescKey);
+
+      if (descZh === undefined && descEn === undefined) {
+        findings.push({
+          id: findingId('missing-key', 'spec', relFile, descKey),
+          type: 'missing-key', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+          key: descKey,
+          detail: `Description for "${item.id}" missing from locale dictionaries (leaks raw text in search dialog)`,
+        });
+      } else {
+        if (descZh === undefined) {
+          findings.push({
+            id: findingId('missing-key', 'spec', relFile, descKey + ':zh-CN'),
+            type: 'missing-key', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+            key: descKey,
+            detail: `Description for "${item.id}" missing from zh-CN (fallback would leak English in search dialog)`,
+          });
+        } else if (classifyText(descZh) === 'latin') {
+          findings.push({
+            id: findingId('zh-latin', 'spec', relFile, descKey),
+            type: 'zh-latin', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+            key: descKey,
+            detail: `Description for "${item.id}" zh-CN renders "${descZh}" (untranslated English in search dialog)`,
+          });
+        }
+
+        if (descEn === undefined) {
+          findings.push({
+            id: findingId('missing-key', 'spec', relFile, descKey + ':en-US'),
+            type: 'missing-key', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+            key: descKey,
+            detail: `Description for "${item.id}" missing from en-US`,
+          });
+        } else if (classifyText(descEn) === 'cjk') {
+          findings.push({
+            id: findingId('en-cjk', 'spec', relFile, descKey),
+            type: 'en-cjk', stack: 'spec', file: relFile, page: 'navigation', line: 1,
+            key: descKey,
+            detail: `Description for "${item.id}" en-US renders "${descEn}" (leaked CJK)`,
+          });
+        }
+      }
+    }
+  }
+
+  return findings;
+}
+
 export function analyzeI18nCoverage() {
   const zhDict = loadLocale('zh-CN');
   const enDict = loadLocale('en-US');
@@ -445,6 +597,26 @@ export function analyzeI18nCoverage() {
 
   for (const f of reactFiles) processFile(f, 'react', scanReactContent);
   for (const f of qtFiles) processFile(f, 'qt', scanQtContent);
+
+  // ---- Audit showcase navigation & search dataset (spec/showcase/navigation.json) ----
+  const navPath = resolve(root, 'spec', 'showcase', 'navigation.json');
+  if (existsSync(navPath)) {
+    const nav = JSON.parse(readFileSync(navPath, 'utf8'));
+    const navFindings = auditNavigationItems(nav, zhDict, enDict);
+    findings.push(...navFindings);
+
+    const navFileEntry = {
+      stack: 'spec', file: 'spec/showcase/navigation.json', page: 'NavigationDataset',
+      i18nCalls: nav.reduce((acc, c) => acc + 1 + (c.items ? c.items.length * 2 : 0), 0),
+      hardcoded: 0,
+      missing: navFindings.filter(f => f.type === 'missing-key').length,
+      zhLatin: navFindings.filter(f => f.type === 'zh-latin').length,
+      enCjk: navFindings.filter(f => f.type === 'en-cjk').length,
+    };
+    const flaggedCalls = navFileEntry.missing + navFileEntry.zhLatin + navFileEntry.enCjk;
+    navFileEntry.coverage = navFileEntry.i18nCalls > 0 ? 1 - flaggedCalls / navFileEntry.i18nCalls : 1;
+    files.push(navFileEntry);
+  }
 
   // ---- page-level aggregation ----
   const pageMap = new Map();
@@ -720,6 +892,34 @@ export function selfTest() {
   const qtBannedScan = scanQtContent(qtBannedSnippet);
   if (!qtBannedScan.bannedQsTr || qtBannedScan.bannedQsTr.length !== 1) {
     errors.push('qt self-test: qsTr() was not detected as banned');
+  }
+
+  // Navigation & search modal dataset audit self-test
+  const mockNav = [
+    {
+      title: 'Mock Cat',
+      items: [
+        { id: 'mock-missing', title: 'Mock Missing', desc: 'Mock missing item' },
+        { id: 'mock-latin', title: 'Mock Latin', desc: 'Mock latin item' },
+      ],
+    },
+  ];
+  const mockZh = {
+    categories: { 'Mock Cat': '模拟分类' },
+    navigation: { 'mock-latin': '模拟条目' },
+    components: { 'mock-latin': { description: 'English prose un-translated in zh' } },
+  };
+  const mockEn = {
+    categories: { 'Mock Cat': 'Mock Cat' },
+    navigation: { 'mock-missing': 'Mock Missing', 'mock-latin': 'Mock Latin' },
+    components: { 'mock-missing': { description: 'English desc' }, 'mock-latin': { description: 'English desc' } },
+  };
+  const navAuditFindings = auditNavigationItems(mockNav, mockZh, mockEn);
+  if (!navAuditFindings.some(f => f.type === 'missing-key' && f.key === 'navigation.mock-missing')) {
+    errors.push('navigation self-test: missing-key not detected for missing nav title in zh-CN');
+  }
+  if (!navAuditFindings.some(f => f.type === 'zh-latin' && f.key === 'components.mock-latin.description')) {
+    errors.push('navigation self-test: zh-latin not detected for English description in zh-CN');
   }
 
   return { ok: errors.length === 0, errors };
